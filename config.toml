@@ -86,6 +86,7 @@ navbar_items = [
   { url = "$BASE_URL/docker", name = "Docker" },
 	{ url = "$BASE_URL/commands", name = "Commands" },
 	{ url = "$BASE_URL/rabbitmq", name = "RabbitMQ" },
+	{ url = "$BASE_URL/azure", name = "Azure" },
 	{ url = "$BASE_URL/tags", name = "Tags" },
 	{ url = "$BASE_URL/categories", name = "Categories" },
 	]},
@@ -100,6 +101,7 @@ navbar_items = [
 	{ url = "$BASE_URL/ko/docker", name = "Docker" },
 	{ url = "$BASE_URL/ko/commands", name = "명령어" },
 	{ url = "$BASE_URL/ko/rabbitmq", name = "RabbitMQ" },
+	{ url = "$BASE_URL/ko/azure", name = "Azure" },
 	{ url = "$BASE_URL/ko/tags", name = "태그" },
 	{ url = "$BASE_URL/ko/categories", name = "카테고리" },
 	]}
