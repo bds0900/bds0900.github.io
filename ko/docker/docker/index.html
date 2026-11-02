@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Docker? dockerd? containerd?
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Docker? dockerd? containerd?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-04-21">April 21, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>3 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>544 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>그동안 Docker를 계속 사용해 왔지만, Docker 자체를 제대로 공부한 적은 없었다. 인터넷에 떠도는 명령어를 따라 치는 정도로만 알고 사용했다. 그래서 Docker가 정확히 무엇을 하는 도구인지, 그리고 왜 내 Mac에서 Docker가 바로 동작하지 않는지 공부해 보았다.</p>
+<h3 id="dockerran-mueosinga">Docker란 무엇인가?</h3>
+<p>Docker는 <a rel="external" href="https://subicura.com/2017/01/19/docker-guide-for-beginners-1.html">container 기반의 open-source virtualization platform</a>이라고 설명할 수 있다.</p>
+<p>즉 Docker는 platform이고, container 기반 platform이며, virtualization platform이고, open-source platform이다. Docker 생태계에는 Docker Compose, private registry, Docker Desktop 같은 여러 프로젝트가 있지만, 중심이 되는 것은 Docker Engine이다.</p>
+<p>Mac에서 <code>docker</code>를 설치한 뒤 실행해 보면 다음과 같은 메시지를 만날 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Cannot connect to the Docker daemon... Is the docker daemon running?</span></span></code></pre>
+<p>분명 Docker를 설치했는데 Docker daemon이 돌고 있지 않다는 말은 무엇일까?</p>
+<h3 id="geureom-docker-daemoniraneun-nyeoseogeun-mweolgga">그럼 docker daemon이라는 녀석은 뭘까?</h3>
+<p><a rel="external" href="https://docs.docker.com/engine/">Docker Engine</a>은 크게 server, API, client로 구성된다. <strong>dockerd</strong>는 server 쪽 daemon의 이름이고, <strong>docker</strong>는 CLI client다.</p>
+<p>그렇다면 내가 설치한 것은 Docker client뿐이었던 걸까? 일단 Docker daemon을 실행해야 한다.</p>
+<p><a rel="external" href="https://docs.docker.com/engine/daemon/start/">Docker daemon을 실행하는 방법</a>은 보통 두 가지로 설명된다. service로 시작하는 방법과 <code>dockerd</code> 명령어로 foreground에서 실행하는 방법이다. daemon 설정과 실행 방법은 <a rel="external" href="https://junstar92.tistory.com/169">여기</a>를 참고할 수 있다.</p>
+<p>하지만 나는 Mac을 사용하고 있어서 <code>systemctl</code>도 안 되고, <code>dockerd</code> 명령어도 바로 먹히지 않았다. 그래서 다른 방법을 찾아보았다.</p>
+<h3 id="colima">Colima</h3>
+<p>Mac에서 Docker를 쓰려고 찾아보면 Docker Desktop의 대체재로 Podman이나 Colima를 사용하라는 글을 자주 보게 된다. Docker daemon을 실행하는 방법을 찾고 있었는데, 왜 갑자기 Docker Desktop, Podman, Colima가 나오는지 궁금했다.</p>
+<p>Docker Desktop에는 <code>dockerd</code>와 <code>docker</code> CLI가 함께 포함되어 있다. Colima는 Docker Desktop의 대체재로, Mac 위에서 Docker runtime이 돌아갈 Linux VM을 준비하고 Docker daemon에 접근할 수 있게 해준다.</p>
+<p>간단히 말하면 Colima는 container runtime을 실행할 수 있는 local Linux VM 환경을 만들어 주는 도구다. Colima가 설치되어 있다면 다음 명령으로 Docker runtime을 쉽게 시작할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">colima</span><span style="color: #AAD94C;"> start</span></span></code></pre><h3 id="lima">Lima</h3>
+<p>Colima는 Lima를 기반으로 하는 프로그램이다. 앞서 언급한 Podman도 Mac에서는 Lima 기반 환경을 사용할 수 있다.</p>
+<p>Lima <a rel="external" href="https://lima-vm.io/">홈페이지</a>에서는 Lima를 이렇게 설명한다.</p>
+<blockquote>
+<p>Lima launches Linux virtual machines with automatic file sharing and port forwarding (similar to WSL2).</p>
+</blockquote>
+<p>즉 Lima는 Mac에서 Linux VM을 띄우고, file sharing과 port forwarding을 자동으로 설정해 주는 도구다. container 자체라기보다는 container runtime을 실행할 수 있는 Linux 환경을 제공하는 쪽에 가깝다.</p>
+<p>또 <a rel="external" href="https://lima-vm.io/docs/#motivation">motivation</a>을 보면 Lima의 목표 중 하나가 containerd를 promote하는 것이라고 한다.</p>
+<p><code>containerd</code>는 처음 들어보는 단어라서 <a rel="external" href="https://containerd.io/">containerd</a>가 무엇인지 또 찾아보았다. containerd는 container runtime이다.</p>
+<p>containerd는 원래 Docker의 일부였지만, Kubernetes의 CRI(Container Runtime Interface) 흐름과 함께 Docker에서 분리되어 독립적인 프로젝트가 되었다. 지금은 CRI-O와 함께 자주 언급되는 대표적인 container runtime이다.</p>
+<p>한마디로 Docker는 원래 비교적 monolithic한 프로그램이었지만, Kubernetes와 container 생태계가 발전하면서 역할이 쪼개졌고, 그 결과 containerd 같은 runtime component가 독립적으로 중요해졌다고 볼 수 있다.</p>
+<p>Docker Engine을 더 공부해 보려고 했는데 여기까지 정리하는 데만 벌써 2시간이 넘게 지났다. 나머지는 나중에 더 공부하자.</p>
+<h3 id="3julyoyag">3줄요약?</h3>
+<ol>
+<li>Docker는 원래 Docker Engine이 많은 일을 한 번에 담당하는 구조였다.</li>
+<li>CRI 흐름과 container 생태계 변화 속에서 containerd가 Docker에서 분리되어 중요한 runtime component가 되었다.</li>
+<li>Mac에서는 Docker Desktop을 써도 되고, Lima/Colima를 사용해 Docker daemon이 돌아갈 Linux VM 환경을 만들 수도 있다.</li>
+</ol>
+<h3 id="camgo">참고</h3>
+<ul>
+<li>https://junstar92.tistory.com/169</li>
+<li>https://www.docker.com/blog/containerd-vs-docker/</li>
+<li>https://kr.linkedin.com/pulse/containerd%EB%8A%94-%EB%AC%B4%EC%97%87%EC%9D%B4%EA%B3%A0-%EC%99%9C-%EC%A4%91%EC%9A%94%ED%95%A0%EA%B9%8C-sean-lee</li>
+<li>https://blog.siner.io/2021/10/23/container-ecosystem/</li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;">
+              Layer 4 — runc (저수준 OCI 런타임)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

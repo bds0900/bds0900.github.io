@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Finite State Machine
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Finite State Machine
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-15">July 15, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>7 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1264 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/cs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>CS</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/cs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>cs</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>FSM(Finite State Machine, 유한 상태 기계)은 어떤 시스템을 <strong>현재 상태</strong>와 <strong>입력에
+따른 상태 전이</strong>로 설명하는 모델이다.</p>
+<p>핵심은 단순하다:</p>
+<blockquote>
+<p>시스템은 한 번에 하나의 상태에 있고, 입력이나 이벤트가 들어오면 정해진 규칙에
+따라 다음 상태로 이동한다.</p>
+</blockquote>
+<p>상태의 개수가 유한하기 때문에 "finite" state machine이라고 부른다. 예를 들어 문은
+<code>Open</code> 또는 <code>Closed</code> 상태만 가질 수 있고, 회전문(turnstile)은 <code>Locked</code> 또는
+<code>Unlocked</code> 상태만 가질 수 있다.</p>
+<h2 id="guseong-yoso">구성 요소</h2>
+<p>FSM은 보통 다음 5가지로 설명한다.</p>
+<table><thead><tr><th>구성 요소</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>S</code></td><td>가능한 상태들의 집합</td></tr>
+<tr><td><code>Σ</code></td><td>입력 알파벳 또는 이벤트들의 집합</td></tr>
+<tr><td><code>δ</code></td><td>전이 함수. 현재 상태와 입력을 받아 다음 상태를 결정한다</td></tr>
+<tr><td><code>s0</code></td><td>시작 상태</td></tr>
+<tr><td><code>F</code></td><td>종료 상태 또는 accepting state. 문제에 따라 없을 수도 있다</td></tr>
+</tbody></table>
+<p>수식으로는 이렇게 쓴다:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>FSM = (S, Σ, δ, s0, F)</span></span></code></pre>
+<p>중요한 부분은 <code>δ</code>다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>δ(current_state, input) -&gt; next_state</span></span></code></pre>
+<p>즉 FSM은 "지금 어디에 있는가?"와 "무슨 입력을 받았는가?"만으로 다음 상태를 정한다.</p>
+<h2 id="yeje-hoejeonmun">예제: 회전문</h2>
+<p>지하철 개찰구 같은 회전문을 생각해보자.</p>
+<ul>
+<li><code>Locked</code>: 잠겨 있음</li>
+<li><code>Unlocked</code>: 통과 가능</li>
+</ul>
+<p>입력은 두 개만 있다고 하자.</p>
+<ul>
+<li><code>Coin</code>: 돈을 넣음</li>
+<li><code>Push</code>: 문을 밀음</li>
+</ul>
+<p>상태 전이표는 이렇게 된다.</p>
+<table><thead><tr><th>현재 상태</th><th>입력</th><th>다음 상태</th><th>설명</th></tr></thead><tbody>
+<tr><td><code>Locked</code></td><td><code>Coin</code></td><td><code>Unlocked</code></td><td>돈을 넣으면 통과 가능</td></tr>
+<tr><td><code>Locked</code></td><td><code>Push</code></td><td><code>Locked</code></td><td>잠긴 상태에서 밀어도 그대로</td></tr>
+<tr><td><code>Unlocked</code></td><td><code>Push</code></td><td><code>Locked</code></td><td>통과하면 다시 잠김</td></tr>
+<tr><td><code>Unlocked</code></td><td><code>Coin</code></td><td><code>Unlocked</code></td><td>이미 열려 있으니 그대로</td></tr>
+</tbody></table>
+<p>코드로 쓰면 이런 모양이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">enum</span><span style="color: #59C2FF;"> TurnstileState</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Locked</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Unlocked</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">enum</span><span style="color: #59C2FF;"> TurnstileEvent</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Coin</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Push</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">static</span><span style="color: #59C2FF;"> TurnstileState</span><span style="color: #FFB454;"> Next</span><span>(</span><span style="color: #59C2FF;">TurnstileState state</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> TurnstileEvent input</span><span>)</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>    (state</span><span style="color: #BFBDB6B3;">,</span><span> input)</span><span style="color: #FF8F40;"> switch</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #59C2FF;">TurnstileState</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Locked</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> TurnstileEvent</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Coin</span><span>)</span><span style="color: #F29668;"> =&gt;</span><span> TurnstileState</span><span style="color: #F29668;">.</span><span>Unlocked</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #59C2FF;">TurnstileState</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Locked</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> TurnstileEvent</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Push</span><span>)</span><span style="color: #F29668;"> =&gt;</span><span> TurnstileState</span><span style="color: #F29668;">.</span><span>Locked</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #59C2FF;">TurnstileState</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Unlocked</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> TurnstileEvent</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Push</span><span>)</span><span style="color: #F29668;"> =&gt;</span><span> TurnstileState</span><span style="color: #F29668;">.</span><span>Locked</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #59C2FF;">TurnstileState</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Unlocked</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> TurnstileEvent</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Coin</span><span>)</span><span style="color: #F29668;"> =&gt;</span><span> TurnstileState</span><span style="color: #F29668;">.</span><span>Unlocked</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">        _</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FF8F40;"> throw</span><span style="color: #F29668;"> new</span><span style="color: #59C2FF;"> InvalidOperationException</span><span>(</span><span style="color: #AAD94C;">&quot;Unknown transition&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>이 코드에서 <code>switch</code>가 전이 함수 <code>δ</code> 역할을 한다.</p>
+<h2 id="wae-yuyonghanga">왜 유용한가</h2>
+<p>FSM은 복잡한 조건문을 "상태" 중심으로 정리할 때 좋다.</p>
+<p>예를 들어 주문 시스템을 <code>bool isPaid</code>, <code>bool isShipped</code>, <code>bool isCanceled</code> 같은 플래그
+여러 개로 표현하면 이상한 조합이 생길 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>isPaid = false</span></span>
+<span class="giallo-l"><span>isShipped = true</span></span>
+<span class="giallo-l"><span>isCanceled = true</span></span></code></pre>
+<p>결제도 안 됐는데 배송됐고, 동시에 취소도 된 상태다. 이런 상태는 실제 도메인에서는
+존재하면 안 된다.</p>
+<p>FSM으로 표현하면 이런 불가능한 조합을 줄일 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">enum</span><span style="color: #59C2FF;"> OrderState</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Created</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Paid</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Shipped</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Delivered</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Canceled</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>그리고 "어떤 상태에서 어떤 이벤트가 가능한가"를 전이 규칙으로 제한한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Created --Pay--&gt; Paid</span></span>
+<span class="giallo-l"><span>Paid --Ship--&gt; Shipped</span></span>
+<span class="giallo-l"><span>Shipped --Deliver--&gt; Delivered</span></span>
+<span class="giallo-l"><span>Created --Cancel--&gt; Canceled</span></span>
+<span class="giallo-l"><span>Paid --Cancel--&gt; Canceled</span></span></code></pre>
+<p>이렇게 하면 <code>Delivered</code> 상태에서 <code>Pay</code> 이벤트가 들어오는 것처럼 말이 안 되는 흐름을
+명시적으로 막을 수 있다.</p>
+<h2 id="dfawa-nfa">DFA와 NFA</h2>
+<p>FSM을 공부하면 보통 DFA와 NFA를 같이 보게 된다.</p>
+<table><thead><tr><th>종류</th><th>의미</th></tr></thead><tbody>
+<tr><td>DFA(Deterministic Finite Automaton)</td><td>현재 상태와 입력이 정해지면 다음 상태가 항상 하나로 결정된다</td></tr>
+<tr><td>NFA(Nondeterministic Finite Automaton)</td><td>같은 상태와 입력에서 여러 다음 상태가 가능하거나, 입력 없이 이동하는 ε-transition이 있을 수 있다</td></tr>
+</tbody></table>
+<p>정규 표현식(regex)은 내부적으로 이런 유한 오토마타와 연결된다. 보통 정규식을 NFA로
+만들고, 필요하면 DFA로 변환해서 문자열을 매칭할 수 있다.</p>
+<p>다만 FSM은 메모리가 유한하다. 그래서 임의 깊이로 중첩되는 괄호처럼 "얼마나 깊게
+들어갔는지"를 무한히 기억해야 하는 문제는 순수 FSM만으로 처리할 수 없다. 이런 경우에는
+스택을 가진 pushdown automaton 같은 더 강한 모델이 필요하다.</p>
+<h2 id="c-async-awaitdo-fsminga">C# async/await도 FSM인가?</h2>
+<p>결론부터 말하면, <strong>그렇다. 하지만 도메인 FSM이라기보다는 컴파일러가 만든 coroutine
+state machine에 가깝다.</strong></p>
+<p>C#에서 <code>async</code> 메서드는 소스 코드 그대로 실행되는 것처럼 보인다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public static async</span><span style="color: #59C2FF;"> Task</span><span>&lt;</span><span style="color: #FF8F40;">int</span><span>&gt;</span><span style="color: #FFB454;"> CountBytesAsync</span><span>(</span><span style="color: #59C2FF;">HttpClient client</span><span style="color: #BFBDB6B3;">,</span><span style="color: #FF8F40;"> string</span><span style="color: #59C2FF;"> url</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    byte</span><span>[]</span><span style="color: #59C2FF;"> bytes</span><span style="color: #F29668;"> = await</span><span> client</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetByteArrayAsync</span><span>(url)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    await</span><span> Task</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Delay</span><span>(</span><span style="color: #D2A6FF;">100</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    return</span><span> bytes</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>하지만 컴파일러는 이 메서드를 대략 다음 구조로 바꾼다.</p>
+<ul>
+<li>원래 메서드는 state machine을 만들고 <code>Task</code>를 반환하는 얇은 wrapper가 된다.</li>
+<li>실제 메서드 본문은 <code>MoveNext()</code> 안으로 들어간다.</li>
+<li><code>await</code> 지점마다 "다음에 어디서 다시 시작해야 하는지"를 상태 값으로 저장한다.</li>
+<li><code>await</code> 이후에도 살아 있어야 하는 지역 변수는 state machine의 필드로 올라간다.</li>
+<li>기다리던 작업이 끝나면 continuation이 <code>MoveNext()</code>를 다시 호출한다.</li>
+</ul>
+<p>의사 코드로 보면 이런 느낌이다. 실제 컴파일러 출력은 버전과 최적화에 따라 달라질 수
+있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">private struct</span><span style="color: #59C2FF;"> CountBytesAsyncStateMachine</span><span style="color: #BFBDB6B3;"> :</span><span style="color: #59C2FF;"> IAsyncStateMachine</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public int</span><span style="color: #59C2FF;"> State</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #59C2FF;"> AsyncTaskMethodBuilder</span><span>&lt;</span><span style="color: #FF8F40;">int</span><span>&gt;</span><span style="color: #59C2FF;"> Builder</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #59C2FF;"> HttpClient Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public string</span><span style="color: #59C2FF;"> Url</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    private byte</span><span>[]</span><span style="color: #59C2FF;"> _bytes</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    private</span><span style="color: #59C2FF;"> TaskAwaiter</span><span>&lt;</span><span style="color: #FF8F40;">byte</span><span>[]&gt;</span><span style="color: #59C2FF;"> _downloadAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    private</span><span style="color: #59C2FF;"> TaskAwaiter _delayAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public void</span><span style="color: #FFB454;"> MoveNext</span><span>()</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        try</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            TaskAwaiter</span><span>&lt;</span><span style="color: #FF8F40;">byte</span><span>[]&gt;</span><span style="color: #59C2FF;"> downloadAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> (State</span><span style="color: #F29668;"> ==</span><span style="color: #D2A6FF;"> 0</span><span>)</span></span>
+<span class="giallo-l"><span>            {</span></span>
+<span class="giallo-l"><span>                downloadAwaiter</span><span style="color: #F29668;"> =</span><span> _downloadAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                _downloadAwaiter</span><span style="color: #F29668;"> = default</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                State</span><span style="color: #F29668;"> = -</span><span style="color: #D2A6FF;">1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                goto</span><span style="color: #59C2FF;"> AfterDownload</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>            downloadAwaiter</span><span style="color: #F29668;"> =</span><span> Client</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetByteArrayAsync</span><span>(Url)</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetAwaiter</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> (</span><span style="color: #F29668;">!</span><span>downloadAwaiter</span><span style="color: #F29668;">.</span><span>IsCompleted)</span></span>
+<span class="giallo-l"><span>            {</span></span>
+<span class="giallo-l"><span>                State</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> 0</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                _downloadAwaiter</span><span style="color: #F29668;"> =</span><span> downloadAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">                RegisterContinuation</span><span>(downloadAwaiter</span><span style="color: #BFBDB6B3;">,</span><span> MoveNext)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                return</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        AfterDownload</span><span style="color: #BFBDB6B3;">:</span></span>
+<span class="giallo-l"><span>            _bytes</span><span style="color: #F29668;"> =</span><span> downloadAwaiter</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetResult</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            TaskAwaiter delayAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> (State</span><span style="color: #F29668;"> ==</span><span style="color: #D2A6FF;"> 1</span><span>)</span></span>
+<span class="giallo-l"><span>            {</span></span>
+<span class="giallo-l"><span>                delayAwaiter</span><span style="color: #F29668;"> =</span><span> _delayAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                _delayAwaiter</span><span style="color: #F29668;"> = default</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                State</span><span style="color: #F29668;"> = -</span><span style="color: #D2A6FF;">1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                goto</span><span style="color: #59C2FF;"> AfterDelay</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>            delayAwaiter</span><span style="color: #F29668;"> =</span><span> Task</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Delay</span><span>(</span><span style="color: #D2A6FF;">100</span><span>)</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetAwaiter</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> (</span><span style="color: #F29668;">!</span><span>delayAwaiter</span><span style="color: #F29668;">.</span><span>IsCompleted)</span></span>
+<span class="giallo-l"><span>            {</span></span>
+<span class="giallo-l"><span>                State</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                _delayAwaiter</span><span style="color: #F29668;"> =</span><span> delayAwaiter</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">                RegisterContinuation</span><span>(delayAwaiter</span><span style="color: #BFBDB6B3;">,</span><span> MoveNext)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                return</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        AfterDelay</span><span style="color: #BFBDB6B3;">:</span></span>
+<span class="giallo-l"><span>            delayAwaiter</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetResult</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>            State</span><span style="color: #F29668;"> = -</span><span style="color: #D2A6FF;">2</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            Builder</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">SetResult</span><span>(_bytes</span><span style="color: #F29668;">.</span><span>Length)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        catch</span><span> (</span><span style="color: #59C2FF;">Exception ex</span><span>)</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            State</span><span style="color: #F29668;"> = -</span><span style="color: #D2A6FF;">2</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            Builder</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">SetException</span><span>(ex)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public void</span><span style="color: #FFB454;"> SetStateMachine</span><span>(</span><span style="color: #59C2FF;">IAsyncStateMachine stateMachine</span><span>) { }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>위 코드는 정확한 디컴파일 결과가 아니라 구조를 보여주기 위한 예시다. 그래도 핵심은
+실제와 같다. 실제 컴파일러는 <code>AsyncTaskMethodBuilder&lt;T&gt;</code>의 <code>AwaitOnCompleted</code> 또는
+<code>AwaitUnsafeOnCompleted</code>를 사용해서 awaiter 완료 시 <code>MoveNext()</code>가 다시 호출되도록
+연결한다.</p>
+<h2 id="awaiteseo-siljero-ileonaneun-il">await에서 실제로 일어나는 일</h2>
+<p><code>await</code>를 만나면 두 가지 경우가 있다.</p>
+<h3 id="1-imi-wanryodoen-jageobimyeon-gyesog-silhaeng">1. 이미 완료된 작업이면 계속 실행</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">byte</span><span>[]</span><span style="color: #59C2FF;"> bytes</span><span style="color: #F29668;"> = await</span><span> client</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetByteArrayAsync</span><span>(url)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p><code>GetByteArrayAsync(url)</code>의 awaiter가 이미 완료되어 있으면 state machine은 멈추지 않고
+바로 다음 줄로 진행한다.</p>
+<h3 id="2-ajig-wanryodoeji-anhasseumyeon-ildan-banhwan">2. 아직 완료되지 않았으면 일단 반환</h3>
+<p>작업이 아직 끝나지 않았다면 다음 일이 일어난다.</p>
+<ol>
+<li>현재 위치를 <code>State = 0</code> 같은 값으로 저장한다.</li>
+<li>나중에 다시 필요할 지역 변수와 awaiter를 필드에 저장한다.</li>
+<li>작업이 끝났을 때 <code>MoveNext()</code>를 다시 호출할 continuation을 등록한다.</li>
+<li>현재 스레드를 막지 않고 caller에게 제어권을 돌려준다.</li>
+</ol>
+<p>그래서 <code>await</code>는 thread를 block하는 것이 아니다. <code>await</code>는 메서드의 실행을 잠시
+중단하고, 기다리던 작업이 끝나면 중단 지점 다음부터 다시 실행되게 만든다.</p>
+<h2 id="ilban-fsmgwa-async-state-machine-bigyo">일반 FSM과 async state machine 비교</h2>
+<table><thead><tr><th>일반 FSM</th><th>C# async state machine</th></tr></thead><tbody>
+<tr><td>상태: <code>Locked</code>, <code>Unlocked</code> 같은 도메인 상태</td><td>상태: <code>-1</code>, <code>0</code>, <code>1</code>, <code>-2</code> 같은 compiler-generated 실행 위치</td></tr>
+<tr><td>입력: <code>Coin</code>, <code>Push</code> 같은 이벤트</td><td>입력: awaited task completion, exception, cancellation</td></tr>
+<tr><td>전이 함수: 직접 작성한 <code>switch</code> 또는 table</td><td>컴파일러가 생성한 <code>MoveNext()</code></td></tr>
+<tr><td>종료 상태: accepting/final state</td><td><code>Task</code>가 succeeded, faulted, canceled 중 하나로 완료</td></tr>
+<tr><td>목적: 도메인 규칙 모델링</td><td>async 메서드의 suspend/resume 구현</td></tr>
+</tbody></table>
+<p>즉 둘 다 "상태와 이벤트에 따라 다음 실행 위치가 결정된다"는 점에서는 FSM이다. 하지만
+async/await의 state machine은 사람이 직접 설계하는 도메인 모델이 아니라, 사람이 쓴
+순차적인 코드를 컴파일러가 비동기 실행 가능한 형태로 바꾼 결과다.</p>
+<h2 id="rust-async-awaitdo-fsminga">Rust async/await도 FSM인가?</h2>
+<p>Rust도 마찬가지다. <strong>Rust의 <code>async</code> 블록과 <code>async fn</code>도 컴파일러가 <code>Future</code>를
+구현하는 state machine으로 바꾼다.</strong></p>
+<p>다만 C#과 실행 모델이 조금 다르다. Rust에서 <code>async fn</code>을 호출하면 함수 본문이 바로
+실행되지 않는다. 호출 결과는 익명 타입의 <code>Future</code> 값이고, 이 future가 executor에 의해
+<code>poll()</code>될 때 실제 본문이 진행된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> page_title</span><span>(url</span><span style="color: #F29668;">: &amp;</span><span style="color: #59C2FF;">str</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #59C2FF;">String</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> response</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> get</span><span>(url)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> text</span><span style="color: #F29668;"> =</span><span> response</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">text</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    parse_title</span><span>(</span><span style="color: #F29668;">&amp;</span><span>text)</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>위 코드는 개념적으로 이런 future를 만든다고 볼 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">enum</span><span style="color: #59C2FF;"> PageTitleFuture</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Start</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    WaitingResponse</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    WaitingText</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Done</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>실제 rustc가 저 enum을 그대로 노출하는 것은 아니다. Rust Reference는 async block이
+반환하는 future 타입의 실제 데이터 형식은 지정하지 않는다고 말한다. 하지만 개념적으로는
+<strong>각 <code>await</code> 지점마다 하나의 variant가 있고, 그 variant 안에 resume에 필요한 데이터를
+저장하는 enum</strong>과 비슷하다고 설명한다.</p>
+<p>Rust future의 핵심 인터페이스는 <code>Future::poll</code>이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Output</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> poll</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">        self</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>        cx</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Context</span><span>&lt;&#39;</span><span style="color: #59C2FF;">_</span><span>&gt;</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Poll</span><span>&lt;</span><span style="color: #39BAE6;font-style: italic;">Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Output</span><span>&gt;;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>poll()</code>은 다음 둘 중 하나를 반환한다.</p>
+<table><thead><tr><th>반환값</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>Poll::Pending</code></td><td>아직 끝나지 않았다. 나중에 다시 poll해야 한다</td></tr>
+<tr><td><code>Poll::Ready(value)</code></td><td>완료됐다. 최종 결과가 <code>value</code>다</td></tr>
+</tbody></table>
+<p>어떤 <code>.await</code> 지점에서 아직 준비되지 않은 future를 만나면, 현재 future는 자기 상태와
+필요한 지역 변수를 저장한 뒤 <code>Poll::Pending</code>을 반환한다. 나중에 I/O나 타이머 같은 작업이
+준비되면 <code>Waker</code>가 task를 깨우고, executor가 다시 <code>poll()</code>을 호출한다. 그때 future는
+처음부터 다시 시작하는 것이 아니라 저장된 상태에서 이어서 실행한다.</p>
+<p>그래서 Rust의 <code>.await</code>도 thread를 block하는 것이 아니다. 현재 future가
+<code>Poll::Pending</code>을 반환해서 executor에게 제어권을 돌려주고, executor는 같은 thread에서
+다른 task를 poll할 수 있다.</p>
+<h2 id="c-gwa-rust-async-state-machine-bigyo">C#과 Rust async state machine 비교</h2>
+<table><thead><tr><th>항목</th><th>C#</th><th>Rust</th></tr></thead><tbody>
+<tr><td>async 호출 시점</td><td>메서드가 시작되고 첫 incomplete <code>await</code>까지 진행될 수 있다</td><td><code>async fn</code>은 호출만으로 본문을 실행하지 않고 <code>Future</code>를 반환한다</td></tr>
+<tr><td>반환 타입</td><td><code>Task</code>, <code>Task&lt;T&gt;</code>, <code>ValueTask&lt;T&gt;</code> 등</td><td>익명 타입의 <code>impl Future&lt;Output = T&gt;</code></td></tr>
+<tr><td>실행 진입점</td><td>compiler-generated <code>MoveNext()</code></td><td><code>Future::poll()</code></td></tr>
+<tr><td>재개 방식</td><td>awaiter completion이 continuation을 호출한다</td><td><code>Waker</code>가 task를 깨우고 executor가 다시 poll한다</td></tr>
+<tr><td>저장되는 것</td><td>await 이후 필요한 locals, awaiter, 상태 값</td><td>await 이후 필요한 locals, child future, 상태 값</td></tr>
+<tr><td>특이점</td><td>런타임/GC 환경과 잘 맞는 task 모델</td><td><code>Pin</code>이 중요하다. future 내부가 자기 자신의 필드를 참조할 수 있기 때문이다</td></tr>
+</tbody></table>
+<p>둘 다 compiler-generated state machine이라는 점은 같다. 차이는 C#은 <code>Task</code>와
+continuation 중심으로 설명되고, Rust는 <code>Future</code>, <code>Poll</code>, <code>Waker</code>, executor 중심으로
+설명된다는 점이다.</p>
+<h2 id="gieoghal-jeom">기억할 점</h2>
+<ul>
+<li>FSM은 복잡한 흐름을 상태와 전이로 쪼개서 이해하는 도구다.</li>
+<li>상태는 유한해야 한다.</li>
+<li>전이는 "현재 상태 + 입력 -&gt; 다음 상태"로 정리한다.</li>
+<li>C#의 <code>async</code> 메서드는 컴파일될 때 <code>IAsyncStateMachine</code>을 구현하는 구조로 바뀐다.</li>
+<li>Rust의 <code>async</code> 블록과 <code>async fn</code>도 <code>Future</code>를 구현하는 state machine으로 바뀐다.</li>
+<li><code>await</code>는 스레드를 block하지 않는다. 메서드를 suspend하고, 작업 완료 후
+continuation으로 resume한다.</li>
+<li>async state machine의 상태 값은 도메인 상태가 아니라 "어느 await 지점에서
+멈췄는가"를 나타내는 실행 위치다.</li>
+</ul>
+<h2 id="camgo">참고</h2>
+<ul>
+<li>유한 상태 기계: <a rel="external" href="https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84">https://ko.wikipedia.org/wiki/%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84</a></li>
+<li>정규식과 오토마타: <a rel="external" href="https://statkclee.github.io/nlp2/regex-under-the-hood.html">https://statkclee.github.io/nlp2/regex-under-the-hood.html</a></li>
+<li>C# language specification - Async functions: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1514-async-functions">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/classes#1514-async-functions</a></li>
+<li><code>await</code> operator: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/await">https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/operators/await</a></li>
+<li><code>IAsyncStateMachine</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.iasyncstatemachine">https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.iasyncstatemachine</a></li>
+<li><code>AsyncStateMachineAttribute</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.asyncstatemachineattribute">https://learn.microsoft.com/en-us/dotnet/api/system.runtime.compilerservices.asyncstatemachineattribute</a></li>
+<li>How Async/Await Really Works in C#: <a rel="external" href="https://devblogs.microsoft.com/dotnet/how-async-await-really-works/">https://devblogs.microsoft.com/dotnet/how-async-await-really-works/</a></li>
+<li>Rust Reference - async blocks: <a rel="external" href="https://doc.rust-lang.org/reference/expressions/block-expr.html#async-blocks">https://doc.rust-lang.org/reference/expressions/block-expr.html#async-blocks</a></li>
+<li>Rust Reference - async functions: <a rel="external" href="https://doc.rust-lang.org/reference/items/functions.html#async-functions">https://doc.rust-lang.org/reference/items/functions.html#async-functions</a></li>
+<li>Rust <code>Future</code> trait: <a rel="external" href="https://doc.rust-lang.org/std/future/trait.Future.html">https://doc.rust-lang.org/std/future/trait.Future.html</a></li>
+<li>Asynchronous Programming in Rust - async/.await primer: <a rel="external" href="https://rust-lang.github.io/async-book/01_getting_started/04_async_await_primer.html">https://rust-lang.github.io/async-book/01_getting_started/04_async_await_primer.html</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

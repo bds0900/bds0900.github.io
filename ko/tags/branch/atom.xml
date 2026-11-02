@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - branch</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/branch/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-05-23T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/branch/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Git unrelated histories: dev, stg, main 브랜치 연결하기</title>
+        <published>2026-05-23T00:00:00+00:00</published>
+        <updated>2026-05-23T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/commands/git-connect-unrelated-release-branches/"/>
+        <id>https://emptyfridge.dev/ko/commands/git-connect-unrelated-release-branches/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/commands/git-connect-unrelated-release-branches/">&lt;p&gt;회사 배포 브랜치 흐름은 보통 이런 식으로 흘러간다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;feature branches -&amp;gt; dev -&amp;gt; stg -&amp;gt; main&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;여기서는 production 브랜치를 &lt;code&gt;main&lt;&#x2F;code&gt;이라고 부른다. 팀에 따라 이 브랜치 이름은 &lt;code&gt;prd&lt;&#x2F;code&gt;일 수도 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;내 경우 실제 환경에는 &lt;code&gt;int&lt;&#x2F;code&gt;도 있었지만, 핵심 문제는 &lt;code&gt;stg&lt;&#x2F;code&gt;와 &lt;code&gt;main&lt;&#x2F;code&gt; 사이였다. &lt;code&gt;dev&lt;&#x2F;code&gt;는 &lt;code&gt;stg&lt;&#x2F;code&gt;에서 파생된 브랜치라 둘은 Git history가 연결되어 있었다. 그런데 &lt;code&gt;main&lt;&#x2F;code&gt;은 따로 만들어진 브랜치라 &lt;code&gt;dev&lt;&#x2F;code&gt;, &lt;code&gt;stg&lt;&#x2F;code&gt;와 공통 조상이 없었다.&lt;&#x2F;p&gt;
+&lt;p&gt;즉, 브랜치 이름으로는 같은 배포 흐름 안에 있는 것처럼 보였지만 Git 입장에서는 완전히 다른 프로젝트 두 개처럼 보이는 상태였다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;weonhaneun-heureum&quot;&gt;원하는 흐름&lt;&#x2F;h2&gt;
+&lt;p&gt;원하는 규칙은 단순했다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;feature branches -&amp;gt; dev -&amp;gt; stg -&amp;gt; main&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;main&lt;&#x2F;code&gt;은 feature branch를 직접 받으면 안 된다. &lt;code&gt;dev&lt;&#x2F;code&gt;에서 검증되고, &lt;code&gt;stg&lt;&#x2F;code&gt;를 통과한 코드만 &lt;code&gt;main&lt;&#x2F;code&gt;으로 올라가야 한다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 Git history도 이 방향을 이해할 수 있어야 한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;main &amp;lt;- stg &amp;lt;- dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;여기서 화살표는 &quot;오른쪽 브랜치가 왼쪽 브랜치의 history를 포함한다&quot;는 뜻이다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;stg&lt;&#x2F;code&gt;는 &lt;code&gt;main&lt;&#x2F;code&gt;의 history를 포함해야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;dev&lt;&#x2F;code&gt;는 &lt;code&gt;stg&lt;&#x2F;code&gt;의 history를 포함해야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;그래야 &lt;code&gt;dev -&amp;gt; stg&lt;&#x2F;code&gt;, &lt;code&gt;stg -&amp;gt; main&lt;&#x2F;code&gt; promotion PR이 정상적으로 동작한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;munje-unrelated-histories&quot;&gt;문제: unrelated histories&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;main&lt;&#x2F;code&gt;과 &lt;code&gt;stg&lt;&#x2F;code&gt;가 서로 관련 없는 history를 가지고 있으면 Git은 일반적인 merge로 둘을 연결하지 않는다.&lt;&#x2F;p&gt;
+&lt;p&gt;이런 메시지를 만날 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;fatal:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; refusing to merge unrelated histories&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이 상태에서 억지로 PR을 만들면 diff가 이상하게 보이거나, &quot;이미 있는 파일이 전부 새 파일처럼 보이는&quot; 상황이 생길 수 있다. Git이 두 브랜치 사이의 공통 기준점을 찾을 수 없기 때문이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;haegyeol-banghyang&quot;&gt;해결 방향&lt;&#x2F;h2&gt;
+&lt;p&gt;목표는 파일 내용을 바꾸는 것이 아니었다. 이미 &lt;code&gt;stg&lt;&#x2F;code&gt;와 &lt;code&gt;dev&lt;&#x2F;code&gt;의 파일 내용은 그대로 유지해야 했다.&lt;&#x2F;p&gt;
+&lt;p&gt;필요한 것은 딱 하나였다.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;현재 브랜치의 파일 내용은 그대로 유지하면서, 다른 브랜치를 부모 history로만 연결한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;이때 사용할 수 있는 merge 전략이 &lt;code&gt;-s ours&lt;&#x2F;code&gt;다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;-s ours&lt;&#x2F;code&gt;는 conflict가 났을 때 일부 파일만 &quot;ours&quot;로 고르는 옵션이 아니다. merge commit은 만들지만, 결과 tree는 현재 브랜치의 파일 내용을 그대로 사용한다.&lt;&#x2F;p&gt;
+&lt;p&gt;즉, 아래 작업은 &lt;code&gt;main&lt;&#x2F;code&gt;의 파일 내용을 &lt;code&gt;stg&lt;&#x2F;code&gt;에 덮어쓰는 것이 아니라, &lt;code&gt;main&lt;&#x2F;code&gt;을 &lt;code&gt;stg&lt;&#x2F;code&gt;의 history에 연결만 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-maineul-stge-yeongyeolhagi&quot;&gt;1. main을 stg에 연결하기&lt;&#x2F;h2&gt;
+&lt;p&gt;먼저 실제 &lt;code&gt;stg&lt;&#x2F;code&gt;에 바로 작업하지 말고 테스트 브랜치를 만든다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; fetch origin&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; checkout&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; test-connect-main-stg origin&#x2F;stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그리고 &lt;code&gt;origin&#x2F;main&lt;&#x2F;code&gt;을 merge하되, 현재 브랜치인 &lt;code&gt;stg&lt;&#x2F;code&gt;의 파일 내용을 그대로 유지한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; merge origin&#x2F;main&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --allow-unrelated-histories -s&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ours&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이제 반드시 diff를 확인한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; diff origin&#x2F;stg..test-connect-main-stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;출력이 없어야 한다. 출력이 없다는 것은 merge commit은 생겼지만 파일 내용은 기존 &lt;code&gt;stg&lt;&#x2F;code&gt;와 같다는 뜻이다.&lt;&#x2F;p&gt;
+&lt;p&gt;diff가 비어 있다면 실제 &lt;code&gt;stg&lt;&#x2F;code&gt;를 fast-forward로 이동한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; checkout stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; merge&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --ff-only&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; test-connect-main-stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; push origin stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이 작업이 끝나면 &lt;code&gt;origin&#x2F;main&lt;&#x2F;code&gt;은 &lt;code&gt;origin&#x2F;stg&lt;&#x2F;code&gt;의 조상 history가 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;main &amp;lt;- stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;2-stgreul-deve-yeongyeolhagi&quot;&gt;2. stg를 dev에 연결하기&lt;&#x2F;h2&gt;
+&lt;p&gt;다음은 같은 방식으로 &lt;code&gt;stg&lt;&#x2F;code&gt;를 &lt;code&gt;dev&lt;&#x2F;code&gt;에 연결한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; checkout&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; test-connect-stg-dev origin&#x2F;dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;현재 브랜치인 &lt;code&gt;dev&lt;&#x2F;code&gt;의 파일 내용은 유지하면서 &lt;code&gt;origin&#x2F;stg&lt;&#x2F;code&gt;를 history로 연결한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; merge origin&#x2F;stg&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --allow-unrelated-histories -s&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ours&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;마찬가지로 diff를 확인한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; diff origin&#x2F;dev..test-connect-stg-dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;출력이 없어야 한다.&lt;&#x2F;p&gt;
+&lt;p&gt;문제가 없다면 실제 &lt;code&gt;dev&lt;&#x2F;code&gt;를 fast-forward한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; checkout dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; merge&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --ff-only&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; test-connect-stg-dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; push origin dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이제 history 구조는 원하는 모양이 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;main &amp;lt;- stg &amp;lt;- dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;ihu-baepo-heureum&quot;&gt;이후 배포 흐름&lt;&#x2F;h2&gt;
+&lt;p&gt;이제부터는 promotion PR을 정상적으로 만들 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;feature branch -&amp;gt; dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;dev -&amp;gt; stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;stg -&amp;gt; main&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;자동화한다면 이런 흐름이 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;merge into dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  -&amp;gt; auto PR: dev to stg&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  -&amp;gt; after approval&#x2F;merge&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  -&amp;gt; auto PR: stg to main&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;실제 파이프라인에 &lt;code&gt;int&lt;&#x2F;code&gt;가 있다면 같은 원리로 중간에 넣으면 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;main &amp;lt;- stg &amp;lt;- int &amp;lt;- dev&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;중요한 것은 production에 가까운 브랜치부터 개발 브랜치 방향으로 history를 연결하는 것이다. 그래야 promotion 방향인 &lt;code&gt;dev -&amp;gt; int -&amp;gt; stg -&amp;gt; main&lt;&#x2F;code&gt;의 PR diff가 자연스럽게 계산된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;juyihal-jeom&quot;&gt;주의할 점&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;-s ours&lt;&#x2F;code&gt;는 강력하지만 위험할 수 있다. 이 전략은 상대 브랜치의 파일 내용을 merge 결과에 반영하지 않는다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 아래 조건을 만족할 때만 사용해야 한다.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;목적이 파일 변경이 아니라 Git history 연결일 때&lt;&#x2F;li&gt;
+&lt;li&gt;현재 브랜치의 파일 내용을 그대로 유지해야 할 때&lt;&#x2F;li&gt;
+&lt;li&gt;상대 브랜치의 파일 내용이 현재 브랜치에 반영되지 않아도 되는 것이 명확할 때&lt;&#x2F;li&gt;
+&lt;li&gt;테스트 브랜치에서 diff가 비어 있음을 확인했을 때&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;특히 &lt;code&gt;main&lt;&#x2F;code&gt;에 실제 운영 코드가 있고, 그 내용이 &lt;code&gt;stg&lt;&#x2F;code&gt;에 없는 상태라면 이 방법을 그대로 쓰면 안 된다. 그런 경우에는 먼저 어떤 코드가 기준이 되어야 하는지 정해야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;3jul-yoyag&quot;&gt;3줄 요약&lt;&#x2F;h2&gt;
+&lt;p&gt;브랜치 이름이나 배포 환경 이름은 사람이 이해하는 흐름일 뿐이다. Git이 이해하는 것은 commit graph다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;dev&lt;&#x2F;code&gt;, &lt;code&gt;stg&lt;&#x2F;code&gt;, &lt;code&gt;main&lt;&#x2F;code&gt;이라는 이름을 붙였다고 해서 자동으로 promotion 관계가 생기지는 않는다. PR diff, merge 가능 여부, 자동 promotion은 결국 공통 조상 commit이 있는지에 영향을 받는다.&lt;&#x2F;p&gt;
+&lt;p&gt;이번 문제의 핵심은 코드를 고치는 것이 아니라 history를 올바르게 연결하는 것이었다. 테스트 브랜치에서 &lt;code&gt;-s ours&lt;&#x2F;code&gt; merge를 만들고, diff가 비어 있는지 확인한 뒤, 실제 브랜치를 fast-forward하는 방식으로 안전하게 해결할 수 있었다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

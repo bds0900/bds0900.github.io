@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Layer 1 — docker CLI (Client)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Layer 1 — docker CLI (Client)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>775 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/cli/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>cli</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/layers/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>layers</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <blockquote>
+<p>Part 1 of the Docker layers series. From top to bottom, the stack is:
+<strong>1. docker CLI (client)</strong> → 2. dockerd (daemon) → 3. containerd → 4. runc →
+5. Linux kernel. See the <a href="https://emptyfridge.dev/docker/layer1-docker-cli/./component_and_layers.md">overview article</a>.</p>
+</blockquote>
+<h2 id="identity">Identity</h2>
+<p>The <code>docker</code> CLI is the program where I type commands: <code>docker ps</code>, <code>docker run</code>,
+<code>docker build</code>. It is <strong>only a client</strong>. It does not directly run, build, or store
+containers. Its only job is to turn my command into a
+<a rel="external" href="https://docs.docker.com/get-started/docker-overview/#docker-architecture">Docker API</a>
+request, send it to the daemon, receive the response, and print it nicely on the screen.</p>
+<p>A useful analogy: the CLI is a <strong>remote control</strong>. When you press a button, it sends a
+signal, and the TV does the real work. <code>docker</code> is the remote control, and <code>dockerd</code> is
+the TV.</p>
+<h2 id="where-it-is">Where it is</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> which docker</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">/opt/homebrew/bin/docker</span><span style="color: #5A6673;font-style: italic;">          # Homebrew symlink...</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> ls</span><span style="color: #95E6CB;"> -l</span><span style="color: #AAD94C;"> /opt/homebrew/bin/docker</span></span>
+<span class="giallo-l"><span style="color: #F07178;">...</span><span> -</span><span style="color: #F29668;">&gt;</span><span style="color: #AAD94C;"> ../Cellar/docker/29.5.3/bin/docker</span><span style="color: #5A6673;font-style: italic;">   # ...pointing to the real binary</span></span></code></pre>
+<p>On this Mac, the CLI came from <strong>Homebrew</strong> (<code>brew install docker</code>), not Docker Desktop.
+That distinction was the cause of the earlier "command not found" bug: older Docker
+Desktop installs bundled their own <code>docker</code> CLI, and when Docker Desktop was removed,
+that bundled CLI disappeared too. The standalone Homebrew CLI existed, but it was not
+linked into <code>$PATH</code> until I ran <code>brew link --overwrite docker</code>.</p>
+<p><strong>Key point:</strong> the CLI is independent of the engine. The same <code>docker</code> binary can connect
+to Docker Desktop, Colima, or a remote server, as long as the target speaks the Docker API.</p>
+<h2 id="what-happens-when-a-command-is-typed">What happens when a command is typed</h2>
+<p><code>docker ps</code> does not run "list containers" code locally. It is a
+<a rel="external" href="https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList"><code>GET /containers/json</code></a>
+API call:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>docker ps</span></span>
+<span class="giallo-l"><span>  └─ CLI creates an HTTP request:    GET /v1.43/containers/json</span></span>
+<span class="giallo-l"><span>  └─ opens a socket:                 unix:///Users/you/.colima/default/docker.sock</span></span>
+<span class="giallo-l"><span>  └─ writes the request and reads the JSON response</span></span>
+<span class="giallo-l"><span>  └─ formats the JSON into the table we see</span></span></code></pre>
+<p>You can prove that the CLI is just an HTTP client by talking to the daemon manually:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Same result as `docker ps`, without using the docker CLI</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">curl</span><span style="color: #95E6CB;"> --unix-socket</span><span style="color: #AAD94C;"> ~/.colima/default/docker.sock http://localhost/v1.43/containers/json</span></span></code></pre>
+<p>The same container data that <code>docker ps</code> turns into a table comes back.</p>
+<h2 id="how-the-cli-chooses-which-daemon-to-talk-to">How the CLI chooses which daemon to talk to</h2>
+<p>The CLI chooses <em>which</em> daemon to talk to using this priority order:</p>
+<ol>
+<li><strong><code>-H</code> / <code>--host</code> or <code>--context</code> flag</strong> — explicit, for example <code>docker -H tcp://1.2.3.4:2375 ps</code></li>
+<li><strong><code>DOCKER_CONTEXT</code> environment variable</strong> — when set, it overrides both <code>DOCKER_HOST</code> and the active context</li>
+<li><strong>Active context</strong> — <code>docker context ls</code> / <code>docker context use</code></li>
+<li><strong><code>DOCKER_HOST</code> environment variable</strong> — for example <code>unix:///path/to/docker.sock</code></li>
+<li><strong>Default</strong> — <code>/var/run/docker.sock</code></li>
+</ol>
+<p>In a Colima environment, Colima registers a <strong>context</strong> pointing to
+<code>~/.colima/default/docker.sock</code>, or sets <code>DOCKER_HOST</code>. That is why the CLI reaches the
+daemon inside the VM even without flags:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> docker context ls</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">NAME</span><span style="color: #AAD94C;">       DESCRIPTION                  DOCKER ENDPOINT</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">colima</span><span style="color: #39BAE6;font-style: italic;"> *</span><span style="color: #AAD94C;">   colima                       unix:///Users/you/.colima/default/docker.sock</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">default</span><span style="color: #AAD94C;">    Current DOCKER_HOST based    unix:///var/run/docker.sock</span></span></code></pre>
+<p>The <code>*</code> marks the active context. Changing the context is how the same CLI can connect to
+another engine, such as Docker Desktop, without reinstalling anything.</p>
+<h2 id="the-docker-api-spoken-by-the-cli">The Docker API spoken by the CLI</h2>
+<p>The CLI and daemon communicate through the
+<a rel="external" href="https://docs.docker.com/reference/api/engine/"><strong>Docker Engine API</strong></a>: a versioned REST
+API spoken over HTTP.</p>
+<ul>
+<li><strong>Versioned</strong>: requests include a version (<code>/v1.43/...</code>). Even a newer CLI can
+<a rel="external" href="https://docs.docker.com/reference/api/engine/">negotiate down</a> and talk to an older daemon.</li>
+<li><strong>Transport-independent</strong>: the same API runs over a Unix socket locally or a TCP socket remotely. The CLI does not care which transport is used.</li>
+<li><strong>Not magic</strong>: everything the CLI does over the socket can also be done with <code>curl</code>. The CLI is a convenience formatter over the API.</li>
+</ul>
+<h2 id="other-tools-that-fill-this-slot">Other tools that fill this slot</h2>
+<p>Because the daemon exposes a standard API, clients can be swapped:</p>
+<table><thead><tr><th>Client</th><th>Notes</th></tr></thead><tbody>
+<tr><td><code>docker</code></td><td>Standard CLI.</td></tr>
+<tr><td><a rel="external" href="https://github.com/containerd/nerdctl"><code>nerdctl</code></a></td><td>Docker-compatible CLI that talks directly to <strong>containerd</strong>.</td></tr>
+<tr><td><code>podman</code></td><td>Daemonless. Its CLI is mostly Docker-compatible (<code>alias docker=podman</code>).</td></tr>
+<tr><td><a rel="external" href="https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/"><code>crictl</code></a></td><td>CRI-focused CLI used for Kubernetes debugging.</td></tr>
+<tr><td>Docker SDK</td><td>Go/Python and other libraries that call the same API from code.</td></tr>
+</tbody></table>
+<h2 id="summary">Summary</h2>
+<ul>
+<li>The CLI is a <strong>thin client</strong>: it sends API requests and formats responses.</li>
+<li>It is <strong>separate from the engine</strong>. One CLI can target several daemons with <code>--host</code>, <code>DOCKER_HOST</code>, or contexts.</li>
+<li>The earlier "command not found" bug was not an engine problem. It was a <strong>client packaging/PATH</strong> problem.</li>
+<li>One layer below: <a href="https://emptyfridge.dev/docker/layer1-docker-cli/./layer2_dockerd.md">dockerd, the daemon</a>, which actually receives these API requests.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Docker architecture, client-server structure and CLI-to-daemon API flow: <a rel="external" href="https://docs.docker.com/get-started/docker-overview/#docker-architecture">https://docs.docker.com/get-started/docker-overview/#docker-architecture</a></li>
+<li><code>docker</code> CLI reference, <code>--host</code>, <code>DOCKER_CONTEXT</code>, and <code>DOCKER_HOST</code> priority: <a rel="external" href="https://docs.docker.com/reference/cli/docker/">https://docs.docker.com/reference/cli/docker/</a></li>
+<li>Docker Engine API version negotiation, "Versioned API and SDK": <a rel="external" href="https://docs.docker.com/reference/api/engine/">https://docs.docker.com/reference/api/engine/</a></li>
+<li><code>GET /containers/json</code>, the <code>docker ps</code> API reference: <a rel="external" href="https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList">https://docs.docker.com/reference/api/engine/version/v1.47/#tag/Container/operation/ContainerList</a></li>
+<li>Example of curling over a Unix socket directly: <a rel="external" href="https://docs.docker.com/reference/api/engine/sdk/examples/">https://docs.docker.com/reference/api/engine/sdk/examples/</a></li>
+<li>nerdctl, Docker-compatible CLI for containerd: <a rel="external" href="https://github.com/containerd/nerdctl">https://github.com/containerd/nerdctl</a></li>
+<li>crictl, CRI CLI for Kubernetes node debugging: <a rel="external" href="https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/">https://kubernetes.io/docs/tasks/debug/debug-cluster/crictl/</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer2-dockerd&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Layer 2 — dockerd (Daemon &#x2F; API Server)
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;component-and-layers&#x2F;">
+              Docker Components and Layers: docker, dockerd, containerd, runc, Colima, Lima<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

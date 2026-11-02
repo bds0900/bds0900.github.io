@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - cli</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/cli/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-17T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/cli/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Layer 1 — docker CLI (클라이언트)</title>
+        <published>2026-06-17T00:00:00+00:00</published>
+        <updated>2026-06-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/docker/layer1-docker-cli/"/>
+        <id>https://emptyfridge.dev/ko/docker/layer1-docker-cli/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/docker/layer1-docker-cli/">&lt;blockquote&gt;
+&lt;p&gt;Docker 레이어 시리즈 1편. 스택은 위에서 아래로:
+&lt;strong&gt;1. docker CLI (클라이언트)&lt;&#x2F;strong&gt; → 2. dockerd (데몬) → 3. containerd → 4. runc →
+5. Linux 커널. &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer1-docker-cli&#x2F;.&#x2F;component_and_layers.md&quot;&gt;개요 글&lt;&#x2F;a&gt; 참고.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;jeongce&quot;&gt;정체&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;docker&lt;&#x2F;code&gt; CLI는 내가 명령을 입력하는 프로그램이다 — &lt;code&gt;docker ps&lt;&#x2F;code&gt;, &lt;code&gt;docker run&lt;&#x2F;code&gt;,
+&lt;code&gt;docker build&lt;&#x2F;code&gt;. 얘는 &lt;strong&gt;클라이언트일 뿐이다&lt;&#x2F;strong&gt;. 직접 컨테이너를 돌리거나 빌드하거나
+저장하지 않는다. 하는 일은 오직 내 명령을
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&quot;&gt;Docker API&lt;&#x2F;a&gt;
+요청으로 바꿔서 데몬에게 보내고, 응답을 받아 화면에 보기 좋게 뿌리는 것뿐이다.&lt;&#x2F;p&gt;
+&lt;p&gt;쓸 만한 비유: CLI는 &lt;strong&gt;리모컨&lt;&#x2F;strong&gt;이다. 버튼을 누르면 신호를 보내고, 실제 일은 TV가
+한다. &lt;code&gt;docker&lt;&#x2F;code&gt;가 리모컨, &lt;code&gt;dockerd&lt;&#x2F;code&gt;가 TV다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;eodie-issna&quot;&gt;어디에 있나&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; which docker&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;&#x2F;opt&#x2F;homebrew&#x2F;bin&#x2F;docker&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;          # Homebrew 심볼릭 링크...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ls&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -l&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &#x2F;opt&#x2F;homebrew&#x2F;bin&#x2F;docker&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F07178;&quot;&gt;...&lt;&#x2F;span&gt;&lt;span&gt; -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ..&#x2F;Cellar&#x2F;docker&#x2F;29.5.3&#x2F;bin&#x2F;docker&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;   # ...실제 바이너리로 연결&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이 맥에서는 CLI가 Docker Desktop이 아니라 &lt;strong&gt;Homebrew&lt;&#x2F;strong&gt;(&lt;code&gt;brew install docker&lt;&#x2F;code&gt;)에서
+왔다. 처음의 &quot;command not found&quot; 버그가 바로 이 구분 때문이었다: Docker Desktop은
+예전엔 자체 &lt;code&gt;docker&lt;&#x2F;code&gt; CLI를 번들했는데, 그걸 지우면서 번들 CLI도 같이 사라졌다.
+Homebrew로 깐 독립 CLI는 존재했지만 &lt;code&gt;brew link --overwrite docker&lt;&#x2F;code&gt;를 하기 전까지
+&lt;code&gt;$PATH&lt;&#x2F;code&gt;에 링크가 안 걸려 있었다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;핵심:&lt;&#x2F;strong&gt; CLI는 엔진과 독립적이다. 같은 &lt;code&gt;docker&lt;&#x2F;code&gt; 바이너리가 Docker Desktop,
+Colima, 원격 서버 — Docker API만 말할 수 있으면 무엇에든 붙는다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;myeongryeongeul-cimyeon-ileonaneun-il&quot;&gt;명령을 치면 일어나는 일&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;docker ps&lt;&#x2F;code&gt;는 로컬에서 &quot;컨테이너 목록&quot; 코드가 도는 게 아니다.
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;version&#x2F;v1.47&#x2F;#tag&#x2F;Container&#x2F;operation&#x2F;ContainerList&quot;&gt;&lt;code&gt;GET &#x2F;containers&#x2F;json&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;
+API 호출이다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker ps&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  └─ CLI가 HTTP 요청을 만든다:    GET &#x2F;v1.43&#x2F;containers&#x2F;json&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  └─ socket을 연다:              unix:&#x2F;&#x2F;&#x2F;Users&#x2F;you&#x2F;.colima&#x2F;default&#x2F;docker.sock&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  └─ 요청을 쓰고, JSON 응답을 읽는다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  └─ JSON을 우리가 보는 표로 포맷팅한다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;CLI가 그냥 HTTP 클라이언트라는 걸 직접 증명할 수도 있다 — 데몬에 손으로 말 걸어보기:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# `docker ps`와 같은 결과, docker CLI는 안 씀&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;curl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --unix-socket&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.colima&#x2F;default&#x2F;docker.sock http:&#x2F;&#x2F;localhost&#x2F;v1.43&#x2F;containers&#x2F;json&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;docker ps&lt;&#x2F;code&gt;가 표로 만들어주는 그 컨테이너 데이터가 그대로 돌아온다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;clineun-eoddeon-demonege-mal-geolji-eoddeohge-jeonghana&quot;&gt;CLI는 어떤 데몬에게 말 걸지 어떻게 정하나&lt;&#x2F;h2&gt;
+&lt;p&gt;CLI는 &lt;em&gt;어떤&lt;&#x2F;em&gt; 데몬과 대화할지 다음 우선순위로 결정한다:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;-H&lt;&#x2F;code&gt; &#x2F; &lt;code&gt;--host&lt;&#x2F;code&gt; 또는 &lt;code&gt;--context&lt;&#x2F;code&gt; 플래그&lt;&#x2F;strong&gt; — 명시적, 예: &lt;code&gt;docker -H tcp:&#x2F;&#x2F;1.2.3.4:2375 ps&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DOCKER_CONTEXT&lt;&#x2F;code&gt; 환경변수&lt;&#x2F;strong&gt; — 설정하면 &lt;code&gt;DOCKER_HOST&lt;&#x2F;code&gt;와 활성 context를 모두 덮어쓴다&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;활성 context&lt;&#x2F;strong&gt; — &lt;code&gt;docker context ls&lt;&#x2F;code&gt; &#x2F; &lt;code&gt;docker context use&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;DOCKER_HOST&lt;&#x2F;code&gt; 환경변수&lt;&#x2F;strong&gt; — 예: &lt;code&gt;unix:&#x2F;&#x2F;&#x2F;path&#x2F;to&#x2F;docker.sock&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;기본값&lt;&#x2F;strong&gt; — &lt;code&gt;&#x2F;var&#x2F;run&#x2F;docker.sock&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;Colima 환경에서는 Colima가 &lt;code&gt;~&#x2F;.colima&#x2F;default&#x2F;docker.sock&lt;&#x2F;code&gt;을 가리키는 &lt;strong&gt;context&lt;&#x2F;strong&gt;를
+등록(또는 &lt;code&gt;DOCKER_HOST&lt;&#x2F;code&gt; 설정)해 둔다. 그래서 플래그 없이도 CLI가 VM 안 데몬에 닿는다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; docker context ls&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;NAME&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;       DESCRIPTION                  DOCKER ENDPOINT&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;colima&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt; *&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;   colima                       unix:&#x2F;&#x2F;&#x2F;Users&#x2F;you&#x2F;.colima&#x2F;default&#x2F;docker.sock&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;default&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;    Current DOCKER_HOST based    unix:&#x2F;&#x2F;&#x2F;var&#x2F;run&#x2F;docker.sock&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;*&lt;&#x2F;code&gt;가 활성 context. context를 바꾸는 게 곧 같은 CLI를 (예: Docker Desktop으로)
+다른 엔진에 재설치 없이 붙이는 방법이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;cliga-malhaneun-docker-api&quot;&gt;CLI가 말하는 Docker API&lt;&#x2F;h2&gt;
+&lt;p&gt;CLI와 데몬은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;&quot;&gt;&lt;strong&gt;Docker Engine API&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;로
+통신한다 — HTTP로 말하는 버전 있는 REST API다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;버전 있음&lt;&#x2F;strong&gt;: 요청에 버전이 붙는다(&lt;code&gt;&#x2F;v1.43&#x2F;...&lt;&#x2F;code&gt;). 최신 CLI도
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;&quot;&gt;협상으로 버전을 낮춰&lt;&#x2F;a&gt; 옛 데몬과
+대화할 수 있다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;전송 방식 무관&lt;&#x2F;strong&gt;: 같은 API가 Unix socket(로컬)으로도 TCP socket(원격)으로도
+돈다. CLI는 어느 쪽인지 신경 안 쓴다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;마법이 아님&lt;&#x2F;strong&gt;: CLI가 하는 건 전부 socket에 &lt;code&gt;curl&lt;&#x2F;code&gt;로도 할 수 있다. CLI는 API
+위에 얹힌 편의 포맷터일 뿐이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;i-seulroseul-caeuneun-dareun-dogudeul&quot;&gt;이 슬롯을 채우는 다른 도구들&lt;&#x2F;h2&gt;
+&lt;p&gt;데몬이 표준 API를 노출하니까 클라이언트는 갈아끼울 수 있다:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;클라이언트&lt;&#x2F;th&gt;&lt;th&gt;비고&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;docker&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;표준 CLI.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;containerd&#x2F;nerdctl&quot;&gt;&lt;code&gt;nerdctl&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;containerd&lt;&#x2F;strong&gt;를 직접 다루는 Docker 호환 CLI.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;podman&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;데몬리스. CLI가 거의 Docker 호환 (&lt;code&gt;alias docker=podman&lt;&#x2F;code&gt;).&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;tasks&#x2F;debug&#x2F;debug-cluster&#x2F;crictl&#x2F;&quot;&gt;&lt;code&gt;crictl&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;Kubernetes 디버깅에 쓰는 CRI 중심 CLI.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Docker SDK&lt;&#x2F;td&gt;&lt;td&gt;같은 API를 코드로 호출하는 Go&#x2F;Python 등 라이브러리.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;jeongri&quot;&gt;정리&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;CLI는 &lt;strong&gt;얇은 클라이언트&lt;&#x2F;strong&gt; — API 요청을 보내고 응답을 포맷팅한다.&lt;&#x2F;li&gt;
+&lt;li&gt;엔진과 &lt;strong&gt;분리&lt;&#x2F;strong&gt;돼 있다. 하나의 CLI가 &lt;code&gt;--host&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;DOCKER_HOST&lt;&#x2F;code&gt;&#x2F;context로 여러
+데몬을 겨냥할 수 있다.&lt;&#x2F;li&gt;
+&lt;li&gt;처음의 &quot;command not found&quot; 버그는 엔진 문제가 아니라 &lt;strong&gt;클라이언트 패키징&#x2F;PATH&lt;&#x2F;strong&gt;
+문제였다.&lt;&#x2F;li&gt;
+&lt;li&gt;한 칸 아래: 이 API 요청을 실제로 받는 &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer1-docker-cli&#x2F;.&#x2F;layer2_dockerd.md&quot;&gt;dockerd, 데몬&lt;&#x2F;a&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker 아키텍처 (client-server 구조, CLI가 API로 데몬에 말하는 구조): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;docker&lt;&#x2F;code&gt; CLI 레퍼런스 — &lt;code&gt;--host&lt;&#x2F;code&gt;, &lt;code&gt;DOCKER_CONTEXT&lt;&#x2F;code&gt;, &lt;code&gt;DOCKER_HOST&lt;&#x2F;code&gt; 우선순위: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;docker&#x2F;&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;docker&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Docker Engine API 버전 협상 (&quot;Versioned API and SDK&quot;): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;GET &#x2F;containers&#x2F;json&lt;&#x2F;code&gt; (= &lt;code&gt;docker ps&lt;&#x2F;code&gt;) API 레퍼런스: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;version&#x2F;v1.47&#x2F;#tag&#x2F;Container&#x2F;operation&#x2F;ContainerList&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;version&#x2F;v1.47&#x2F;#tag&#x2F;Container&#x2F;operation&#x2F;ContainerList&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Unix socket으로 직접 curl하는 예제: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;sdk&#x2F;examples&#x2F;&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;api&#x2F;engine&#x2F;sdk&#x2F;examples&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;nerdctl — containerd용 Docker 호환 CLI: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;containerd&#x2F;nerdctl&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;containerd&#x2F;nerdctl&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;crictl — Kubernetes 노드 디버깅용 CRI CLI: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;tasks&#x2F;debug&#x2F;debug-cluster&#x2F;crictl&#x2F;&quot;&gt;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;tasks&#x2F;debug&#x2F;debug-cluster&#x2F;crictl&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

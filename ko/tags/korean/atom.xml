@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - korean</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/korean/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-05-22T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/korean/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>문법공부...</title>
+        <published>2025-05-22T00:00:00+00:00</published>
+        <updated>2025-05-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/korean/term/"/>
+        <id>https://emptyfridge.dev/ko/korean/term/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/korean/term/">&lt;p&gt;한국어 문법을 공부하면서 헷갈리는 기본 용어를 정리한다. 영어 문법 용어와 1:1로
+대응되지 않는 경우가 많으니, 한국어 문법 안에서 어떤 역할을 하는지 먼저 보는 게 좋다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;keun-geurim&quot;&gt;큰 그림&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;문장&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;└── 어절&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    └── 단어&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        └── 형태소&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;예문:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;단위&lt;&#x2F;th&gt;&lt;th&gt;분석&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;문장&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어절&lt;&#x2F;td&gt;&lt;td&gt;철수가 &#x2F; 밥을 &#x2F; 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;단어&lt;&#x2F;td&gt;&lt;td&gt;철수, 가, 밥, 을, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;형태소&lt;&#x2F;td&gt;&lt;td&gt;철수 &#x2F; 가 &#x2F; 밥 &#x2F; 을 &#x2F; 먹- &#x2F; -었- &#x2F; -다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;gibon-danwi&quot;&gt;기본 단위&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;용어&lt;&#x2F;th&gt;&lt;th&gt;영어 느낌&lt;&#x2F;th&gt;&lt;th&gt;뜻&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;음절&lt;&#x2F;td&gt;&lt;td&gt;syllable&lt;&#x2F;td&gt;&lt;td&gt;한 번에 발음되는 소리 단위&lt;&#x2F;td&gt;&lt;td&gt;철 &#x2F; 수 &#x2F; 가&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;형태소&lt;&#x2F;td&gt;&lt;td&gt;morpheme&lt;&#x2F;td&gt;&lt;td&gt;뜻을 가진 가장 작은 말의 단위&lt;&#x2F;td&gt;&lt;td&gt;먹-, -었-, -다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;단어&lt;&#x2F;td&gt;&lt;td&gt;word&lt;&#x2F;td&gt;&lt;td&gt;홀로 쓰이거나 조사가 붙을 수 있는 말의 단위&lt;&#x2F;td&gt;&lt;td&gt;철수, 밥, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어절&lt;&#x2F;td&gt;&lt;td&gt;spacing unit&lt;&#x2F;td&gt;&lt;td&gt;띄어쓰기 단위&lt;&#x2F;td&gt;&lt;td&gt;철수가, 밥을, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;구&lt;&#x2F;td&gt;&lt;td&gt;phrase&lt;&#x2F;td&gt;&lt;td&gt;두 단어 이상이 모여 하나의 성분처럼 쓰이는 말&lt;&#x2F;td&gt;&lt;td&gt;아주 예쁜 꽃&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;절&lt;&#x2F;td&gt;&lt;td&gt;clause&lt;&#x2F;td&gt;&lt;td&gt;주어+서술어 구조를 가진 말 덩어리&lt;&#x2F;td&gt;&lt;td&gt;비가 오면&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;문장&lt;&#x2F;td&gt;&lt;td&gt;sentence&lt;&#x2F;td&gt;&lt;td&gt;완결된 생각을 나타내는 말&lt;&#x2F;td&gt;&lt;td&gt;비가 온다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;한국어에서는 &lt;strong&gt;어절&lt;&#x2F;strong&gt;이 중요하다. 띄어쓰기 단위라서 눈에 잘 보이고, 보통 하나의 어절은
+&lt;code&gt;실질 형태소 + 형식 형태소&lt;&#x2F;code&gt;로 이루어진다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 = 철수 + 가&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 = 밥 + 을&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;pumsa&quot;&gt;품사&lt;&#x2F;h2&gt;
+&lt;p&gt;한국어 학교 문법에서는 보통 9품사를 사용한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;큰 분류&lt;&#x2F;th&gt;&lt;th&gt;품사&lt;&#x2F;th&gt;&lt;th&gt;영어 느낌&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;명사&lt;&#x2F;td&gt;&lt;td&gt;noun&lt;&#x2F;td&gt;&lt;td&gt;사람, 학교, 사랑&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;대명사&lt;&#x2F;td&gt;&lt;td&gt;pronoun&lt;&#x2F;td&gt;&lt;td&gt;나, 너, 이것&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;수사&lt;&#x2F;td&gt;&lt;td&gt;numeral&lt;&#x2F;td&gt;&lt;td&gt;하나, 둘, 첫째&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;용언&lt;&#x2F;td&gt;&lt;td&gt;동사&lt;&#x2F;td&gt;&lt;td&gt;verb &#x2F; action verb&lt;&#x2F;td&gt;&lt;td&gt;먹다, 가다, 웃다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;용언&lt;&#x2F;td&gt;&lt;td&gt;형용사&lt;&#x2F;td&gt;&lt;td&gt;adjective &#x2F; descriptive verb&lt;&#x2F;td&gt;&lt;td&gt;예쁘다, 크다, 좋다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;수식언&lt;&#x2F;td&gt;&lt;td&gt;관형사&lt;&#x2F;td&gt;&lt;td&gt;determiner&lt;&#x2F;td&gt;&lt;td&gt;새, 헌, 이, 그&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;수식언&lt;&#x2F;td&gt;&lt;td&gt;부사&lt;&#x2F;td&gt;&lt;td&gt;adverb&lt;&#x2F;td&gt;&lt;td&gt;빨리, 매우, 잘&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;관계언&lt;&#x2F;td&gt;&lt;td&gt;조사&lt;&#x2F;td&gt;&lt;td&gt;particle&lt;&#x2F;td&gt;&lt;td&gt;이&#x2F;가, 은&#x2F;는, 을&#x2F;를&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;독립언&lt;&#x2F;td&gt;&lt;td&gt;감탄사&lt;&#x2F;td&gt;&lt;td&gt;interjection&lt;&#x2F;td&gt;&lt;td&gt;아!, 어머!, 와!&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;ceeon&quot;&gt;체언&lt;&#x2F;h3&gt;
+&lt;p&gt;체언은 문장에서 주어, 목적어, 보어 등으로 쓰일 수 있고 조사가 붙는다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 왔다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 학생이다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;둘이 먼저 갔다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;철수&lt;&#x2F;code&gt;: 명사&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;나&lt;&#x2F;code&gt;: 대명사&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;둘&lt;&#x2F;code&gt;: 수사&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;yongeon&quot;&gt;용언&lt;&#x2F;h3&gt;
+&lt;p&gt;용언은 문장의 서술어가 될 수 있고 활용한다. 한국어에서 동사와 형용사는 둘 다 어미가 붙어
+형태가 바뀐다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 -&amp;gt; 먹었다 -&amp;gt; 먹는다 -&amp;gt; 먹고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;예쁘다 -&amp;gt; 예뻤다 -&amp;gt; 예쁘다 -&amp;gt; 예쁘고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;영어식으로 생각하면 한국어 형용사는 adjective라기보다 &lt;strong&gt;descriptive verb &#x2F; state verb&lt;&#x2F;strong&gt;에
+가깝다. &lt;code&gt;예쁘다&lt;&#x2F;code&gt;, &lt;code&gt;크다&lt;&#x2F;code&gt;, &lt;code&gt;춥다&lt;&#x2F;code&gt;는 한국어에서 용언이고 활용한다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;susigeon&quot;&gt;수식언&lt;&#x2F;h3&gt;
+&lt;p&gt;수식언은 다른 말을 꾸민다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;새 책을 샀다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아주 빨리 달렸다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;새&lt;&#x2F;code&gt;: 관형사. 뒤의 명사 &lt;code&gt;책&lt;&#x2F;code&gt;을 꾸민다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;아주&lt;&#x2F;code&gt;, &lt;code&gt;빨리&lt;&#x2F;code&gt;: 부사. 뒤의 부사나 용언을 꾸민다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;gwangyeeon&quot;&gt;관계언&lt;&#x2F;h3&gt;
+&lt;p&gt;조사는 앞말에 붙어서 문장 안의 관계를 표시한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 학교에 간다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;가&lt;&#x2F;code&gt;: 주격 조사&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;을&lt;&#x2F;code&gt;: 목적격 조사&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;에&lt;&#x2F;code&gt;: 부사격 조사&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;dogribeon&quot;&gt;독립언&lt;&#x2F;h3&gt;
+&lt;p&gt;감탄사는 다른 문장 성분과 직접적인 문법 관계 없이 독립적으로 쓰인다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;와, 정말 예쁘다!&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아, 이제 알겠다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;munjang-seongbun&quot;&gt;문장 성분&lt;&#x2F;h2&gt;
+&lt;p&gt;문장 성분은 단어가 아니라 &lt;strong&gt;문장에서 맡은 역할&lt;&#x2F;strong&gt;이다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;성분&lt;&#x2F;th&gt;&lt;th&gt;뜻&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;주어&lt;&#x2F;td&gt;&lt;td&gt;동작&#x2F;상태의 주체&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;서술어&lt;&#x2F;td&gt;&lt;td&gt;주어의 동작&#x2F;상태를 설명&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;목적어&lt;&#x2F;td&gt;&lt;td&gt;동작의 대상&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보어&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;되다&lt;&#x2F;code&gt;, &lt;code&gt;아니다&lt;&#x2F;code&gt; 앞에서 필요한 성분&lt;&#x2F;td&gt;&lt;td&gt;철수가 의사가 되었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;관형어&lt;&#x2F;td&gt;&lt;td&gt;체언을 꾸미는 성분&lt;&#x2F;td&gt;&lt;td&gt;예쁜 꽃이 피었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;부사어&lt;&#x2F;td&gt;&lt;td&gt;용언, 관형어, 부사어, 문장 전체를 꾸미는 성분&lt;&#x2F;td&gt;&lt;td&gt;철수가 빨리 달렸다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;독립어&lt;&#x2F;td&gt;&lt;td&gt;문장과 독립적으로 쓰이는 성분&lt;&#x2F;td&gt;&lt;td&gt;와, 정말 좋다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;같은 단어라도 문장 안에서 맡은 역할이 달라질 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 학생이다.       -&amp;gt; 철수가: 주어&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 철수를 만났다.   -&amp;gt; 철수를: 목적어&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;eogeun-jeobsa-eogan-eomi&quot;&gt;어근, 접사, 어간, 어미&lt;&#x2F;h2&gt;
+&lt;p&gt;이 부분이 제일 헷갈린다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;용어&lt;&#x2F;th&gt;&lt;th&gt;뜻&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;어근&lt;&#x2F;td&gt;&lt;td&gt;단어의 중심 의미를 가진 부분&lt;&#x2F;td&gt;&lt;td&gt;먹-, 예쁘-, 믿-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;접사&lt;&#x2F;td&gt;&lt;td&gt;어근에 붙어 새 단어를 만드는 요소&lt;&#x2F;td&gt;&lt;td&gt;맨-, 풋-, -이, -히&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어간&lt;&#x2F;td&gt;&lt;td&gt;활용할 때 변하지 않는 중심 부분&lt;&#x2F;td&gt;&lt;td&gt;먹-, 가-, 예쁘-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어미&lt;&#x2F;td&gt;&lt;td&gt;용언 어간 뒤에 붙어 활용을 만드는 부분&lt;&#x2F;td&gt;&lt;td&gt;-다, -고, -면, -었-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;eogeun-vs-eogan&quot;&gt;어근 vs 어간&lt;&#x2F;h3&gt;
+&lt;p&gt;어근은 단어 형성 관점이고, 어간은 용언 활용 관점이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 = 먹- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;먹-&lt;&#x2F;code&gt;: 어근이면서 어간&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;-다&lt;&#x2F;code&gt;: 어미&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;풋사과 = 풋- + 사과&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;사과&lt;&#x2F;code&gt;: 어근&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;풋-&lt;&#x2F;code&gt;: 접두사&lt;&#x2F;li&gt;
+&lt;li&gt;이 단어는 용언 활용이 아니므로 어간&#x2F;어미 분석이 핵심이 아니다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;jeobsa&quot;&gt;접사&lt;&#x2F;h2&gt;
+&lt;p&gt;접사는 어근에 붙어서 새 단어를 만든다. 영어의 prefix&#x2F;suffix와 비슷하지만 한국어 문법에서는
+활용 어미와 구분해야 한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;종류&lt;&#x2F;th&gt;&lt;th&gt;위치&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;접두사&lt;&#x2F;td&gt;&lt;td&gt;앞에 붙음&lt;&#x2F;td&gt;&lt;td&gt;맨손, 풋사과, 헛수고&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;접미사&lt;&#x2F;td&gt;&lt;td&gt;뒤에 붙음&lt;&#x2F;td&gt;&lt;td&gt;먹이, 높이, 사람답다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 -&amp;gt; 먹이&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;먹이&lt;&#x2F;code&gt;의 &lt;code&gt;-이&lt;&#x2F;code&gt;는 새 명사를 만드는 접미사다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;eomi&quot;&gt;어미&lt;&#x2F;h2&gt;
+&lt;p&gt;어미는 용언의 어간 뒤에 붙어서 시제, 높임, 연결, 종결 같은 문법 의미를 만든다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 = 먹- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹고 = 먹- + -고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹으면 = 먹- + -으면&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;seoneomal-eomi&quot;&gt;선어말 어미&lt;&#x2F;h3&gt;
+&lt;p&gt;어말 어미 앞에 오는 어미다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;가셨다 = 가- + -시- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-었-&lt;&#x2F;code&gt;: 과거 시제 선어말 어미&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;-시-&lt;&#x2F;code&gt;: 주체 높임 선어말 어미&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;-았-&#x2F;-었-&lt;&#x2F;code&gt;은 접미사가 아니라 &lt;strong&gt;선어말 어미&lt;&#x2F;strong&gt;다. &lt;code&gt;먹었다&lt;&#x2F;code&gt;는 &lt;code&gt;먹- + -었- + -다&lt;&#x2F;code&gt;로 분석한다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;eomal-eomi&quot;&gt;어말 어미&lt;&#x2F;h3&gt;
+&lt;p&gt;단어 끝에 오는 어미다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;종류&lt;&#x2F;th&gt;&lt;th&gt;역할&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;종결 어미&lt;&#x2F;td&gt;&lt;td&gt;문장을 끝냄&lt;&#x2F;td&gt;&lt;td&gt;-다, -어요, -습니다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;연결 어미&lt;&#x2F;td&gt;&lt;td&gt;문장을 이어 줌&lt;&#x2F;td&gt;&lt;td&gt;-고, -지만, -면&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;전성 어미&lt;&#x2F;td&gt;&lt;td&gt;용언을 명사&#x2F;관형사&#x2F;부사처럼 쓰게 함&lt;&#x2F;td&gt;&lt;td&gt;-기, -ㅁ, -는, -게&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;예:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹었다.      -&amp;gt; -다: 종결 어미&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹고 잤다.   -&amp;gt; -고: 연결 어미&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹기 싫다.   -&amp;gt; -기: 명사형 전성 어미&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹는 사람    -&amp;gt; -는: 관형사형 전성 어미&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;빠르게 달린다.    -&amp;gt; -게: 부사형 전성 어미&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;josa&quot;&gt;조사&lt;&#x2F;h2&gt;
+&lt;p&gt;조사는 체언이나 부사, 어미 뒤에 붙어 문법 관계나 의미를 더한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;종류&lt;&#x2F;th&gt;&lt;th&gt;역할&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;격조사&lt;&#x2F;td&gt;&lt;td&gt;문장 성분의 격을 표시&lt;&#x2F;td&gt;&lt;td&gt;이&#x2F;가, 을&#x2F;를, 에, 에서, 로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보조사&lt;&#x2F;td&gt;&lt;td&gt;특별한 의미를 더함&lt;&#x2F;td&gt;&lt;td&gt;은&#x2F;는, 도, 만, 까지, 조차&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;접속 조사&lt;&#x2F;td&gt;&lt;td&gt;단어를 이어 줌&lt;&#x2F;td&gt;&lt;td&gt;와&#x2F;과, 하고, 랑&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;gyeogjosa&quot;&gt;격조사&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 학교에서 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;철수가&lt;&#x2F;code&gt;: &lt;code&gt;가&lt;&#x2F;code&gt;가 주어 표시&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;밥을&lt;&#x2F;code&gt;: &lt;code&gt;을&lt;&#x2F;code&gt;이 목적어 표시&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;학교에서&lt;&#x2F;code&gt;: &lt;code&gt;에서&lt;&#x2F;code&gt;가 장소 부사어 표시&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;bojosa&quot;&gt;보조사&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수는 밥도 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;는&lt;&#x2F;code&gt;: topic&#x2F;contrast 느낌&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;도&lt;&#x2F;code&gt;: also&#x2F;even 느낌&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;은&#x2F;는&lt;&#x2F;code&gt;은 흔히 topic marker라고 설명하지만, 항상 영어의 topic과 완전히 같지는 않다. 대조,
+화제 제시, 이미 알고 있는 정보 표시 등 여러 느낌을 가질 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;dongsa-jongryu&quot;&gt;동사 종류&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;용어&lt;&#x2F;th&gt;&lt;th&gt;영어 느낌&lt;&#x2F;th&gt;&lt;th&gt;뜻&lt;&#x2F;th&gt;&lt;th&gt;예&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;자동사&lt;&#x2F;td&gt;&lt;td&gt;intransitive verb&lt;&#x2F;td&gt;&lt;td&gt;목적어 없이 쓰이는 동사&lt;&#x2F;td&gt;&lt;td&gt;아이가 웃는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;타동사&lt;&#x2F;td&gt;&lt;td&gt;transitive verb&lt;&#x2F;td&gt;&lt;td&gt;목적어를 필요로 하는 동사&lt;&#x2F;td&gt;&lt;td&gt;밥을 먹는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보조 동사&lt;&#x2F;td&gt;&lt;td&gt;auxiliary verb&lt;&#x2F;td&gt;&lt;td&gt;다른 용언 뒤에서 의미를 보탬&lt;&#x2F;td&gt;&lt;td&gt;먹어 보다, 가고 싶다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;사동사&lt;&#x2F;td&gt;&lt;td&gt;causative verb&lt;&#x2F;td&gt;&lt;td&gt;남에게 어떤 행동을 하게 함&lt;&#x2F;td&gt;&lt;td&gt;먹이다, 앉히다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;피동사&lt;&#x2F;td&gt;&lt;td&gt;passive verb&lt;&#x2F;td&gt;&lt;td&gt;동작을 당함&lt;&#x2F;td&gt;&lt;td&gt;먹히다, 잡히다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;jadongsa-tadongsa&quot;&gt;자동사 &#x2F; 타동사&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아이가 웃는다.      -&amp;gt; 웃다: 자동사&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아이가 밥을 먹는다. -&amp;gt; 먹다: 타동사&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;bojo-dongsa&quot;&gt;보조 동사&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;한번 먹어 보았다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;집에 가고 싶다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;보다&lt;&#x2F;code&gt;: 시도&#x2F;경험의 의미를 보탬&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;싶다&lt;&#x2F;code&gt;: 희망의 의미를 보탬&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;sadong-pidong&quot;&gt;사동 &#x2F; 피동&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;엄마가 아이에게 밥을 먹였다. -&amp;gt; 사동&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥이 아이에게 먹혔다.       -&amp;gt; 피동&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;사동&#x2F;피동은 접사로 만들어질 수도 있고, &lt;code&gt;-게 하다&lt;&#x2F;code&gt;, &lt;code&gt;-어지다&lt;&#x2F;code&gt; 같은 구성으로 만들어질 수도 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;hyeongyongsa&quot;&gt;형용사&lt;&#x2F;h2&gt;
+&lt;p&gt;한국어 형용사는 상태를 나타내는 용언이다. 영어 adjective처럼 명사 앞에 바로 놓는 방식과
+다르다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;꽃이 예쁘다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;예쁜 꽃이 피었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;날씨가 춥다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;추운 날씨가 계속된다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;예쁘다&lt;&#x2F;code&gt;가 관형어처럼 명사를 꾸미려면 &lt;code&gt;예쁜&lt;&#x2F;code&gt;처럼 활용해야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;hesgalrineun-yongeo-jeongri&quot;&gt;헷갈리는 용어 정리&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;질문&lt;&#x2F;th&gt;&lt;th&gt;답&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-았-&#x2F;-었-&lt;&#x2F;code&gt;은 접미사인가?&lt;&#x2F;td&gt;&lt;td&gt;아니다. 과거 시제 선어말 어미다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-어요&lt;&#x2F;code&gt;는 무엇인가?&lt;&#x2F;td&gt;&lt;td&gt;종결 어미다. 해요체 문장을 끝낸다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;동사와 형용사는 둘 다 활용하나?&lt;&#x2F;td&gt;&lt;td&gt;그렇다. 둘 다 용언이다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;조사는 단어인가?&lt;&#x2F;td&gt;&lt;td&gt;학교 문법에서는 조사도 단어로 본다. 다만 앞말에 붙여 쓴다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어절과 단어는 같은가?&lt;&#x2F;td&gt;&lt;td&gt;아니다. &lt;code&gt;철수가&lt;&#x2F;code&gt;는 한 어절이지만 &lt;code&gt;철수&lt;&#x2F;code&gt;+&lt;code&gt;가&lt;&#x2F;code&gt; 두 단어로 볼 수 있다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보어는 언제 쓰나?&lt;&#x2F;td&gt;&lt;td&gt;주로 &lt;code&gt;되다&lt;&#x2F;code&gt;, &lt;code&gt;아니다&lt;&#x2F;code&gt; 앞에서 필요하다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;han-munjang-bunseog-yesi&quot;&gt;한 문장 분석 예시&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 새 책을 빨리 읽었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;표현&lt;&#x2F;th&gt;&lt;th&gt;분석&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;철수&lt;&#x2F;td&gt;&lt;td&gt;명사, 체언&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;가&lt;&#x2F;td&gt;&lt;td&gt;주격 조사&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;철수가&lt;&#x2F;td&gt;&lt;td&gt;주어&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;새&lt;&#x2F;td&gt;&lt;td&gt;관형사, 관형어&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;책&lt;&#x2F;td&gt;&lt;td&gt;명사, 체언&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;을&lt;&#x2F;td&gt;&lt;td&gt;목적격 조사&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;책을&lt;&#x2F;td&gt;&lt;td&gt;목적어&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;빨리&lt;&#x2F;td&gt;&lt;td&gt;부사, 부사어&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;읽었다&lt;&#x2F;td&gt;&lt;td&gt;동사, 서술어&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;읽-&lt;&#x2F;td&gt;&lt;td&gt;어간&#x2F;어근&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;-었-&lt;&#x2F;td&gt;&lt;td&gt;과거 시제 선어말 어미&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;-다&lt;&#x2F;td&gt;&lt;td&gt;종결 어미&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;국립국어원 표준국어대사전: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;stdict.korean.go.kr&#x2F;&quot;&gt;https:&#x2F;&#x2F;stdict.korean.go.kr&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;국립국어원 한국어교수학습샘터: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kcenter.korean.go.kr&#x2F;&quot;&gt;https:&#x2F;&#x2F;kcenter.korean.go.kr&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;한국어 품사: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;조사: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;어미: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%96%B4%EB%AF%B8&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%96%B4%EB%AF%B8&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Layer 2 — dockerd (Daemon &#x2F; API Server)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Layer 2 — dockerd (Daemon &#x2F; API Server)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>837 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dockerd/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>dockerd</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/daemon/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>daemon</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/layers/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>layers</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <blockquote>
+<p>Part 2 of the Docker layers series. From top to bottom, the stack is:</p>
+<ol>
+<li>docker CLI → <strong>2. dockerd (daemon)</strong> → 3. containerd → 4. runc →</li>
+<li>Linux kernel. See the <a href="https://emptyfridge.dev/docker/layer2-dockerd/./component_and_layers.md">overview article</a>.</li>
+</ol>
+</blockquote>
+<h2 id="identity">Identity</h2>
+<p><code>dockerd</code> is the <a rel="external" href="https://docs.docker.com/get-started/docker-overview/#docker-architecture"><strong>Docker daemon</strong></a>:
+the long-running server process people usually imagine when they say "Docker." The
+<a href="https://emptyfridge.dev/docker/layer2-dockerd/./layer1_docker_cli.md">docker CLI</a> is only the client. <code>dockerd</code> is the server that
+does the actual management work. It listens on a socket, receives Docker API requests,
+and coordinates everything needed to handle them.</p>
+<p>The familiar macOS error <code>Cannot connect to the Docker daemon... Is the docker daemon running?</code> points to this process. It means the CLI reached the socket path, but no
+<code>dockerd</code> was listening there, usually because the VM that runs it on a Mac is not up.</p>
+<h2 id="what-it-owns">What it owns</h2>
+<p><code>dockerd</code> owns every "Docker-level" concept <strong>except</strong> the raw act of running a
+container:</p>
+<ul>
+<li><strong>Images</strong>: pulling from registries, building with <code>docker build</code>, tagging, layer storage, and build cache management.</li>
+<li><strong>Networking</strong>: bridge network creation, port mapping (<code>-p 8080:80</code>), DNS between containers, and the default <code>bridge</code>/<code>host</code>/<code>none</code> networks.</li>
+<li><strong>Volumes and storage</strong>: named volumes, bind mounts, and storage drivers such as <code>overlay2</code> that stack image layers.</li>
+<li><strong>API surface</strong>: the full Docker Engine API exposed to clients.</li>
+<li><strong>High-level objects</strong>: <code>docker compose</code> through the daemon, swarm mode, and plugins.</li>
+</ul>
+<p>It does not directly perform the low-level container execution itself. It delegates that
+to <a href="https://emptyfridge.dev/docker/layer2-dockerd/./layer3_containerd.md">containerd</a>.</p>
+<h2 id="docker-engine-server-api-client">"Docker engine = server + api + client"</h2>
+<p>Docker <strong>Engine</strong> consists of three parts:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Docker Engine</span></span>
+<span class="giallo-l"><span>├── client   →  docker (CLI)             [Layer 1]</span></span>
+<span class="giallo-l"><span>├── api      →  Docker Engine REST API (contract between them)</span></span>
+<span class="giallo-l"><span>└── server   →  dockerd (daemon)         [Layer 2]  ← this article</span></span></code></pre>
+<p>So on a Mac, "I installed Docker, but it does not run" usually means: the <strong>client</strong> is
+installed, but there is nowhere for the <strong>server</strong> (<code>dockerd</code>) to run. <code>dockerd</code> is a
+Linux process, and macOS is not Linux.</p>
+<h2 id="why-it-cannot-run-natively-on-macos">Why it cannot run natively on macOS</h2>
+<p><a rel="external" href="https://docs.docker.com/reference/cli/dockerd/"><code>dockerd</code> runs on Linux or Windows</a>.
+On Linux it depends on kernel features such as namespaces, cgroups, and overlay
+filesystems. On Windows it depends on HCS, the Host Compute Service. It cannot run on top
+of the macOS Darwin kernel. This is the whole reason Docker Desktop, Colima, and Lima
+exist: they start a <strong>Linux VM</strong> and run <code>dockerd</code> <em>inside</em> it. Then the CLI on the Mac
+reaches into the VM through a forwarded socket.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># dockerd lives inside the Colima VM, not on the Mac:</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;command -v dockerd; ps -e -o comm | grep dockerd&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">/usr/bin/dockerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">dockerd</span></span></code></pre><h2 id="breaking-up-the-monolith-dockerd-delegates-downward">Breaking up the monolith: dockerd delegates downward</h2>
+<p>Docker was originally <strong>monolithic</strong>: one program served the API, managed images, and ran
+containers. Over time, it was split apart:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>   Old (monolithic)                 Now</span></span>
+<span class="giallo-l"><span>   ┌──────────────┐                  ┌──────────────┐  dockerd: API, images,</span></span>
+<span class="giallo-l"><span>   │              │                  │   dockerd    │  networking, volumes</span></span>
+<span class="giallo-l"><span>   │    docker    │                  └──────┬───────┘</span></span>
+<span class="giallo-l"><span>   │  (all of it) │        →                │ gRPC</span></span>
+<span class="giallo-l"><span>   │              │                  ┌──────▼───────┐  containerd: runtime,</span></span>
+<span class="giallo-l"><span>   │              │                  │  containerd  │  lifecycle, image content</span></span>
+<span class="giallo-l"><span>   └──────────────┘                  └──────┬───────┘</span></span>
+<span class="giallo-l"><span>                                            │</span></span>
+<span class="giallo-l"><span>                                     ┌──────▼───────┐  runc: creates container</span></span>
+<span class="giallo-l"><span>                                     │     runc     │  and exits immediately</span></span>
+<span class="giallo-l"><span>                                     └──────────────┘</span></span></code></pre>
+<p>So when you run <code>docker run</code>, <code>dockerd</code> interprets the image and sets up networking and
+volumes. Then it calls <strong>containerd</strong> through a local
+<a rel="external" href="https://docs.docker.com/reference/cli/dockerd/">gRPC API</a> to actually start the
+container. <code>dockerd</code> stays alive to manage the whole system, while execution itself is
+delegated.</p>
+<p>This separation is what allowed <strong>Kubernetes to drop <code>dockerd</code></strong>
+("<a rel="external" href="https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/">dockershim removal</a>").
+Docker Engine did not implement the
+<a rel="external" href="https://kubernetes.io/docs/concepts/containers/cri/">CRI</a> natively, so Kubernetes had to
+maintain a bridge called dockershim. To remove that burden, Kubernetes talks directly to
+<code>containerd</code>, which implements CRI, and skips the entire <code>dockerd</code> layer.</p>
+<h2 id="daemon-configuration">Daemon configuration</h2>
+<p><code>dockerd</code> behavior is controlled through
+<a rel="external" href="https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file"><code>daemon.json</code></a>,
+which lives inside the VM when using Colima:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="jsonc"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// /etc/docker/daemon.json</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;storage-driver&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;overlay2&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;registry-mirrors&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;https://...&quot;</span><span>]</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;log-driver&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;json-file&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;log-opts&quot;</span><span style="color: #BFBDB6B3;">:</span><span> {</span><span style="color: #39BAE6;"> &quot;max-size&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;10m&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #39BAE6;"> &quot;max-file&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;3&quot;</span><span> }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>On a normal Linux host, systemd starts <code>dockerd</code> (<code>systemctl start docker</code>), or you can
+run it in the foreground for debugging (<code>sudo dockerd</code>). In Colima, you normally do not
+start it yourself. <code>colima start</code> boots the VM, and the VM starts <code>dockerd</code>.</p>
+<h2 id="alternatives-that-fill-this-slot">Alternatives that fill this slot</h2>
+<table><thead><tr><th>Tool</th><th>Difference from dockerd</th></tr></thead><tbody>
+<tr><td><a rel="external" href="https://docs.podman.io/en/stable/markdown/podman.1.html"><strong>Podman</strong></a></td><td><strong>Daemonless</strong>: runs containers as child processes without an always-on server. Rootless by default.</td></tr>
+<tr><td><a rel="external" href="https://cri-o.io/"><strong>CRI-O</strong></a></td><td>Minimal runtime dedicated to Kubernetes <a rel="external" href="https://kubernetes.io/docs/concepts/containers/cri/">CRI</a>. No Docker API and no <code>build</code>.</td></tr>
+<tr><td><strong>containerd alone</strong></td><td>Can be used without <code>dockerd</code>, for example through <code>nerdctl</code>.</td></tr>
+</tbody></table>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><code>dockerd</code> is the <strong>server</strong>. It owns images, networking, volumes, and the API.</li>
+<li>"Docker daemon not running" means the server is not running. On a Mac, that usually means the VM is not running.</li>
+<li>It is <strong>not</strong> the thing that runs containers at the lowest level. It <strong>delegates</strong> to <a href="https://emptyfridge.dev/docker/layer2-dockerd/./layer3_containerd.md">containerd</a>, the next layer.</li>
+<li>Kubernetes skips this entire layer and talks directly to containerd.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>Docker architecture, where dockerd owns images, networking, and volumes: <a rel="external" href="https://docs.docker.com/get-started/docker-overview/#docker-architecture">https://docs.docker.com/get-started/docker-overview/#docker-architecture</a></li>
+<li><code>dockerd</code> reference, <code>--containerd</code> gRPC address, daemon.json configuration, and Linux/Windows dependencies: <a rel="external" href="https://docs.docker.com/reference/cli/dockerd/">https://docs.docker.com/reference/cli/dockerd/</a></li>
+<li>daemon.json configuration, including storage-driver and log-driver: <a rel="external" href="https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file">https://docs.docker.com/reference/cli/dockerd/#daemon-configuration-file</a></li>
+<li>Historical context for dockershim removal and why Docker did not implement CRI: <a rel="external" href="https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/">https://kubernetes.io/blog/2022/05/03/dockershim-historical-context/</a></li>
+<li>Dockershim removal FAQ: <a rel="external" href="https://kubernetes.io/blog/2022/02/17/dockershim-faq/">https://kubernetes.io/blog/2022/02/17/dockershim-faq/</a></li>
+<li>Kubernetes Container Runtime Interface (CRI) spec: <a rel="external" href="https://kubernetes.io/docs/concepts/containers/cri/">https://kubernetes.io/docs/concepts/containers/cri/</a></li>
+<li>Kubernetes container runtime setup, including containerd and CRI-O: <a rel="external" href="https://kubernetes.io/docs/setup/production-environment/container-runtimes/">https://kubernetes.io/docs/setup/production-environment/container-runtimes/</a></li>
+<li>Podman, daemonless OCI container engine: <a rel="external" href="https://docs.podman.io/en/stable/markdown/podman.1.html">https://docs.podman.io/en/stable/markdown/podman.1.html</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer3-containerd&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Layer 3 — containerd (Container Runtime)
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer1-docker-cli&#x2F;">
+              Layer 1 — docker CLI (Client)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

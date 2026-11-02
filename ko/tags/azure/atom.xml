@@ -1,0 +1,400 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - azure</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/azure/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-10-29T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/azure/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>스케일업과 스케일다운이 반복되던 이유</title>
+        <published>2026-10-29T00:00:00+00:00</published>
+        <updated>2026-10-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/azure/replica-scale-rule/"/>
+        <id>https://emptyfridge.dev/ko/azure/replica-scale-rule/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/azure/replica-scale-rule/">&lt;p&gt;두 편 중 2편이다. &lt;a href=&quot;&#x2F;ko&#x2F;azure&#x2F;replica-warmup&#x2F;&quot;&gt;1편&lt;&#x2F;a&gt;은 새 레플리카의 준비 비용을 사용자 대신 앱이 치르게 했다. 첫 사용자 요청 p50은 7.5초에서 1.3초가 됐다. 레플리카가 태어나는 횟수는 줄지 않았다. 평일에도 하루 60~90개가 뜨고, 수명 중앙값은 7.5분이었다. 근본적인 해결은 그 회전을 멈추는 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;회전을 만든 것은 부하가 아니었다. 스케일 규칙을 적지 않아서 플랫폼의 기본 HTTP 규칙이 돌고 있었고, 그 규칙의 기준값은 문서에 없다. 운영 수치는 문서에 적힌 계산식과도 맞지 않았다. 규칙을 AppHost에 명시하고, 동시 요청 50, 최대 3개로 두었다. 배포할 때마다 컨테이너 앱이 다시 만들어지므로, 포털에서 바꾼 값은 다음 배포가 지운다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-1pyeon-daeume-nameun-geos&quot;&gt;1. 1편 다음에 남은 것&lt;&#x2F;h2&gt;
+&lt;p&gt;워밍은 2026-10-02부터 돌았다. 그 뒤 일주일(10-01~10-08 기준선과 겹치는 구간)을 다시 보면, 태어난 지 2분이 안 된 레플리카의 요청은 26.7%가 1초를 넘었다. 2분이 지난 뒤는 3.2%였다. 첫 요청을 1.3초로 줄여도, 레플리카가 식기 전의 창은 남아 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;더 잘 보이는 경로는 HTTP가 아니다. 새 레플리카는 컨테이너가 시작된 뒤 약 4초 만에 RabbitMQ 소비자로 붙는다. 그때 집어 간 인바운드 메시지는 화면에 6~8초 뒤에 도착했다. 같은 시각, 이미 떠 있던 레플리카가 처리한 메시지는 1초 안쪽이었다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 1편의 합격은 그대로 두고, 질문을 바꿨다. 준비 비용을 누가 치르느냐가 아니라, &lt;strong&gt;평범한 낮 동안 레플리카를 왜 수십 번 만들고 지우느냐&lt;&#x2F;strong&gt;다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-gyucigi-eobseossda&quot;&gt;2. 규칙이 없었다&lt;&#x2F;h2&gt;
+&lt;p&gt;Aspire가 만든 컨테이너 앱에는 &lt;code&gt;minReplicas: 1&lt;&#x2F;code&gt;만 있고 스케일 규칙은 없었다. 규칙이 없으면 Container Apps는 기본 규칙을 적용한다. &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;azure&#x2F;container-apps&#x2F;scale-app&quot;&gt;Scaling in Azure Container Apps&lt;&#x2F;a&gt;의 기본 규칙 표는 트리거가 HTTP이고, 최소 0개, 최대 10개다. 우리는 최소를 1로 적어 두었으니 범위는 1~10이다.&lt;&#x2F;p&gt;
+&lt;p&gt;시스템 로그에는 규칙이 &lt;code&gt;null&lt;&#x2F;code&gt;인데도 &lt;code&gt;scaled to N by the scaler: http-scaler&lt;&#x2F;code&gt;가 찍힌다. 기본 HTTP 규칙이 실제로 동작하고 있다는 뜻이다.&lt;&#x2F;p&gt;
+&lt;p&gt;문서가 말하는 동작은 이렇다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;스케일업 안정화 창은 0초, 스케일다운 안정화 창은 300초다. 늘어나는 것은 바로, 줄어드는 것은 5분 뒤다.&lt;&#x2F;li&gt;
+&lt;li&gt;HTTP 규칙을 &lt;strong&gt;직접 정의하고&lt;&#x2F;strong&gt; &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;를 생략하면 기본값은 10이다. 계산은 15초마다, 지난 15초의 요청 수를 15로 나눈 값이다. 그 값이 기준을 넘으면 레플리카를 하나 더 둔다.&lt;&#x2F;li&gt;
+&lt;li&gt;30초 폴링 간격에는 &quot;HTTP와 TCP 규칙에는 적용되지 않는다&quot;는 단서가 붙어 있다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;기본 규칙 자체의 동시 요청 기준값은 이 문서 어디에도 없다. 표의 10은 &lt;strong&gt;최대 레플리카 수&lt;&#x2F;strong&gt;다. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;의 10은 규칙을 직접 정의하면서 값을 빼먹었을 때의 기본값이다. 2026-10-28에 공식 문서와 중국어 판, 스케일링 튜토리얼을 찾아도 기본 규칙의 기준값을 적은 문장은 없었다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;3-munseoyi-gyesansigimyeon-neuleonaji-malasseoya-haessda&quot;&gt;3. 문서의 계산식이면 늘어나지 말았어야 했다&lt;&#x2F;h2&gt;
+&lt;p&gt;2026-10-28 01:30Z쯤부터 2026-10-29 01:50Z까지 24시간을 다시 셌다. 콘솔 로그의 &lt;code&gt;Request starting HTTP&lt;&#x2F;code&gt;는 표본 추출이 없어서 요청 수로 쓸 수 있다. 요청은 18,887건, 스케일업은 77번, 새 레플리카는 101개였다.&lt;&#x2F;p&gt;
+&lt;p&gt;p50과 p99는 요청이 1건 이상 있던 구간만 넣은 값이다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;구간&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p99&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1초&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;2&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;18&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;37&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;15초&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;6&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;82&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;1분&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;14&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;108&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;201&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;가장 바쁜 15초에 82건이다. 문서 계산식(지난 15초 요청 수 ÷ 15)으로는 5.5다. 기준이 10이라면 이 24시간에는 한 번도 늘어나지 않아야 한다. 77번 늘어났다.&lt;&#x2F;p&gt;
+&lt;p&gt;동시 처리 수는 &lt;code&gt;Request finished HTTP&lt;&#x2F;code&gt;에 찍힌 처리 시간으로 각 요청의 구간을 복원해 겹친 수를 센 것이다. 앱이 잰 시간이라, 인그레스 프록시가 보는 시간보다 짧다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;범위&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p99&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;레플리카 전체&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;2&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레플리카 하나&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;9&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;스케일업 직전 30초의 최대 동시 처리 수는 76건을 분석했다. 77건 중 1건은 그 30초에 시작된 요청이 없어서 빠졌다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;구분&lt;&#x2F;th&gt;&lt;th&gt;건수&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p90&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;10 초과&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;스케일업 직전&lt;&#x2F;td&gt;&lt;td&gt;76&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;12&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50건 (66%)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;스케일업이 없던 30초 구간&lt;&#x2F;td&gt;&lt;td&gt;1,176&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;11&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;17&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;127개 (10.8%)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;스케일업 직전은 p25 10, p50 12, p75 14로, 10 바로 위에 모인다. 그래도 76건 중 19건(25%)은 10 미만에서 일어났고, 그중 2건은 최대가 1이었다. 늘어나지 않은 구간은 그 30초와 바로 다음 30초 모두 스케일업이 없던 구간이다.&lt;&#x2F;p&gt;
+&lt;p&gt;늘어난 &lt;strong&gt;개수&lt;&#x2F;strong&gt;는 전체 동시 처리 수와 더 어긋난다. 문서의 &lt;code&gt;desiredReplicas = ceil(현재값 &#x2F; 기준값)&lt;&#x2F;code&gt;대로면, 5개가 되려면 전체가 40을 넘어야 한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;늘어난 결과&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;건수&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;동시 처리 수 중앙값&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;기준 10이라면 필요한 값&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;2개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;12&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;10 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;31&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;11&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;20 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;4개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;30 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;5개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;8&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;40 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;6개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;5&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;14&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;7~8개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;60~70 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;13 근처에서 5개, 6개, 8개까지 갔다. 스케일러가 읽는 값은 &quot;전체 동시 요청 ÷ 10&quot;이 아니다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;4-munseoe-jeoghin-geos-gwanceugdoen-geos-curon&quot;&gt;4. 문서에 적힌 것, 관측된 것, 추론&lt;&#x2F;h2&gt;
+&lt;p&gt;셋을 섞으면 기준값이 10인 것처럼 말하고 끝나 버린다. 나눠 둔다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;문서에 적힌 것&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;규칙이 없으면 기본 규칙이 적용되고, 트리거는 HTTP다.&lt;&#x2F;li&gt;
+&lt;li&gt;기본 규칙의 동시 요청 기준값은 문서에 없다.&lt;&#x2F;li&gt;
+&lt;li&gt;HTTP 규칙을 정의하면서 &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;를 생략하면 10이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;관측된 것&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;규칙이 비어 있는데도 &lt;code&gt;http-scaler&lt;&#x2F;code&gt;가 레플리카를 늘린다.&lt;&#x2F;li&gt;
+&lt;li&gt;문서 계산식으로 5.5인 날에 77번 늘어났다.&lt;&#x2F;li&gt;
+&lt;li&gt;전체가 13 정도일 때 5개까지 늘어났다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;추론&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;기본 규칙도 10을 쓴다는 말은 간접 근거만 있다. 트리거가 HTTP라는 점, 생략 시 기본값이 10이라는 점, 스케일업 직전 중앙값이 12라는 점이다. 문장이 아니다.&lt;&#x2F;li&gt;
+&lt;li&gt;스케일러가 보는 값은 Azure Monitor에 없다. 레플리카 하나의 값이나 활성 연결을 본다는 추정은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;azure-container-apps&#x2F;issues&#x2F;536&quot;&gt;azure-container-apps#536&lt;&#x2F;a&gt; 쪽에 가깝다. 확인하지 못했다.&lt;&#x2F;li&gt;
+&lt;li&gt;처리 시간을 앱 로그로 복원했으므로 프록시가 보는 동시성보다 작을 수 있다. 방향은 같다. 더 길게 잡아도 40이 나오지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;기준값의 정확한 정체를 몰라도 결정은 할 수 있다. &lt;strong&gt;적지 않은 규칙이 평범한 트래픽에 레플리카를 만들고 있고, 그 입력은 우리가 재는 요청 수와 같지 않다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;5-sae-repeulrikaneun-neurin-http-seobeomani-anida&quot;&gt;5. 새 레플리카는 느린 HTTP 서버만이 아니다&lt;&#x2F;h2&gt;
+&lt;p&gt;2026-10-28 20:56 KST 전후, 메시지가 늦게 들어온다는 보고를 한 건 따라갔다. 그 시각 레플리카는 이미 하나 떠 있었다. 최소 1개라서 0에서 깨어난 콜드스타트는 아니다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;시각 (UTC)&lt;&#x2F;th&gt;&lt;th&gt;이벤트&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;11:31:21&lt;&#x2F;td&gt;&lt;td&gt;1개로 축소&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:36&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;http-scaler&lt;&#x2F;code&gt;가 2개로 확대, 새 레플리카 배정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:48&lt;&#x2F;td&gt;&lt;td&gt;그 레플리카의 컨테이너 시작. 스타트업 프로브 실패가 약 10초 이어짐&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:51&lt;&#x2F;td&gt;&lt;td&gt;3개로 확대, 또 하나의 레플리카 배정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:52&lt;&#x2F;td&gt;&lt;td&gt;첫 새 레플리카가 MassTransit 엔드포인트를 등록하고 소비를 시작. 컨테이너 시작 약 4초 뒤&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:09&lt;&#x2F;td&gt;&lt;td&gt;두 번째 새 레플리카의 컨테이너 시작&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;직전 인그레스는 11:54~11:57에 분당 0, 8, 0, 22건이었다. 같은 날 자원도 한가했다. SQL CPU는 최대 1~5%(한 번 18%), 워커 3% 이하, RabbitMQ는 0.02 core에 메모리 210MB, SignalR 서버 부하는 약 12%에 연결 최대 53, Redis 메모리는 2%였다. 레플리카 워킹셋 최댓값이 매일 1.01~1.13GB로 1Gi 한도에 붙어 있긴 했다. 이번 지연과의 관련은 확인하지 못했다.&lt;&#x2F;p&gt;
+&lt;p&gt;인바운드 네 건이다. 끝점은 웹훅을 받은 시각부터 수신 메시지를 브로드캐스트한 시각까지다. 콘솔 로그 시각이 1초 단위로 묶여 있어서 ±1~2초 오차가 있다. 메신저 쪽이 웹훅을 보낸 시각은 로그에 없다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;웹훅 (UTC)&lt;&#x2F;th&gt;&lt;th&gt;웹훅을 처리한 레플리카&lt;&#x2F;th&gt;&lt;th&gt;메시지를 소비한 레플리카&lt;&#x2F;th&gt;&lt;th&gt;끝-끝&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;11:56:39&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카, 60ms&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카&lt;&#x2F;td&gt;&lt;td&gt;약 1초 안&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:25&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 16초인 레플리카, 1,057ms&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카&lt;&#x2F;td&gt;&lt;td&gt;약 1~2초&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:49&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카, 55ms&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 1분인 레플리카&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;약 6~7초&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;12:00:53&lt;&#x2F;td&gt;&lt;td&gt;또 다른 새 레플리카, 2,082ms&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 몇 분인 레플리카&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;약 8초&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;6~7초 건을 소비 레플리카 기준으로 쪼개면, 엔벨로프 처리 1초, 메시지 행 생성까지 다시 4초, 브로드캐스트까지 다시 1~2초다. 기존 레플리카에서는 같은 경로가 1초 안에 끝났다.&lt;&#x2F;p&gt;
+&lt;p&gt;같은 24시간(10-27 12:20Z ~ 10-28 12:20Z)에 스케일업 87번, 스케일다운 97번, 새 레플리카 105개였다. 1편의 기준 주간은 스케일업 52~78번, 컨테이너 시작 60~90개다. 스케일업은 KST 01~07시에 0건이고 나머지 시간에 3~8건씩이다. 아직 신규 테넌트가 들어오기 전의 값이다.&lt;&#x2F;p&gt;
+&lt;p&gt;회전 비용은 HTTP 응답에만 있지 않다. &lt;strong&gt;새 레플리카가 경쟁 소비자로 붙는 순간부터 받은 편지함의 지연으로 보인다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;6-hubo&quot;&gt;6. 후보&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;후보&lt;&#x2F;th&gt;&lt;th&gt;판정&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;명시적 HTTP 규칙. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;와 최대 레플리카를 배포 파라미터로&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;선택.&lt;&#x2F;strong&gt; 규칙을 하나라도 정의하면 기본 규칙이 빠진다. 값은 환경 변수라 코드 수정 없이 바꾼다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;기본 규칙을 두고, 테넌트가 늘면 다시 본다&lt;&#x2F;td&gt;&lt;td&gt;2026-10-09의 결정이었다. 10-28에 회전이 메시지 지연으로 보여서 10-29에 뒤집었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2개만 올린다&lt;&#x2F;td&gt;&lt;td&gt;기각. 기본 규칙이 남는다. 2개 위로의 회전은 닷새에 241번이었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2개에 CPU 규칙&lt;&#x2F;td&gt;&lt;td&gt;기각. 기동 첫 1분의 레플리카는 요청 0~25건인 분에도 2.6%가 CPU 80%를 넘었다. 배포로 두 개가 같이 뜨면 평균이 기준을 넘을 수 있다. 플랫폼이 기동 CPU를 빼는지는 문서에 없다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2, 최대 2&lt;&#x2F;td&gt;&lt;td&gt;기각. 회전은 없어지지만 테넌트가 늘어도 커지지 못한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;포털이나 CLI로 규칙을 넣는다&lt;&#x2F;td&gt;&lt;td&gt;기각. 다음 배포가 컨테이너 앱을 다시 만들며 스케일 블록을 덮어쓴다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;최소를 올리는 쪽이 먼저 떠오른다. 1개와 2개 사이를 오가는 횟수는 없어지기 때문이다. 그 선택지는 문서에 없는 기준값을 그대로 두고, 2개 위의 회전도 그대로 둔다. 관측된 확대는 2개에서 멈추지 않고 8개까지 갔다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;7-goreun-geos-gyucigeul-kodeue-jeogneunda&quot;&gt;7. 고른 것: 규칙을 코드에 적는다&lt;&#x2F;h2&gt;
+&lt;p&gt;배포 코드가 컨테이너 앱의 스케일 블록을 직접 쓴다. 최대 레플리카와 동시 요청 기준은 파라미터다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;app&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Template&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Scale&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MaxReplicas&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; maxReplicas&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;app&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Template&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Scale&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Rules&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ContainerAppScaleRule&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;http-scaler&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Http&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ContainerAppHttpScaleRule&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Metadata&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; { [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;concurrentRequests&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; concurrentRequests }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;aspire publish&lt;&#x2F;code&gt;가 만드는 블록은 이런 모양이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;bicep&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;scale: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  minReplicas: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  maxReplicas: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;(chatapi_MaxReplicas)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  rules: [&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      name: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;#39;http-scaler&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      http: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        metadata: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;          concurrentRequests: chatapi_ConcurrentRequests&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  ]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;최소는 Aspire가 넣는 1 그대로다. 규칙을 하나 정의하면 플랫폼 기본 규칙은 빠진다.&lt;&#x2F;p&gt;
+&lt;p&gt;Integration, Staging, Production 모두 같은 값이다. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt; &lt;strong&gt;50&lt;&#x2F;strong&gt;, &lt;code&gt;maxReplicas&lt;&#x2F;code&gt; &lt;strong&gt;3&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;50&lt;&#x2F;strong&gt;은 이 24시간의 동시 처리 최대 27보다 위다. 오늘 본 부하보다 분명 무거울 때에만 두 번째 레플리카가 생겨야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;3&lt;&#x2F;strong&gt;은 규칙이 또 잘못 튀어도 회전이 멀리 가지 못하게 막는 뚜껑이다. 레플리카당 50이면 세 개는 측정된 최대의 두 배 정도를 담는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;둘 다 용량 시험의 결과가 아니다. 측정하면서 움직일 시작값이다. 같은 HTTP 스케일러는 기준을 2000으로 적어도 이르게 늘어났다는 보고가 있다(&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;answers&#x2F;questions&#x2F;2288688&#x2F;our-container-app-http-scaler-kicks-of-scaling-way&quot;&gt;Microsoft Q&amp;amp;A 2288688&lt;&#x2F;a&gt;). 50이 잠잠할지는 운영 측정만 말한다.&lt;&#x2F;p&gt;
+&lt;p&gt;값은 각 환경의 배포 파라미터로 넘어간다. 숫자를 바꾸려고 코드를 다시 넣을 필요는 없다. 로컬 배포는 그 환경의 설정 파일에 같은 두 값이 있어야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;8-i-gyeoljeongi-haji-anhneun-il&quot;&gt;8. 이 결정이 하지 않는 일&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1편의 워밍을 대체하지 않는다.&lt;&#x2F;strong&gt; 배포를 하면 레플리카는 여전히 새로 태어나고, 부하가 기준을 넘으면 두 번째, 세 번째도 태어난다. 태어난 레플리카의 첫 파이프라인 비용은 소켓을 열기 전에 앱이 치른다. 워밍이 임시 조치인 이유는 효과가 없어서가 아니다. 업무시간 내내 반복되는 탄생을 막지 못하기 때문이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;새 레플리카의 소비 시점을 바꾸지 않는다.&lt;&#x2F;strong&gt; 컨테이너 시작 약 4초 뒤에 MassTransit 엔드포인트가 등록되는 것은 그대로다. 이 결정은 그 일이 일어나는 횟수를 줄인다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;용량은 0.5 vCPU 레플리카 세 개에서 멈춘다.&lt;&#x2F;strong&gt; 기본 규칙 아래에서 운영은 8개까지 갔다. 테넌트가 늘어서 세 개로 부족하면 파라미터를 올리고 다시 배포한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;이 규칙도 잘못 튈 수 있다.&lt;&#x2F;strong&gt; 입력이 같은 스케일러다. 세 개에 붙어 있는 분이 생기는지 봐야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;생성하는 스케일 블록을 검사하는 테스트는 없다.&lt;&#x2F;strong&gt; 환경 변수가 정말 50과 3인지도 코드가 보장하지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;예전에 비용을 레플리카 10개 기준으로 적어 둔 기록이 있다. 그 기록은 고치지 않았다. 이제는 세 개가 상한이라는 뜻으로 읽으면 된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;9-mueoseul-bogo-habgyeogeuro-bol-geosinga&quot;&gt;9. 무엇을 보고 합격으로 볼 것인가&lt;&#x2F;h2&gt;
+&lt;p&gt;배포 전에 기준을 적어 둔다. 비교 구간은 2026-10-01~10-08의 평일이다. 이 규칙은 2026-10-29에 들어갔고, 이 글을 쓰는 시점에는 그 평일 재측정이 아직 없다. 숫자를 미리 좋게 말하지 않는다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;지표&lt;&#x2F;th&gt;&lt;th&gt;이전 (10-01~10-08)&lt;&#x2F;th&gt;&lt;th&gt;목표&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;하루 컨테이너 시작&lt;&#x2F;td&gt;&lt;td&gt;60~90&lt;&#x2F;td&gt;&lt;td&gt;더 적다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레플리카가 2개 이상이던 분&lt;&#x2F;td&gt;&lt;td&gt;609~919&lt;&#x2F;td&gt;&lt;td&gt;더 적다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;응답 p50&lt;&#x2F;td&gt;&lt;td&gt;24~42ms&lt;&#x2F;td&gt;&lt;td&gt;나빠지지 않는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;응답 p90&lt;&#x2F;td&gt;&lt;td&gt;169~912ms&lt;&#x2F;td&gt;&lt;td&gt;나빠지지 않는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;기준선은 신규 테넌트 유입 전이다. 테넌트가 늘면 요청 1건당으로 비교한다. 함께 볼 것은 세 개에 붙어 있는 분과, 레플리카당 CPU다.&lt;&#x2F;p&gt;
+&lt;p&gt;1편에서 배포 전에 합격선과 표본 수를 정해 둔 것이 판정을 믿을 만하게 만들었다. 같은 방식으로, 이 글의 합격은 &quot;규칙을 코드에 적었다&quot;가 아니다. 평일에 컨테이너가 덜 태어나고, 응답이 나빠지지 않는 것이다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ko">
+        <title>새 레플리카의 첫 요청이 7초 걸리던 이유</title>
+        <published>2026-10-01T00:00:00+00:00</published>
+        <updated>2026-10-01T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/azure/replica-warmup/"/>
+        <id>https://emptyfridge.dev/ko/azure/replica-warmup/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/azure/replica-warmup/">&lt;p&gt;두 편 중 1편이다. 여기서 한 일은 새 레플리카가 처음 한 번 치르는 준비 비용을, 사용자 대신 앱이 소켓을 열기 전에 치르게 한 것이다. 비용은 없어지지 않았다. 레플리카가 업무시간 내내 늘었다 줄었다 하는 것도 그대로다. 그 회전을 멈추는 것이 근본적인 해결이고, &lt;a href=&quot;&#x2F;ko&#x2F;azure&#x2F;replica-scale-rule&#x2F;&quot;&gt;2편&lt;&#x2F;a&gt;에서 다룬다.&lt;&#x2F;p&gt;
+&lt;p&gt;Omni API는 평소 20ms대에 응답하지만, 새로 뜬 인스턴스의 첫 요청만은 7초가 걸렸다. 원인은 코드 경로가 아니라 프로세스가 처음 한 번 치르는 준비 비용이었다. prd에서 새 인스턴스의 첫 사용자 요청 p50은 7.5초에서 1.3초로 줄었다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-jeungsang-ceos-yoceongman-300bae-neurida&quot;&gt;1. 증상: 첫 요청만 300배 느리다&lt;&#x2F;h2&gt;
+&lt;p&gt;처음 보고는 &quot;대화방 여는 게 느리다&quot;였다. 서버 응답 시간 자체는 멀쩡했다. p50이 16~21ms로 평소와 같았다. 느린 것은 &lt;strong&gt;새로 뜬 인스턴스가 받은 첫 요청&lt;&#x2F;strong&gt;뿐이었다.&lt;&#x2F;p&gt;
+&lt;p&gt;prd의 HTTP 요청 14일치(2026-09-08~09-22, 워밍 전, 인스턴스 847개, 표본 비율을 되돌리면 약 25만 건)를 인스턴스가 받은 순서별로 나누면 모양이 분명해진다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;인스턴스가 받은 순서&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;2초 초과 비율&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1번째&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;7,316ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;94.2%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;2번째&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;4,560ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;64.9%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3번째&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1,601ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;43.7%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;6~10번째&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;202ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;6.8%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11~20번째&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;95ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1.6%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;100번째 이후&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;23ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1.3%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;평균이 느린 것이 아니다. 인스턴스 하나가 데워지기까지의 &lt;strong&gt;콜드스타트 곡선&lt;&#x2F;strong&gt;이다. 메시지 목록 목표인 2초를, 첫 요청만 세어도 14일간 798번 어겼다.&lt;&#x2F;p&gt;
+&lt;p&gt;보존 기간(90일) 안의 완전한 주(07-12~09-27)를 봐도 첫 요청 p50은 매주 7.2~7.7초, 2초 초과는 94~100%로 평평했다. 어느 배포에서 생긴 회귀가 아니라 &lt;strong&gt;처음부터 이랬다&lt;&#x2F;strong&gt;. 평소 p50(20ms대)에 묻혀 보이지 않았을 뿐이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-wae-haru-jongil-ileonana-baepoga-anira-otoseukeilring&quot;&gt;2. 왜 하루 종일 일어나나: 배포가 아니라 오토스케일링&lt;&#x2F;h2&gt;
+&lt;p&gt;&quot;새 인스턴스의 첫 요청&quot;이라고 하면 배포 때 한 번 겪는 일처럼 들린다. 하지만 prd에는 14일 동안 인스턴스가 851개, 하루 약 60개가 떴다. 배포는 하루 한두 번뿐이다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;배포라면&lt;&#x2F;th&gt;&lt;th&gt;실제 (오토스케일링)&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;새 인스턴스가 뜨는 빈도&lt;&#x2F;td&gt;&lt;td&gt;하루 1~2번&lt;&#x2F;td&gt;&lt;td&gt;업무시간 시간당 4~7개, 새벽 0개&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;인스턴스 수명&lt;&#x2F;td&gt;&lt;td&gt;다음 배포까지&lt;&#x2F;td&gt;&lt;td&gt;p50 7.6분, 59%가 10분 안에 사라짐&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;피해 빈도를 정하는 것&lt;&#x2F;td&gt;&lt;td&gt;배포 주기&lt;&#x2F;td&gt;&lt;td&gt;트래픽 주기&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Azure Container Apps는 동시 요청 수를 보고 레플리카를 늘리고 줄인다. prd 설정은 최소 1개, 최대 10개, 축소 대기 300초, 레플리카당 0.5 vCPU와 1GiB다. 트래픽이 늘면 새 레플리카가 뜨고, 5분이 지나 한가해지면 사라진다. 시스템 로그에는 3일 동안 &lt;code&gt;scaled to N by the scaler: http-scaler&lt;&#x2F;code&gt;가 249번 찍혔다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 이 문제는 &quot;배포하는 날의 불편&quot;이 아니다. &lt;strong&gt;업무시간 내내 시간당 몇 번씩, 누군가는 7초를 기다린다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;3-beomin-jobhigi-gaseoleul-hanassig-jiweossda&quot;&gt;3. 범인 좁히기: 가설을 하나씩 지웠다&lt;&#x2F;h2&gt;
+&lt;p&gt;INT에서 5.4초짜리 첫 요청 하나를 스팬으로 쪼개 보니, 앞의 3.3초 동안 밖으로 나가는 호출(데이터베이스, 캐시, 인증 서버)이 하나도 없었다. prd에서도 같았다. 첫 요청 7.2초 중 첫 외부 호출은 5.7초에야 시작됐고, 외부 호출을 다 합쳐도 0.18초였다. &lt;strong&gt;범인은 프로세스 안에 있었다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;프로세스 안에서 시간을 쓸 만한 후보는 많다. 하나씩 측정으로 지웠다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;가설&lt;&#x2F;th&gt;&lt;th&gt;확인 방법&lt;&#x2F;th&gt;&lt;th&gt;결과&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Entity Framework 모델 빌드&lt;&#x2F;td&gt;&lt;td&gt;데이터베이스를 전혀 쓰지 않는 정적 파일 요청도 콜드일 때 약 6초였다&lt;&#x2F;td&gt;&lt;td&gt;기각&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;JIT 컴파일&lt;&#x2F;td&gt;&lt;td&gt;ReadyToRun으로 미리 컴파일해 A&#x2F;B: 첫 요청 변화 없음, 이미지 +39%&lt;&#x2F;td&gt;&lt;td&gt;기각&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;인증(토큰 검증) 경로&lt;&#x2F;td&gt;&lt;td&gt;로컬 가짜 발급자로 서명한 토큰: 인증만의 추가 비용 약 55ms&lt;&#x2F;td&gt;&lt;td&gt;기각&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Azure Monitor 텔레메트리 내보내기&lt;&#x2F;td&gt;&lt;td&gt;켜고 끄기 A&#x2F;B: +5~9ms&lt;&#x2F;td&gt;&lt;td&gt;기각&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;0.5 vCPU 자체&lt;&#x2F;td&gt;&lt;td&gt;prd와 같은 CPU 할당의 컨테이너에서도 첫 요청 2~3초&lt;&#x2F;td&gt;&lt;td&gt;일부만 설명&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;기동 직후 백그라운드 작업과의 CPU 경합&lt;&#x2F;td&gt;&lt;td&gt;기동 2분 뒤에 온 첫 요청도 p50 6,985ms&lt;&#x2F;td&gt;&lt;td&gt;기각&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;여기서 배울 점 하나: 매번 &lt;strong&gt;새 계측 코드를 짜기 전에 이미 쌓이고 있던 텔레메트리부터 읽었다&lt;&#x2F;strong&gt;. 가장 비싼 가설 세 개는 코드를 한 줄도 바꾸지 않고 기각됐다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;4-haegsim-balgyeon-peuroseseudang-han-beon-cireuneun-biyongida&quot;&gt;4. 핵심 발견: 프로세스당 한 번 치르는 비용이다&lt;&#x2F;h2&gt;
+&lt;p&gt;범인을 하나로 짚지 못했는데도 해결책을 고를 수 있었던 이유가 이 발견이다. 같은 인스턴스의 두 번째 요청을 &quot;첫 요청과 겹쳤나&quot;로 나눠 보았다(prd 한 리비전, 2026-09-24~10-02, HTTP 요청만).&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;새 인스턴스의 요청&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;건수&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;첫 요청&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;705&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;7,457ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;두 번째, 첫 요청이 &lt;strong&gt;끝난 뒤&lt;&#x2F;strong&gt; 시작&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;258&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;760ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;두 번째, 첫 요청과 &lt;strong&gt;겹침&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;434&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;7,856ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;첫 요청이 끝난 뒤에 온 두 번째 요청은 대개 다른 엔드포인트인데도 약 0.8초다. 겹친 요청은 첫 요청과 &lt;strong&gt;같은 준비를 함께 기다린다&lt;&#x2F;strong&gt;. 즉 비용은 &quot;엔드포인트마다 한 번&quot;이 아니라 &quot;프로세스마다 한 번&quot;이다.&lt;&#x2F;p&gt;
+&lt;p&gt;로컬에서도 같은 모양이 나왔다. 무엇이 첫 요청이든 약 700ms를 물었고, 매칭되는 엔드포인트가 없는 &lt;code&gt;&#x2F;nope-404&lt;&#x2F;code&gt; 같은 경로도 마찬가지였다. 그다음 요청은 엔드포인트가 달라도 5ms였다. 라우팅 초기화와 미들웨어 첫 실행 같은 일회성 준비가 첫 요청에 몰려 있다는 뜻이다.&lt;&#x2F;p&gt;
+&lt;p&gt;이 발견이 중요한 이유는 이렇다. &lt;strong&gt;어느 요청이든 한 번만 파이프라인을 통과하면 비용 대부분이 치러진다.&lt;&#x2F;strong&gt; 그 한 번을 사용자가 아니라 앱이 치르게 하면 된다.&lt;&#x2F;p&gt;
+&lt;p&gt;참고로 겹침은 요청이 한꺼번에 쏟아져서 생기는 것이 아니다. 첫 10초의 유입은 초당 0.266건으로 평소(0.135건)의 약 2배뿐이다. 첫 요청이 7초나 걸리니 평범한 유입에도 대부분 겹친다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;5-helseu-peurobeuneun-wae-maga-juji-moshaessna&quot;&gt;5. 헬스 프로브는 왜 막아 주지 못했나&lt;&#x2F;h2&gt;
+&lt;p&gt;앱에는 &lt;code&gt;&#x2F;health&lt;&#x2F;code&gt;와 &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt;가 있다. 그런데도 첫 요청이 차가웠던 이유는, 플랫폼의 헬스 프로브가 &lt;strong&gt;HTTP 요청을 보내지 않기&lt;&#x2F;strong&gt; 때문이다.&lt;&#x2F;p&gt;
+&lt;p&gt;Container Apps는 레플리카마다 프로브 세 개를 돌린다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;프로브&lt;&#x2F;th&gt;&lt;th&gt;언제&lt;&#x2F;th&gt;&lt;th&gt;실패하면&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;스타트업&lt;&#x2F;td&gt;&lt;td&gt;기동 직후, 성공할 때까지만&lt;&#x2F;td&gt;&lt;td&gt;아직 기동 중으로 보고 트래픽을 보내지 않음&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레디니스&lt;&#x2F;td&gt;&lt;td&gt;그 뒤로 계속&lt;&#x2F;td&gt;&lt;td&gt;그 레플리카로 트래픽을 보내지 않음&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;라이브니스&lt;&#x2F;td&gt;&lt;td&gt;그 뒤로 계속&lt;&#x2F;td&gt;&lt;td&gt;컨테이너를 재시작&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;확인 방식에는 두 가지가 있다. &lt;strong&gt;TCP&lt;&#x2F;strong&gt;는 포트에 연결이 되는지만 보고 끊는다. &lt;strong&gt;HTTP&lt;&#x2F;strong&gt;는 정해진 경로로 실제 요청을 보내 응답 코드를 본다. prd 설정에는 프로브가 하나도 적혀 있지 않아서(&lt;code&gt;probes: null&lt;&#x2F;code&gt;), 플랫폼이 기본값인 TCP 프로브를 돌린다. 가게 문이 열려 있는지만 보고 돌아가는 셈이다.&lt;&#x2F;p&gt;
+&lt;p&gt;근거는 두 가지다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;시스템 로그(3일):&lt;&#x2F;strong&gt; 스타트업 프로브의 연결 거부가 1,745건, 컨테이너 시작은 295건이다. 기동할 때마다 포트가 열리기까지 약 6번 거부당한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;요청 텔레메트리(14일):&lt;&#x2F;strong&gt; HTTP 프로브였다면 하루 수만 건이 남아야 한다. 실제로는 &lt;code&gt;GET &#x2F;&lt;&#x2F;code&gt; 하루 8.9건, &lt;code&gt;&#x2F;health&lt;&#x2F;code&gt; 5건, &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt; 3건뿐이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;여기서 나오는 사실이 설계의 열쇠가 됐다. &lt;strong&gt;포트가 열리는 순간이 곧 트래픽이 들어오기 시작하는 순간이다.&lt;&#x2F;strong&gt; 포트가 닫혀 있는 동안에는 트래픽이 오지 않고, 그동안 요청은 이미 떠 있던 레플리카가 처리한다.&lt;&#x2F;p&gt;
+&lt;p&gt;왜 기본값이 TCP일까. &lt;code&gt;&#x2F;health&lt;&#x2F;code&gt;와 &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt;는 업계 표준이 아니라 .NET Aspire 템플릿이 정한 이름이다. 쿠버네티스 관례는 &lt;code&gt;&#x2F;healthz&lt;&#x2F;code&gt;·&lt;code&gt;&#x2F;livez&lt;&#x2F;code&gt;·&lt;code&gt;&#x2F;readyz&lt;&#x2F;code&gt;이고, Spring Boot는 &lt;code&gt;&#x2F;actuator&#x2F;health&lt;&#x2F;code&gt;다. 플랫폼은 앱 안에 어떤 경로가 있는지 알아내지 않는다. HTTP 프로브를 쓰려면 사람이 프로브 설정에 경로와 포트를 직접 적어야 하고, 경로를 모르는 플랫폼이 고를 수 있는 기본값은 경로가 필요 없는 TCP뿐이다. 우리 배포 설정에는 그런 경로가 어디에도 없다. 앱은 두 경로를 열어 두었지만, 그것을 부르도록 설정된 곳이 없었던 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;반대로 프로브를 HTTP로 바꾸면 이야기가 달라진다. 스타트업이나 레디니스 프로브가 &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt;를 부르게 하면, 그 프로브가 성공할 때까지 레플리카는 트래픽을 받지 않는다. 그러니 &lt;strong&gt;프로브의 첫 요청이 곧 워밍&lt;&#x2F;strong&gt;이 된다. 첫 요청이 느려 프로브가 시간 초과로 실패해도, 요청은 앱 안에서 끝까지 돌며 준비 비용을 치른다. 이 방식을 고르지 않은 이유는 효과가 아니라 다른 조건 때문이고, 6번에서 다룬다. 단, 준비 여부를 가르지 않는 라이브니스 프로브만 HTTP로 바꾸면 워밍이 되지 않는다. 그 요청은 사용자 트래픽과 동시에 도착하기 때문이다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;uriege-pilyohan-peurobeu&quot;&gt;우리에게 필요한 프로브&lt;&#x2F;h3&gt;
+&lt;p&gt;세 프로브 모두 필요하다. 다만 지금처럼 플랫폼 기본 TCP면 충분하고, HTTP로 바꿀 이유는 없다. 우리가 따로 설정하지 않아도 이미 돌고 있다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;프로브&lt;&#x2F;th&gt;&lt;th&gt;지금(TCP)이 해 주는 일&lt;&#x2F;th&gt;&lt;th&gt;HTTP로 바꾸면&lt;&#x2F;th&gt;&lt;th&gt;판단&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;스타트업&lt;&#x2F;td&gt;&lt;td&gt;포트가 열릴 때까지 트래픽을 막고, 너무 오래 뜨지 못하는 컨테이너는 재시작한다&lt;&#x2F;td&gt;&lt;td&gt;프로브의 첫 요청이 워밍이 된다. 코드 워밍을 하므로 필요 없다&lt;&#x2F;td&gt;&lt;td&gt;TCP 유지. 워밍이 여기에 기댄다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레디니스&lt;&#x2F;td&gt;&lt;td&gt;포트가 응답하지 않는 레플리카를 트래픽에서 뺀다&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;&#x2F;health&lt;&#x2F;code&gt;를 쓰면 Blob 저장소가 흔들릴 때 모든 레플리카가 한꺼번에 빠진다. 앱에는 &quot;떠 있지만 받으면 안 되는&quot; 상태가 따로 없어서 알릴 것도 없다&lt;&#x2F;td&gt;&lt;td&gt;TCP 유지&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;라이브니스&lt;&#x2F;td&gt;&lt;td&gt;프로세스는 살아 있는데 연결을 못 받는 컨테이너를 재시작한다&lt;&#x2F;td&gt;&lt;td&gt;부하가 몰려 &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt;가 늦어지는 순간 멀쩡한 컨테이너를 재시작해 상황을 악화시킬 수 있다&lt;&#x2F;td&gt;&lt;td&gt;TCP 유지&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;스타트업 프로브는 코드 워밍을 해도 필요하다. 오히려 워밍이 이 프로브에 기댄다. 워밍은 포트를 닫아 둔 채 진행되고, 그동안 트래픽이 오지 않는 것은 TCP 스타트업 프로브가 &quot;아직 준비 안 됨&quot;이라고 판정해 주기 때문이다. 문서상 기본값은 1초 간격에 실패 한도 240회라, 기동 약 7초와 워밍 상한 30초가 넉넉히 들어간다. 필요 없는 것은 &lt;strong&gt;HTTP&lt;&#x2F;strong&gt; 스타트업 프로브다.&lt;&#x2F;p&gt;
+&lt;p&gt;함정 하나: 나중에 누군가 프로브를 직접 설정하면서 스타트업이나 레디니스를 빼면, 빠진 종류를 플랫폼이 기본값으로 채워 주는지는 문서에 없다. 그러면 포트가 닫힌 레플리카에도 트래픽이 갈 수 있다. 프로브를 설정한다면 인그레스 포트에 스타트업이나 레디니스 프로브를 반드시 남겨야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;6-haegyeolcaeg-hubodeul&quot;&gt;6. 해결책 후보들&lt;&#x2F;h2&gt;
+&lt;p&gt;문제를 &quot;프로세스가 처음 한 번 치르는 비용을 누가, 언제 치르나&quot;로 바꾸어 보면 후보가 세 묶음으로 나뉜다. 비용 자체를 줄이기, 비용을 미리 치르기, 그리고 아예 새 인스턴스를 덜 띄우기다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;후보&lt;&#x2F;th&gt;&lt;th&gt;무엇을 하나&lt;&#x2F;th&gt;&lt;th&gt;판정과 이유&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;ReadyToRun&lt;&#x2F;td&gt;&lt;td&gt;코드를 미리 컴파일해 JIT를 줄임&lt;&#x2F;td&gt;&lt;td&gt;기각. 첫 요청은 그대로고 이미지만 39% 커짐&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Entity Framework 컴파일된 모델&lt;&#x2F;td&gt;&lt;td&gt;데이터 모델을 빌드 때 만듦&lt;&#x2F;td&gt;&lt;td&gt;보류. 들어갈 자리가 약 0.3초뿐&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;로그인 메타데이터·캐시 연결 미리 열기&lt;&#x2F;td&gt;&lt;td&gt;첫 요청의 외부 호출을 기동 때 처리&lt;&#x2F;td&gt;&lt;td&gt;기각. 겨냥하는 것이 0.18초&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;주기적으로 요청을 보내 데워 두기&lt;&#x2F;td&gt;&lt;td&gt;인스턴스를 계속 따뜻하게 유지&lt;&#x2F;td&gt;&lt;td&gt;기각. 데워진 프로세스는 식지 않는다. 문제는 새로 태어난 인스턴스&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;기동 후 백그라운드 서비스가 요청 보내기&lt;&#x2F;td&gt;&lt;td&gt;포트가 열린 뒤 앱이 스스로 요청&lt;&#x2F;td&gt;&lt;td&gt;기각. 첫 사용자 요청과 경주하고, 겹치면 같이 기다린다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;라우팅 내부를 직접 초기화&lt;&#x2F;td&gt;&lt;td&gt;라우트 매처만 미리 만듦&lt;&#x2F;td&gt;&lt;td&gt;기각. 프레임워크 내부에 기대고 라우팅만 데움&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;HTTP 스타트업 프로브&lt;&#x2F;td&gt;&lt;td&gt;플랫폼이 기동 때 &lt;code&gt;&#x2F;alive&lt;&#x2F;code&gt;를 불러 그 요청이 워밍이 됨&lt;&#x2F;td&gt;&lt;td&gt;기각. 코드는 필요 없지만 배포 설정을 바꿔야 하고 로컬에서 검증할 수 없으며, 프로브 요청이 텔레메트리에 남는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레디니스 전용 엔드포인트 + 프로브&lt;&#x2F;td&gt;&lt;td&gt;&quot;워밍 끝났음&quot;만 답하게 하고 프로브로 확인&lt;&#x2F;td&gt;&lt;td&gt;기각. 워밍 코드가 어차피 필요하고 프로브 설정까지 더해진다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 레플리카·CPU 올리기&lt;&#x2F;td&gt;&lt;td&gt;인스턴스를 덜 띄우고 더 빠르게&lt;&#x2F;td&gt;&lt;td&gt;이 글에서는 범위 밖. 인프라 설정이고 비용이 늘어난다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;소켓을 열기 전에 앱이 스스로 한 번 요청&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;포트를 열기 직전에 앱 안에서 가짜 요청 하나를 처리&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;선택. 비용을 없애지 않고, 누가 치르는지만 바꾼다&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;두 가지가 워밍 쪽 선택을 갈랐다. 하나는 &lt;strong&gt;비용을 없애는 것보다 누가 치르느냐를 바꾸는 쪽이 훨씬 쉽다&lt;&#x2F;strong&gt;는 점이다. 다른 하나는 &lt;strong&gt;새 레플리카가 뜨는 동안 기존 레플리카가 이미 서빙 중&lt;&#x2F;strong&gt;이라는 점이다. 새 레플리카가 조금 더 시간을 써도, 그 몇 초 동안 사용자는 기존 레플리카를 쓴다.&lt;&#x2F;p&gt;
+&lt;p&gt;이 표는 그 준비 비용만 다룬다. 레플리카를 덜 만드는 일은 당시 인프라 설정이라 범위 밖으로 두었다. 그 판단은 절반만 맞았다. 레플리카를 더 사 두는 것은 답이 아니다. 기본 스케일 규칙이 부하가 아닌 회전을 만들고 있었고, 그걸 멈추는 일이 2편이다. 1편의 워밍은 그 회전이 있는 동안 사용자의 7초를 걷어 내는 임시 조치다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;biyongeun-eoddeohge-dalrajina&quot;&gt;비용은 어떻게 달라지나&lt;&#x2F;h3&gt;
+&lt;p&gt;비용으로는 방식을 가르기 어렵다. prd는 Container Apps의 Consumption 플랜이고, 요금은 레플리카가 떠 있는 동안의 vCPU-초·GiB-초와 &lt;strong&gt;환경 밖에서 들어온&lt;&#x2F;strong&gt; HTTP 요청 수(구독당 월 200만 건 무료)로 매겨진다. &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;azure&#x2F;container-apps&#x2F;billing&quot;&gt;Billing in Azure Container Apps&lt;&#x2F;a&gt; 문서는 &quot;Health probe requests aren&#x27;t billable&quot;이라고 적고 있다. 늘어날 수 있는 쪽은 Application Insights의 텔레메트리 수집량이다. 프로브 요청도 앱 입장에서는 일반 요청이라 기록되기 때문이다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;방식&lt;&#x2F;th&gt;&lt;th&gt;Container Apps 요금&lt;&#x2F;th&gt;&lt;th&gt;Application Insights에 쌓이는 요청&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;코드 워밍 (선택한 방식)&lt;&#x2F;td&gt;&lt;td&gt;기동마다 약 2초의 CPU를 더 쓴다(로컬 측정). 외부 요청이 아니라 요청 요금은 없다&lt;&#x2F;td&gt;&lt;td&gt;남지 않는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;HTTP 스타트업 프로브&lt;&#x2F;td&gt;&lt;td&gt;늘지 않는다. 프로브 요청은 과금 대상이 아니다&lt;&#x2F;td&gt;&lt;td&gt;기동당 1~3건, prd 기준 하루 60~180건&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레디니스·라이브니스까지 HTTP (5초 간격)&lt;&#x2F;td&gt;&lt;td&gt;요청 요금은 그대로다. 다만 최소 레플리카 상태의 유휴 감액을 덜 받을 수 있다(문서에 없는 추정)&lt;&#x2F;td&gt;&lt;td&gt;레플리카 하나당 하루 약 34,560건. 현재 prd 실제 요청은 하루 약 1.5만 건이다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;유휴 감액은 레플리카가 &quot;HTTP 요청을 처리하고 있지 않을 것&quot; 등의 조건을 모두 만족할 때 적용된다. 5초마다 오는 HTTP 프로브가 그 조건을 깨는지는 문서가 말하지 않는다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;7-goreun-geos-sokeseul-yeolgi-jeone-seuseuro-han-beon-yoceonghagi&quot;&gt;7. 고른 것: 소켓을 열기 전에 스스로 한 번 요청하기&lt;&#x2F;h2&gt;
+&lt;p&gt;ASP.NET Core가 기동할 때는 순서가 정해져 있다. 요청 처리 파이프라인을 다 만든 뒤에 서버(Kestrel)의 &lt;code&gt;StartAsync&lt;&#x2F;code&gt;를 불러 포트를 연다. &lt;strong&gt;파이프라인은 있고 포트는 아직 닫힌 순간은 그 사이 하나뿐이다.&lt;&#x2F;strong&gt; 그 자리에 끼어들었다.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;서버(&lt;code&gt;IServer&lt;&#x2F;code&gt;) 등록을 감싼다. 감싼 서버의 &lt;code&gt;StartAsync&lt;&#x2F;code&gt;가 불리면 바로 포트를 열지 않는다.&lt;&#x2F;li&gt;
+&lt;li&gt;앱 안에서 가짜 &lt;code&gt;GET &#x2F;alive&lt;&#x2F;code&gt; 요청을 만들어 파이프라인에 직접 넣는다. 네트워크는 타지 않는다.&lt;&#x2F;li&gt;
+&lt;li&gt;이 요청이 라우팅 초기화와 미들웨어 첫 실행을 치른다.&lt;&#x2F;li&gt;
+&lt;li&gt;그다음에 진짜 서버의 &lt;code&gt;StartAsync&lt;&#x2F;code&gt;를 불러 포트를 연다. TCP 프로브가 성공하고 트래픽이 들어오기 시작한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;핵심 부분은 이렇다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;public async&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; StartAsync&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TContext&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;IHttpApplication&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TContext&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; application&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; CancellationToken cancellationToken&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    try&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;        &#x2F;&#x2F; 동기 구간(생성자·JIT)에서 막혀도 상한이 걸리도록 스레드 풀에서 돌린다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;        await&lt;&#x2F;span&gt;&lt;span&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Run&lt;&#x2F;span&gt;&lt;span&gt;(()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; WarmAsync&lt;&#x2F;span&gt;&lt;span&gt;(application&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; results)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; CancellationToken&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;None)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;                  .&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;WaitAsync&lt;&#x2F;span&gt;&lt;span&gt;(timeout&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; cancellationToken)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    catch&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TimeoutException exception&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        logger&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;LogWarning&lt;&#x2F;span&gt;&lt;span&gt;(exception&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;... starting the server anyway&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; timeout)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    mark&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;warmed&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    await&lt;&#x2F;span&gt;&lt;span&gt; inner&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;StartAsync&lt;&#x2F;span&gt;&lt;span&gt;(application&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; cancellationToken)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;   &#x2F;&#x2F; 포트는 워밍 뒤에 열린다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;&#x2F;&#x2F; WarmAsync 안쪽: 요청 하나를 직접 만들어 파이프라인에 넣는다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;DefaultHttpContext httpContext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = new&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;httpContext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Request&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Method&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; HttpMethods&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Get&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;httpContext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Request&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Scheme&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; Uri&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;UriSchemeHttps&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;httpContext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Request&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Path&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;&#x2F;alive&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;using&lt;&#x2F;span&gt;&lt;span&gt; (SuppressInstrumentationScope&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Begin&lt;&#x2F;span&gt;&lt;span&gt;())&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    context&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; application&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;CreateContext&lt;&#x2F;span&gt;&lt;span&gt;(httpContext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Features)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;   &#x2F;&#x2F; 텔레메트리 억제는 여기에만&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span&gt; application&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;ProcessRequestAsync&lt;&#x2F;span&gt;&lt;span&gt;(context)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;설계 원칙은 네 가지다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;실패해도 기동은 막지 않는다.&lt;&#x2F;strong&gt; 요청이 예외를 던지면 경고만 남기고, 30초가 지나면 그냥 포트를 연다. 워밍은 최적화일 뿐 가용성 요건이 아니다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;텔레메트리에 남기지 않는다.&lt;&#x2F;strong&gt; 남기면 모든 새 인스턴스의 &quot;첫 요청&quot;이 가짜 요청이 되어, 효과를 판정하는 지표가 거짓말을 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;요청은 하나만.&lt;&#x2F;strong&gt; 인증 경로를 타는 두 번째 요청을 더해 봤지만, 측정한 차이가 잡음 안이라 뺐다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;프로브는 그대로 TCP.&lt;&#x2F;strong&gt; 배포 설정을 하나도 바꾸지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;8-jeonhu-bigyo-baggwin-geoseun-dangye-hana&quot;&gt;8. 전후 비교: 바뀐 것은 단계 하나&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;워밍 전&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  컨테이너 시작&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  파이프라인 조립&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  소켓 개방            ← 여기서부터 트래픽&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  사용자 요청          ← 약 7초&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;워밍 후&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  컨테이너 시작&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  파이프라인 조립&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  프로세스 안 GET &#x2F;alive   ← 앱이 약 2초를 씀. 소켓은 아직 닫힘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  소켓 개방            ← 여기서부터 트래픽&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  사용자 요청          ← prd p50 1.3초&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;달라진 것은 포트를 열기 전에 끼워 넣은 단계 하나다. 준비 비용을 치르는 주체가 사용자에서 앱으로 바뀌고, 그동안 트래픽은 기존 레플리카가 받는다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;9-guhyeonhamyeo-balbeun-hamjeong-daseos-gaji&quot;&gt;9. 구현하며 밟은 함정 다섯 가지&lt;&#x2F;h2&gt;
+&lt;p&gt;가짜 요청 하나 보내는 코드는 짧다. 하지만 &quot;진짜 요청과 똑같이, 그러나 아무 흔적 없이&quot;를 지키는 데 함정이 많았다. 앞의 세 개는 코드 리뷰에서, 뒤의 두 개는 실제 실행에서 나왔다.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;텔레메트리 억제를 너무 넓게 걸었다.&lt;&#x2F;strong&gt; OpenTelemetry의 &lt;code&gt;SuppressInstrumentationScope&lt;&#x2F;code&gt;는 AsyncLocal이다. 요청 처리 전체를 감싸면, 그 요청 안에서 처음 만들어지는 싱글턴의 타이머·백그라운드 작업이 억제 상태를 영구히 물려받는다. 요청 기록 여부는 &lt;code&gt;CreateContext&lt;&#x2F;code&gt;에서 정해지므로, 억제는 그 한 줄에만 건다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;&lt;code&gt;http&lt;&#x2F;code&gt;로 보내면 데워지지 않는 환경이 있다.&lt;&#x2F;strong&gt; https 주소가 설정된 환경(모든 로컬 실행 프로필)에서는 &lt;code&gt;UseHttpsRedirection&lt;&#x2F;code&gt;이 307로 끊어 인증과 엔드포인트까지 가지 않는다. prd의 실제 요청은 전달 헤더(forwarded headers)로 &lt;code&gt;https&lt;&#x2F;code&gt;가 되므로 워밍도 &lt;code&gt;https&lt;&#x2F;code&gt;로 보낸다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;시간 상한이 비동기 부분에만 걸려 있었다.&lt;&#x2F;strong&gt; &lt;code&gt;WaitAsync&lt;&#x2F;code&gt;는 메서드가 처음 &lt;code&gt;await&lt;&#x2F;code&gt;에 도달한 뒤에야 붙는다. 생성자나 JIT에서 동기적으로 막히면 포트가 영원히 열리지 않는다. &lt;code&gt;Task.Run&lt;&#x2F;code&gt;으로 감싸서 해결했다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;메트릭은 억제되지 않는다.&lt;&#x2F;strong&gt; 로컬 수집 서버로 확인해 보니 요청 트레이스는 억제됐지만, &lt;code&gt;http.server.request.duration&lt;&#x2F;code&gt; 메트릭에는 약 2초짜리 샘플이 레플리카마다 하나 들어갔다. 테스트만 보고 &quot;억제된다&quot;고 믿었다면 몰랐을 사실이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;측정 환경이 거짓말을 한다.&lt;&#x2F;strong&gt; 첫 로컬 측정에서는 죽인 줄 알았던 프로세스가 살아 있어서 모든 요청이 1ms 미만으로 나왔다. Apple Silicon에서 amd64 이미지를 에뮬레이션으로 돌리면 JIT이 부풀려 보인다. 측정용 데이터베이스의 스키마가 뒤처져 500이 났다. 세 경우 모두 &lt;strong&gt;결과가 이상하면 시스템보다 측정 방법을 먼저 의심했다&lt;&#x2F;strong&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;테스트는 7개다. 테스트가 정말 무언가를 지키는지 보려고, 운영 코드를 일부러 여덟 가지로 망가뜨리고(마크 순서, 억제 제거·확대, catch, 시간 상한, &lt;code&gt;Task.Run&lt;&#x2F;code&gt;, scheme, 스코프 해제) 각각 테스트가 실패하는지 확인했다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;10-gyeolgwa-rokeol-ceugjeonggwa-prd-panjeong&quot;&gt;10. 결과: 로컬 측정과 prd 판정&lt;&#x2F;h2&gt;
+&lt;p&gt;prd와 같은 할당(0.5 vCPU, 1GiB)의 로컬 컨테이너에 실제 SQL Server·Redis·RabbitMQ와 가짜 토큰 발급자를 붙여 재었다. 첫 요청은 실제 토큰을 가진 세션 목록 조회다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;첫 요청 (3회)&lt;&#x2F;th&gt;&lt;th&gt;기동 완료&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;워밍 없음&lt;&#x2F;td&gt;&lt;td&gt;2,703 &#x2F; 2,177 &#x2F; 2,633ms&lt;&#x2F;td&gt;&lt;td&gt;9.0~9.9초&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;워밍 있음&lt;&#x2F;td&gt;&lt;td&gt;479 &#x2F; 373 &#x2F; 397ms&lt;&#x2F;td&gt;&lt;td&gt;11.7~11.8초&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;첫 요청은 약 6배 빨라졌고, 늘어난 약 2초는 포트가 열리기 전에 쓰여 사용자가 기다리지 않는다. 비용은 없어지지 않았다. &lt;strong&gt;사용자 대신 앱이 치르게 됐을 뿐이다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;로컬은 prd 첫 요청 7.2초 중 약 3분의 1만 재현했다. 그래서 효과는 prd에서 판정하기로 하고, 배포 전에 기준을 정해 두었다. 평일 새 인스턴스 100개 이상에서 첫 사용자 요청 p50이 2초 미만이면 합격이다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;prd-panjeong-habgyeog&quot;&gt;prd 판정: 합격&lt;&#x2F;h3&gt;
+&lt;p&gt;워밍은 2026-10-02 08:30Z부터 prd에서 돌았다. 6일 동안 397번 기동했고 모두 &lt;code&gt;&#x2F;alive=200&lt;&#x2F;code&gt;이었으며, 워밍에 걸린 시간은 p50 약 2.3초로 로컬(약 2.2초)과 거의 같았다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;prd, HTTP 요청만&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;워밍 전&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;워밍 후&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;인스턴스 (평일)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;705 (591)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;363 (256)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;첫 사용자 요청 p50&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;7,468ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;&lt;strong&gt;1,285ms&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;첫 사용자 요청 p90&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;10,109ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3,712ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;첫 요청 중 2초 초과&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;95.5%&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;34.7%&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;첫 요청과 겹친 요청 p50&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;7,539ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;2,490ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;첫 요청이 끝난 뒤의 요청 p50&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;304ms&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;277ms&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;처음 10개 요청 중 2초 초과, 인스턴스당&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3.05건&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1.55건&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;거짓 합격이 아니다.&lt;&#x2F;strong&gt; 워밍 후 인스턴스 369개에서 &lt;code&gt;GET &#x2F;alive&lt;&#x2F;code&gt; 기록은 0건이다. 워밍 요청이 텔레메트리로 새었다면 인스턴스마다 한 건씩 &quot;첫 요청&quot; 자리를 차지해, 지표가 저절로 좋아 보였을 것이다. 9번의 함정 1을 피한 덕이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;겹침도 줄었다.&lt;&#x2F;strong&gt; 첫 요청이 짧아지자 겹칠 창이 좁아져, 인스턴스당 겹친 요청이 1.50건에서 0.90건으로 줄었다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;엔드포인트별 잔여는 그대로다.&lt;&#x2F;strong&gt; 첫 요청이 끝난 뒤의 요청은 304ms에서 277ms로 거의 그대로다. 워밍이 덮지 않는 영역이라는 예상 그대로다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;판정하면서 밟은 함정도 하나 있다. 처음에는 표본 추출이 없다고 보고 &lt;code&gt;itemCount&lt;&#x2F;code&gt;(항상 1)만 확인했다. 실제로는 Azure Monitor가 요청을 표본 추출하고 있었고, 보존 비율은 요청의 사용자 지정 차원에 실려 있었다. 또 요청 테이블에는 메시지 소비자 스팬이 섞여 있어서, 첫 판정 숫자는 이를 걸러내지 않은 값이었다. 위 표는 HTTP 요청만으로 다시 낸 값이다. 판정은 인스턴스의 첫 요청을 보는데, 첫 기록이 100% 보존 구간에 있던 비율이 워밍 전후 모두 80%대라 비교는 유지된다. 교훈은 이렇다. &lt;strong&gt;텔레메트리로 판정할 때는 다른 집계(인그레스 메트릭)와 총량을 맞춰 보고, 테이블에 무엇이 섞여 있는지부터 확인한다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ajig-nameun-geos&quot;&gt;아직 남은 것&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;첫 요청의 잔여:&lt;&#x2F;strong&gt; p50 1.3초로, 같은 조건의 로컬(0.4초)보다 길고 34.7%는 여전히 2초를 넘는다. 로컬에 없는 prd 전용 경로(App Configuration, Key Vault, Azure SignalR, TLS Redis, Azure SQL)의 몫으로 보인다. 측정 전 추정이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;스케일 회전:&lt;&#x2F;strong&gt; 워밍 뒤에도 평일 인그레스 요청 1,000건당 컨테이너 시작은 3.26회에서 3.72회로 줄지 않았다. 콜드스타트의 느린 요청이 동시 요청 수를 부풀려 스스로 스케일아웃을 부른다는 가설은 데이터가 뒷받침하지 않았다. 이어서 측정해 보니, 기본 HTTP 스케일 규칙이 문서의 계산식과 달리 적은 요청에도 레플리카를 늘리고 있었다. 준비 비용을 옮겨도 레플리카는 업무시간 내내 태어나고 죽는다. 그 회전을 멈추는 것이 &lt;a href=&quot;&#x2F;ko&#x2F;azure&#x2F;replica-scale-rule&#x2F;&quot;&gt;2편&lt;&#x2F;a&gt;이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;기동 예산:&lt;&#x2F;strong&gt; 요청 파이프라인 조립 2.8초와 Azure App Configuration 1.1초. 사용자가 기다리는 시간은 아니지만 레플리카가 쓸모 있어지는 시점을 늦춘다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;돌아보면 두 가지가 판정을 믿을 만하게 만들었다. 하나는 &lt;strong&gt;배포 전에 합격선과 표본 수를 정해 둔 것&lt;&#x2F;strong&gt;이고, 다른 하나는 &lt;strong&gt;숫자가 좋게 나왔을 때 거짓 합격의 경로부터 막혔는지 확인한 것&lt;&#x2F;strong&gt;이다. 그리고 이 합격은 &quot;첫 요청이 빨라졌다&quot;까지의 합격이다. 레플리카가 생기는 횟수는 이 글의 합격 조건에 없었다.&lt;&#x2F;p&gt;
+&lt;p&gt;수치는 Application Insights의 요청·트레이스와 Container Apps 시스템 로그, 2026-09-11~2026-10-08이다. 프로브 종류와 기본값은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;azure&#x2F;container-apps&#x2F;health-probes&quot;&gt;Health probes in Azure Container Apps&lt;&#x2F;a&gt;를 봤다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

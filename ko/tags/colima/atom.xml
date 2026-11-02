@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - colima</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/colima/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-17T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/colima/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Docker 구성요소와 레이어: docker, dockerd, containerd, runc, Colima, Lima</title>
+        <published>2026-06-17T00:00:00+00:00</published>
+        <updated>2026-06-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/docker/component-and-layers/"/>
+        <id>https://emptyfridge.dev/ko/docker/component-and-layers/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/docker/component-and-layers/">&lt;p&gt;Colima를 쓰는 맥에서 &lt;code&gt;docker ps&lt;&#x2F;code&gt;를 쳤을 때 실제로 무슨 일이 일어나는지, 그리고
+docker &#x2F; Docker Desktop &#x2F; Colima &#x2F; Lima &#x2F; dockerd &#x2F; containerd &#x2F; runc 이 녀석들이
+어떻게 레이어로 맞물려 돌아가는지 정리해봤다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;sirijeu-mogca&quot;&gt;시리즈 목차&lt;&#x2F;h2&gt;
+&lt;p&gt;각 레이어를 더 자세히 다룬 글들. (5번째 레이어인 Linux 커널은 별도 글 없이 여기서만 다룬다.)&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;component-and-layers&#x2F;.&#x2F;layer1_docker_cli.md&quot;&gt;Layer 1 — docker CLI (클라이언트)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;component-and-layers&#x2F;.&#x2F;layer2_dockerd.md&quot;&gt;Layer 2 — dockerd (데몬 &#x2F; API 서버)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;component-and-layers&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;Layer 3 — containerd (컨테이너 런타임)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;component-and-layers&#x2F;.&#x2F;layer4_runc.md&quot;&gt;Layer 4 — runc (저수준 OCI 런타임)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Layer 5 — Linux 커널 (이 글에서 다룸)&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;baldani-doen-beogeu&quot;&gt;발단이 된 버그&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;docker ps&lt;&#x2F;code&gt;를 쳤더니 &lt;code&gt;Command `docker` not found&lt;&#x2F;code&gt;가 떴다. 원인은 Docker가
+&lt;strong&gt;아니었다&lt;&#x2F;strong&gt;:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Colima는 설치돼 있고 잘 돌아가고 있었다 (&lt;code&gt;runtime: docker&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;docker&lt;&#x2F;code&gt; CLI도 Homebrew로 설치돼 있었다
+(&lt;code&gt;&#x2F;opt&#x2F;homebrew&#x2F;Cellar&#x2F;docker&#x2F;&amp;lt;ver&amp;gt;&#x2F;bin&#x2F;docker&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;그런데 &lt;code&gt;&#x2F;opt&#x2F;homebrew&#x2F;bin&#x2F;&lt;&#x2F;code&gt;으로 &lt;strong&gt;심볼릭 링크가 안 걸려 있어서&lt;&#x2F;strong&gt; &lt;code&gt;$PATH&lt;&#x2F;code&gt;에
+없었던 것이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;해결:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;brew&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; link&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --overwrite&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; docker&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;brew link&lt;&#x2F;code&gt;는 formula가 설치된 파일들(이른바 &quot;Cellar&quot;)을 Homebrew의 &lt;code&gt;bin&#x2F;&lt;&#x2F;code&gt;
+(즉 &lt;code&gt;$PATH&lt;&#x2F;code&gt;에 들어있는 곳)으로 심볼릭 링크를 걸어준다. &lt;code&gt;--overwrite&lt;&#x2F;code&gt;는 목적지에
+이미 다른 파일이 있으면 그걸 덮어쓴다 — 예전에 깔았던 Docker Desktop의 잔재일
+가능성이 높다 (실제로 &lt;code&gt;~&#x2F;.docker&lt;&#x2F;code&gt; 디렉터리가 아직 남아 있었다).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;haegsim-gaenyeom&quot;&gt;핵심 개념&lt;&#x2F;h2&gt;
+&lt;p&gt;Docker&#x2F;OCI 컨테이너는 &lt;strong&gt;Linux&lt;&#x2F;strong&gt; 기술이다 — Linux 커널이 필요하다. 맥에는 Linux 커널이
+없으니까, 맥에서는 &lt;strong&gt;CLI 아래의 모든 것이 &quot;숨겨진 Linux VM을 만들고 맥이 거기에
+말을 걸 수 있게&quot; 하기 위해 존재한다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;jeonce-seutaeg-wieseo-araero&quot;&gt;전체 스택 (위에서 아래로)&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;┌─────────────────────────────────────────────────────────────┐&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│  1. docker CLI            &amp;quot;클라이언트&amp;quot; — 내가 입력하는 것       │  ← 나&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│     (docker ps, run...)                                       │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│            │ socket을 통해 Docker API(HTTP)로 말한다            │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│            ▼                                                   │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├─────────────────────────────────────────────────────────────┤&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│  2. dockerd               &amp;quot;서버&#x2F;데몬&amp;quot; — API 요청을 받고          │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│     (Docker daemon)        이미지&#x2F;네트워크를 관리                │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├─────────────────────────────────────────────────────────────┤&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│  3. containerd            컨테이너 런타임 — 이미지 pull,         │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│                            컨테이너 라이프사이클 관리            │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├─────────────────────────────────────────────────────────────┤&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│  4. runc                  저수준 OCI 런타임 — 커널 기능으로      │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│                            실제로 컨테이너를 생성                │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│                            (namespace, cgroup)                 │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├─────────────────────────────────────────────────────────────┤&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│  5. Linux 커널            컨테이너가 진짜로 필요로 하는 것        │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│     (맥에서는 VM 안에 존재)                                     │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;└─────────────────────────────────────────────────────────────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Docker Engine 자체는 &quot;server + api + client&quot; (레이어 1–2)다. 원래 Docker는
+&lt;strong&gt;모놀리식&lt;&#x2F;strong&gt;이었지만 (레이어 2–4가 한 프로그램), Docker가 아키텍처를 모듈화하면서
+&lt;code&gt;containerd&lt;&#x2F;code&gt;가 분리되어 나왔다 (Docker 1.11, 2016). 이후 Kubernetes의
+CRI(Container Runtime Interface)가 이 분리를 더욱 강화했고, 덕분에 Kubernetes
+같은 것들이 전체 Docker engine 없이도 &lt;code&gt;containerd&lt;&#x2F;code&gt;를 직접 쓸 수 있게 됐다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;gag-reieoga-matneun-il&quot;&gt;각 레이어가 맡는 일&lt;&#x2F;h3&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;&#x2F;th&gt;&lt;th&gt;구성요소&lt;&#x2F;th&gt;&lt;th&gt;하는 일&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;docker CLI&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;em&gt;클라이언트&lt;&#x2F;em&gt;. 내 명령을 Docker API(HTTP) 요청으로 바꿔 보낸다. 자기 스스로는 아무것도 실행하지 않는다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;dockerd&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;em&gt;서버&#x2F;데몬&lt;&#x2F;em&gt;. API 요청을 받아 이미지·네트워크·볼륨을 관리한다. 실제 실행은 아래로 위임한다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;containerd&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;em&gt;컨테이너 런타임&lt;&#x2F;em&gt;. 이미지를 pull&#x2F;저장하고, 컨테이너 상태를 추적하며 라이프사이클을 감독한다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;runc&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;em&gt;저수준 런타임&lt;&#x2F;em&gt;. Linux 커널 기능(namespace + cgroup)으로 실제로 컨테이너를 만든다. 컨테이너 시작 때 잠깐 돌고 끝난다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;Linux 커널&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;컨테이너의 본질: Linux 커널 위에서 격리된 프로세스. 맥에서는 VM 안에만 존재한다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;socket-cliwa-demoneul-isneun-tongro&quot;&gt;socket — CLI와 데몬을 잇는 통로&lt;&#x2F;h2&gt;
+&lt;p&gt;docker CLI와 데몬은 별개의 프로그램이다. 둘은 &lt;strong&gt;Unix domain socket&lt;&#x2F;strong&gt;으로 대화하는데,
+이건 파일처럼 보이지만 데이터를 저장하지 않는다 — 살아있는 연결 지점이다
+(&quot;서랍이 아니라 문&quot;).&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;$ ls -l ~&#x2F;.colima&#x2F;default&#x2F;docker.sock&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;srw------- 1 bds0900 staff 0 Jun 11 13:05 ...docker.sock&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;│          └─ 크기 0: 저장된 게 없다. 데이터는 *통과*할 뿐&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;└─ 맨 앞 &amp;#39;s&amp;#39; = socket (파일 &amp;#39;-&amp;#39; 도 디렉터리 &amp;#39;d&amp;#39; 도 아님)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;s&lt;&#x2F;code&gt; 플래그 → socket 확정 (&lt;code&gt;stat&lt;&#x2F;code&gt;은 &lt;code&gt;type: Socket&lt;&#x2F;code&gt;, &lt;code&gt;file&lt;&#x2F;code&gt;은 &lt;code&gt;socket&lt;&#x2F;code&gt;이라 한다).&lt;&#x2F;li&gt;
+&lt;li&gt;크기 &lt;code&gt;0&lt;&#x2F;code&gt; → 저장소가 아니라 통로다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;srw-------&lt;&#x2F;code&gt; → Colima 환경에서는 소유자만 데몬에 말을 걸 수 있다. 표준 Linux Docker는 &lt;code&gt;srw-rw----&lt;&#x2F;code&gt;로 &lt;code&gt;docker&lt;&#x2F;code&gt; 그룹 멤버도 접근을 허용한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;docker ps&lt;&#x2F;code&gt;를 치면 CLI는 이 socket을 열어 HTTP 요청(&lt;code&gt;GET &#x2F;containers&#x2F;json&lt;&#x2F;code&gt;)을 쓰고
+응답을 읽는다. socket 파일은 &lt;strong&gt;맥&lt;&#x2F;strong&gt;에 있지만, 그게 닿는 데몬은 &lt;strong&gt;Linux VM&lt;&#x2F;strong&gt; 안에서
+돈다 — 그 경계를 넘겨주는 일을 Colima가 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;docker-desktop-vs-colima-vs-lima&quot;&gt;Docker Desktop vs Colima vs Lima&lt;&#x2F;h2&gt;
+&lt;p&gt;이 셋은 새로운 레이어가 아니다. &lt;strong&gt;레이어 2–5(VM + 그 안의 데몬 스택)를 제공하는
+세 가지 다른 방법&lt;&#x2F;strong&gt;일 뿐이다. 맨 위의 &lt;code&gt;docker&lt;&#x2F;code&gt; CLI(레이어 1)는 셋 다 동일하다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        ┌──────────── docker CLI (레이어 1) ────────────┐&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        │   아래에서 돌고 있는 데몬에게 말을 건다          │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        └───────────────────────────────────────────────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                            ▲  ▲  ▲&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;          ┌─────────────────┘  │  └──────────────────┐&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; ┌────────────────┐  ┌──────────────────┐  ┌──────────────────┐&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; │ Docker Desktop │  │     Colima       │  │   (raw) Lima     │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; │ 자체 VM + 데몬 │  │  Lima를 감쌈 ────┼──┼──► Linux VM을    │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; │ 전체 + GUI     │  │  (&amp;quot;런타임 프록시&amp;quot;)│  │   제공            │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; └────────────────┘  └──────────────────┘  └──────────────────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;Lima&lt;&#x2F;strong&gt; (&lt;em&gt;Li&lt;&#x2F;em&gt;nux &lt;em&gt;ma&lt;&#x2F;em&gt;chines)는 &quot;Linux 가상머신 레이어를 제공&quot;한다. 목표 자체가
+&lt;em&gt;containerd를 널리 쓰이게 하는 것&lt;&#x2F;em&gt;이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Colima&lt;&#x2F;strong&gt; (&lt;em&gt;Co&lt;&#x2F;em&gt;ntainers on &lt;em&gt;Lima&lt;&#x2F;em&gt;)는 &quot;컨테이너 런타임 실행 프록시&quot;로 &lt;strong&gt;Lima를
+감싼다&lt;&#x2F;strong&gt; — Lima한테 &quot;Linux VM 만들고, 데몬 깔고, socket 노출해줘&quot;라고 시킨다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;Docker Desktop&lt;&#x2F;strong&gt;은 레이어 2–5에 해당하는 것을 자체적으로 다 번들하고, 여기에
+GUI·설정 UI·자동 업데이트·Compose·옵션 Kubernetes 클러스터까지 얹는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;&lt;strong&gt;Docker Desktop&lt;&#x2F;strong&gt;&lt;&#x2F;th&gt;&lt;th&gt;&lt;strong&gt;Colima&lt;&#x2F;strong&gt;&lt;&#x2F;th&gt;&lt;th&gt;&lt;strong&gt;Lima (raw)&lt;&#x2F;strong&gt;&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;VM 제공&lt;&#x2F;td&gt;&lt;td&gt;자체 VM&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;Lima&lt;&#x2F;strong&gt; 경유&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;자기 자신&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;dockerd&#x2F;containerd 제공&lt;&#x2F;td&gt;&lt;td&gt;번들&lt;&#x2F;td&gt;&lt;td&gt;VM 안에 세팅&lt;&#x2F;td&gt;&lt;td&gt;직접 설정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;지향점&lt;&#x2F;td&gt;&lt;td&gt;GUI + 올인원&lt;&#x2F;td&gt;&lt;td&gt;컨테이너 우선, CLI&lt;&#x2F;td&gt;&lt;td&gt;범용 Linux VM&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;관계&lt;&#x2F;td&gt;&lt;td&gt;독립&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;Colima → Lima → VM&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;토대&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Docker Desktop에서 Colima로 넘어가는 주된 이유는 &lt;strong&gt;라이선스&lt;&#x2F;strong&gt;(규모 큰 회사는
+Docker Desktop 유료 구독이 필요하지만 Colima는 무료 OSS)와 &lt;strong&gt;가볍고 CLI 중심&lt;&#x2F;strong&gt;
+(항상 떠 있는 GUI 앱이 없음)이라는 점이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;gag-seulroseul-caeuneun-jepumdeul&quot;&gt;각 슬롯을 채우는 제품들&lt;&#x2F;h2&gt;
+&lt;p&gt;모든 레이어는 고정된 제품이 아니라 &lt;em&gt;갈아끼울 수 있는 슬롯&lt;&#x2F;em&gt;이다:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;#&lt;&#x2F;th&gt;&lt;th&gt;레이어 (역할)&lt;&#x2F;th&gt;&lt;th&gt;표준 도구&lt;&#x2F;th&gt;&lt;th&gt;다른 제품들&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1&lt;&#x2F;td&gt;&lt;td&gt;클라이언트 (CLI)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;docker&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;nerdctl&lt;&#x2F;code&gt;, &lt;code&gt;podman&lt;&#x2F;code&gt;, &lt;code&gt;crictl&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;2&lt;&#x2F;td&gt;&lt;td&gt;데몬 &#x2F; API 서버&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Podman(데몬리스)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3&lt;&#x2F;td&gt;&lt;td&gt;런타임 (고수준)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;containerd&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;CRI-O&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;4&lt;&#x2F;td&gt;&lt;td&gt;런타임 (저수준, OCI)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;crun&lt;&#x2F;code&gt;, gVisor(&lt;code&gt;runsc&lt;&#x2F;code&gt;), Kata, &lt;code&gt;youki&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;5&lt;&#x2F;td&gt;&lt;td&gt;Linux 커널&lt;&#x2F;td&gt;&lt;td&gt;Linux&lt;&#x2F;td&gt;&lt;td&gt;(VM 안에서 제공)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;—&lt;&#x2F;td&gt;&lt;td&gt;VM 엔진&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;Docker Desktop&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;Lima, Rancher Desktop, Podman Machine, Minikube&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;—&lt;&#x2F;td&gt;&lt;td&gt;컨테이너 래퍼&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;Docker Desktop&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;Colima, Rancher Desktop, OrbStack&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;—&lt;&#x2F;td&gt;&lt;td&gt;하이퍼바이저 (macOS)&lt;&#x2F;td&gt;&lt;td&gt;Apple Virtualization.framework&lt;&#x2F;td&gt;&lt;td&gt;Hypervisor.framework, QEMU&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;i-maege-maepinghamyeon&quot;&gt;이 맥에 매핑하면&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 레이어 1  클라이언트         →  docker            (Homebrew, &#x2F;opt&#x2F;homebrew&#x2F;bin&#x2F;docker)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; ─ socket ─                 →  docker.sock       (~&#x2F;.colima&#x2F;default&#x2F;docker.sock)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 레이어 2  데몬&#x2F;API          →  dockerd           (VM 안)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 레이어 3  런타임 (고수준)    →  containerd        (VM 안)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 레이어 4  런타임 (저수준)    →  runc              (VM 안)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 레이어 5  Linux 커널        →  Linux (aarch64)   (VM 안)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; ─────────────────────────────────────────────────────────────────&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; VM 래퍼                    →  Colima            (&amp;quot;런타임 프록시&amp;quot;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; VM 엔진                    →  Lima              (VM을 부팅)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; 하이퍼바이저               →  Apple Virtualization.framework&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;colima status&lt;&#x2F;code&gt;를 보면 VM이 &lt;code&gt;aarch64&lt;&#x2F;code&gt;에서 &lt;em&gt;macOS Virtualization.Framework&lt;&#x2F;em&gt;를
+쓰고, docker socket은 &lt;code&gt;~&#x2F;.colima&#x2F;default&#x2F;docker.sock&lt;&#x2F;code&gt;에 있다고 나온다.&lt;&#x2F;p&gt;
+&lt;p&gt;VM 안에서 레이어 2–4가 도는 걸 보려면:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;colima&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; sh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -c&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;ps -e -o pid,comm | grep -E &amp;quot;dockerd|containerd|runc&amp;quot;&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# dockerd와 containerd는 계속 떠 있다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# runc는 보통 안 보인다 — 컨테이너 시작 시 잠깐 돌고 바로 끝나기 때문&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# (docker run 도중에만 잡힌다).&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;han-mundan-yoyag&quot;&gt;한 문단 요약&lt;&#x2F;h2&gt;
+&lt;p&gt;컨테이너를 실제로 돌리는 &lt;strong&gt;수직 스택은 하나&lt;&#x2F;strong&gt;다:
+&lt;code&gt;docker CLI → dockerd → containerd → runc → Linux 커널&lt;&#x2F;code&gt;. 맥에서는 그 커널이
+&lt;strong&gt;Linux VM&lt;&#x2F;strong&gt; 안에만 존재한다. &lt;strong&gt;Docker Desktop, Colima, Lima는 이 스택의 단계가
+아니라, 이 스택을 &lt;em&gt;제공하는&lt;&#x2F;em&gt; 경쟁 방식들이다.&lt;&#x2F;strong&gt; Lima는 VM을 제공하고, Colima는
+Lima를 부려서 데몬까지 세팅하는 컨테이너 중심 래퍼이며, Docker Desktop은 자체
+VM + 데몬을 번들한 올인원 GUI 앱이다. 맨 위의 &lt;code&gt;docker&lt;&#x2F;code&gt; CLI는 무엇을 골랐든
+상관하지 않는다 — 그냥 socket을 열고, 듣고 있는 데몬에게 Docker API로 말할 뿐이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;emptyfridge.dev — Docker 구성요소 아키텍처: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;docker&#x2F;&quot;&gt;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;docker&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,825 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Transactional Outbox Pattern: Keeping the Database and Broker in Sync
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Transactional Outbox Pattern: Keeping the Database and Broker in Sync
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-09">July 09, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>14 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2658 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/masstransit/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>MassTransit</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/outbox/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>outbox</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/messaging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>messaging</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/ef-core/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>EF Core</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/distributed-systems/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>distributed systems</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>The transactional outbox pattern is easiest to understand from the failure it prevents.</p>
+<p>An agent sends a reply in a chat system. The API stores the reply in SQL Server, returns <code>200 OK</code>, and the agent sees the message in the dashboard. But the customer never receives it because the process died before publishing the RabbitMQ event that would call WhatsApp.</p>
+<p>The database says the reply exists. RabbitMQ never received the message. The consumer never ran. No error. No alert.</p>
+<p>That is the dual-write problem: one request tries to update two independent systems, the database and the broker, but they do not share one transaction. At scale, "almost always works" (say 99.9%) is still a silent data-integrity bug — unacceptable for customer-visible or financial events.</p>
+<hr />
+<h2 id="1-the-unsafe-version">1. The unsafe version</h2>
+<p>The first implementation people usually write is:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>session</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddOutboundMessage</span><span>(text)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">await</span><span> dbContext</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">SaveChangesAsync</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">await</span><span> publishEndpoint</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Publish</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> MessageCreated</span><span>(</span><span style="color: #F29668;">..</span><span>.))</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>This looks fine on the happy path, but it contains a dangerous gap.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>SaveChangesAsync() commits to SQL</span></span>
+<span class="giallo-l"><span>    |</span></span>
+<span class="giallo-l"><span>    |  process crash, broker outage, timeout, pod restart</span></span>
+<span class="giallo-l"><span>    v</span></span>
+<span class="giallo-l"><span>Publish(...) never reaches RabbitMQ</span></span></code></pre>
+<p>After that gap:</p>
+<table><thead><tr><th>System</th><th>State</th></tr></thead><tbody>
+<tr><td>SQL Server</td><td>The business row exists</td></tr>
+<tr><td>RabbitMQ</td><td>The integration event is missing</td></tr>
+<tr><td>Consumer</td><td>Never runs</td></tr>
+</tbody></table>
+<p>This is a <strong>lost event</strong>.</p>
+<p>Reversing the order does not fix it:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #F29668;">await</span><span> publishEndpoint</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Publish</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> MessageCreated</span><span>(</span><span style="color: #F29668;">..</span><span>.))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">await</span><span> dbContext</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">SaveChangesAsync</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Now a consumer can observe an event for a database change that later rolls back. That is a <strong>phantom event</strong>.</p>
+<table><thead><tr><th>Order</th><th>Failure window</th><th>Result</th></tr></thead><tbody>
+<tr><td>DB first, then publish</td><td>Commit succeeds, publish fails</td><td>Lost event</td></tr>
+<tr><td>Publish first, then DB</td><td>Publish succeeds, commit fails</td><td>Phantom event</td></tr>
+</tbody></table>
+<p>The problem is not the order. The problem is trying to make two independent systems behave like one atomic write.</p>
+<h3 id="two-hops-only-one-is-fragile">Two hops, only one is fragile</h3>
+<p>It helps to split the path:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[app commits to SQL] ── hop A ──▶ [message on RabbitMQ] ── hop B ──▶ [consumer runs]</span></span></code></pre>
+<ul>
+<li><strong>Hop B (broker → consumer)</strong> is already reliable enough in practice. MassTransit retries, redelivers, and dead-letters. You do not need an outbox for hop B.</li>
+<li><strong>Hop A (app → broker)</strong> has no transactional guarantee. <code>Publish</code> is a network call to a separate system, not part of the DB transaction. That is where events vanish silently.</li>
+</ul>
+<p>So when people say "the integration handler sometimes does not fire," the handler usually <em>would</em> run 100% of the time <strong>if the message reached the broker</strong>. The real bug is that the message sometimes never reaches the broker.</p>
+<p>Typical hop-A failure modes (all leave the DB committed with nothing on the bus):</p>
+<ol>
+<li>Broker down or unreachable — <code>Publish</code> throws.</li>
+<li>Publish times out or the connection drops mid-call.</li>
+<li>Process dies in the gap after commit (pod eviction, deploy, OOM) before publish.</li>
+<li>Publish "succeeds" locally but the message never lands durably (client buffer lost, broker crash before flush).</li>
+</ol>
+<hr />
+<h2 id="2-the-outbox-idea">2. The outbox idea</h2>
+<p>Instead of publishing to RabbitMQ inside the request, write the business change and a "publish this later" record in the <strong>same database transaction</strong>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="sql"><span class="giallo-l"><span style="color: #FF8F40;">BEGIN TRANSACTION</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">INSERT INTO</span><span> SessionMessages (...);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">INSERT INTO</span><span> OutboxMessages</span></span>
+<span class="giallo-l"><span>    (Id, MessageType, Payload, CorrelationId, OccurredAt, ProcessedAt)</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">VALUES</span></span>
+<span class="giallo-l"><span>    (..., </span><span style="color: #AAD94C;">&#39;DispatchMessageCreated&#39;</span><span>, </span><span style="color: #AAD94C;">&#39;{...}&#39;</span><span>, ..., </span><span style="color: #F07178;">SYSUTCDATETIME</span><span>(), </span><span style="color: #FF8F40;">NULL</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">COMMIT</span><span>;</span></span></code></pre>
+<p>Now the commit has only two possible outcomes:</p>
+<table><thead><tr><th>Commit result</th><th>Business row</th><th>Outbox row</th></tr></thead><tbody>
+<tr><td>Success</td><td>Present</td><td>Present</td></tr>
+<tr><td>Failure / rollback</td><td>Absent</td><td>Absent</td></tr>
+</tbody></table>
+<p>There is no state where the message is saved but the intent to publish is missing.</p>
+<h3 id="why-is-the-db-write-safe-if-the-db-is-also-external">Why is the DB write "safe" if the DB is also external?</h3>
+<p>The outbox write is <strong>not a second independent write</strong>. It is part of the <em>same</em> transaction as the business change. That converts partial failure into all-or-nothing.</p>
+<table><thead><tr><th>Pattern</th><th>Writes</th><th>Middle state if one fails</th></tr></thead><tbody>
+<tr><td>Direct publish</td><td>SQL + RabbitMQ (two systems)</td><td>Yes — state saved, event lost (or phantom)</td></tr>
+<tr><td>Outbox</td><td>SQL only (business row + outbox row)</td><td>No — both present or both rolled back</td></tr>
+</tbody></table>
+<p>If the commit fails, the business row did not save either. The command returns an error, the caller retries, and nothing half-happened. Even a crash mid-commit is safe under SQL Server WAL: the transaction is fully applied or fully discarded.</p>
+<p>RabbitMQ is still not updated at commit time. That is intentional. After commit, a background <strong>relay</strong> reads the outbox table and publishes with retries. Failures on that path cause <strong>delay</strong>, not <strong>loss</strong>: publish fails → row stays unprocessed → retried; crash after publish before "mark processed" → republished (duplicate) → consumer dedupes.</p>
+<p>The outbox row turns "I hope this process survives long enough to publish" into "the database durably records that this event must be published."</p>
+<p>In a multi-context system (several <code>DbContext</code>s / bounded contexts), EF Core's built-in single-context outbox often does not fit. Each context typically owns its own <code>OutboxMessage</code> table and its own relay.</p>
+<hr />
+<h2 id="3-what-an-outbox-row-contains">3. What an outbox row contains</h2>
+<p>An <code>OutboxMessage</code> row is a durable publish job.</p>
+<table><thead><tr><th>Column</th><th>Purpose</th></tr></thead><tbody>
+<tr><td><code>Id</code></td><td>Row identity</td></tr>
+<tr><td><code>MessageType</code></td><td>CLR type name used by the relay to deserialize the payload</td></tr>
+<tr><td><code>Payload</code></td><td>Serialized integration event</td></tr>
+<tr><td><code>CorrelationId</code></td><td>Connects related work across hops and helps dedupe</td></tr>
+<tr><td><code>OccurredAt</code></td><td>When the event was staged (used for claim order)</td></tr>
+<tr><td><code>ProcessedAt</code></td><td><code>NULL</code> until the relay successfully publishes</td></tr>
+<tr><td><code>Attempts</code></td><td>Number of row-level failures</td></tr>
+<tr><td><code>FaultedAt</code></td><td>Set when the row is parked as poison</td></tr>
+<tr><td><code>LockedBy</code>, <code>LockedAt</code>, <code>LockedUntil</code></td><td>Lease fields so multiple relay instances can coordinate</td></tr>
+</tbody></table>
+<p>Before the relay publishes:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Id | MessageType              | ProcessedAt | Attempts</span></span>
+<span class="giallo-l"><span>1  | DispatchMessageCreated   | NULL        | 0</span></span></code></pre>
+<p>After a successful publish:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Id | MessageType              | ProcessedAt                | Attempts</span></span>
+<span class="giallo-l"><span>1  | DispatchMessageCreated   | 2026-07-09 10:00:07 +00:00 | 0</span></span></code></pre><h3 id="mark-then-sweep-not-delete-on-publish">Mark-then-sweep (not delete-on-publish)</h3>
+<p>On success the relay does <strong>not</strong> delete the row. It marks it:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>staged       ProcessedAt = NULL, FaultedAt = NULL   ← claimable</span></span>
+<span class="giallo-l"><span>    │  relay publishes OK</span></span>
+<span class="giallo-l"><span>    v</span></span>
+<span class="giallo-l"><span>processed    ProcessedAt = &lt;timestamp&gt;              ← stays, no longer claimable</span></span>
+<span class="giallo-l"><span>    │  ~7 days later</span></span>
+<span class="giallo-l"><span>    v</span></span>
+<span class="giallo-l"><span>deleted      retention pass removes it</span></span></code></pre><table><thead><tr><th>State</th><th style="text-align: center"><code>ProcessedAt</code></th><th style="text-align: center"><code>FaultedAt</code></th><th style="text-align: center">In table?</th><th>Deleted?</th></tr></thead><tbody>
+<tr><td>Pending</td><td style="text-align: center">NULL</td><td style="text-align: center">NULL</td><td style="text-align: center">yes</td><td>—</td></tr>
+<tr><td>Published OK</td><td style="text-align: center">set</td><td style="text-align: center">NULL</td><td style="text-align: center">yes</td><td>after retention (e.g. 7 days)</td></tr>
+<tr><td>Fault-parked</td><td style="text-align: center">NULL</td><td style="text-align: center">set</td><td style="text-align: center">yes</td><td><strong>never</strong> auto (operator only)</td></tr>
+</tbody></table>
+<p>Why mark-then-sweep instead of delete-on-publish:</p>
+<ul>
+<li>Publish path stays a cheap single-column update.</li>
+<li>Batched deletes avoid lock/index churn on the hot path.</li>
+<li>A short audit window answers "was this published, and when?"</li>
+</ul>
+<p>Faulted rows are intentionally left for operators. Auto-deleting poison messages hides the problem. (They also keep payload data — something ops and privacy reviews must account for.)</p>
+<hr />
+<h2 id="4-where-the-row-is-created">4. Where the row is created</h2>
+<p>In the implementation I studied, command handlers do not manually insert outbox rows everywhere. The flow is built around domain events and EF Core <code>SaveChanges</code>.</p>
+<p>The "before" shape was a <strong>post-commit</strong> domain event handler (or command code) that injected <code>IPublishEndpoint</code> and published directly — no durable record of intent. The "after" shape stages a row in the same transaction:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// Before: direct publish after commit — lossy if process dies in the gap</span></span>
+<span class="giallo-l"><span style="color: #F29668;">await</span><span> publishEndpoint</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Publish</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> DispatchInboundSessionMessageAdded</span><span>(</span><span style="color: #F29668;">..</span><span>.))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// After: stage in the same SaveChanges transaction; relay publishes later</span></span>
+<span class="giallo-l"><span>integrationEventOutbox</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Add</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> DispatchInboundSessionMessageAdded</span><span>(</span><span style="color: #F29668;">..</span><span>.))</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Command handler</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  | aggregate mutation raises a domain event in memory</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>SaveChangesAsync()</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  | PRE-COMMIT: DomainEventPublishInterceptor runs transactional handlers</span></span>
+<span class="giallo-l"><span>  |   |</span></span>
+<span class="giallo-l"><span>  |   v</span></span>
+<span class="giallo-l"><span>  | ITransactionalDomainEventHandler&lt;T&gt;</span></span>
+<span class="giallo-l"><span>  |   |</span></span>
+<span class="giallo-l"><span>  |   v</span></span>
+<span class="giallo-l"><span>  | integrationEventOutbox.Add(integrationEvent)</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  | EF inserts business rows + OutboxMessage rows</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>COMMIT</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>POST-COMMIT handlers: SignalR, cache refresh, other non-transactional side effects</span></span></code></pre>
+<p>The important detail is that <code>integrationEventOutbox.Add(...)</code> does not publish anything. It is just an EF tracked insert:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public void</span><span style="color: #FFB454;"> Add</span><span>(</span><span style="color: #59C2FF;">IIntegrationEvent integrationEvent</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    =&gt;</span><span> dbContext</span></span>
+<span class="giallo-l"><span style="color: #F29668;">        .</span><span style="color: #FFB454;">Set</span><span>&lt;</span><span style="color: #59C2FF;">OutboxMessage</span><span>&gt;()</span></span>
+<span class="giallo-l"><span style="color: #F29668;">        .</span><span style="color: #FFB454;">Add</span><span>(OutboxMessage</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Create</span><span>(integrationEvent))</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>"Handling" the outbox message therefore splits into two moments, and neither is an "integration-event publish interceptor":</p>
+<table><thead><tr><th>Stage</th><th>When</th><th>By what</th></tr></thead><tbody>
+<tr><td><strong>Persisted</strong></td><td>Synchronously, at commit of the triggering <code>SaveChangesAsync</code></td><td>Ordinary EF change tracking after <code>Add</code></td></tr>
+<tr><td><strong>Published</strong></td><td>Asynchronously, on the next relay tick (often 0–5s)</td><td><code>OutboxRelayService</code> background poller</td></tr>
+</tbody></table>
+<p>There is no <code>IntegrationEventPublishInterceptor</code> by design. Domain events are dispatched <em>by</em> an interceptor (<code>DomainEventPublishInterceptor</code>); integration events are <em>not</em>. An interceptor that published on commit would reintroduce the crash-in-the-gap problem the outbox exists to remove.</p>
+<p>Rules that keep staging safe:</p>
+<ul>
+<li>A transactional handler <strong>never</strong> calls <code>SaveChangesAsync</code> itself. It only <code>Add</code>s and rides the triggering save.</li>
+<li>If a transactional handler throws, the whole save fails — business state and publish intent succeed or fail together.</li>
+<li>Integration events that other contexts must receive → pre-commit transactional handlers.</li>
+<li>SignalR / cache / UI → post-commit handlers (must never roll back a successful commit).</li>
+</ul>
+<table><thead><tr><th>Work</th><th>Phase</th><th>Reason</th></tr></thead><tbody>
+<tr><td>Integration event that other contexts must receive</td><td>Pre-commit transactional handler</td><td>Must commit atomically with business state</td></tr>
+<tr><td>SignalR push, cache refresh, UI notification</td><td>Post-commit handler</td><td>Should not roll back a successful business commit</td></tr>
+</tbody></table>
+<hr />
+<h2 id="5-what-the-relay-does">5. What the relay does</h2>
+<p>The relay is the background loop that turns durable outbox rows into RabbitMQ messages. It is the <strong>retry-from-durable-record</strong> process: something has to act on the staged intent with retries, because the request path cannot (broker may be down, process may die) and the consumer cannot (it only runs once the message arrives).</p>
+<p>There is typically one relay per <code>DbContext</code> / bounded context, because each context owns its own outbox table. A bad tick is logged and does not kill the loop.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>every ~5 seconds:</span></span>
+<span class="giallo-l"><span>  claim a batch of unprocessed rows</span></span>
+<span class="giallo-l"><span>  publish each claimed row to RabbitMQ</span></span>
+<span class="giallo-l"><span>  mark successfully published rows as processed</span></span>
+<span class="giallo-l"><span>  delete old processed rows past retention</span></span>
+<span class="giallo-l"><span>  measure backlog (e.g. oldest eligible age)</span></span></code></pre><h3 id="claim">Claim</h3>
+<p>Multiple pods may run the same relay, so a row is claimed with a <strong>lease</strong> (for example ~120 seconds), often via a multi-step conditional update:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>ProcessedAt IS NULL</span></span>
+<span class="giallo-l"><span>AND FaultedAt IS NULL</span></span>
+<span class="giallo-l"><span>AND (LockedUntil IS NULL OR LockedUntil &lt; now)</span></span>
+<span class="giallo-l"><span>ORDER BY OccurredAt, Id</span></span></code></pre>
+<p>Ordering by <code>OccurredAt</code> (not a random-sorted Guid <code>Id</code>) keeps "publish oldest first" meaningful within a table. The relay sets <code>LockedBy</code> / <code>LockedUntil</code>. If the pod dies, the lease expires and another relay can claim the row. Clock authority for lease and eligibility should be the database (e.g. SQL Server <code>SYSDATETIMEOFFSET()</code>), not individual app clocks.</p>
+<p>A typical claim batch size is on the order of 100 rows per tick. The lease makes multi-replica relays <strong>failover</strong>, not systematic duplicators — though claim-loss still contributes to at-least-once delivery.</p>
+<h3 id="publish-and-mark">Publish and mark</h3>
+<p>For each claimed row, the relay:</p>
+<ol>
+<li>Resolves <code>MessageType</code> (unresolvable type → fault immediately)</li>
+<li>Deserializes <code>Payload</code></li>
+<li>Calls <code>bus.Publish(...)</code> (with a publish timeout)</li>
+<li>Updates <code>ProcessedAt</code> if publish succeeds and the lease is still held</li>
+</ol>
+<p>If mark-processed affects zero rows (lease lost), another relay may republish — again, at-least-once.</p>
+<p>Failure handling is different depending on the failure:</p>
+<table><thead><tr><th>Situation</th><th>Relay behavior</th></tr></thead><tbody>
+<tr><td>Broker down or publish timeout</td><td>Abort the batch; <strong>do not</strong> consume an attempt</td></tr>
+<tr><td>One row has bad payload or another row-level error</td><td>Increment <code>Attempts</code>, set backoff via <code>LockedUntil</code></td></tr>
+<tr><td>Typical backoff</td><td>Exponential, e.g. <code>min(2^attempts × 30s, 1h)</code></td></tr>
+<tr><td>Row keeps failing</td><td>Park it with <code>FaultedAt</code> after a limit (e.g. 5 attempts)</td></tr>
+<tr><td>Unresolvable message type</td><td>Fault immediately</td></tr>
+<tr><td>Relay crashes after publish but before marking processed</td><td>Row is published again later</td></tr>
+</tbody></table>
+<p>The last case is why this pattern gives <strong>at-least-once</strong> delivery, not exactly-once delivery.</p>
+<hr />
+<h2 id="6-at-least-once-means-consumers-must-be-idempotent">6. At-least-once means consumers must be idempotent</h2>
+<p>The outbox prevents silent loss after a successful commit, but it does not prevent duplicates.</p>
+<p>This can happen:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>relay publishes to RabbitMQ</span></span>
+<span class="giallo-l"><span>consumer receives the event</span></span>
+<span class="giallo-l"><span>relay crashes before ProcessedAt is written</span></span>
+<span class="giallo-l"><span>lease expires</span></span>
+<span class="giallo-l"><span>another relay publishes the same row again</span></span>
+<span class="giallo-l"><span>consumer receives the same event again</span></span></code></pre>
+<p>That duplicate is acceptable only if the consumer is idempotent.</p>
+<p>Common strategies:</p>
+<table><thead><tr><th>Strategy</th><th>Example</th></tr></thead><tbody>
+<tr><td>Existing-state check</td><td>If the message is already processed, return</td></tr>
+<tr><td>Unique business key</td><td>WhatsApp <code>wamid</code> unique index prevents duplicate inbound messages</td></tr>
+<tr><td><code>CorrelationId</code> dedupe</td><td>Skip work already recorded for this correlation (often with a unique index)</td></tr>
+<tr><td>State machine guard</td><td>Ignore a stale <code>Delivered</code> event if the message is already terminal</td></tr>
+<tr><td>Snapshot staleness guard</td><td>Event carries a timestamp/version; consumer skips if state is newer</td></tr>
+</tbody></table>
+<p>The mental model is: the relay guarantees "you will be told at least once"; the consumer guarantees "telling me twice will not corrupt state."</p>
+<hr />
+<h2 id="7-worked-example-inbound-whatsapp-message">7. Worked example: inbound WhatsApp message</h2>
+<p>An inbound webhook is a good example because it crosses several contexts and shows the repeating unit three times.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Meta webhook</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>TXN 1 - WhatsApp DB</span></span>
+<span class="giallo-l"><span>  store raw WhatsappEnvelope</span></span>
+<span class="giallo-l"><span>  stage outbox rows (same SaveChanges):</span></span>
+<span class="giallo-l"><span>    - envelope to message processing</span></span>
+<span class="giallo-l"><span>    - template status check</span></span>
+<span class="giallo-l"><span>    - account status check</span></span>
+<span class="giallo-l"><span>    - broadcast status check</span></span>
+<span class="giallo-l"><span>  commit</span></span>
+<span class="giallo-l"><span>  return 200 to Meta          ← nothing on RabbitMQ yet; delivery is now a DB guarantee</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>WhatsApp relay publishes the relevant event</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>Consumer parses the envelope</span></span>
+<span class="giallo-l"><span>  envelope already processed? → return</span></span>
+<span class="giallo-l"><span>  existing WAMIDs? → skip duplicates</span></span>
+<span class="giallo-l"><span>  creates inbound WhatsappMessage rows</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>TXN 2 - WhatsApp DB</span></span>
+<span class="giallo-l"><span>  store WhatsappMessage rows</span></span>
+<span class="giallo-l"><span>  stage DispatchInboundWhatsappMessageCreated</span></span>
+<span class="giallo-l"><span>  commit</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>WhatsApp relay publishes again</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>Consumer creates or finds chat session</span></span>
+<span class="giallo-l"><span>  creates inbound SessionMessage</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>TXN 3 - Chat DB</span></span>
+<span class="giallo-l"><span>  store SessionMessage</span></span>
+<span class="giallo-l"><span>  stage DispatchInboundSessionMessageAdded</span></span>
+<span class="giallo-l"><span>  commit</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>Chat relay publishes</span></span>
+<span class="giallo-l"><span>  |</span></span>
+<span class="giallo-l"><span>  v</span></span>
+<span class="giallo-l"><span>Consumers push SignalR notifications and agent updates</span></span></code></pre>
+<p>When the webhook's <code>SaveChangesAsync</code> returns, one transaction has committed the envelope <strong>and</strong> the outbox rows. Fast ACK to Meta; the broker hop happens later.</p>
+<p>The repeating unit is always the same:</p>
+<ol>
+<li>Change state in the current context</li>
+<li>Stage an outbox row in that same context and transaction (via a pre-commit transactional domain event handler)</li>
+<li>Let that context's relay publish it</li>
+<li>Make the next consumer idempotent</li>
+</ol>
+<p>This design also explains why inbound delivery may have more latency than outbound delivery. A single outbound send may need one outbox hop. An inbound webhook can need three hops: envelope → message → chat.</p>
+<hr />
+<h2 id="8-latency-and-ordering">8. Latency and ordering</h2>
+<p>If the relay polls every 5 seconds, the healthy-case delay is not a fixed 5 seconds. It is usually:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>0 to 5 seconds per outbox hop</span></span>
+<span class="giallo-l"><span>average about 2.5 seconds per hop</span></span></code></pre>
+<p>The relay drains <strong>everything claimable</strong> each tick, then sleeps. The interval is a poll delay, not a per-message throttle: a thousand rows ready in one window publish together on the next tick.</p>
+<p>The HTTP request does not wait for that delay. <code>SaveChangesAsync</code> returns immediately; a webhook can return <code>200</code> right away. The delay applies to the <strong>downstream side effect</strong>: sending to WhatsApp, notifying another service, pushing SignalR, and so on.</p>
+<p>Rough multi-hop intuition:</p>
+<table><thead><tr><th>Path</th><th>Outbox hops</th><th>Healthy-case async delay (order of magnitude)</th></tr></thead><tbody>
+<tr><td>Outbound (agent → customer)</td><td>~1</td><td>up to ~5s before the side effect starts</td></tr>
+<tr><td>Inbound (customer → agent screen)</td><td>~3</td><td>up to ~15s worst case, often lower on average</td></tr>
+</tbody></table>
+<p>Latency can grow when:</p>
+<table><thead><tr><th>Cause</th><th>Result</th></tr></thead><tbody>
+<tr><td>Broker outage</td><td>Rows wait until the broker recovers (attempts not burned on broker-down)</td></tr>
+<tr><td>Backlog above single-worker throughput</td><td>Rows wait behind earlier eligible rows</td></tr>
+<tr><td>Poison row</td><td>That row backs off or gets faulted; others continue</td></tr>
+<tr><td>Relay deployment/crash</td><td>Rows wait until a relay is running again, then drain</td></tr>
+</tbody></table>
+<p>None of those lose the message — they only delay it.</p>
+<p><strong>Trade-off vs. direct publish:</strong> direct publish was nearly immediate but lossy; the outbox trades a few seconds of async latency for guaranteed delivery. If needed, operators can lower the poll interval or add a post-commit "wake" so the relay drains immediately instead of waiting for the next poll (wake is optional; plain polling is the simple default).</p>
+<h3 id="ordering">Ordering</h3>
+<p>Ordering is intentionally limited.</p>
+<ul>
+<li><strong>Cross-context:</strong> non-goal. Independent relays, no shared sequence, no ordered-delivery primitive across tables.</li>
+<li><strong><code>OccurredAt</code>:</strong> staging time on the producing app server — a within-context "oldest first" claim hint, not a global clock. Clock skew makes cross-context comparison meaningless.</li>
+<li><strong>Even within one context:</strong> the relay may claim in <code>OccurredAt</code> order per tick, but the bus delivers concurrently, and backoff/redelivery reorder. Any event may arrive late, out of order, or twice.</li>
+</ul>
+<p>What replaces strict ordering — <strong>order-tolerant consumers</strong>:</p>
+<ol>
+<li>Idempotency / dedupe (state checks, <code>CorrelationId</code> + unique index, business keys).</li>
+<li>State-based convergence — act on <em>current committed state</em>, not on arrival order; a stale event finds state already advanced and skips.</li>
+<li>Snapshot staleness guards — event carries a snapshot; consumer skips if superseded.</li>
+</ol>
+<p>The only ordering that really holds is <strong>causal</strong>, from pipeline shape: event B cannot exist until event A was consumed and produced a state change. Independent events have no defined order, and no consumer should assume one.</p>
+<hr />
+<h2 id="9-why-a-relay-is-required">9. Why a relay is required</h2>
+<p>Sometimes the tempting alternative is:</p>
+<blockquote>
+<p>"After committing the outbox row, why not publish immediately from the request thread?"</p>
+</blockquote>
+<p>That is still only one fragile attempt with no retry loop:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>COMMIT ✅ → Publish() → broker down / timeout / pod dies → event stuck, nobody retries</span></span></code></pre>
+<p>The consumer cannot fix hop A either. Hop B (broker → consumer) is already reliable; hop A (app → broker) is the fragile part. The consumer only runs if the message actually arrives.</p>
+<table><thead><tr><th>Property</th><th>Direct / inline publish after commit</th><th>Outbox relay</th></tr></thead><tbody>
+<tr><td>Retry after outage or crash</td><td>No — one shot</td><td>Yes — from the durable row</td></tr>
+<tr><td>Request succeeds while broker is down</td><td>No — fails or loses the event</td><td>Yes — commit succeeds, relay catches up</td></tr>
+<tr><td>Publishes only committed state</td><td>Depends on ordering (phantoms possible)</td><td>Yes — only committed rows</td></tr>
+<tr><td>Poison message off the request path</td><td>No</td><td>Yes — backoff / fault-park</td></tr>
+<tr><td>Survives process crash after commit</td><td>No</td><td>Yes</td></tr>
+</tbody></table>
+<p>An "optimistic publish + relay sweeper" design is possible for lower latency, but you still need the relay (for failures) and idempotent consumers (both paths can deliver → duplicates). Relay-only is simpler and usually a good starting point; the cost is that ~0–5s poll delay per hop.</p>
+<p><strong>One-liner:</strong> the outbox row records the <em>intent</em>; something must <em>act</em> on it with retries from that durable record. The request path cannot own that responsibility; a separate retrying process (the relay) can.</p>
+<hr />
+<h2 id="10-what-is-guaranteed">10. What is guaranteed</h2>
+<table><thead><tr><th>Question</th><th>Answer</th></tr></thead><tbody>
+<tr><td>Can an event be lost after the business commit?</td><td>Not if the outbox row was committed and relays keep running</td></tr>
+<tr><td>Can a rolled-back business write publish an event?</td><td>No — the outbox row rolls back too</td></tr>
+<tr><td>Is delivery exactly once?</td><td>No — it is <strong>at-least-once</strong></td></tr>
+<tr><td>Who handles duplicates?</td><td>Consumers (must be idempotent)</td></tr>
+<tr><td>Is ordering guaranteed across contexts?</td><td>No</td></tr>
+<tr><td>Is ordering strict within one context?</td><td>No — oldest-first claim only; bus and retries reorder</td></tr>
+<tr><td>Is the publish synchronous with the API request?</td><td>No — the relay publishes asynchronously</td></tr>
+<tr><td>Does the row disappear immediately after publish?</td><td>No — marked processed, then cleaned up after retention</td></tr>
+<tr><td>Are faulted rows auto-deleted?</td><td>No — operators handle poison rows</td></tr>
+</tbody></table>
+<p>The trade-off is straightforward:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>direct publish: lower latency, possible silent loss</span></span>
+<span class="giallo-l"><span>outbox relay: small async delay, durable retry</span></span></code></pre>
+<p>For user-visible or money-related workflows, silent loss is usually the worse failure.</p>
+<hr />
+<h2 id="11-final-mental-model">11. Final mental model</h2>
+<p>The database transaction is the commit point for two facts:</p>
+<ol>
+<li>The business state changed.</li>
+<li>The system owes the outside world an integration event.</li>
+</ol>
+<p>The relay owns the risky network hop from database to broker. It retries from a durable row until the event is published or explicitly faulted.</p>
+<p>The consumer owns duplicate safety.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>SQL transaction</span></span>
+<span class="giallo-l"><span>  business row + outbox row     ← atomic intent</span></span>
+<span class="giallo-l"><span>        |</span></span>
+<span class="giallo-l"><span>        v</span></span>
+<span class="giallo-l"><span>relay</span></span>
+<span class="giallo-l"><span>  claim + publish + mark processed   ← at-least-once pump</span></span>
+<span class="giallo-l"><span>        |</span></span>
+<span class="giallo-l"><span>        v</span></span>
+<span class="giallo-l"><span>RabbitMQ</span></span>
+<span class="giallo-l"><span>        |</span></span>
+<span class="giallo-l"><span>        v</span></span>
+<span class="giallo-l"><span>idempotent consumer             ← absorbs duplicates / reorder</span></span></code></pre>
+<p>You cannot make SQL Server and RabbitMQ share one ACID transaction. The transactional outbox pattern avoids needing that. It makes the state change and the publish intent atomic, then lets a retrying background process finish the cross-system work.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;exchange-durability-drift&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              First Declarer Wins — Debugging RabbitMQ Exchange State Drift
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

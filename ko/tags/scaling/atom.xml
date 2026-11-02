@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - scaling</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/scaling/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-10-29T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/scaling/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>스케일업과 스케일다운이 반복되던 이유</title>
+        <published>2026-10-29T00:00:00+00:00</published>
+        <updated>2026-10-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/azure/replica-scale-rule/"/>
+        <id>https://emptyfridge.dev/ko/azure/replica-scale-rule/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/azure/replica-scale-rule/">&lt;p&gt;두 편 중 2편이다. &lt;a href=&quot;&#x2F;ko&#x2F;azure&#x2F;replica-warmup&#x2F;&quot;&gt;1편&lt;&#x2F;a&gt;은 새 레플리카의 준비 비용을 사용자 대신 앱이 치르게 했다. 첫 사용자 요청 p50은 7.5초에서 1.3초가 됐다. 레플리카가 태어나는 횟수는 줄지 않았다. 평일에도 하루 60~90개가 뜨고, 수명 중앙값은 7.5분이었다. 근본적인 해결은 그 회전을 멈추는 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;회전을 만든 것은 부하가 아니었다. 스케일 규칙을 적지 않아서 플랫폼의 기본 HTTP 규칙이 돌고 있었고, 그 규칙의 기준값은 문서에 없다. 운영 수치는 문서에 적힌 계산식과도 맞지 않았다. 규칙을 AppHost에 명시하고, 동시 요청 50, 최대 3개로 두었다. 배포할 때마다 컨테이너 앱이 다시 만들어지므로, 포털에서 바꾼 값은 다음 배포가 지운다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;1-1pyeon-daeume-nameun-geos&quot;&gt;1. 1편 다음에 남은 것&lt;&#x2F;h2&gt;
+&lt;p&gt;워밍은 2026-10-02부터 돌았다. 그 뒤 일주일(10-01~10-08 기준선과 겹치는 구간)을 다시 보면, 태어난 지 2분이 안 된 레플리카의 요청은 26.7%가 1초를 넘었다. 2분이 지난 뒤는 3.2%였다. 첫 요청을 1.3초로 줄여도, 레플리카가 식기 전의 창은 남아 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;더 잘 보이는 경로는 HTTP가 아니다. 새 레플리카는 컨테이너가 시작된 뒤 약 4초 만에 RabbitMQ 소비자로 붙는다. 그때 집어 간 인바운드 메시지는 화면에 6~8초 뒤에 도착했다. 같은 시각, 이미 떠 있던 레플리카가 처리한 메시지는 1초 안쪽이었다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 1편의 합격은 그대로 두고, 질문을 바꿨다. 준비 비용을 누가 치르느냐가 아니라, &lt;strong&gt;평범한 낮 동안 레플리카를 왜 수십 번 만들고 지우느냐&lt;&#x2F;strong&gt;다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;2-gyucigi-eobseossda&quot;&gt;2. 규칙이 없었다&lt;&#x2F;h2&gt;
+&lt;p&gt;Aspire가 만든 컨테이너 앱에는 &lt;code&gt;minReplicas: 1&lt;&#x2F;code&gt;만 있고 스케일 규칙은 없었다. 규칙이 없으면 Container Apps는 기본 규칙을 적용한다. &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;azure&#x2F;container-apps&#x2F;scale-app&quot;&gt;Scaling in Azure Container Apps&lt;&#x2F;a&gt;의 기본 규칙 표는 트리거가 HTTP이고, 최소 0개, 최대 10개다. 우리는 최소를 1로 적어 두었으니 범위는 1~10이다.&lt;&#x2F;p&gt;
+&lt;p&gt;시스템 로그에는 규칙이 &lt;code&gt;null&lt;&#x2F;code&gt;인데도 &lt;code&gt;scaled to N by the scaler: http-scaler&lt;&#x2F;code&gt;가 찍힌다. 기본 HTTP 규칙이 실제로 동작하고 있다는 뜻이다.&lt;&#x2F;p&gt;
+&lt;p&gt;문서가 말하는 동작은 이렇다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;스케일업 안정화 창은 0초, 스케일다운 안정화 창은 300초다. 늘어나는 것은 바로, 줄어드는 것은 5분 뒤다.&lt;&#x2F;li&gt;
+&lt;li&gt;HTTP 규칙을 &lt;strong&gt;직접 정의하고&lt;&#x2F;strong&gt; &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;를 생략하면 기본값은 10이다. 계산은 15초마다, 지난 15초의 요청 수를 15로 나눈 값이다. 그 값이 기준을 넘으면 레플리카를 하나 더 둔다.&lt;&#x2F;li&gt;
+&lt;li&gt;30초 폴링 간격에는 &quot;HTTP와 TCP 규칙에는 적용되지 않는다&quot;는 단서가 붙어 있다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;기본 규칙 자체의 동시 요청 기준값은 이 문서 어디에도 없다. 표의 10은 &lt;strong&gt;최대 레플리카 수&lt;&#x2F;strong&gt;다. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;의 10은 규칙을 직접 정의하면서 값을 빼먹었을 때의 기본값이다. 2026-10-28에 공식 문서와 중국어 판, 스케일링 튜토리얼을 찾아도 기본 규칙의 기준값을 적은 문장은 없었다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;3-munseoyi-gyesansigimyeon-neuleonaji-malasseoya-haessda&quot;&gt;3. 문서의 계산식이면 늘어나지 말았어야 했다&lt;&#x2F;h2&gt;
+&lt;p&gt;2026-10-28 01:30Z쯤부터 2026-10-29 01:50Z까지 24시간을 다시 셌다. 콘솔 로그의 &lt;code&gt;Request starting HTTP&lt;&#x2F;code&gt;는 표본 추출이 없어서 요청 수로 쓸 수 있다. 요청은 18,887건, 스케일업은 77번, 새 레플리카는 101개였다.&lt;&#x2F;p&gt;
+&lt;p&gt;p50과 p99는 요청이 1건 이상 있던 구간만 넣은 값이다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;구간&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p99&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;1초&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;2&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;18&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;37&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;15초&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;6&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;82&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;1분&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;14&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;108&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;201&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;가장 바쁜 15초에 82건이다. 문서 계산식(지난 15초 요청 수 ÷ 15)으로는 5.5다. 기준이 10이라면 이 24시간에는 한 번도 늘어나지 않아야 한다. 77번 늘어났다.&lt;&#x2F;p&gt;
+&lt;p&gt;동시 처리 수는 &lt;code&gt;Request finished HTTP&lt;&#x2F;code&gt;에 찍힌 처리 시간으로 각 요청의 구간을 복원해 겹친 수를 센 것이다. 앱이 잰 시간이라, 인그레스 프록시가 보는 시간보다 짧다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;범위&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p99&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;레플리카 전체&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;2&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레플리카 하나&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;1&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;9&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;스케일업 직전 30초의 최대 동시 처리 수는 76건을 분석했다. 77건 중 1건은 그 30초에 시작된 요청이 없어서 빠졌다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;구분&lt;&#x2F;th&gt;&lt;th&gt;건수&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p50&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;p90&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;최대&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;10 초과&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;스케일업 직전&lt;&#x2F;td&gt;&lt;td&gt;76&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;12&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;27&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50건 (66%)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;스케일업이 없던 30초 구간&lt;&#x2F;td&gt;&lt;td&gt;1,176&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;11&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;17&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;127개 (10.8%)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;스케일업 직전은 p25 10, p50 12, p75 14로, 10 바로 위에 모인다. 그래도 76건 중 19건(25%)은 10 미만에서 일어났고, 그중 2건은 최대가 1이었다. 늘어나지 않은 구간은 그 30초와 바로 다음 30초 모두 스케일업이 없던 구간이다.&lt;&#x2F;p&gt;
+&lt;p&gt;늘어난 &lt;strong&gt;개수&lt;&#x2F;strong&gt;는 전체 동시 처리 수와 더 어긋난다. 문서의 &lt;code&gt;desiredReplicas = ceil(현재값 &#x2F; 기준값)&lt;&#x2F;code&gt;대로면, 5개가 되려면 전체가 40을 넘어야 한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;늘어난 결과&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;건수&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;동시 처리 수 중앙값&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;기준 10이라면 필요한 값&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;2개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;12&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;10 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;3개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;31&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;11&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;20 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;4개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;30 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;5개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;8&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;13&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;40 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;6개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;5&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;14&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;50 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;7~8개&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;3&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;16&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;60~70 초과&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;13 근처에서 5개, 6개, 8개까지 갔다. 스케일러가 읽는 값은 &quot;전체 동시 요청 ÷ 10&quot;이 아니다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;4-munseoe-jeoghin-geos-gwanceugdoen-geos-curon&quot;&gt;4. 문서에 적힌 것, 관측된 것, 추론&lt;&#x2F;h2&gt;
+&lt;p&gt;셋을 섞으면 기준값이 10인 것처럼 말하고 끝나 버린다. 나눠 둔다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;문서에 적힌 것&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;규칙이 없으면 기본 규칙이 적용되고, 트리거는 HTTP다.&lt;&#x2F;li&gt;
+&lt;li&gt;기본 규칙의 동시 요청 기준값은 문서에 없다.&lt;&#x2F;li&gt;
+&lt;li&gt;HTTP 규칙을 정의하면서 &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;를 생략하면 10이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;관측된 것&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;규칙이 비어 있는데도 &lt;code&gt;http-scaler&lt;&#x2F;code&gt;가 레플리카를 늘린다.&lt;&#x2F;li&gt;
+&lt;li&gt;문서 계산식으로 5.5인 날에 77번 늘어났다.&lt;&#x2F;li&gt;
+&lt;li&gt;전체가 13 정도일 때 5개까지 늘어났다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;strong&gt;추론&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;기본 규칙도 10을 쓴다는 말은 간접 근거만 있다. 트리거가 HTTP라는 점, 생략 시 기본값이 10이라는 점, 스케일업 직전 중앙값이 12라는 점이다. 문장이 아니다.&lt;&#x2F;li&gt;
+&lt;li&gt;스케일러가 보는 값은 Azure Monitor에 없다. 레플리카 하나의 값이나 활성 연결을 본다는 추정은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;microsoft&#x2F;azure-container-apps&#x2F;issues&#x2F;536&quot;&gt;azure-container-apps#536&lt;&#x2F;a&gt; 쪽에 가깝다. 확인하지 못했다.&lt;&#x2F;li&gt;
+&lt;li&gt;처리 시간을 앱 로그로 복원했으므로 프록시가 보는 동시성보다 작을 수 있다. 방향은 같다. 더 길게 잡아도 40이 나오지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;기준값의 정확한 정체를 몰라도 결정은 할 수 있다. &lt;strong&gt;적지 않은 규칙이 평범한 트래픽에 레플리카를 만들고 있고, 그 입력은 우리가 재는 요청 수와 같지 않다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;5-sae-repeulrikaneun-neurin-http-seobeomani-anida&quot;&gt;5. 새 레플리카는 느린 HTTP 서버만이 아니다&lt;&#x2F;h2&gt;
+&lt;p&gt;2026-10-28 20:56 KST 전후, 메시지가 늦게 들어온다는 보고를 한 건 따라갔다. 그 시각 레플리카는 이미 하나 떠 있었다. 최소 1개라서 0에서 깨어난 콜드스타트는 아니다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;시각 (UTC)&lt;&#x2F;th&gt;&lt;th&gt;이벤트&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;11:31:21&lt;&#x2F;td&gt;&lt;td&gt;1개로 축소&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:36&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;http-scaler&lt;&#x2F;code&gt;가 2개로 확대, 새 레플리카 배정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:48&lt;&#x2F;td&gt;&lt;td&gt;그 레플리카의 컨테이너 시작. 스타트업 프로브 실패가 약 10초 이어짐&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:51&lt;&#x2F;td&gt;&lt;td&gt;3개로 확대, 또 하나의 레플리카 배정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:56:52&lt;&#x2F;td&gt;&lt;td&gt;첫 새 레플리카가 MassTransit 엔드포인트를 등록하고 소비를 시작. 컨테이너 시작 약 4초 뒤&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:09&lt;&#x2F;td&gt;&lt;td&gt;두 번째 새 레플리카의 컨테이너 시작&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;직전 인그레스는 11:54~11:57에 분당 0, 8, 0, 22건이었다. 같은 날 자원도 한가했다. SQL CPU는 최대 1~5%(한 번 18%), 워커 3% 이하, RabbitMQ는 0.02 core에 메모리 210MB, SignalR 서버 부하는 약 12%에 연결 최대 53, Redis 메모리는 2%였다. 레플리카 워킹셋 최댓값이 매일 1.01~1.13GB로 1Gi 한도에 붙어 있긴 했다. 이번 지연과의 관련은 확인하지 못했다.&lt;&#x2F;p&gt;
+&lt;p&gt;인바운드 네 건이다. 끝점은 웹훅을 받은 시각부터 수신 메시지를 브로드캐스트한 시각까지다. 콘솔 로그 시각이 1초 단위로 묶여 있어서 ±1~2초 오차가 있다. 메신저 쪽이 웹훅을 보낸 시각은 로그에 없다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;웹훅 (UTC)&lt;&#x2F;th&gt;&lt;th&gt;웹훅을 처리한 레플리카&lt;&#x2F;th&gt;&lt;th&gt;메시지를 소비한 레플리카&lt;&#x2F;th&gt;&lt;th&gt;끝-끝&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;11:56:39&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카, 60ms&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카&lt;&#x2F;td&gt;&lt;td&gt;약 1초 안&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:25&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 16초인 레플리카, 1,057ms&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카&lt;&#x2F;td&gt;&lt;td&gt;약 1~2초&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;11:57:49&lt;&#x2F;td&gt;&lt;td&gt;기존 레플리카, 55ms&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 1분인 레플리카&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;약 6~7초&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;12:00:53&lt;&#x2F;td&gt;&lt;td&gt;또 다른 새 레플리카, 2,082ms&lt;&#x2F;td&gt;&lt;td&gt;뜬 지 몇 분인 레플리카&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;약 8초&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;6~7초 건을 소비 레플리카 기준으로 쪼개면, 엔벨로프 처리 1초, 메시지 행 생성까지 다시 4초, 브로드캐스트까지 다시 1~2초다. 기존 레플리카에서는 같은 경로가 1초 안에 끝났다.&lt;&#x2F;p&gt;
+&lt;p&gt;같은 24시간(10-27 12:20Z ~ 10-28 12:20Z)에 스케일업 87번, 스케일다운 97번, 새 레플리카 105개였다. 1편의 기준 주간은 스케일업 52~78번, 컨테이너 시작 60~90개다. 스케일업은 KST 01~07시에 0건이고 나머지 시간에 3~8건씩이다. 아직 신규 테넌트가 들어오기 전의 값이다.&lt;&#x2F;p&gt;
+&lt;p&gt;회전 비용은 HTTP 응답에만 있지 않다. &lt;strong&gt;새 레플리카가 경쟁 소비자로 붙는 순간부터 받은 편지함의 지연으로 보인다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;6-hubo&quot;&gt;6. 후보&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;후보&lt;&#x2F;th&gt;&lt;th&gt;판정&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;명시적 HTTP 규칙. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt;와 최대 레플리카를 배포 파라미터로&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;선택.&lt;&#x2F;strong&gt; 규칙을 하나라도 정의하면 기본 규칙이 빠진다. 값은 환경 변수라 코드 수정 없이 바꾼다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;기본 규칙을 두고, 테넌트가 늘면 다시 본다&lt;&#x2F;td&gt;&lt;td&gt;2026-10-09의 결정이었다. 10-28에 회전이 메시지 지연으로 보여서 10-29에 뒤집었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2개만 올린다&lt;&#x2F;td&gt;&lt;td&gt;기각. 기본 규칙이 남는다. 2개 위로의 회전은 닷새에 241번이었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2개에 CPU 규칙&lt;&#x2F;td&gt;&lt;td&gt;기각. 기동 첫 1분의 레플리카는 요청 0~25건인 분에도 2.6%가 CPU 80%를 넘었다. 배포로 두 개가 같이 뜨면 평균이 기준을 넘을 수 있다. 플랫폼이 기동 CPU를 빼는지는 문서에 없다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;최소 2, 최대 2&lt;&#x2F;td&gt;&lt;td&gt;기각. 회전은 없어지지만 테넌트가 늘어도 커지지 못한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;포털이나 CLI로 규칙을 넣는다&lt;&#x2F;td&gt;&lt;td&gt;기각. 다음 배포가 컨테이너 앱을 다시 만들며 스케일 블록을 덮어쓴다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;최소를 올리는 쪽이 먼저 떠오른다. 1개와 2개 사이를 오가는 횟수는 없어지기 때문이다. 그 선택지는 문서에 없는 기준값을 그대로 두고, 2개 위의 회전도 그대로 둔다. 관측된 확대는 2개에서 멈추지 않고 8개까지 갔다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;7-goreun-geos-gyucigeul-kodeue-jeogneunda&quot;&gt;7. 고른 것: 규칙을 코드에 적는다&lt;&#x2F;h2&gt;
+&lt;p&gt;배포 코드가 컨테이너 앱의 스케일 블록을 직접 쓴다. 최대 레플리카와 동시 요청 기준은 파라미터다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;app&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Template&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Scale&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;MaxReplicas&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; maxReplicas&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;app&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Template&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Scale&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Rules&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ContainerAppScaleRule&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;http-scaler&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        Http&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ContainerAppHttpScaleRule&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Metadata&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; { [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;concurrentRequests&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; concurrentRequests }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;aspire publish&lt;&#x2F;code&gt;가 만드는 블록은 이런 모양이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;bicep&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;scale: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  minReplicas: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  maxReplicas: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;(chatapi_MaxReplicas)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  rules: [&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      name: &lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;#39;http-scaler&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      http: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        metadata: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;          concurrentRequests: chatapi_ConcurrentRequests&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;      }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  ]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;최소는 Aspire가 넣는 1 그대로다. 규칙을 하나 정의하면 플랫폼 기본 규칙은 빠진다.&lt;&#x2F;p&gt;
+&lt;p&gt;Integration, Staging, Production 모두 같은 값이다. &lt;code&gt;concurrentRequests&lt;&#x2F;code&gt; &lt;strong&gt;50&lt;&#x2F;strong&gt;, &lt;code&gt;maxReplicas&lt;&#x2F;code&gt; &lt;strong&gt;3&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;50&lt;&#x2F;strong&gt;은 이 24시간의 동시 처리 최대 27보다 위다. 오늘 본 부하보다 분명 무거울 때에만 두 번째 레플리카가 생겨야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;3&lt;&#x2F;strong&gt;은 규칙이 또 잘못 튀어도 회전이 멀리 가지 못하게 막는 뚜껑이다. 레플리카당 50이면 세 개는 측정된 최대의 두 배 정도를 담는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;둘 다 용량 시험의 결과가 아니다. 측정하면서 움직일 시작값이다. 같은 HTTP 스케일러는 기준을 2000으로 적어도 이르게 늘어났다는 보고가 있다(&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;answers&#x2F;questions&#x2F;2288688&#x2F;our-container-app-http-scaler-kicks-of-scaling-way&quot;&gt;Microsoft Q&amp;amp;A 2288688&lt;&#x2F;a&gt;). 50이 잠잠할지는 운영 측정만 말한다.&lt;&#x2F;p&gt;
+&lt;p&gt;값은 각 환경의 배포 파라미터로 넘어간다. 숫자를 바꾸려고 코드를 다시 넣을 필요는 없다. 로컬 배포는 그 환경의 설정 파일에 같은 두 값이 있어야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;8-i-gyeoljeongi-haji-anhneun-il&quot;&gt;8. 이 결정이 하지 않는 일&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;1편의 워밍을 대체하지 않는다.&lt;&#x2F;strong&gt; 배포를 하면 레플리카는 여전히 새로 태어나고, 부하가 기준을 넘으면 두 번째, 세 번째도 태어난다. 태어난 레플리카의 첫 파이프라인 비용은 소켓을 열기 전에 앱이 치른다. 워밍이 임시 조치인 이유는 효과가 없어서가 아니다. 업무시간 내내 반복되는 탄생을 막지 못하기 때문이다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;새 레플리카의 소비 시점을 바꾸지 않는다.&lt;&#x2F;strong&gt; 컨테이너 시작 약 4초 뒤에 MassTransit 엔드포인트가 등록되는 것은 그대로다. 이 결정은 그 일이 일어나는 횟수를 줄인다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;용량은 0.5 vCPU 레플리카 세 개에서 멈춘다.&lt;&#x2F;strong&gt; 기본 규칙 아래에서 운영은 8개까지 갔다. 테넌트가 늘어서 세 개로 부족하면 파라미터를 올리고 다시 배포한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;이 규칙도 잘못 튈 수 있다.&lt;&#x2F;strong&gt; 입력이 같은 스케일러다. 세 개에 붙어 있는 분이 생기는지 봐야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;생성하는 스케일 블록을 검사하는 테스트는 없다.&lt;&#x2F;strong&gt; 환경 변수가 정말 50과 3인지도 코드가 보장하지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;예전에 비용을 레플리카 10개 기준으로 적어 둔 기록이 있다. 그 기록은 고치지 않았다. 이제는 세 개가 상한이라는 뜻으로 읽으면 된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;9-mueoseul-bogo-habgyeogeuro-bol-geosinga&quot;&gt;9. 무엇을 보고 합격으로 볼 것인가&lt;&#x2F;h2&gt;
+&lt;p&gt;배포 전에 기준을 적어 둔다. 비교 구간은 2026-10-01~10-08의 평일이다. 이 규칙은 2026-10-29에 들어갔고, 이 글을 쓰는 시점에는 그 평일 재측정이 아직 없다. 숫자를 미리 좋게 말하지 않는다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;지표&lt;&#x2F;th&gt;&lt;th&gt;이전 (10-01~10-08)&lt;&#x2F;th&gt;&lt;th&gt;목표&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;하루 컨테이너 시작&lt;&#x2F;td&gt;&lt;td&gt;60~90&lt;&#x2F;td&gt;&lt;td&gt;더 적다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;레플리카가 2개 이상이던 분&lt;&#x2F;td&gt;&lt;td&gt;609~919&lt;&#x2F;td&gt;&lt;td&gt;더 적다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;응답 p50&lt;&#x2F;td&gt;&lt;td&gt;24~42ms&lt;&#x2F;td&gt;&lt;td&gt;나빠지지 않는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;응답 p90&lt;&#x2F;td&gt;&lt;td&gt;169~912ms&lt;&#x2F;td&gt;&lt;td&gt;나빠지지 않는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;기준선은 신규 테넌트 유입 전이다. 테넌트가 늘면 요청 1건당으로 비교한다. 함께 볼 것은 세 개에 붙어 있는 분과, 레플리카당 CPU다.&lt;&#x2F;p&gt;
+&lt;p&gt;1편에서 배포 전에 합격선과 표본 수를 정해 둔 것이 판정을 믿을 만하게 만들었다. 같은 방식으로, 이 글의 합격은 &quot;규칙을 코드에 적었다&quot;가 아니다. 평일에 컨테이너가 덜 태어나고, 응답이 나빠지지 않는 것이다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

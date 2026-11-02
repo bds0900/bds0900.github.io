@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | The Webhook Died During the Handshake: Debugging ERR_TLS_CERT_ALTNAME_INVALID
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            The Webhook Died During the Handshake: Debugging ERR_TLS_CERT_ALTNAME_INVALID
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-22">June 22, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>785 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/tls/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>tls</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/ssl/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ssl</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/certificate/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>certificate</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/webhook/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>webhook</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dns/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>dns</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/debugging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>debugging</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>A Node.js service was forwarding a webhook to a backend API and emitted this error:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[onRaw] webhook forwarding error: {</span></span>
+<span class="giallo-l"><span>  name: &#39;ApiError&#39;,</span></span>
+<span class="giallo-l"><span>  title: &#39;Webhook forwarding failed&#39;,</span></span>
+<span class="giallo-l"><span>  status: 502,</span></span>
+<span class="giallo-l"><span>  message: &quot;Hostname/IP does not match certificate&#39;s altnames:</span></span>
+<span class="giallo-l"><span>            Host: example.com. is not in the cert&#39;s altnames:</span></span>
+<span class="giallo-l"><span>            DNS:*.azurewebsites.net, DNS:*.scm.azurewebsites.net, ...&quot;,</span></span>
+<span class="giallo-l"><span>  code: &#39;ERR_TLS_CERT_ALTNAME_INVALID&#39;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The payload itself was fine. This was not a data problem. So why did it become a 502?</p>
+<h2 id="cause-the-domain-is-not-in-the-san">Cause: The domain is not in the SAN</h2>
+<p>The forwarder opened an HTTPS connection to <code>example.com</code>. During the TLS handshake, the server returned a certificate whose <strong>SAN(Subject Alternative Names)</strong> list did not include <code>example.com</code>. In the error above, the SAN only contains names like <code>*.azurewebsites.net</code>. This is not Azure-specific. On any platform or server, if you only <em>route</em> a custom domain to the service but do not <em>bind</em> a certificate that covers that domain, you can get the same error.</p>
+<p>A TLS client must check: "Is the hostname I am connecting to present in this certificate?" If not, it terminates the connection with <code>ERR_TLS_CERT_ALTNAME_INVALID</code>. The forwarder wrapped that failure as a 502.</p>
+<p><strong>One-sentence summary:</strong></p>
+<blockquote>
+<p>Traffic was configured to <em>route</em> to <code>example.com</code>, but no TLS certificate covering <code>example.com</code> was <em>bound</em> to the server. The server fell back to a default certificate for another platform/server name, and the client rejected it because it did not match the hostname it connected to.</p>
+</blockquote>
+<h2 id="core-idea-dns-routing-is-not-tls-identity">Core idea: DNS routing is not TLS identity</h2>
+<p>If you mix up these two layers, you keep getting stuck.</p>
+<table><thead><tr><th>Layer</th><th>Question it answers</th><th>Mechanism</th></tr></thead><tbody>
+<tr><td><strong>DNS / routing</strong></td><td>"Where should this traffic go?"</td><td>A / CNAME records</td></tr>
+<tr><td><strong>TLS / identity</strong></td><td>"Can this server prove it is <code>example.com</code>?"</td><td>Certificate containing <code>example.com</code></td></tr>
+</tbody></table>
+<blockquote>
+<p><strong>Traffic reaching a domain does not mean the server has a certificate for that domain.</strong> The certificate must be issued separately and bound separately.</p>
+</blockquote>
+<p>As an analogy, DNS is the company phone directory. It tells you where to connect. A TLS certificate is an employee ID. Just because a letter arrives addressed to <code>example.com</code> does not mean the person receiving it has an ID that says <code>example.com</code>. The guard, meaning the TLS check, verifies the ID and rejects the connection if it is missing.</p>
+<p>Also, because the handshake fails <strong>before the HTTP request</strong>, the backend application logs nothing. Debugging service code is pointless here. This is purely an infrastructure/certificate problem.</p>
+<h2 id="fix-issue-and-bind-the-certificate">Fix: Issue and bind the certificate</h2>
+<p>No matter where the server runs, the fix has the same shape.</p>
+<h3 id="certificate-vs-binding">Certificate vs binding</h3>
+<p>These are separate things.</p>
+<table><thead><tr><th>Object</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><strong>Certificate</strong></td><td>A signed file proving "this server is <code>example.com</code>"</td></tr>
+<tr><td><strong>Binding</strong></td><td>Configuration saying "when requests arrive for this domain, present this certificate"</td></tr>
+</tbody></table>
+<p>Even if the certificate exists on the server, without a binding the server can still present the wrong default certificate.</p>
+<h3 id="general-fix-process">General fix process</h3>
+<ol>
+<li>
+<p><strong>Issue a certificate that covers <code>example.com</code>.</strong></p>
+<ul>
+<li>Let's Encrypt, usually with <code>certbot</code></li>
+<li>A hosting platform's managed certificate</li>
+<li>A purchased certificate, such as <code>.pem</code> or <code>.pfx</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Bind the certificate to the server/platform.</strong></p>
+<ul>
+<li>Nginx: configure <code>ssl_certificate</code> and <code>ssl_certificate_key</code></li>
+<li>Apache: configure <code>SSLCertificateFile</code> and <code>SSLCertificateKeyFile</code></li>
+<li>Cloud platforms: choose and bind the certificate in the custom domain settings</li>
+</ul>
+</li>
+</ol>
+<h3 id="nginx-example">Nginx example</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="nginx"><span class="giallo-l"><span style="color: #FF8F40;">server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    listen</span><span style="color: #D2A6FF;"> 443</span><span> ssl</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    server_name</span><span> example.com</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    ssl_certificate</span><span>     /etc/letsencrypt/live/example.com/fullchain.pem</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    ssl_certificate_key</span><span> /etc/letsencrypt/live/example.com/privkey.pem</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    ...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>If using certbot:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">certbot</span><span style="color: #95E6CB;"> --nginx -d</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># certbot can update the nginx configuration automatically</span></span></code></pre><h3 id="azure-example-app-service-container-apps">Azure example (App Service / Container Apps)</h3>
+<p>In the portal:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>App resource -&gt; Custom domains</span></span>
+<span class="giallo-l"><span>  -&gt; click &quot;No binding&quot; beside example.com</span></span>
+<span class="giallo-l"><span>  -&gt; Add binding</span></span>
+<span class="giallo-l"><span>  -&gt; Source = Create managed certificate</span></span>
+<span class="giallo-l"><span>  -&gt; TLS/SSL type = SNI SSL</span></span>
+<span class="giallo-l"><span>  -&gt; Add</span></span></code></pre>
+<p><strong>App Service:</strong></p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 1. Create managed cert</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl create</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --name</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --hostname</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 2. Check thumbprint</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl list</span><span style="color: #95E6CB;"> --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --query</span><span style="color: #AAD94C;"> &quot;[?subjectName==&#39;example.com&#39;].thumbprint&quot;</span><span style="color: #95E6CB;"> -o</span><span style="color: #AAD94C;"> tsv</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 3. Bind it (SNI SSL)</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl bind</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --name</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --certificate-thumbprint</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">thumbprin</span><span>t</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --ssl-type</span><span style="color: #AAD94C;"> SNI</span></span></code></pre>
+<p><strong>Container Apps</strong> (the certificate belongs to the Environment, not directly to the app):</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> containerapp hostname add</span><span style="color: #95E6CB;">  -g</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> -n</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --hostname</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> containerapp hostname bind</span><span style="color: #95E6CB;"> -g</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> -n</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --hostname</span><span style="color: #AAD94C;"> example.com</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --environment</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">environmen</span><span>t</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --validation-method</span><span style="color: #AAD94C;"> CNAME</span></span></code></pre><h3 id="verify">Verify</h3>
+<p>The verification method is the same on any platform.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">openssl</span><span style="color: #AAD94C;"> s_client</span><span style="color: #95E6CB;"> -connect</span><span style="color: #AAD94C;"> example.com:443</span><span style="color: #95E6CB;"> -servername</span><span style="color: #AAD94C;"> example.com</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">/dev/null</span><span style="color: #F29668;"> 2&gt;</span><span style="color: #AAD94C;">/dev/null</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #F29668;">  |</span><span style="color: #59C2FF;"> openssl</span><span style="color: #AAD94C;"> x509</span><span style="color: #95E6CB;"> -noout -subject -ext</span><span style="color: #AAD94C;"> subjectAltName</span></span></code></pre>
+<p>If the output includes <code>example.com</code> in the SAN, the fix worked. <code>ERR_TLS_CERT_ALTNAME_INVALID</code> should no longer appear.</p>
+<h2 id="notes">Notes</h2>
+<ol>
+<li>
+<p><strong>Bind the certificate where TLS actually terminates.</strong> If a reverse proxy such as Nginx, Caddy, or a load balancer sits in front, the certificate belongs there. Binding it only on the backend app server will not help.</p>
+</li>
+<li>
+<p><strong>DNS must be correct before certificate issuance can work.</strong></p>
+<ul>
+<li>Root domain (<code>example.com</code>) -&gt; A record</li>
+<li>Subdomain (<code>www.example.com</code>) -&gt; CNAME is possible</li>
+<li>If a CAA record exists, it must allow the CA you use, for example <code>0 issue letsencrypt.org</code></li>
+</ul>
+</li>
+<li>
+<p><strong>Without a wildcard certificate, each hostname needs its own coverage.</strong> <code>example.com</code> and <code>www.example.com</code> are separate names.</p>
+</li>
+<li>
+<p><strong>Do not paper over this with <code>rejectUnauthorized: false</code>.</strong> The error disappears, but TLS verification is disabled entirely. That exposes the webhook channel to impersonation attacks.</p>
+</li>
+<li>
+<p><strong>Automatic renewal is conditional.</strong> Whether you use Let's Encrypt or a managed certificate, renewal depends on the DNS record still existing and pointing at the server. If the A/CNAME record changes, renewal can fail.</p>
+</li>
+</ol>
+<hr />
+<h2 id="three-line-summary">Three-line summary</h2>
+<ol>
+<li><code>ERR_TLS_CERT_ALTNAME_INVALID</code> happens when the server certificate's SAN list does not contain the hostname the client connected to. It is platform-independent; routing a domain without binding a matching certificate is enough to trigger it.</li>
+<li>DNS routing(domain -&gt; server traffic) and TLS identity(proving the server owns that domain) are independent. Traffic arriving at a domain does not create a certificate.</li>
+<li>The fix is to issue a certificate for the domain and bind it to the server. Since the failure happens before the HTTP request, debugging application code will not help.</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure&#x2F;replica-warmup&#x2F;">
+              Why a New Replica&#x27;s First Request Took Seven Seconds<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

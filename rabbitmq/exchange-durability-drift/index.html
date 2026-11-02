@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | First Declarer Wins — Debugging RabbitMQ Exchange State Drift
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            First Declarer Wins — Debugging RabbitMQ Exchange State Drift
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-22">June 22, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>7 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1368 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/masstransit/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>MassTransit</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/debugging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>debugging</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/messaging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>messaging</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>In production, the entire WeChat inbound message path stopped working. I searched through the code, but there was not a single line to change. The culprit was a <strong>wrong exchange definition left behind in the broker</strong>, and the reason it could happen was one key property of RabbitMQ.</p>
+<h2 id="symptom">Symptom</h2>
+<p>The following error was repeating endlessly in production.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>MassTransit.RabbitMqConnectionException: ReceiveTransport faulted ...</span></span>
+<span class="giallo-l"><span>RabbitMQ.Client.Exceptions.OperationInterruptedException:</span></span>
+<span class="giallo-l"><span>  code=406, text=&#39;PRECONDITION_FAILED - inequivalent arg &#39;durable&#39;</span></span>
+<span class="giallo-l"><span>  for exchange &#39;...:DispatchInboundWechatMessageCreated&#39;</span></span>
+<span class="giallo-l"><span>  in vhost &#39;/&#39;: received &#39;true&#39; but current is &#39;false&#39;&#39;</span></span></code></pre>
+<p>Interpreted, it means this:</p>
+<ul>
+<li>Our app is trying to declare the exchange with <strong><code>durable=true</code></strong> (<code>received 'true'</code>).</li>
+<li>An exchange with the same name <strong>already exists</strong> in the broker with <strong><code>durable=false</code></strong> (<code>current is 'false'</code>).</li>
+<li>RabbitMQ says, "Those do not match. I reject this." → <code>406 PRECONDITION_FAILED</code> → channel closed.</li>
+</ul>
+<p>As a result, MassTransit's receive transport entered a fault → reconnect → fault again loop, and <strong>WeChat inbound message processing stopped completely.</strong></p>
+<h2 id="intuition-what-kind-of-situation-is-this">Intuition: what kind of situation is this?</h2>
+<p>Imagine an electrical outlet, the exchange, already installed in a wall. The first person who installs that outlet <strong>sets the specification and nails it in place.</strong> Once installed, the specification cannot be changed.</p>
+<ul>
+<li>Our app expects a <strong>220V specification, durable</strong>, and tries to plug in.</li>
+<li>Someone previously installed a <strong>110V specification, non-durable</strong>, outlet in that spot.</li>
+<li>The plug does not fit. RabbitMQ does not convert the outlet to 220V. It simply says, "Specification mismatch," and closes the channel.</li>
+</ul>
+<p>Two key intuitions:</p>
+<ol>
+<li><strong>The first declarer determines the exchange specification, and it is immutable after that.</strong> → first-declarer-wins.</li>
+<li><strong>If the specification does not match, RabbitMQ rejects it instead of fixing it.</strong> → <code>PRECONDITION_FAILED</code>.</li>
+</ol>
+<p>This is not solved by "fixing the code." The app can recreate the exchange with the correct specification only after <strong>the wrong exchange left in the broker is removed</strong>.</p>
+<h2 id="rabbitmq-properties-that-caused-this">RabbitMQ properties that caused this</h2>
+<h3 id="declaration-idempotency-equivalence-check">Declaration idempotency + equivalence check</h3>
+<p><code>exchange.declare</code> is <strong>idempotent</strong>. Declaring the same thing many times is fine, but only when the arguments are identical. If you declare an existing exchange with <strong>different arguments</strong>, RabbitMQ rejects it instead of modifying it.</p>
+<blockquote>
+<p>"The arguments differ from the existing one. I will not do that." → <code>406 PRECONDITION_FAILED</code>, channel closed.</p>
+</blockquote>
+<p>Exchange properties such as <code>type</code>, <code>durable</code>, <code>auto_delete</code>, <code>internal</code>, and <code>arguments</code> are <strong>fixed at creation time and cannot be changed afterward.</strong> To change them, you must delete the exchange and create it again.</p>
+<h3 id="durable-vs-transient">Durable vs transient</h3>
+<table><thead><tr><th></th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>durable=true</code></td><td>The exchange definition is stored on disk → <strong>survives broker restarts</strong></td></tr>
+<tr><td><code>durable=false</code></td><td>Exists only in memory → disappears when the broker restarts</td></tr>
+</tbody></table>
+<p>The problematic exchange had <code>durable=false</code>, while our app wanted <code>durable=true</code>.</p>
+<h3 id="auto-delete">Auto-delete</h3>
+<p>When <code>auto-delete=true</code>, the exchange deletes itself when the last binding disappears. In the management UI, this appears as <code>AD</code> in the Features column. The problematic exchange had the combination <code>AD</code> + non-durable, which is the typical shape of a <strong>temporary exchange</strong>.</p>
+<h3 id="topology-persistence">Topology persistence</h3>
+<p>Exchanges, queues, and bindings are <strong>server-side broker state</strong>. Even after the client connection that created them is gone, the definitions remain in the broker. Because the broker container lifetime was <code>Persistent</code>, the wrong definition created once kept surviving.</p>
+<h2 id="why-this-was-not-a-code-bug">Why this was not a code bug</h2>
+<p>At first, I suspected that "somewhere in the code, something must be declaring it with <code>durable=false</code>." Two pieces of evidence broke that hypothesis.</p>
+<h3 id="evidence-1-there-was-no-durability-setting-anywhere-in-the-full-git-history">Evidence 1: there was no durability setting anywhere in the full git history</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> log</span><span style="color: #95E6CB;"> --all -S</span><span style="color: #AAD94C;"> &quot;Durable&quot;</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> &#39;*.cs&#39;</span><span style="color: #5A6673;font-style: italic;">                                      # → none</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> log</span><span style="color: #95E6CB;"> --all -G</span><span style="color: #AAD94C;"> &quot;Durable|AutoDelete|Temporary|PublishTopology&quot;</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> &#39;*.cs&#39;</span><span style="color: #5A6673;font-style: italic;">  # → none</span></span></code></pre>
+<p>There had never been a commit that set or changed durability/auto-delete. The code had always used MassTransit's default, which is durable.</p>
+<h3 id="evidence-2-only-wechat-was-broken-while-whatsapp-line-were-fine">Evidence 2: only WeChat was broken, while WhatsApp/LINE were fine</h3>
+<p>The inbound dispatch code for the four contexts, WeChat, WhatsApp, LINE, and Internal, is <strong>structurally identical</strong>.</p>
+<blockquote>
+<p>If this were a code/configuration problem, all four should have broken <strong>the same way</strong>. But only WeChat was broken.</p>
+</blockquote>
+<p>That asymmetry definitively ruled out code as the cause. <strong>This was neither a code bug nor a design flaw. It was a state mismatch between the wrong exchange definition left in the broker and the declaration made by the code.</strong></p>
+<h2 id="why-only-wechat-first-declarer-wins-applies-per-exchange">Why only WeChat? first-declarer-wins applies per exchange</h2>
+<p>The key is that durability is fixed <strong>per exchange</strong>.</p>
+<ul>
+<li>WhatsApp/LINE/Internal exchanges: our app was the first declarer, durable → fixed as durable → no problem.</li>
+<li>WeChat exchange: <strong>someone else first declared it as transient, non-durable + auto-delete</strong> → fixed as AD → every later durable declaration from our app conflicted.</li>
+</ul>
+<p>It is like installing four outlets in a wall: three were installed according to the specification, but one was installed first by someone else with the wrong specification. The blueprint, the code, is identical for all four.</p>
+<blockquote>
+<p><strong>WhatsApp and LINE were not "safe"; they were "lucky."</strong> If a wrong client first declares their exchanges as transient, they can break the same way.</p>
+</blockquote>
+<h2 id="diagnosis-is-the-culprit-still-alive">Diagnosis: is the culprit still alive?</h2>
+<p>Before deleting the exchange, I needed one check because there were two possible scenarios.</p>
+<ul>
+<li><strong>(A) Live external publisher</strong>: it is still recreating this exchange as transient → even if I delete it, it immediately comes back as AD. That client must be stopped first.</li>
+<li><strong>(B) Old orphaned leftover</strong>: someone created it once in the past, and that client is already gone → deleting it once is enough.</li>
+</ul>
+<p>I checked the broker's connection list.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqctl</span><span style="color: #AAD94C;"> list_connections name peer_host user channels</span></span></code></pre>
+<p>There were <strong>exactly two connections</strong>, both from our app: 59 channels, meaning MassTransit's full bus and two replicas. No suspicious third-party connection existed → <strong>scenario (B), old leftover.</strong> It was safe to delete.</p>
+<h2 id="fix-delete-it-and-let-the-app-recreate-it">Fix: delete it and let the app recreate it</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqadmin</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> &quot;</span><span>$RABBITMQ_DEFAULT_USER</span><span style="color: #AAD94C;">&quot;</span><span style="color: #95E6CB;"> -p</span><span style="color: #AAD94C;"> &quot;</span><span>$RABBITMQ_DEFAULT_PASS</span><span style="color: #AAD94C;">&quot;</span><span style="color: #95E6CB;"> --vhost</span><span style="color: #AAD94C;"> /</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">  delete exchange</span><span style="color: #95E6CB;"> --name</span><span style="color: #AAD94C;"> &#39;...:DispatchInboundWechatMessageCreated&#39;</span></span></code></pre>
+<p>Immediately after deletion, MassTransit's reconnect loop declared the exchange again on the next attempt, this time as <strong>durable</strong>. There was no conflicting existing exchange anymore, so it succeeded.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqctl</span><span style="color: #AAD94C;"> list_exchanges name durable auto_delete</span><span style="color: #F29668;"> |</span><span style="color: #59C2FF;"> grep</span><span style="color: #AAD94C;"> DispatchInboundWechat</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># → ... true  false   (durable=true, auto_delete=false) ✅</span></span></code></pre>
+<p>In the management UI, Features returned to <code>D</code>. The <code>precondition_failed</code> logs stopped, and the <code>ReceiveTransport faulted ... Retrying</code> loop stopped as well.</p>
+<p>Deleting an exchange <strong>does not touch queues or the messages inside them.</strong> Only the exchange and bindings disappear, and MassTransit automatically recreates the bindings too.</p>
+<h2 id="preventing-recurrence">Preventing recurrence</h2>
+<p>This is the kind of problem code review cannot catch, because the problem is broker state. A <strong>runtime monitoring guard</strong> was needed.</p>
+<p>I added <code>RabbitMqExchangeTopologyGuard</code>.</p>
+<ul>
+<li>A read-only <code>BackgroundService</code> that runs at startup and every 10 minutes</li>
+<li>Calls the RabbitMQ management API, <code>/api/exchanges/{vhost}</code>, and logs a <code>LogWarning</code> when an <code>Omni.</code>-prefixed exchange is <strong>non-durable or auto-delete</strong></li>
+<li>Excludes legitimate temporary endpoints such as <code>bus-*</code> and <code>amq.*</code>, because MassTransit's temporary bus/reply endpoints are supposed to be AD</li>
+<li><strong>Does not mutate the broker.</strong> Actual recovery is still handled manually by delete → redeclare</li>
+</ul>
+<p>This guard <strong>detects</strong> the issue, but does not <strong>prevent or auto-recover</strong> it. To really reduce recurrence, the next steps are:</p>
+<ol>
+<li>Promote <code>LogWarning</code> to a <strong>real alert or health check</strong>, because logs alone can be buried.</li>
+<li>When drift occurs, also query <code>/api/connections</code> and log the suspected culprit connection.</li>
+<li><strong>Audit environments</strong>: check whether any non-prod instance has the production broker connection string.</li>
+</ol>
+<h2 id="lessons">Lessons</h2>
+<ol>
+<li>
+<p><strong>If it is not in the code, it may not be a code problem.</strong> First use git pickaxe (<code>-S</code>/<code>-G</code>) to check whether any commit ever touched that setting. It saves time otherwise spent digging in the wrong place.</p>
+</li>
+<li>
+<p><strong>A distributed-system bug can live in "state," not "code."</strong> Long-lived external state such as brokers, databases, and caches has its own truth separate from the code.</p>
+</li>
+<li>
+<p><strong>Asymmetry is a strong diagnostic signal.</strong> "The code is identical, so why only one?" usually means the cause is not symmetric code/configuration, but instance-specific state.</p>
+</li>
+<li>
+<p><strong>Remember first-declarer-wins.</strong> RabbitMQ exchange/queue arguments are fixed and immutable at first declaration. When several clients share the same broker, whoever declares first can create permanent differences.</p>
+</li>
+<li>
+<p><strong>"Not broken" is different from "safe."</strong> WhatsApp/LINE were not structurally protected; they were lucky.</p>
+</li>
+</ol>
+<hr />
+<h2 id="three-line-summary">Three-line summary</h2>
+<ol>
+<li>RabbitMQ exchange properties such as durable and auto-delete are <strong>fixed at first declaration and immutable afterward</strong>. Redeclaring with different arguments does not update it; it closes the channel with <code>406 PRECONDITION_FAILED</code> instead. This is first-declarer-wins.</li>
+<li>Only the WeChat exchange broke not because of code, but because of <strong>state mismatch</strong>. A transient exchange previously declared by someone remained in the broker and blocked every durable declaration from our app.</li>
+<li>The fix was just deleting the wrong exchange. After first confirming with <code>list_connections</code> that no live redeclarer existed, deleting it let the app recreate it as durable automatically.</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;work-queeus&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Work Queues
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;transactional-outbox-pattern&#x2F;">
+              Transactional Outbox Pattern: Keeping the Database and Broker in Sync<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Graph 자료구조
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Graph 자료구조
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2021-01-18">January 18, 2021</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>847 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/data-structure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Data Structure</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/graph/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>graph</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/bfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>BFS</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>DFS</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Graph는 <strong>node(vertex)</strong> 와 <strong>edge</strong> 로 관계를 표현하는 자료구조다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>G = (V, E)</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>V = vertices, nodes</span></span>
+<span class="giallo-l"><span>E = edges, relationships between vertices</span></span></code></pre>
+<p>Tree도 graph의 한 종류다. 정확히는 cycle이 없는 connected undirected graph를 tree라고
+볼 수 있다.</p>
+<h2 id="graphga-pilyohan-sungan">Graph가 필요한 순간</h2>
+<p>Graph는 "데이터 사이의 관계"가 핵심일 때 쓴다.</p>
+<ul>
+<li>Social network: 사람 = vertex, 친구 관계 = edge</li>
+<li>Map: 도시/교차로 = vertex, 도로 = edge</li>
+<li>Dependency graph: package/module = vertex, dependency = edge</li>
+<li>Web: page = vertex, hyperlink = edge</li>
+<li>Workflow/state machine: state = vertex, transition = edge</li>
+</ul>
+<p>Array나 list가 "순서" 중심이라면, graph는 "연결" 중심이다.</p>
+<h2 id="graph-jongryu">Graph 종류</h2>
+<h3 id="undirected-graph">Undirected Graph</h3>
+<p>Edge에 방향이 없다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>A -- B</span></span></code></pre>
+<p><code>A</code>가 <code>B</code>와 연결되어 있으면 <code>B</code>도 <code>A</code>와 연결되어 있다. Facebook 친구 관계 같은 모델에
+어울린다.</p>
+<h3 id="directed-graph">Directed Graph</h3>
+<p>Edge에 방향이 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>A -&gt; B</span></span></code></pre>
+<p><code>A</code>가 <code>B</code>를 가리킨다고 해서 <code>B</code>가 <code>A</code>를 가리키는 것은 아니다. Twitter follow, package
+dependency, web link 같은 모델에 어울린다.</p>
+<h3 id="weighted-graph">Weighted Graph</h3>
+<p>Edge에 비용이나 거리 같은 값이 붙는다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>A --(7)-- B</span></span></code></pre>
+<p>도로 거리, 네트워크 latency, 환승 비용, similarity score 등을 표현할 때 쓴다.</p>
+<h3 id="cyclic-acyclic-graph">Cyclic / Acyclic Graph</h3>
+<p>Cycle은 어떤 vertex에서 시작해서 edge를 따라 이동했을 때 다시 자기 자신으로 돌아올 수 있는
+경로다.</p>
+<p>Cycle이 없는 directed graph를 DAG(Directed Acyclic Graph)라고 한다. Build dependency,
+course prerequisite, job scheduling 같은 문제에서 많이 나온다.</p>
+<h3 id="connected-graph">Connected Graph</h3>
+<p>Undirected graph에서 모든 vertex가 서로 도달 가능하면 connected graph다. 연결되지 않은
+부분이 여러 개 있으면 connected component가 여러 개 있다고 말한다.</p>
+<p>Directed graph에서는 방향까지 고려해서 서로 도달 가능한 경우 strongly connected라고 한다.</p>
+<h2 id="graph-pyohyeon-bangbeob">Graph 표현 방법</h2>
+<p>Graph 알고리즘을 풀 때는 표현 방법이 매우 중요하다. Vertex 수를 <code>V</code>, edge 수를 <code>E</code>라고
+하자.</p>
+<h3 id="adjacency-matrix">Adjacency Matrix</h3>
+<p>2차원 배열로 edge 존재 여부나 weight를 저장한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>matrix[u][v] = true</span></span>
+<span class="giallo-l"><span>matrix[u][v] = weight</span></span></code></pre><table><thead><tr><th>작업</th><th style="text-align: right">Complexity</th></tr></thead><tbody>
+<tr><td>Memory</td><td style="text-align: right">O(V^2)</td></tr>
+<tr><td>Edge 존재 확인</td><td style="text-align: right">O(1)</td></tr>
+<tr><td>어떤 vertex의 모든 neighbor 순회</td><td style="text-align: right">O(V)</td></tr>
+</tbody></table>
+<p>장점:</p>
+<ul>
+<li>구현이 쉽다.</li>
+<li><code>u</code>와 <code>v</code>가 연결되어 있는지 바로 확인할 수 있다.</li>
+<li>Dense graph(edge가 매우 많은 graph)에 적합하다.</li>
+</ul>
+<p>단점:</p>
+<ul>
+<li>Sparse graph에서는 memory 낭비가 심하다.</li>
+<li>Neighbor를 찾으려면 한 row 전체를 훑어야 한다.</li>
+</ul>
+<h3 id="adjacency-list">Adjacency List</h3>
+<p>각 vertex마다 연결된 neighbor 목록을 저장한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>0: [1, 2]</span></span>
+<span class="giallo-l"><span>1: [0, 3]</span></span>
+<span class="giallo-l"><span>2: [0]</span></span>
+<span class="giallo-l"><span>3: [1]</span></span></code></pre>
+<p>Rust로는 보통 이렇게 표현한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> graph</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">usize</span><span>&gt;&gt;</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[</span><span style="color: #D2A6FF;">1</span><span>,</span><span style="color: #D2A6FF;"> 2</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #D2A6FF;"> 3</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[</span><span style="color: #D2A6FF;">0</span><span>],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[</span><span style="color: #D2A6FF;">1</span><span>],</span></span>
+<span class="giallo-l"><span>];</span></span></code></pre>
+<p>Weighted graph라면 neighbor와 weight를 같이 저장한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> graph</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;(</span><span style="color: #59C2FF;">usize</span><span>,</span><span style="color: #59C2FF;"> i32</span><span>)&gt;&gt;</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[(</span><span style="color: #D2A6FF;">1</span><span>,</span><span style="color: #D2A6FF;"> 7</span><span>), (</span><span style="color: #D2A6FF;">2</span><span>,</span><span style="color: #D2A6FF;"> 3</span><span>)],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[(</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #D2A6FF;"> 7</span><span>), (</span><span style="color: #D2A6FF;">3</span><span>,</span><span style="color: #D2A6FF;"> 2</span><span>)],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[(</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #D2A6FF;"> 3</span><span>)],</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    vec!</span><span>[(</span><span style="color: #D2A6FF;">1</span><span>,</span><span style="color: #D2A6FF;"> 2</span><span>)],</span></span>
+<span class="giallo-l"><span>];</span></span></code></pre><table><thead><tr><th>작업</th><th style="text-align: right">Complexity</th></tr></thead><tbody>
+<tr><td>Memory</td><td style="text-align: right">O(V + E)</td></tr>
+<tr><td>Edge 존재 확인</td><td style="text-align: right">O(deg(u)), set을 쓰면 평균 O(1)</td></tr>
+<tr><td>어떤 vertex의 모든 neighbor 순회</td><td style="text-align: right">O(deg(u))</td></tr>
+</tbody></table>
+<p>장점:</p>
+<ul>
+<li>Sparse graph에 memory 효율적이다.</li>
+<li>BFS/DFS처럼 neighbor를 순회하는 알고리즘에 좋다.</li>
+</ul>
+<p>단점:</p>
+<ul>
+<li>특정 edge 존재 여부만 자주 묻는 문제에서는 matrix보다 느릴 수 있다.</li>
+</ul>
+<h3 id="edge-list">Edge List</h3>
+<p>Edge 목록만 저장한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> edges</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span></span>
+<span class="giallo-l"><span>    (</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #D2A6FF;"> 1</span><span>,</span><span style="color: #D2A6FF;"> 7</span><span>),</span></span>
+<span class="giallo-l"><span>    (</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #D2A6FF;"> 2</span><span>,</span><span style="color: #D2A6FF;"> 3</span><span>),</span></span>
+<span class="giallo-l"><span>    (</span><span style="color: #D2A6FF;">1</span><span>,</span><span style="color: #D2A6FF;"> 3</span><span>,</span><span style="color: #D2A6FF;"> 2</span><span>),</span></span>
+<span class="giallo-l"><span>];</span></span></code></pre>
+<p>Kruskal MST처럼 edge를 정렬해서 처리하는 알고리즘에 잘 맞는다. 하지만 특정 vertex의
+neighbor를 자주 찾아야 한다면 매번 edge 전체를 훑어야 해서 비효율적이다.</p>
+<h2 id="pyohyeon-bangbeob-bigyo">표현 방법 비교</h2>
+<table><thead><tr><th>표현</th><th style="text-align: right">Memory</th><th style="text-align: right">Edge check</th><th style="text-align: right">Neighbor traversal</th><th>잘 맞는 경우</th></tr></thead><tbody>
+<tr><td>Adjacency matrix</td><td style="text-align: right">O(V^2)</td><td style="text-align: right">O(1)</td><td style="text-align: right">O(V)</td><td>Dense graph, 빠른 edge lookup</td></tr>
+<tr><td>Adjacency list</td><td style="text-align: right">O(V + E)</td><td style="text-align: right">O(deg)</td><td style="text-align: right">O(deg)</td><td>Sparse graph, BFS/DFS</td></tr>
+<tr><td>Edge list</td><td style="text-align: right">O(E)</td><td style="text-align: right">O(E)</td><td style="text-align: right">O(E)</td><td>Edge 중심 알고리즘, Kruskal</td></tr>
+</tbody></table>
+<p>대부분의 코딩 테스트 graph 문제는 sparse graph가 많아서 adjacency list가 기본 선택이다.</p>
+<h2 id="bfs">BFS</h2>
+<p>BFS(Breadth-First Search)는 시작점에서 가까운 vertex부터 방문한다. Queue를 사용한다.</p>
+<p>Unweighted graph에서 BFS는 시작점으로부터의 <strong>최단 edge 수</strong>를 구할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">collections</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">VecDeque</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> bfs</span><span>(graph</span><span style="color: #F29668;">: &amp;</span><span>[</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">usize</span><span>&gt;], start</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Option</span><span>&lt;</span><span style="color: #59C2FF;">usize</span><span>&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> distance</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span><span style="color: #59C2FF;">None</span><span>; graph</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>()];</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> queue</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> VecDeque</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    distance[start]</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Some</span><span>(</span><span style="color: #D2A6FF;">0</span><span>);</span></span>
+<span class="giallo-l"><span>    queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(start);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    while let</span><span style="color: #59C2FF;"> Some</span><span>(current)</span><span style="color: #F29668;"> =</span><span> queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">pop_front</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> next_distance</span><span style="color: #F29668;"> =</span><span> distance[current]</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>()</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 1</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        for</span><span style="color: #F29668;"> &amp;</span><span>next</span><span style="color: #FF8F40;"> in</span><span style="color: #F29668;"> &amp;</span><span>graph[current] {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> distance[next]</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">is_none</span><span>() {</span></span>
+<span class="giallo-l"><span>                distance[next]</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Some</span><span>(next_distance);</span></span>
+<span class="giallo-l"><span>                queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(next);</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    distance</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>시간 복잡도는 adjacency list 기준 <code>O(V + E)</code>다.</p>
+<p>자주 쓰이는 문제:</p>
+<ul>
+<li>Unweighted shortest path</li>
+<li>Connected component 찾기</li>
+<li>Bipartite graph 검사</li>
+<li>Level-order traversal</li>
+<li>Grid에서 최소 이동 횟수 구하기</li>
+</ul>
+<h2 id="dfs">DFS</h2>
+<p>DFS(Depth-First Search)는 한 경로를 끝까지 들어갔다가 되돌아온다. Recursion 또는 stack으로
+구현한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> dfs</span><span>(graph</span><span style="color: #F29668;">: &amp;</span><span>[</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">usize</span><span>&gt;], current</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>, visited</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span> [</span><span style="color: #59C2FF;">bool</span><span>]) {</span></span>
+<span class="giallo-l"><span>    visited[current]</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> true</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    for</span><span style="color: #F29668;"> &amp;</span><span>next</span><span style="color: #FF8F40;"> in</span><span style="color: #F29668;"> &amp;</span><span>graph[current] {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if</span><span style="color: #F29668;"> !</span><span>visited[next] {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">            dfs</span><span>(graph, next, visited);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>시간 복잡도는 adjacency list 기준 <code>O(V + E)</code>다.</p>
+<p>자주 쓰이는 문제:</p>
+<ul>
+<li>Cycle detection</li>
+<li>Connected component 찾기</li>
+<li>Topological sort</li>
+<li>Backtracking</li>
+<li>Tree/graph traversal</li>
+<li>Strongly connected component 알고리즘의 기본 재료</li>
+</ul>
+<h2 id="daepyo-algorijeum">대표 알고리즘</h2>
+<p>Graph 문제는 보통 "무엇을 구해야 하는가"로 알고리즘을 고른다.</p>
+<table><thead><tr><th>문제</th><th>대표 알고리즘</th></tr></thead><tbody>
+<tr><td>Unweighted shortest path</td><td>BFS</td></tr>
+<tr><td>Non-negative weighted shortest path</td><td>Dijkstra</td></tr>
+<tr><td>Negative edge가 있는 shortest path</td><td>Bellman-Ford</td></tr>
+<tr><td>All-pairs shortest path</td><td>Floyd-Warshall</td></tr>
+<tr><td>Minimum spanning tree</td><td>Kruskal, Prim</td></tr>
+<tr><td>Topological order</td><td>DFS 또는 Kahn's algorithm</td></tr>
+<tr><td>Strongly connected components</td><td>Kosaraju, Tarjan</td></tr>
+<tr><td>Bipartite check</td><td>BFS/DFS coloring</td></tr>
+<tr><td>Connectivity / cycle in undirected graph</td><td>DFS, Union-Find</td></tr>
+</tbody></table>
+<h2 id="tree-vs-graph">Tree vs Graph</h2>
+<table><thead><tr><th>Tree</th><th>Graph</th></tr></thead><tbody>
+<tr><td>Graph의 특수한 형태</td><td>더 일반적인 관계 모델</td></tr>
+<tr><td>Connected + acyclic</td><td>connected일 수도 있고 아닐 수도 있음</td></tr>
+<tr><td>node <code>n</code>개면 edge <code>n - 1</code>개</td><td>edge 개수 제한이 훨씬 자유로움</td></tr>
+<tr><td>두 node 사이 path가 정확히 하나</td><td>path가 0개, 1개, 여러 개일 수 있음</td></tr>
+<tr><td>보통 root/parent/child가 있음</td><td>root가 없을 수도 있음</td></tr>
+</tbody></table>
+<p>Tree 문제처럼 보여도 입력이 "parent-child" 관계가 아니라 임의 edge 목록으로 주어진다면
+graph로 보고 cycle, visited 처리를 생각해야 한다.</p>
+<h2 id="heunhan-silsu">흔한 실수</h2>
+<ul>
+<li>Undirected graph에서 edge를 한 방향만 추가함</li>
+<li><code>visited</code> 처리를 queue에 넣을 때 하지 않고 pop할 때 해서 중복 enqueue가 많아짐</li>
+<li>Weighted graph에 BFS를 사용함</li>
+<li>Dijkstra에 negative weight edge를 사용함</li>
+<li>Directed graph와 undirected graph의 cycle detection 방식을 섞음</li>
+<li>Recursion DFS에서 graph가 깊을 때 stack overflow 가능성을 무시함</li>
+</ul>
+<h2 id="gieoghal-jeom">기억할 점</h2>
+<ul>
+<li>Graph는 관계를 표현하는 자료구조다.</li>
+<li>Sparse graph는 adjacency list, dense graph는 adjacency matrix가 잘 맞는다.</li>
+<li>BFS는 queue, DFS는 stack 또는 recursion을 사용한다.</li>
+<li>BFS는 unweighted shortest path에 적합하다.</li>
+<li>Weighted shortest path는 weight 조건에 따라 Dijkstra, Bellman-Ford 등을 골라야 한다.</li>
+<li>Tree는 graph의 특수한 형태다.</li>
+</ul>
+<h2 id="camgo">참고</h2>
+<ul>
+<li>Graph data structure: <a rel="external" href="https://en.wikipedia.org/wiki/Graph_(abstract_data_type)">https://en.wikipedia.org/wiki/Graph_(abstract_data_type)</a></li>
+<li>Graph theory: <a rel="external" href="https://en.wikipedia.org/wiki/Graph_theory">https://en.wikipedia.org/wiki/Graph_theory</a></li>
+<li>Adjacency list: <a rel="external" href="https://en.wikipedia.org/wiki/Adjacency_list">https://en.wikipedia.org/wiki/Adjacency_list</a></li>
+<li>Adjacency matrix: <a rel="external" href="https://en.wikipedia.org/wiki/Adjacency_matrix">https://en.wikipedia.org/wiki/Adjacency_matrix</a></li>
+<li>CP-Algorithms - Breadth First Search: <a rel="external" href="https://cp-algorithms.com/graph/breadth-first-search.html">https://cp-algorithms.com/graph/breadth-first-search.html</a></li>
+<li>CP-Algorithms - Depth First Search: <a rel="external" href="https://cp-algorithms.com/graph/depth-first-search.html">https://cp-algorithms.com/graph/depth-first-search.html</a></li>
+<li>CP-Algorithms - Dijkstra: <a rel="external" href="https://cp-algorithms.com/graph/dijkstra.html">https://cp-algorithms.com/graph/dijkstra.html</a></li>
+<li>CP-Algorithms - Minimum Spanning Tree: <a rel="external" href="https://cp-algorithms.com/graph/mst_kruskal.html">https://cp-algorithms.com/graph/mst_kruskal.html</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure&#x2F;tree&#x2F;">
+              Tree 자료구조<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

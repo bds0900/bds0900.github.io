@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | 웹훅이 핸드쉐이크에서 죽었다: ERR_TLS_CERT_ALTNAME_INVALID 디버깅
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            웹훅이 핸드쉐이크에서 죽었다: ERR_TLS_CERT_ALTNAME_INVALID 디버깅
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-22">June 22, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>3 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>551 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/tls/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>tls</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/ssl/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ssl</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/certificate/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>certificate</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/webhook/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>webhook</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dns/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>dns</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/debugging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>debugging</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Node.js 서비스가 웹훅을 백엔드 API로 전달하다가 이런 에러를 뱉었다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[onRaw] webhook forwarding error: {</span></span>
+<span class="giallo-l"><span>  name: &#39;ApiError&#39;,</span></span>
+<span class="giallo-l"><span>  title: &#39;Webhook forwarding failed&#39;,</span></span>
+<span class="giallo-l"><span>  status: 502,</span></span>
+<span class="giallo-l"><span>  message: &quot;Hostname/IP does not match certificate&#39;s altnames:</span></span>
+<span class="giallo-l"><span>            Host: example.com. is not in the cert&#39;s altnames:</span></span>
+<span class="giallo-l"><span>            DNS:*.azurewebsites.net, DNS:*.scm.azurewebsites.net, ...&quot;,</span></span>
+<span class="giallo-l"><span>  code: &#39;ERR_TLS_CERT_ALTNAME_INVALID&#39;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>페이로드 자체는 멀쩡했다. 데이터 문제가 아니라는 거다. 근데 왜 502가 뜨는 걸까?</p>
+<h2 id="weonin-sane-eobsneun-domein">원인: SAN에 없는 도메인</h2>
+<p>포워더가 <code>example.com</code>으로 HTTPS 연결을 열었다. TLS 핸드셰이크 과정에서 서버가 돌려준 인증서의 <strong>SAN(Subject Alternative Names)</strong> 목록에 <code>example.com</code>이 없었다. 위 에러에서는 <code>*.azurewebsites.net</code> 계열 이름들만 들어있는 걸 볼 수 있는데 — 이건 Azure 특유의 이야기가 아니다. 어떤 플랫폼이든, 어떤 서버든, 커스텀 도메인을 <em>연결</em>만 해놓고 그 도메인을 커버하는 인증서를 <em>바인딩</em>하지 않으면 똑같은 에러가 난다.</p>
+<p>TLS 클라이언트는 "내가 연결하려는 호스트명이 인증서에 있나?"를 필수로 체크하는데, 없으니까 <code>ERR_TLS_CERT_ALTNAME_INVALID</code>로 연결을 끊어버린다. 포워더는 이걸 502로 감싸서 올려보낸 것이다.</p>
+<p><strong>한 문장 요약:</strong></p>
+<blockquote>
+<p><code>example.com</code>으로 트래픽이 <em>라우팅</em>되도록 설정은 했지만, <code>example.com</code>을 커버하는 TLS 인증서는 <em>바인딩하지 않아서</em> — 서버가 기본 인증서(플랫폼/서버의 다른 이름)로 폴백했고, 클라이언트가 연결한 이름과 맞지 않았다.</p>
+</blockquote>
+<h2 id="haegsim-gaenyeom-dns-rauting-tls-sinweonjeungmyeong">핵심 개념: DNS(라우팅) ≠ TLS(신원증명)</h2>
+<p>이 두 개를 헷갈리면 계속 막힌다.</p>
+<table><thead><tr><th>레이어</th><th>묻는 질문</th><th>동작 방식</th></tr></thead><tbody>
+<tr><td><strong>DNS / 라우팅</strong></td><td>"트래픽을 <em>어디로</em> 보내지?"</td><td>A / CNAME 레코드</td></tr>
+<tr><td><strong>TLS / 신원</strong></td><td>"서버가 <code>example.com</code>임을 <em>증명</em>할 수 있나?"</td><td><code>example.com</code>이 포함된 인증서</td></tr>
+</tbody></table>
+<blockquote>
+<p><strong>도메인으로 트래픽이 들어온다고 그 도메인의 인증서가 생기는 게 아니다.</strong> 인증서는 따로 발급받고, 따로 바인딩해야 한다.</p>
+</blockquote>
+<p>비유하자면, DNS는 회사 전화번호부다 — 어디로 연결하면 되는지 알려준다. TLS 인증서는 직원증이다. <code>example.com</code>으로 편지가 도착했다고 해서 그 사람이 <code>example.com</code>이라고 적힌 신분증을 들고 있는 건 아니다. 경비(TLS 검사)가 신분증을 확인하고, 없으면 돌려보낸다.</p>
+<p>그리고 핸드셰이크가 <strong>HTTP 요청 전에</strong> 실패하기 때문에 백엔드 애플리케이션에는 아무 로그도 안 찍힌다. 서비스 코드 디버깅은 의미가 없다. 순수하게 인프라/인증서 문제다.</p>
+<h2 id="sujeong-bangbeob-injeungseo-balgeub-bainding">수정 방법: 인증서 발급 + 바인딩</h2>
+<p>서버가 어디에 있든 수정 방향은 동일하다.</p>
+<h3 id="injeungseo-vs-bainding">인증서 vs 바인딩</h3>
+<p>이 둘은 별개다.</p>
+<table><thead><tr><th>객체</th><th>정체</th></tr></thead><tbody>
+<tr><td><strong>인증서</strong></td><td>"<code>example.com</code>임을 증명하는" 서명된 파일</td></tr>
+<tr><td><strong>바인딩</strong></td><td>"이 도메인으로 요청이 오면 이 인증서를 제시해라"는 설정</td></tr>
+</tbody></table>
+<p>인증서가 서버에 있더라도 바인딩이 없으면 서버는 엉뚱한 기본 인증서를 내놓는다.</p>
+<h3 id="ilbanjeogin-sujeong-jeolca">일반적인 수정 절차</h3>
+<ol>
+<li>
+<p><strong><code>example.com</code>을 커버하는 인증서를 발급받는다.</strong></p>
+<ul>
+<li>Let's Encrypt (무료, <code>certbot</code> 사용) — 가장 흔한 방법</li>
+<li>호스팅 플랫폼의 managed certificate (플랫폼이 자동 발급·갱신)</li>
+<li>직접 구매한 인증서 (.pem / .pfx)</li>
+</ul>
+</li>
+<li>
+<p><strong>인증서를 서버/플랫폼에 바인딩한다.</strong></p>
+<ul>
+<li>Nginx: <code>ssl_certificate</code>, <code>ssl_certificate_key</code> 지시어로 지정</li>
+<li>Apache: <code>SSLCertificateFile</code>, <code>SSLCertificateKeyFile</code>로 지정</li>
+<li>클라우드 플랫폼: 커스텀 도메인 설정 화면에서 인증서 선택 후 바인딩</li>
+</ul>
+</li>
+</ol>
+<h3 id="nginx-yesi">Nginx 예시</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="nginx"><span class="giallo-l"><span style="color: #FF8F40;">server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    listen</span><span style="color: #D2A6FF;"> 443</span><span> ssl</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    server_name</span><span> example.com</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    ssl_certificate</span><span>     /etc/letsencrypt/live/example.com/fullchain.pem</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    ssl_certificate_key</span><span> /etc/letsencrypt/live/example.com/privkey.pem</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    ...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>certbot을 쓴다면:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">certbot</span><span style="color: #95E6CB;"> --nginx -d</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># certbot이 nginx 설정까지 자동으로 잡아준다</span></span></code></pre><h3 id="azure-yesi-app-service-container-apps">Azure 예시 (App Service / Container Apps)</h3>
+<p>포털에서:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>앱 리소스 → Custom domains</span></span>
+<span class="giallo-l"><span>  → example.com 옆 &quot;No binding&quot; 클릭</span></span>
+<span class="giallo-l"><span>  → Add binding</span></span>
+<span class="giallo-l"><span>  → Source = Create managed certificate</span></span>
+<span class="giallo-l"><span>  → TLS/SSL type = SNI SSL</span></span>
+<span class="giallo-l"><span>  → Add</span></span></code></pre>
+<p><strong>App Service:</strong></p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 1. managed cert 발급</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl create</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --name</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --hostname</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 2. thumbprint 확인</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl list</span><span style="color: #95E6CB;"> --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --query</span><span style="color: #AAD94C;"> &quot;[?subjectName==&#39;example.com&#39;].thumbprint&quot;</span><span style="color: #95E6CB;"> -o</span><span style="color: #AAD94C;"> tsv</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 3. 바인딩 (SNI SSL)</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> webapp config ssl bind</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --resource-group</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --name</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --certificate-thumbprint</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">thumbprin</span><span>t</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --ssl-type</span><span style="color: #AAD94C;"> SNI</span></span></code></pre>
+<p><strong>Container Apps</strong> (인증서는 앱이 아니라 Environment에 붙는다):</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> containerapp hostname add</span><span style="color: #95E6CB;">  -g</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> -n</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --hostname</span><span style="color: #AAD94C;"> example.com</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">az</span><span style="color: #AAD94C;"> containerapp hostname bind</span><span style="color: #95E6CB;"> -g</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">resource-grou</span><span>p</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> -n</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">app-nam</span><span>e</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --hostname</span><span style="color: #AAD94C;"> example.com</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #95E6CB;">  --environment</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">environmen</span><span>t</span><span style="color: #F29668;">&gt;</span><span style="color: #95E6CB;"> --validation-method</span><span style="color: #AAD94C;"> CNAME</span></span></code></pre><h3 id="hwagin">확인</h3>
+<p>어느 플랫폼이든 확인 방법은 동일하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">openssl</span><span style="color: #AAD94C;"> s_client</span><span style="color: #95E6CB;"> -connect</span><span style="color: #AAD94C;"> example.com:443</span><span style="color: #95E6CB;"> -servername</span><span style="color: #AAD94C;"> example.com</span><span style="color: #F29668;"> &lt;</span><span style="color: #AAD94C;">/dev/null</span><span style="color: #F29668;"> 2&gt;</span><span style="color: #AAD94C;">/dev/null</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #F29668;">  |</span><span style="color: #59C2FF;"> openssl</span><span style="color: #AAD94C;"> x509</span><span style="color: #95E6CB;"> -noout -subject -ext</span><span style="color: #AAD94C;"> subjectAltName</span></span></code></pre>
+<p>출력에서 SAN에 <code>example.com</code>이 들어있으면 성공이다. <code>ERR_TLS_CERT_ALTNAME_INVALID</code>는 더 이상 뜨지 않는다.</p>
+<h2 id="juyisahang">주의사항</h2>
+<ol>
+<li>
+<p><strong>TLS를 실제로 종료하는 곳에 바인딩해야 한다.</strong> 리버스 프록시(Nginx, Caddy, 로드밸런서)가 앞에 있으면 인증서는 프록시에 걸려야 한다. 백엔드 앱 서버에 걸어봐야 의미가 없다.</p>
+</li>
+<li>
+<p><strong>DNS 조건이 먼저 맞아야 인증서 발급이 된다.</strong></p>
+<ul>
+<li>루트 도메인 (<code>example.com</code>) → A 레코드 필요</li>
+<li>서브도메인 (<code>www.example.com</code>) → CNAME 가능</li>
+<li>CAA 레코드가 있다면 사용하는 CA를 허용해야 함 (예: <code>0 issue letsencrypt.org</code>)</li>
+</ul>
+</li>
+<li>
+<p><strong>와일드카드 인증서가 아니면 호스트네임별로 따로 발급해야 한다.</strong> <code>example.com</code>과 <code>www.example.com</code>은 별개다.</p>
+</li>
+<li>
+<p><strong><code>rejectUnauthorized: false</code>로 퉁치지 말자.</strong> 에러는 사라지지만 TLS 검증을 통째로 꺼버리는 거다. 웹훅 채널이 위조 공격에 노출된다.</p>
+</li>
+<li>
+<p><strong>자동 갱신은 조건부다.</strong> Let's Encrypt든 managed cert든, DNS 레코드가 살아있고 도메인이 서버를 가리키고 있어야 갱신이 된다. A/CNAME 레코드가 바뀌면 갱신 실패한다.</p>
+</li>
+</ol>
+<hr />
+<h2 id="3jul-yoyag">3줄 요약</h2>
+<ol>
+<li><code>ERR_TLS_CERT_ALTNAME_INVALID</code>는 서버 인증서의 SAN 목록에 접속하려는 호스트명이 없을 때 발생한다 — 플랫폼 불문, 도메인을 라우팅만 해놓고 인증서를 바인딩하지 않으면 생기는 일이다.</li>
+<li>DNS 라우팅(도메인 → 서버로 트래픽 전달)과 TLS 신원(서버가 그 도메인임을 증명)은 완전히 독립적이다 — 트래픽이 도착한다고 인증서가 생기는 게 아니다.</li>
+<li>수정은 해당 도메인의 인증서를 발급받고 서버에 바인딩하는 것으로 끝난다; 핸드셰이크 전에 실패하는 문제이므로 애플리케이션 코드를 디버깅해봐야 의미없다.</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+               
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure&#x2F;replica-warmup&#x2F;">
+              새 레플리카의 첫 요청이 7초 걸리던 이유<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

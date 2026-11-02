@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Doosan&#x27;s Blog - CS</title>
+    <subtitle>Learning is an endless process</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/cs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-07-15T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/cs/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Finite State Machine</title>
+        <published>2025-07-15T00:00:00+00:00</published>
+        <updated>2025-07-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/cs/fsm/"/>
+        <id>https://emptyfridge.dev/cs/fsm/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/cs/fsm/">&lt;p&gt;An FSM(Finite State Machine) is a model that describes a system using its &lt;strong&gt;current state&lt;&#x2F;strong&gt; and &lt;strong&gt;state transitions based on input&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;The core idea is simple:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;A system is in exactly one state at a time, and when an input or event arrives, it moves to the next state according to predefined rules.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;It is called a &quot;finite&quot; state machine because the number of states is finite. For example, a door can only be &lt;code&gt;Open&lt;&#x2F;code&gt; or &lt;code&gt;Closed&lt;&#x2F;code&gt;, and a turnstile can only be &lt;code&gt;Locked&lt;&#x2F;code&gt; or &lt;code&gt;Unlocked&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;components&quot;&gt;Components&lt;&#x2F;h2&gt;
+&lt;p&gt;An FSM is usually described with five components.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Component&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;S&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Set of possible states&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Σ&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Input alphabet or set of events&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;δ&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Transition function. It takes the current state and input, then decides the next state&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;s0&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Initial state&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;F&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Final state or accepting state. Some problems may not need this&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Mathematically, it is written like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;FSM = (S, Σ, δ, s0, F)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The important part is &lt;code&gt;δ&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;δ(current_state, input) -&amp;gt; next_state&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In other words, an FSM decides the next state only from &quot;where am I now?&quot; and &quot;what input did I receive?&quot;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;example-turnstile&quot;&gt;Example: turnstile&lt;&#x2F;h2&gt;
+&lt;p&gt;Think of a turnstile like the one at a subway gate.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;: locked&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;: passable&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Assume there are only two inputs.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;: insert money&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;: push the gate&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;The transition table looks like this.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Current state&lt;&#x2F;th&gt;&lt;th&gt;Input&lt;&#x2F;th&gt;&lt;th&gt;Next state&lt;&#x2F;th&gt;&lt;th&gt;Description&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Inserting money unlocks it&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Pushing while locked changes nothing&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Passing through locks it again&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Already unlocked, so it stays unlocked&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;In code, it can look like this.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileState&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Unlocked&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Coin&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Push&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; Next&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState state&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent input&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (state&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; input)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; switch&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Coin&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Push&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Push&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Coin&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        _&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; throw&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; InvalidOperationException&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;Unknown transition&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In this code, the &lt;code&gt;switch&lt;&#x2F;code&gt; acts as the transition function &lt;code&gt;δ&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;why-is-it-useful&quot;&gt;Why is it useful?&lt;&#x2F;h2&gt;
+&lt;p&gt;FSMs are useful when complex conditional logic can be organized around &quot;state.&quot;&lt;&#x2F;p&gt;
+&lt;p&gt;For example, if an order system is represented with multiple flags like &lt;code&gt;bool isPaid&lt;&#x2F;code&gt;, &lt;code&gt;bool isShipped&lt;&#x2F;code&gt;, and &lt;code&gt;bool isCanceled&lt;&#x2F;code&gt;, strange combinations can appear.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isPaid = false&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isShipped = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isCanceled = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This says the order was shipped without payment and was canceled at the same time. That state should not exist in the real domain.&lt;&#x2F;p&gt;
+&lt;p&gt;Representing the system as an FSM reduces these impossible combinations.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; OrderState&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Created&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Paid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Shipped&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Delivered&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Then transition rules restrict &quot;which event is allowed in which state.&quot;&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Created --Pay--&amp;gt; Paid&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Paid --Ship--&amp;gt; Shipped&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Shipped --Deliver--&amp;gt; Delivered&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Created --Cancel--&amp;gt; Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Paid --Cancel--&amp;gt; Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This explicitly prevents nonsensical flows such as receiving a &lt;code&gt;Pay&lt;&#x2F;code&gt; event while already in the &lt;code&gt;Delivered&lt;&#x2F;code&gt; state.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;dfa-and-nfa&quot;&gt;DFA and NFA&lt;&#x2F;h2&gt;
+&lt;p&gt;When studying FSMs, DFA and NFA usually appear too.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Type&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;DFA(Deterministic Finite Automaton)&lt;&#x2F;td&gt;&lt;td&gt;Given the current state and input, the next state is always exactly one state&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;NFA(Nondeterministic Finite Automaton)&lt;&#x2F;td&gt;&lt;td&gt;The same state and input may allow multiple next states, or there may be ε-transitions without input&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Regular expressions are internally connected to these finite automata. A regex can be built into an NFA and, if needed, converted into a DFA for string matching.&lt;&#x2F;p&gt;
+&lt;p&gt;However, an FSM has finite memory. It cannot solve problems that require remembering arbitrary depth, such as infinitely nested parentheses. For those cases, stronger models such as pushdown automata, which have a stack, are needed.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;is-c-async-await-an-fsm&quot;&gt;Is C# async&#x2F;await an FSM?&lt;&#x2F;h2&gt;
+&lt;p&gt;Short answer: &lt;strong&gt;yes. But it is closer to a compiler-generated coroutine state machine than a domain FSM.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;In C#, an &lt;code&gt;async&lt;&#x2F;code&gt; method looks like it runs as written in source code.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;public static async&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Task&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; CountBytesAsync&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;HttpClient client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; string&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; url&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = await&lt;&#x2F;span&gt;&lt;span&gt; client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    await&lt;&#x2F;span&gt;&lt;span&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Delay&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    return&lt;&#x2F;span&gt;&lt;span&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Length&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;But the compiler roughly transforms this method into the following structure.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;The original method becomes a thin wrapper that creates a state machine and returns a &lt;code&gt;Task&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;The actual method body moves into &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;At each &lt;code&gt;await&lt;&#x2F;code&gt; point, the state machine stores &quot;where to resume next.&quot;&lt;&#x2F;li&gt;
+&lt;li&gt;Local variables that must survive after an &lt;code&gt;await&lt;&#x2F;code&gt; become fields of the state machine.&lt;&#x2F;li&gt;
+&lt;li&gt;When the awaited operation completes, its continuation calls &lt;code&gt;MoveNext()&lt;&#x2F;code&gt; again.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;As pseudocode, it feels like this. The actual compiler output can vary by version and optimization.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;private struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; CountBytesAsyncStateMachine&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt; :&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; IAsyncStateMachine&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AsyncTaskMethodBuilder&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; HttpClient Client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public string&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Url&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; _bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TaskAwaiter&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TaskAwaiter _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; MoveNext&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        try&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;            TaskAwaiter&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = default&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                goto&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AfterDownload&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; Client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(Url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetAwaiter&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;IsCompleted)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;                RegisterContinuation&lt;&#x2F;span&gt;&lt;span&gt;(downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; MoveNext)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;        AfterDownload&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            _bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetResult&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;            TaskAwaiter delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = default&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                goto&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AfterDelay&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Delay&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetAwaiter&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;IsCompleted)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;                RegisterContinuation&lt;&#x2F;span&gt;&lt;span&gt;(delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; MoveNext)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;        AfterDelay&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetResult&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;SetResult&lt;&#x2F;span&gt;&lt;span&gt;(_bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Length)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        catch&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Exception ex&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;SetException&lt;&#x2F;span&gt;&lt;span&gt;(ex)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; SetStateMachine&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;IAsyncStateMachine stateMachine&lt;&#x2F;span&gt;&lt;span&gt;) { }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;This is not an exact decompiled result; it is an example that shows the structure. The core idea is still the same. The real compiler uses &lt;code&gt;AsyncTaskMethodBuilder&amp;lt;T&amp;gt;.AwaitOnCompleted&lt;&#x2F;code&gt; or &lt;code&gt;AwaitUnsafeOnCompleted&lt;&#x2F;code&gt; so that &lt;code&gt;MoveNext()&lt;&#x2F;code&gt; is called again when the awaiter completes.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;what-actually-happens-at-await&quot;&gt;What actually happens at &lt;code&gt;await&lt;&#x2F;code&gt;&lt;&#x2F;h2&gt;
+&lt;p&gt;When execution reaches &lt;code&gt;await&lt;&#x2F;code&gt;, there are two cases.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;1-if-the-operation-is-already-complete-keep-running&quot;&gt;1. If the operation is already complete, keep running&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = await&lt;&#x2F;span&gt;&lt;span&gt; client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;If the awaiter from &lt;code&gt;GetByteArrayAsync(url)&lt;&#x2F;code&gt; is already complete, the state machine does not stop and immediately continues to the next line.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-if-the-operation-is-not-complete-return-for-now&quot;&gt;2. If the operation is not complete, return for now&lt;&#x2F;h3&gt;
+&lt;p&gt;If the operation is not finished yet, the following happens:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;The current position is saved as something like &lt;code&gt;State = 0&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Local variables and the awaiter needed later are stored in fields.&lt;&#x2F;li&gt;
+&lt;li&gt;A continuation is registered so &lt;code&gt;MoveNext()&lt;&#x2F;code&gt; is called again when the operation completes.&lt;&#x2F;li&gt;
+&lt;li&gt;Control returns to the caller without blocking the current thread.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;So &lt;code&gt;await&lt;&#x2F;code&gt; does not block a thread. It pauses method execution and resumes from the suspension point when the awaited operation completes.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;regular-fsm-vs-async-state-machine&quot;&gt;Regular FSM vs async state machine&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Regular FSM&lt;&#x2F;th&gt;&lt;th&gt;C# async state machine&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;State: domain states like &lt;code&gt;Locked&lt;&#x2F;code&gt;, &lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;State: compiler-generated execution positions like &lt;code&gt;-1&lt;&#x2F;code&gt;, &lt;code&gt;0&lt;&#x2F;code&gt;, &lt;code&gt;1&lt;&#x2F;code&gt;, &lt;code&gt;-2&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Input: events like &lt;code&gt;Coin&lt;&#x2F;code&gt;, &lt;code&gt;Push&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Input: awaited task completion, exception, cancellation&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Transition function: handwritten &lt;code&gt;switch&lt;&#x2F;code&gt; or table&lt;&#x2F;td&gt;&lt;td&gt;Compiler-generated &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Final state: accepting&#x2F;final state&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Task&lt;&#x2F;code&gt; completes as succeeded, faulted, or canceled&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Purpose: modeling domain rules&lt;&#x2F;td&gt;&lt;td&gt;implementing suspend&#x2F;resume for async methods&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Both are FSMs in the sense that &quot;state and event determine the next execution position.&quot; But the async&#x2F;await state machine is not a domain model designed by a person. It is the compiler&#x27;s transformation of sequential-looking code into a form that can run asynchronously.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;is-rust-async-await-also-an-fsm&quot;&gt;Is Rust async&#x2F;await also an FSM?&lt;&#x2F;h2&gt;
+&lt;p&gt;Rust is similar. &lt;strong&gt;Rust &lt;code&gt;async&lt;&#x2F;code&gt; blocks and &lt;code&gt;async fn&lt;&#x2F;code&gt; are also transformed by the compiler into state machines that implement &lt;code&gt;Future&lt;&#x2F;code&gt;.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;However, Rust&#x27;s execution model is different from C#&#x27;s. When you call an &lt;code&gt;async fn&lt;&#x2F;code&gt; in Rust, the function body does not start immediately. The call returns an anonymous &lt;code&gt;Future&lt;&#x2F;code&gt; value, and the body progresses only when an executor polls that future.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;async fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; page_title&lt;&#x2F;span&gt;&lt;span&gt;(url&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;str&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let&lt;&#x2F;span&gt;&lt;span&gt; response&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; get&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let&lt;&#x2F;span&gt;&lt;span&gt; text&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; response&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;text&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    parse_title&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;text)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Conceptually, the code above creates a future like this:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; PageTitleFuture&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Start&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    WaitingResponse&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    WaitingText&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Done&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The real rustc output does not expose this exact enum. The Rust Reference says the actual data format of the future returned by an async block is unspecified. Conceptually, though, it is similar to &lt;strong&gt;an enum where each &lt;code&gt;await&lt;&#x2F;code&gt; point has a variant, and that variant stores the data needed to resume&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;The core interface of a Rust future is &lt;code&gt;Future::poll&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;trait&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Future&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    type&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Output&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; poll&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Pin&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt; Self&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        cx&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Context&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;_&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    )&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Poll&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;Self&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Output&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;poll()&lt;&#x2F;code&gt; returns one of two values.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Return value&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Poll::Pending&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Not finished yet. Poll again later&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Poll::Ready(value)&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Finished. &lt;code&gt;value&lt;&#x2F;code&gt; is the final result&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;If a future reaches an &lt;code&gt;.await&lt;&#x2F;code&gt; point and the child future is not ready yet, the current future stores its state and necessary locals, then returns &lt;code&gt;Poll::Pending&lt;&#x2F;code&gt;. Later, when I&#x2F;O or a timer becomes ready, a &lt;code&gt;Waker&lt;&#x2F;code&gt; wakes the task and the executor calls &lt;code&gt;poll()&lt;&#x2F;code&gt; again. At that point, the future resumes from the stored state instead of starting from the beginning.&lt;&#x2F;p&gt;
+&lt;p&gt;So Rust &lt;code&gt;.await&lt;&#x2F;code&gt; also does not block a thread. The current future returns &lt;code&gt;Poll::Pending&lt;&#x2F;code&gt; and gives control back to the executor, which can poll other tasks on the same thread.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;c-vs-rust-async-state-machines&quot;&gt;C# vs Rust async state machines&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Topic&lt;&#x2F;th&gt;&lt;th&gt;C#&lt;&#x2F;th&gt;&lt;th&gt;Rust&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;When async execution starts&lt;&#x2F;td&gt;&lt;td&gt;The method may start and run until the first incomplete &lt;code&gt;await&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Calling &lt;code&gt;async fn&lt;&#x2F;code&gt; does not execute the body; it returns a &lt;code&gt;Future&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Return type&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Task&lt;&#x2F;code&gt;, &lt;code&gt;Task&amp;lt;T&amp;gt;&lt;&#x2F;code&gt;, &lt;code&gt;ValueTask&amp;lt;T&amp;gt;&lt;&#x2F;code&gt;, etc.&lt;&#x2F;td&gt;&lt;td&gt;Anonymous &lt;code&gt;impl Future&amp;lt;Output = T&amp;gt;&lt;&#x2F;code&gt; type&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Execution entry point&lt;&#x2F;td&gt;&lt;td&gt;Compiler-generated &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Future::poll()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Resume mechanism&lt;&#x2F;td&gt;&lt;td&gt;Awaiter completion invokes a continuation&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Waker&lt;&#x2F;code&gt; wakes the task and the executor polls again&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Stored data&lt;&#x2F;td&gt;&lt;td&gt;Locals needed after await, awaiters, state value&lt;&#x2F;td&gt;&lt;td&gt;Locals needed after await, child futures, state value&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Notable detail&lt;&#x2F;td&gt;&lt;td&gt;Task model fits runtime&#x2F;GC environments well&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Pin&lt;&#x2F;code&gt; matters because a future may internally reference its own fields&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Both are compiler-generated state machines. The difference is that C# is usually explained through &lt;code&gt;Task&lt;&#x2F;code&gt; and continuation, while Rust is explained through &lt;code&gt;Future&lt;&#x2F;code&gt;, &lt;code&gt;Poll&lt;&#x2F;code&gt;, &lt;code&gt;Waker&lt;&#x2F;code&gt;, and executor.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;things-to-remember&quot;&gt;Things to remember&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;An FSM is a tool for understanding complex flows by splitting them into states and transitions.&lt;&#x2F;li&gt;
+&lt;li&gt;The number of states must be finite.&lt;&#x2F;li&gt;
+&lt;li&gt;A transition is &quot;current state + input -&amp;gt; next state.&quot;&lt;&#x2F;li&gt;
+&lt;li&gt;A C# &lt;code&gt;async&lt;&#x2F;code&gt; method is compiled into a structure that implements &lt;code&gt;IAsyncStateMachine&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;Rust &lt;code&gt;async&lt;&#x2F;code&gt; blocks and &lt;code&gt;async fn&lt;&#x2F;code&gt; are also compiled into state machines that implement &lt;code&gt;Future&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt; does not block a thread. It suspends the method and resumes it through a continuation when the operation completes.&lt;&#x2F;li&gt;
+&lt;li&gt;The state value in an async state machine is not a domain state. It is an execution position that says &quot;which await point did we stop at?&quot;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;references&quot;&gt;References&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Finite-state machine: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Finite-state_machine&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Finite-state_machine&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Regex and automata: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;statkclee.github.io&#x2F;nlp2&#x2F;regex-under-the-hood.html&quot;&gt;https:&#x2F;&#x2F;statkclee.github.io&#x2F;nlp2&#x2F;regex-under-the-hood.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;C# language specification - Async functions: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;language-specification&#x2F;classes#1514-async-functions&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;language-specification&#x2F;classes#1514-async-functions&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt; operator: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;operators&#x2F;await&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;operators&#x2F;await&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;IAsyncStateMachine&lt;&#x2F;code&gt;: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.iasyncstatemachine&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.iasyncstatemachine&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;AsyncStateMachineAttribute&lt;&#x2F;code&gt;: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.asyncstatemachineattribute&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.asyncstatemachineattribute&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;How Async&#x2F;Await Really Works in C#: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;dotnet&#x2F;how-async-await-really-works&#x2F;&quot;&gt;https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;dotnet&#x2F;how-async-await-really-works&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust Reference - async blocks: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;expressions&#x2F;block-expr.html#async-blocks&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;expressions&#x2F;block-expr.html#async-blocks&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust Reference - async functions: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;items&#x2F;functions.html#async-functions&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;items&#x2F;functions.html#async-functions&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust &lt;code&gt;Future&lt;&#x2F;code&gt; trait: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;future&#x2F;trait.Future.html&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;future&#x2F;trait.Future.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Asynchronous Programming in Rust - async&#x2F;.await primer: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;rust-lang.github.io&#x2F;async-book&#x2F;01_getting_started&#x2F;04_async_await_primer.html&quot;&gt;https:&#x2F;&#x2F;rust-lang.github.io&#x2F;async-book&#x2F;01_getting_started&#x2F;04_async_await_primer.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

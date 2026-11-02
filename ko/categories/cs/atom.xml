@@ -1,0 +1,336 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - CS</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/categories/cs/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-07-15T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/categories/cs/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Finite State Machine</title>
+        <published>2025-07-15T00:00:00+00:00</published>
+        <updated>2025-07-15T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/cs/fsm/"/>
+        <id>https://emptyfridge.dev/ko/cs/fsm/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/cs/fsm/">&lt;p&gt;FSM(Finite State Machine, 유한 상태 기계)은 어떤 시스템을 &lt;strong&gt;현재 상태&lt;&#x2F;strong&gt;와 &lt;strong&gt;입력에
+따른 상태 전이&lt;&#x2F;strong&gt;로 설명하는 모델이다.&lt;&#x2F;p&gt;
+&lt;p&gt;핵심은 단순하다:&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;시스템은 한 번에 하나의 상태에 있고, 입력이나 이벤트가 들어오면 정해진 규칙에
+따라 다음 상태로 이동한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;상태의 개수가 유한하기 때문에 &quot;finite&quot; state machine이라고 부른다. 예를 들어 문은
+&lt;code&gt;Open&lt;&#x2F;code&gt; 또는 &lt;code&gt;Closed&lt;&#x2F;code&gt; 상태만 가질 수 있고, 회전문(turnstile)은 &lt;code&gt;Locked&lt;&#x2F;code&gt; 또는
+&lt;code&gt;Unlocked&lt;&#x2F;code&gt; 상태만 가질 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;guseong-yoso&quot;&gt;구성 요소&lt;&#x2F;h2&gt;
+&lt;p&gt;FSM은 보통 다음 5가지로 설명한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;구성 요소&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;S&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;가능한 상태들의 집합&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Σ&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;입력 알파벳 또는 이벤트들의 집합&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;δ&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;전이 함수. 현재 상태와 입력을 받아 다음 상태를 결정한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;s0&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;시작 상태&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;F&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;종료 상태 또는 accepting state. 문제에 따라 없을 수도 있다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;수식으로는 이렇게 쓴다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;FSM = (S, Σ, δ, s0, F)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;중요한 부분은 &lt;code&gt;δ&lt;&#x2F;code&gt;다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;δ(current_state, input) -&amp;gt; next_state&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;즉 FSM은 &quot;지금 어디에 있는가?&quot;와 &quot;무슨 입력을 받았는가?&quot;만으로 다음 상태를 정한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;yeje-hoejeonmun&quot;&gt;예제: 회전문&lt;&#x2F;h2&gt;
+&lt;p&gt;지하철 개찰구 같은 회전문을 생각해보자.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;: 잠겨 있음&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;: 통과 가능&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;입력은 두 개만 있다고 하자.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;: 돈을 넣음&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;: 문을 밀음&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;상태 전이표는 이렇게 된다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;현재 상태&lt;&#x2F;th&gt;&lt;th&gt;입력&lt;&#x2F;th&gt;&lt;th&gt;다음 상태&lt;&#x2F;th&gt;&lt;th&gt;설명&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;돈을 넣으면 통과 가능&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;잠긴 상태에서 밀어도 그대로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Push&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Locked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;통과하면 다시 잠김&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Coin&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Unlocked&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;이미 열려 있으니 그대로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;코드로 쓰면 이런 모양이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileState&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Unlocked&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Coin&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Push&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;static&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; Next&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState state&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent input&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (state&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; input)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; switch&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Coin&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Push&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Push&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Locked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TurnstileEvent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Coin&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span&gt; TurnstileState&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Unlocked&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        _&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; throw&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; new&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; InvalidOperationException&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;Unknown transition&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이 코드에서 &lt;code&gt;switch&lt;&#x2F;code&gt;가 전이 함수 &lt;code&gt;δ&lt;&#x2F;code&gt; 역할을 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;wae-yuyonghanga&quot;&gt;왜 유용한가&lt;&#x2F;h2&gt;
+&lt;p&gt;FSM은 복잡한 조건문을 &quot;상태&quot; 중심으로 정리할 때 좋다.&lt;&#x2F;p&gt;
+&lt;p&gt;예를 들어 주문 시스템을 &lt;code&gt;bool isPaid&lt;&#x2F;code&gt;, &lt;code&gt;bool isShipped&lt;&#x2F;code&gt;, &lt;code&gt;bool isCanceled&lt;&#x2F;code&gt; 같은 플래그
+여러 개로 표현하면 이상한 조합이 생길 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isPaid = false&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isShipped = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;isCanceled = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;결제도 안 됐는데 배송됐고, 동시에 취소도 된 상태다. 이런 상태는 실제 도메인에서는
+존재하면 안 된다.&lt;&#x2F;p&gt;
+&lt;p&gt;FSM으로 표현하면 이런 불가능한 조합을 줄일 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; OrderState&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Created&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Paid&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Shipped&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Delivered&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그리고 &quot;어떤 상태에서 어떤 이벤트가 가능한가&quot;를 전이 규칙으로 제한한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Created --Pay--&amp;gt; Paid&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Paid --Ship--&amp;gt; Shipped&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Shipped --Deliver--&amp;gt; Delivered&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Created --Cancel--&amp;gt; Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Paid --Cancel--&amp;gt; Canceled&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이렇게 하면 &lt;code&gt;Delivered&lt;&#x2F;code&gt; 상태에서 &lt;code&gt;Pay&lt;&#x2F;code&gt; 이벤트가 들어오는 것처럼 말이 안 되는 흐름을
+명시적으로 막을 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;dfawa-nfa&quot;&gt;DFA와 NFA&lt;&#x2F;h2&gt;
+&lt;p&gt;FSM을 공부하면 보통 DFA와 NFA를 같이 보게 된다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;종류&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;DFA(Deterministic Finite Automaton)&lt;&#x2F;td&gt;&lt;td&gt;현재 상태와 입력이 정해지면 다음 상태가 항상 하나로 결정된다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;NFA(Nondeterministic Finite Automaton)&lt;&#x2F;td&gt;&lt;td&gt;같은 상태와 입력에서 여러 다음 상태가 가능하거나, 입력 없이 이동하는 ε-transition이 있을 수 있다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;정규 표현식(regex)은 내부적으로 이런 유한 오토마타와 연결된다. 보통 정규식을 NFA로
+만들고, 필요하면 DFA로 변환해서 문자열을 매칭할 수 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;다만 FSM은 메모리가 유한하다. 그래서 임의 깊이로 중첩되는 괄호처럼 &quot;얼마나 깊게
+들어갔는지&quot;를 무한히 기억해야 하는 문제는 순수 FSM만으로 처리할 수 없다. 이런 경우에는
+스택을 가진 pushdown automaton 같은 더 강한 모델이 필요하다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;c-async-awaitdo-fsminga&quot;&gt;C# async&#x2F;await도 FSM인가?&lt;&#x2F;h2&gt;
+&lt;p&gt;결론부터 말하면, &lt;strong&gt;그렇다. 하지만 도메인 FSM이라기보다는 컴파일러가 만든 coroutine
+state machine에 가깝다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;C#에서 &lt;code&gt;async&lt;&#x2F;code&gt; 메서드는 소스 코드 그대로 실행되는 것처럼 보인다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;public static async&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Task&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; CountBytesAsync&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;HttpClient client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; string&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; url&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = await&lt;&#x2F;span&gt;&lt;span&gt; client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    await&lt;&#x2F;span&gt;&lt;span&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Delay&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    return&lt;&#x2F;span&gt;&lt;span&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Length&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;하지만 컴파일러는 이 메서드를 대략 다음 구조로 바꾼다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;원래 메서드는 state machine을 만들고 &lt;code&gt;Task&lt;&#x2F;code&gt;를 반환하는 얇은 wrapper가 된다.&lt;&#x2F;li&gt;
+&lt;li&gt;실제 메서드 본문은 &lt;code&gt;MoveNext()&lt;&#x2F;code&gt; 안으로 들어간다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt; 지점마다 &quot;다음에 어디서 다시 시작해야 하는지&quot;를 상태 값으로 저장한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt; 이후에도 살아 있어야 하는 지역 변수는 state machine의 필드로 올라간다.&lt;&#x2F;li&gt;
+&lt;li&gt;기다리던 작업이 끝나면 continuation이 &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;를 다시 호출한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;의사 코드로 보면 이런 느낌이다. 실제 컴파일러 출력은 버전과 최적화에 따라 달라질 수
+있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;private struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; CountBytesAsyncStateMachine&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt; :&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; IAsyncStateMachine&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AsyncTaskMethodBuilder&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; HttpClient Client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public string&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Url&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; _bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TaskAwaiter&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    private&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TaskAwaiter _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; MoveNext&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        try&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;            TaskAwaiter&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = default&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                goto&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AfterDownload&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; Client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(Url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetAwaiter&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;IsCompleted)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;                RegisterContinuation&lt;&#x2F;span&gt;&lt;span&gt;(downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; MoveNext)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;        AfterDownload&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            _bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; downloadAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetResult&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;            TaskAwaiter delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = default&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                goto&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; AfterDelay&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; Task&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;Delay&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;100&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetAwaiter&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;!&lt;&#x2F;span&gt;&lt;span&gt;delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;IsCompleted)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                _delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;                RegisterContinuation&lt;&#x2F;span&gt;&lt;span&gt;(delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; MoveNext)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;                return&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;        AfterDelay&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            delayAwaiter&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetResult&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;SetResult&lt;&#x2F;span&gt;&lt;span&gt;(_bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Length)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        catch&lt;&#x2F;span&gt;&lt;span&gt; (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Exception ex&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            State&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = -&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Builder&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;SetException&lt;&#x2F;span&gt;&lt;span&gt;(ex)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    public void&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; SetStateMachine&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;IAsyncStateMachine stateMachine&lt;&#x2F;span&gt;&lt;span&gt;) { }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;위 코드는 정확한 디컴파일 결과가 아니라 구조를 보여주기 위한 예시다. 그래도 핵심은
+실제와 같다. 실제 컴파일러는 &lt;code&gt;AsyncTaskMethodBuilder&amp;lt;T&amp;gt;&lt;&#x2F;code&gt;의 &lt;code&gt;AwaitOnCompleted&lt;&#x2F;code&gt; 또는
+&lt;code&gt;AwaitUnsafeOnCompleted&lt;&#x2F;code&gt;를 사용해서 awaiter 완료 시 &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;가 다시 호출되도록
+연결한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;awaiteseo-siljero-ileonaneun-il&quot;&gt;await에서 실제로 일어나는 일&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;await&lt;&#x2F;code&gt;를 만나면 두 가지 경우가 있다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;1-imi-wanryodoen-jageobimyeon-gyesog-silhaeng&quot;&gt;1. 이미 완료된 작업이면 계속 실행&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;byte&lt;&#x2F;span&gt;&lt;span&gt;[]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; bytes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; = await&lt;&#x2F;span&gt;&lt;span&gt; client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;GetByteArrayAsync&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;GetByteArrayAsync(url)&lt;&#x2F;code&gt;의 awaiter가 이미 완료되어 있으면 state machine은 멈추지 않고
+바로 다음 줄로 진행한다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;2-ajig-wanryodoeji-anhasseumyeon-ildan-banhwan&quot;&gt;2. 아직 완료되지 않았으면 일단 반환&lt;&#x2F;h3&gt;
+&lt;p&gt;작업이 아직 끝나지 않았다면 다음 일이 일어난다.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;현재 위치를 &lt;code&gt;State = 0&lt;&#x2F;code&gt; 같은 값으로 저장한다.&lt;&#x2F;li&gt;
+&lt;li&gt;나중에 다시 필요할 지역 변수와 awaiter를 필드에 저장한다.&lt;&#x2F;li&gt;
+&lt;li&gt;작업이 끝났을 때 &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;를 다시 호출할 continuation을 등록한다.&lt;&#x2F;li&gt;
+&lt;li&gt;현재 스레드를 막지 않고 caller에게 제어권을 돌려준다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;그래서 &lt;code&gt;await&lt;&#x2F;code&gt;는 thread를 block하는 것이 아니다. &lt;code&gt;await&lt;&#x2F;code&gt;는 메서드의 실행을 잠시
+중단하고, 기다리던 작업이 끝나면 중단 지점 다음부터 다시 실행되게 만든다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;ilban-fsmgwa-async-state-machine-bigyo&quot;&gt;일반 FSM과 async state machine 비교&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;일반 FSM&lt;&#x2F;th&gt;&lt;th&gt;C# async state machine&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;상태: &lt;code&gt;Locked&lt;&#x2F;code&gt;, &lt;code&gt;Unlocked&lt;&#x2F;code&gt; 같은 도메인 상태&lt;&#x2F;td&gt;&lt;td&gt;상태: &lt;code&gt;-1&lt;&#x2F;code&gt;, &lt;code&gt;0&lt;&#x2F;code&gt;, &lt;code&gt;1&lt;&#x2F;code&gt;, &lt;code&gt;-2&lt;&#x2F;code&gt; 같은 compiler-generated 실행 위치&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;입력: &lt;code&gt;Coin&lt;&#x2F;code&gt;, &lt;code&gt;Push&lt;&#x2F;code&gt; 같은 이벤트&lt;&#x2F;td&gt;&lt;td&gt;입력: awaited task completion, exception, cancellation&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;전이 함수: 직접 작성한 &lt;code&gt;switch&lt;&#x2F;code&gt; 또는 table&lt;&#x2F;td&gt;&lt;td&gt;컴파일러가 생성한 &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;종료 상태: accepting&#x2F;final state&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Task&lt;&#x2F;code&gt;가 succeeded, faulted, canceled 중 하나로 완료&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;목적: 도메인 규칙 모델링&lt;&#x2F;td&gt;&lt;td&gt;async 메서드의 suspend&#x2F;resume 구현&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;즉 둘 다 &quot;상태와 이벤트에 따라 다음 실행 위치가 결정된다&quot;는 점에서는 FSM이다. 하지만
+async&#x2F;await의 state machine은 사람이 직접 설계하는 도메인 모델이 아니라, 사람이 쓴
+순차적인 코드를 컴파일러가 비동기 실행 가능한 형태로 바꾼 결과다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;rust-async-awaitdo-fsminga&quot;&gt;Rust async&#x2F;await도 FSM인가?&lt;&#x2F;h2&gt;
+&lt;p&gt;Rust도 마찬가지다. &lt;strong&gt;Rust의 &lt;code&gt;async&lt;&#x2F;code&gt; 블록과 &lt;code&gt;async fn&lt;&#x2F;code&gt;도 컴파일러가 &lt;code&gt;Future&lt;&#x2F;code&gt;를
+구현하는 state machine으로 바꾼다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;다만 C#과 실행 모델이 조금 다르다. Rust에서 &lt;code&gt;async fn&lt;&#x2F;code&gt;을 호출하면 함수 본문이 바로
+실행되지 않는다. 호출 결과는 익명 타입의 &lt;code&gt;Future&lt;&#x2F;code&gt; 값이고, 이 future가 executor에 의해
+&lt;code&gt;poll()&lt;&#x2F;code&gt;될 때 실제 본문이 진행된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;async fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; page_title&lt;&#x2F;span&gt;&lt;span&gt;(url&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;str&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;String&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let&lt;&#x2F;span&gt;&lt;span&gt; response&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; get&lt;&#x2F;span&gt;&lt;span&gt;(url)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let&lt;&#x2F;span&gt;&lt;span&gt; text&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; response&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;text&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;await&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    parse_title&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;text)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;위 코드는 개념적으로 이런 future를 만든다고 볼 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;enum&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; PageTitleFuture&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Start&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    WaitingResponse&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    WaitingText&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;    Done&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;실제 rustc가 저 enum을 그대로 노출하는 것은 아니다. Rust Reference는 async block이
+반환하는 future 타입의 실제 데이터 형식은 지정하지 않는다고 말한다. 하지만 개념적으로는
+&lt;strong&gt;각 &lt;code&gt;await&lt;&#x2F;code&gt; 지점마다 하나의 variant가 있고, 그 variant 안에 resume에 필요한 데이터를
+저장하는 enum&lt;&#x2F;strong&gt;과 비슷하다고 설명한다.&lt;&#x2F;p&gt;
+&lt;p&gt;Rust future의 핵심 인터페이스는 &lt;code&gt;Future::poll&lt;&#x2F;code&gt;이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;trait&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Future&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    type&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Output&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; poll&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        self&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Pin&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt; Self&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        cx&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Context&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;_&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    )&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Poll&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;Self&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Output&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;poll()&lt;&#x2F;code&gt;은 다음 둘 중 하나를 반환한다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;반환값&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Poll::Pending&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;아직 끝나지 않았다. 나중에 다시 poll해야 한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Poll::Ready(value)&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;완료됐다. 최종 결과가 &lt;code&gt;value&lt;&#x2F;code&gt;다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;어떤 &lt;code&gt;.await&lt;&#x2F;code&gt; 지점에서 아직 준비되지 않은 future를 만나면, 현재 future는 자기 상태와
+필요한 지역 변수를 저장한 뒤 &lt;code&gt;Poll::Pending&lt;&#x2F;code&gt;을 반환한다. 나중에 I&#x2F;O나 타이머 같은 작업이
+준비되면 &lt;code&gt;Waker&lt;&#x2F;code&gt;가 task를 깨우고, executor가 다시 &lt;code&gt;poll()&lt;&#x2F;code&gt;을 호출한다. 그때 future는
+처음부터 다시 시작하는 것이 아니라 저장된 상태에서 이어서 실행한다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 Rust의 &lt;code&gt;.await&lt;&#x2F;code&gt;도 thread를 block하는 것이 아니다. 현재 future가
+&lt;code&gt;Poll::Pending&lt;&#x2F;code&gt;을 반환해서 executor에게 제어권을 돌려주고, executor는 같은 thread에서
+다른 task를 poll할 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;c-gwa-rust-async-state-machine-bigyo&quot;&gt;C#과 Rust async state machine 비교&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;항목&lt;&#x2F;th&gt;&lt;th&gt;C#&lt;&#x2F;th&gt;&lt;th&gt;Rust&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;async 호출 시점&lt;&#x2F;td&gt;&lt;td&gt;메서드가 시작되고 첫 incomplete &lt;code&gt;await&lt;&#x2F;code&gt;까지 진행될 수 있다&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;async fn&lt;&#x2F;code&gt;은 호출만으로 본문을 실행하지 않고 &lt;code&gt;Future&lt;&#x2F;code&gt;를 반환한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;반환 타입&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Task&lt;&#x2F;code&gt;, &lt;code&gt;Task&amp;lt;T&amp;gt;&lt;&#x2F;code&gt;, &lt;code&gt;ValueTask&amp;lt;T&amp;gt;&lt;&#x2F;code&gt; 등&lt;&#x2F;td&gt;&lt;td&gt;익명 타입의 &lt;code&gt;impl Future&amp;lt;Output = T&amp;gt;&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;실행 진입점&lt;&#x2F;td&gt;&lt;td&gt;compiler-generated &lt;code&gt;MoveNext()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Future::poll()&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;재개 방식&lt;&#x2F;td&gt;&lt;td&gt;awaiter completion이 continuation을 호출한다&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Waker&lt;&#x2F;code&gt;가 task를 깨우고 executor가 다시 poll한다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;저장되는 것&lt;&#x2F;td&gt;&lt;td&gt;await 이후 필요한 locals, awaiter, 상태 값&lt;&#x2F;td&gt;&lt;td&gt;await 이후 필요한 locals, child future, 상태 값&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;특이점&lt;&#x2F;td&gt;&lt;td&gt;런타임&#x2F;GC 환경과 잘 맞는 task 모델&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;Pin&lt;&#x2F;code&gt;이 중요하다. future 내부가 자기 자신의 필드를 참조할 수 있기 때문이다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;둘 다 compiler-generated state machine이라는 점은 같다. 차이는 C#은 &lt;code&gt;Task&lt;&#x2F;code&gt;와
+continuation 중심으로 설명되고, Rust는 &lt;code&gt;Future&lt;&#x2F;code&gt;, &lt;code&gt;Poll&lt;&#x2F;code&gt;, &lt;code&gt;Waker&lt;&#x2F;code&gt;, executor 중심으로
+설명된다는 점이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;gieoghal-jeom&quot;&gt;기억할 점&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;FSM은 복잡한 흐름을 상태와 전이로 쪼개서 이해하는 도구다.&lt;&#x2F;li&gt;
+&lt;li&gt;상태는 유한해야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;전이는 &quot;현재 상태 + 입력 -&amp;gt; 다음 상태&quot;로 정리한다.&lt;&#x2F;li&gt;
+&lt;li&gt;C#의 &lt;code&gt;async&lt;&#x2F;code&gt; 메서드는 컴파일될 때 &lt;code&gt;IAsyncStateMachine&lt;&#x2F;code&gt;을 구현하는 구조로 바뀐다.&lt;&#x2F;li&gt;
+&lt;li&gt;Rust의 &lt;code&gt;async&lt;&#x2F;code&gt; 블록과 &lt;code&gt;async fn&lt;&#x2F;code&gt;도 &lt;code&gt;Future&lt;&#x2F;code&gt;를 구현하는 state machine으로 바뀐다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt;는 스레드를 block하지 않는다. 메서드를 suspend하고, 작업 완료 후
+continuation으로 resume한다.&lt;&#x2F;li&gt;
+&lt;li&gt;async state machine의 상태 값은 도메인 상태가 아니라 &quot;어느 await 지점에서
+멈췄는가&quot;를 나타내는 실행 위치다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;유한 상태 기계: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%9C%A0%ED%95%9C_%EC%83%81%ED%83%9C_%EA%B8%B0%EA%B3%84&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;정규식과 오토마타: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;statkclee.github.io&#x2F;nlp2&#x2F;regex-under-the-hood.html&quot;&gt;https:&#x2F;&#x2F;statkclee.github.io&#x2F;nlp2&#x2F;regex-under-the-hood.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;C# language specification - Async functions: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;language-specification&#x2F;classes#1514-async-functions&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;language-specification&#x2F;classes#1514-async-functions&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;await&lt;&#x2F;code&gt; operator: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;operators&#x2F;await&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;csharp&#x2F;language-reference&#x2F;operators&#x2F;await&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;IAsyncStateMachine&lt;&#x2F;code&gt;: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.iasyncstatemachine&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.iasyncstatemachine&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;AsyncStateMachineAttribute&lt;&#x2F;code&gt;: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.asyncstatemachineattribute&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.runtime.compilerservices.asyncstatemachineattribute&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;How Async&#x2F;Await Really Works in C#: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;dotnet&#x2F;how-async-await-really-works&#x2F;&quot;&gt;https:&#x2F;&#x2F;devblogs.microsoft.com&#x2F;dotnet&#x2F;how-async-await-really-works&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust Reference - async blocks: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;expressions&#x2F;block-expr.html#async-blocks&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;expressions&#x2F;block-expr.html#async-blocks&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust Reference - async functions: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;items&#x2F;functions.html#async-functions&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;reference&#x2F;items&#x2F;functions.html#async-functions&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Rust &lt;code&gt;Future&lt;&#x2F;code&gt; trait: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;future&#x2F;trait.Future.html&quot;&gt;https:&#x2F;&#x2F;doc.rust-lang.org&#x2F;std&#x2F;future&#x2F;trait.Future.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Asynchronous Programming in Rust - async&#x2F;.await primer: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;rust-lang.github.io&#x2F;async-book&#x2F;01_getting_started&#x2F;04_async_await_primer.html&quot;&gt;https:&#x2F;&#x2F;rust-lang.github.io&#x2F;async-book&#x2F;01_getting_started&#x2F;04_async_await_primer.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

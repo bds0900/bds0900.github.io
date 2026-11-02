@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Doosan&#x27;s Blog - Algorithm</title>
+    <subtitle>Learning is an endless process</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/algorithm/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-01-09T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/algorithm/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Euclidean Algorithm</title>
+        <published>2025-01-09T00:00:00+00:00</published>
+        <updated>2025-01-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/algorithm/euclidean/"/>
+        <id>https://emptyfridge.dev/algorithm/euclidean/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/algorithm/euclidean/">&lt;p&gt;While solving LeetCode problems, I ran into a problem called &quot;Greatest Common Divisor of Strings.&quot; At first, I tried to solve it by comparing two strings with pointers without thinking too deeply. I soon realized that approach was wrong. As usual, reading and analyzing the problem carefully matters.&lt;&#x2F;p&gt;
+&lt;p&gt;The key was to find the largest common string. If I translate that into the lengths of the strings, the problem becomes a greatest common divisor problem.&lt;&#x2F;p&gt;
+&lt;p&gt;I had never implemented a greatest common divisor function before, so I tried thinking through it myself for a while. Eventually I looked for help and found this very clean code:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;public int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; gcd&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; b&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    return&lt;&#x2F;span&gt;&lt;span&gt; (b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; :&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; gcd&lt;&#x2F;span&gt;&lt;span&gt;(b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; %&lt;&#x2F;span&gt;&lt;span&gt; b)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;That is when I learned this was the famous Euclidean algorithm.&lt;&#x2F;p&gt;
+&lt;p&gt;The method I originally knew was to factor both numbers and multiply their common factors.
+For example, to find the GCD of 252 and 105: &lt;code&gt;252 &#x2F; 3 = 84&lt;&#x2F;code&gt;, &lt;code&gt;105 &#x2F; 3 = 35&lt;&#x2F;code&gt;, then &lt;code&gt;84 &#x2F; 7 = 12&lt;&#x2F;code&gt;, &lt;code&gt;35 &#x2F; 7 = 5&lt;&#x2F;code&gt;. Since 12 and 5 have no common factor, 3 and 7 are the common factors of 252 and 105, and &lt;code&gt;3 * 7 = 21&lt;&#x2F;code&gt; is the greatest common divisor.&lt;&#x2F;p&gt;
+&lt;p&gt;References &lt;br &#x2F;&gt;
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&lt;&#x2F;a&gt;
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Permutation</title>
+        <published>2023-05-29T00:00:00+00:00</published>
+        <updated>2023-05-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/algorithm/permutation/"/>
+        <id>https://emptyfridge.dev/algorithm/permutation/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/algorithm/permutation/">&lt;p&gt;While solving LeetCode 441, &quot;Arranging Coins,&quot; I saw the formula for adding numbers from 1 to &lt;code&gt;n&lt;&#x2F;code&gt;.
+Most people have probably seen the school problem where you add the numbers from 1 to 100. It is the formula Gauss supposedly came up with when he was ten years old.
+The sum from 1 to &lt;code&gt;n&lt;&#x2F;code&gt; can be solved with &lt;code&gt;n(n+1)&#x2F;2&lt;&#x2F;code&gt;. There are already many explanations online, so I do not need to repeat the full proof here.
+But the formula felt familiar, and then I suddenly remembered learning &lt;code&gt;n(n-1)&#x2F;2&lt;&#x2F;code&gt;, so I looked it up again.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-1-2-possible-pairs-from-n-items&quot;&gt;$\frac{n(n-1)}{2}$: possible pairs from &lt;code&gt;n&lt;&#x2F;code&gt; items&lt;&#x2F;h2&gt;
+&lt;p&gt;When I searched for it, I found explanations like &quot;total number of subarrays&quot; or &quot;the number of pairs you can form from an &lt;em&gt;n&lt;&#x2F;em&gt; element set.&quot; &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;math.stackexchange.com&#x2F;questions&#x2F;2214839&#x2F;exactly-how-does-the-equation-nn-1-2-determine-the-number-of-pairs-of-a-given&quot;&gt;Link&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;A&lt;&#x2F;th&gt;&lt;th&gt;B&lt;&#x2F;th&gt;&lt;th&gt;C&lt;&#x2F;th&gt;&lt;th&gt;D&lt;&#x2F;th&gt;&lt;th&gt;E&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;A&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;AB&lt;&#x2F;td&gt;&lt;td&gt;AC&lt;&#x2F;td&gt;&lt;td&gt;AD&lt;&#x2F;td&gt;&lt;td&gt;AE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;&#x2F;td&gt;&lt;td&gt;BA&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;BC&lt;&#x2F;td&gt;&lt;td&gt;BD&lt;&#x2F;td&gt;&lt;td&gt;BE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;C&lt;&#x2F;td&gt;&lt;td&gt;CA&lt;&#x2F;td&gt;&lt;td&gt;CB&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;CD&lt;&#x2F;td&gt;&lt;td&gt;CE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;D&lt;&#x2F;td&gt;&lt;td&gt;DA&lt;&#x2F;td&gt;&lt;td&gt;DB&lt;&#x2F;td&gt;&lt;td&gt;DC&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;DE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;E&lt;&#x2F;td&gt;&lt;td&gt;EA&lt;&#x2F;td&gt;&lt;td&gt;EB&lt;&#x2F;td&gt;&lt;td&gt;EC&lt;&#x2F;td&gt;&lt;td&gt;ED&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;This is the handshake problem. Suppose &lt;code&gt;n&lt;&#x2F;code&gt; people each shake hands without duplication.
+One person has to shake hands with &lt;code&gt;n - 1&lt;&#x2F;code&gt; other people, excluding themself.
+Then is the total number of handshakes &lt;code&gt;n(n-1)&lt;&#x2F;code&gt;?
+No, because &lt;code&gt;n(n-1)&lt;&#x2F;code&gt; includes duplicates: AB-BA, AC-CA, AD-DA, AE-EA, and so on.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;permutation&quot;&gt;Permutation&lt;&#x2F;h1&gt;
+&lt;p&gt;While studying combinations, I ended up reviewing permutations too.
+I learned about permutations while solving problems a while ago, but I forgot most of it. So I am studying it again.
+Permutations and combinations still confuse me sometimes.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;n-r-choose-r-from-n-with-repetition-where-order-matters&quot;&gt;$n^r$: choose &lt;code&gt;r&lt;&#x2F;code&gt; from &lt;code&gt;n&lt;&#x2F;code&gt;, with repetition, where order matters&lt;&#x2F;h2&gt;
+&lt;p&gt;Suppose we have A, B, and C. If we choose 3 items while allowing repetition and considering order, we get:&lt;&#x2F;p&gt;
+&lt;p&gt;AAA, AAB, AAC&lt;br &#x2F;&gt;
+ABA, ABB, ABC&lt;br &#x2F;&gt;
+ACA, ACB, ACC&lt;br &#x2F;&gt;
+BAA, BAB, BAC&lt;br &#x2F;&gt;
+BBA, BBB, BBC&lt;br &#x2F;&gt;
+BCA, BCB, BCC&lt;br &#x2F;&gt;
+CAA, CAB, CAC&lt;br &#x2F;&gt;
+CBA, CBB, CBC&lt;br &#x2F;&gt;
+CCA, CCB, CCC&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-r-choose-r-from-n-without-repetition-where-order-matters&quot;&gt;$\frac{n!}{(n-r)!}$: choose &lt;code&gt;r&lt;&#x2F;code&gt; from &lt;code&gt;n&lt;&#x2F;code&gt;, without repetition, where order matters&lt;&#x2F;h2&gt;
+&lt;p&gt;Because repetition is not allowed, each pick leaves one fewer choice than before.
+If we choose 3 balls from 16 billiard balls, the first pick has 16 choices, the second has 15 choices, and the third has 14 choices. That gives &lt;code&gt;16 x 15 x 14 = 3360&lt;&#x2F;code&gt; permutations.
+To generalize &lt;code&gt;16 x 15 x 14&lt;&#x2F;code&gt;, we use factorials.&lt;&#x2F;p&gt;
+&lt;p&gt;$\frac{16 * 15 * 14 * 13 * 12 * 11..3 * 2 * 1}{13 * 12 * 11 ... 3 * 2 * 1}$ =&amp;gt; $\frac{n!}{(n-r)!}$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;combination&quot;&gt;Combination&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;frac-n-r-n-r-combinations-removing-order-from-permutations&quot;&gt;$\frac{n!}{r!(n-r)!}$: combinations, removing order from permutations&lt;&#x2F;h2&gt;
+&lt;p&gt;ABC, CBA, and BCA are all made from the same A, B, and C. If order does not matter, they are all the same combination.&lt;&#x2F;p&gt;
+&lt;p&gt;Above, $\frac{n!}{(n-r)!}$ gave us permutations where repetition is not allowed and order matters. If order no longer matters, that becomes a combination.&lt;&#x2F;p&gt;
+&lt;p&gt;Back to the billiard ball example. We had &lt;code&gt;16 x 15 x 14 = 3360&lt;&#x2F;code&gt; permutations. To get combinations, divide by the number of possible arrangements of the selected items.
+How many ways can 3 balls be arranged? &lt;code&gt;3!&lt;&#x2F;code&gt;. Four balls can be arranged in &lt;code&gt;4!&lt;&#x2F;code&gt; ways. In general, &lt;code&gt;r&lt;&#x2F;code&gt; items can be arranged in &lt;code&gt;r!&lt;&#x2F;code&gt; ways.&lt;&#x2F;p&gt;
+&lt;p&gt;So if we divide 3360 permutations by &lt;code&gt;3!&lt;&#x2F;code&gt;, we get 560 combinations.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

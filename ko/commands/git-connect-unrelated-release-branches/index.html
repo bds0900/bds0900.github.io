@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Git unrelated histories: dev, stg, main 브랜치 연결하기
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Git unrelated histories: dev, stg, main 브랜치 연결하기
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-05-23">May 23, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>607 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/git/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>git</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/branch/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>branch</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/release/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>release</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/github/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>github</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/workflow/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>workflow</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>회사 배포 브랜치 흐름은 보통 이런 식으로 흘러간다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>feature branches -&gt; dev -&gt; stg -&gt; main</span></span></code></pre>
+<p>여기서는 production 브랜치를 <code>main</code>이라고 부른다. 팀에 따라 이 브랜치 이름은 <code>prd</code>일 수도 있다.</p>
+<p>내 경우 실제 환경에는 <code>int</code>도 있었지만, 핵심 문제는 <code>stg</code>와 <code>main</code> 사이였다. <code>dev</code>는 <code>stg</code>에서 파생된 브랜치라 둘은 Git history가 연결되어 있었다. 그런데 <code>main</code>은 따로 만들어진 브랜치라 <code>dev</code>, <code>stg</code>와 공통 조상이 없었다.</p>
+<p>즉, 브랜치 이름으로는 같은 배포 흐름 안에 있는 것처럼 보였지만 Git 입장에서는 완전히 다른 프로젝트 두 개처럼 보이는 상태였다.</p>
+<h2 id="weonhaneun-heureum">원하는 흐름</h2>
+<p>원하는 규칙은 단순했다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>feature branches -&gt; dev -&gt; stg -&gt; main</span></span></code></pre>
+<p><code>main</code>은 feature branch를 직접 받으면 안 된다. <code>dev</code>에서 검증되고, <code>stg</code>를 통과한 코드만 <code>main</code>으로 올라가야 한다.</p>
+<p>그래서 Git history도 이 방향을 이해할 수 있어야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>main &lt;- stg &lt;- dev</span></span></code></pre>
+<p>여기서 화살표는 "오른쪽 브랜치가 왼쪽 브랜치의 history를 포함한다"는 뜻이다.</p>
+<ul>
+<li><code>stg</code>는 <code>main</code>의 history를 포함해야 한다.</li>
+<li><code>dev</code>는 <code>stg</code>의 history를 포함해야 한다.</li>
+<li>그래야 <code>dev -&gt; stg</code>, <code>stg -&gt; main</code> promotion PR이 정상적으로 동작한다.</li>
+</ul>
+<h2 id="munje-unrelated-histories">문제: unrelated histories</h2>
+<p><code>main</code>과 <code>stg</code>가 서로 관련 없는 history를 가지고 있으면 Git은 일반적인 merge로 둘을 연결하지 않는다.</p>
+<p>이런 메시지를 만날 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">fatal:</span><span style="color: #AAD94C;"> refusing to merge unrelated histories</span></span></code></pre>
+<p>이 상태에서 억지로 PR을 만들면 diff가 이상하게 보이거나, "이미 있는 파일이 전부 새 파일처럼 보이는" 상황이 생길 수 있다. Git이 두 브랜치 사이의 공통 기준점을 찾을 수 없기 때문이다.</p>
+<h2 id="haegyeol-banghyang">해결 방향</h2>
+<p>목표는 파일 내용을 바꾸는 것이 아니었다. 이미 <code>stg</code>와 <code>dev</code>의 파일 내용은 그대로 유지해야 했다.</p>
+<p>필요한 것은 딱 하나였다.</p>
+<blockquote>
+<p>현재 브랜치의 파일 내용은 그대로 유지하면서, 다른 브랜치를 부모 history로만 연결한다.</p>
+</blockquote>
+<p>이때 사용할 수 있는 merge 전략이 <code>-s ours</code>다.</p>
+<p><code>-s ours</code>는 conflict가 났을 때 일부 파일만 "ours"로 고르는 옵션이 아니다. merge commit은 만들지만, 결과 tree는 현재 브랜치의 파일 내용을 그대로 사용한다.</p>
+<p>즉, 아래 작업은 <code>main</code>의 파일 내용을 <code>stg</code>에 덮어쓰는 것이 아니라, <code>main</code>을 <code>stg</code>의 history에 연결만 한다.</p>
+<h2 id="1-maineul-stge-yeongyeolhagi">1. main을 stg에 연결하기</h2>
+<p>먼저 실제 <code>stg</code>에 바로 작업하지 말고 테스트 브랜치를 만든다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> fetch origin</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> checkout</span><span style="color: #95E6CB;"> -b</span><span style="color: #AAD94C;"> test-connect-main-stg origin/stg</span></span></code></pre>
+<p>그리고 <code>origin/main</code>을 merge하되, 현재 브랜치인 <code>stg</code>의 파일 내용을 그대로 유지한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> merge origin/main</span><span style="color: #95E6CB;"> --allow-unrelated-histories -s</span><span style="color: #AAD94C;"> ours</span></span></code></pre>
+<p>이제 반드시 diff를 확인한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> diff origin/stg..test-connect-main-stg</span></span></code></pre>
+<p>출력이 없어야 한다. 출력이 없다는 것은 merge commit은 생겼지만 파일 내용은 기존 <code>stg</code>와 같다는 뜻이다.</p>
+<p>diff가 비어 있다면 실제 <code>stg</code>를 fast-forward로 이동한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> checkout stg</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> merge</span><span style="color: #95E6CB;"> --ff-only</span><span style="color: #AAD94C;"> test-connect-main-stg</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> push origin stg</span></span></code></pre>
+<p>이 작업이 끝나면 <code>origin/main</code>은 <code>origin/stg</code>의 조상 history가 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>main &lt;- stg</span></span></code></pre><h2 id="2-stgreul-deve-yeongyeolhagi">2. stg를 dev에 연결하기</h2>
+<p>다음은 같은 방식으로 <code>stg</code>를 <code>dev</code>에 연결한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> checkout</span><span style="color: #95E6CB;"> -b</span><span style="color: #AAD94C;"> test-connect-stg-dev origin/dev</span></span></code></pre>
+<p>현재 브랜치인 <code>dev</code>의 파일 내용은 유지하면서 <code>origin/stg</code>를 history로 연결한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> merge origin/stg</span><span style="color: #95E6CB;"> --allow-unrelated-histories -s</span><span style="color: #AAD94C;"> ours</span></span></code></pre>
+<p>마찬가지로 diff를 확인한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> diff origin/dev..test-connect-stg-dev</span></span></code></pre>
+<p>출력이 없어야 한다.</p>
+<p>문제가 없다면 실제 <code>dev</code>를 fast-forward한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> checkout dev</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> merge</span><span style="color: #95E6CB;"> --ff-only</span><span style="color: #AAD94C;"> test-connect-stg-dev</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> push origin dev</span></span></code></pre>
+<p>이제 history 구조는 원하는 모양이 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>main &lt;- stg &lt;- dev</span></span></code></pre><h2 id="ihu-baepo-heureum">이후 배포 흐름</h2>
+<p>이제부터는 promotion PR을 정상적으로 만들 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>feature branch -&gt; dev</span></span>
+<span class="giallo-l"><span>dev -&gt; stg</span></span>
+<span class="giallo-l"><span>stg -&gt; main</span></span></code></pre>
+<p>자동화한다면 이런 흐름이 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>merge into dev</span></span>
+<span class="giallo-l"><span>  -&gt; auto PR: dev to stg</span></span>
+<span class="giallo-l"><span>  -&gt; after approval/merge</span></span>
+<span class="giallo-l"><span>  -&gt; auto PR: stg to main</span></span></code></pre>
+<p>실제 파이프라인에 <code>int</code>가 있다면 같은 원리로 중간에 넣으면 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>main &lt;- stg &lt;- int &lt;- dev</span></span></code></pre>
+<p>중요한 것은 production에 가까운 브랜치부터 개발 브랜치 방향으로 history를 연결하는 것이다. 그래야 promotion 방향인 <code>dev -&gt; int -&gt; stg -&gt; main</code>의 PR diff가 자연스럽게 계산된다.</p>
+<h2 id="juyihal-jeom">주의할 점</h2>
+<p><code>-s ours</code>는 강력하지만 위험할 수 있다. 이 전략은 상대 브랜치의 파일 내용을 merge 결과에 반영하지 않는다.</p>
+<p>그래서 아래 조건을 만족할 때만 사용해야 한다.</p>
+<ol>
+<li>목적이 파일 변경이 아니라 Git history 연결일 때</li>
+<li>현재 브랜치의 파일 내용을 그대로 유지해야 할 때</li>
+<li>상대 브랜치의 파일 내용이 현재 브랜치에 반영되지 않아도 되는 것이 명확할 때</li>
+<li>테스트 브랜치에서 diff가 비어 있음을 확인했을 때</li>
+</ol>
+<p>특히 <code>main</code>에 실제 운영 코드가 있고, 그 내용이 <code>stg</code>에 없는 상태라면 이 방법을 그대로 쓰면 안 된다. 그런 경우에는 먼저 어떤 코드가 기준이 되어야 하는지 정해야 한다.</p>
+<h2 id="3jul-yoyag">3줄 요약</h2>
+<p>브랜치 이름이나 배포 환경 이름은 사람이 이해하는 흐름일 뿐이다. Git이 이해하는 것은 commit graph다.</p>
+<p><code>dev</code>, <code>stg</code>, <code>main</code>이라는 이름을 붙였다고 해서 자동으로 promotion 관계가 생기지는 않는다. PR diff, merge 가능 여부, 자동 promotion은 결국 공통 조상 commit이 있는지에 영향을 받는다.</p>
+<p>이번 문제의 핵심은 코드를 고치는 것이 아니라 history를 올바르게 연결하는 것이었다. 테스트 브랜치에서 <code>-s ours</code> merge를 만들고, diff가 비어 있는지 확인한 뒤, 실제 브랜치를 fast-forward하는 방식으로 안전하게 해결할 수 있었다.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands&#x2F;run&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              docker run
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands&#x2F;ssh-two-github-accounts&#x2F;">
+              SSH로 GitHub 계정 두 개 동시에 쓰기 (회사 + 개인)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Closure lifetime
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Closure lifetime
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-05-07">May 07, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>259 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>오랜만에 Rust를 공부하다가 예전에 봤던 closure의 lifetime을 다시 복습해야겠다는 생각이 들었다.</p>
+<h2 id="munjeyi-baldan">문제의 발단</h2>
+<p>몇 달 전 interpreter 프로젝트를 할 때 가장 골치 아팠던 일은 evaluation 중간 결과를 화면에 보여주는 것이었다.
+기존 코드는 evaluation이 끝난 뒤 마지막 결과값만 출력했다. 그렇게 되면 문자열을 출력하는 <code>put</code> 함수는 사실상 마지막 줄에서만 의미가 있고, 중간에서는 있으나 마나 한 함수가 된다. 그래서 <code>put</code>을 어디서든 쓸 수 있도록 바꿔야 했다.</p>
+<h2 id="haegyeolcaeg">해결책</h2>
+<p>그래서 찾은 방법은 evaluator 안에 <code>put</code> 함수를 주입해서, evaluator가 소유한 메서드처럼 중간중간 호출할 수 있게 만드는 것이었다. C#으로 치면 <code>Func</code> delegate를 evaluator의 constructor에 넘기고, 필요할 때마다 그 delegate를 호출하는 형태다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public class</span><span style="color: #59C2FF;"> Evaluator</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    private</span><span style="color: #59C2FF;"> Func</span><span>&lt;</span><span style="color: #FF8F40;">string</span><span style="color: #BFBDB6B3;">,</span><span style="color: #FF8F40;">string</span><span>&gt;</span><span style="color: #59C2FF;"> _func</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #FFB454;"> Evaluator</span><span>(</span><span style="color: #59C2FF;">Func</span><span>&lt;</span><span style="color: #FF8F40;">string</span><span style="color: #BFBDB6B3;">,</span><span style="color: #FF8F40;">string</span><span>&gt;</span><span style="color: #59C2FF;"> func</span><span>){</span></span>
+<span class="giallo-l"><span>        _func</span><span style="color: #F29668;"> =</span><span> func</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public void</span><span style="color: #FFB454;"> PrintToScreen</span><span>(</span><span style="color: #FF8F40;">string</span><span style="color: #59C2FF;"> msg</span><span>){</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        _func</span><span>(msg)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">Func</span><span>&lt;</span><span style="color: #FF8F40;">string</span><span style="color: #BFBDB6B3;">,</span><span style="color: #FF8F40;">string</span><span>&gt;</span><span style="color: #59C2FF;"> print</span><span style="color: #F29668;"> =</span><span> (</span><span style="color: #FF8F40;">string</span><span style="color: #59C2FF;"> msg</span><span>)</span><span style="color: #F29668;">=&gt;</span><span> Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(msg)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> evaluator</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> Evaluator</span><span>(print)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>evaluator</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">PrintToScreen</span><span>(</span><span style="color: #AAD94C;">&quot;hello world!&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>C#으로 말하면 대략 이런 느낌이다.</p>
+<h2 id="hajiman">하지만...</h2>
+<p>모든 코드가 생각대로 구현되기만 하면 얼마나 좋을까? C#에서는 아주 쉽게 구현할 수 있는 해결책이었지만, Rust로 구현하기에는 내 내공이 부족했다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> s1</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">String</span><span>&gt;</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">to_string</span><span>()];</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> closure</span><span style="color: #F29668;"> =  |</span><span style="color: #59C2FF;">str</span><span style="color: #F29668;">:&amp;</span><span style="color: #59C2FF;">str</span><span style="color: #F29668;">|</span><span> {</span></span>
+<span class="giallo-l"><span>        s1</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(</span><span style="color: #59C2FF;">str</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">to_string</span><span>());</span></span>
+<span class="giallo-l"><span>    };</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> boxed</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(closure);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> test</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Test</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(boxed);</span></span>
+<span class="giallo-l"><span>    test</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">world</span><span>(</span><span style="color: #AAD94C;">&quot;world&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    println!</span><span>(</span><span style="color: #AAD94C;">&quot;{:?}&quot;</span><span>,s1);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub struct</span><span style="color: #59C2FF;"> Test</span><span>{</span></span>
+<span class="giallo-l"><span>    output</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> FnMut</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">str</span><span>)&gt;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Test</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub fn</span><span style="color: #FFB454;"> new</span><span>(output</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> FnMut</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">str</span><span>)&gt;)</span><span style="color: #F29668;">-&gt;</span><span style="color: #59C2FF;">Test</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Test</span><span> { output }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub fn</span><span style="color: #FFB454;"> world</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>,</span><span style="color: #59C2FF;">str</span><span style="color: #F29668;">:&amp;</span><span style="color: #59C2FF;">str</span><span>){</span></span>
+<span class="giallo-l"><span>        (</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>output)(</span><span style="color: #59C2FF;">str</span><span>);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>위 코드는 당시 테스트하려고 작성했던 Rust 코드를 그대로 가져온 것이다.
+compiler가 뱉은 error message는 다음과 같았다.</p>
+<blockquote>
+<p>s1 does not live long enough
+note: due to object lifetime defaults, Box&lt;dyn for&lt;'a&gt; FnMut(&amp;'a str)&gt; actually means Box&lt;(dyn for&lt;'a&gt; FnMut(&amp;'a str) + 'static)&gt;</p>
+</blockquote>
+<p>내 생각에는 <code>s1</code>의 lifetime이 <code>main</code>이 끝날 때까지이고, <code>test.world()</code>도 그 전에 호출되니 문제가 없어 보였다.
+하지만 note를 보면 closure가 기본적으로 <code>'static</code> lifetime을 요구한다는 힌트가 있다.
+처음에는 왜 기본 lifetime이 <code>'static</code>인지 잘 이해하지 못해서 vector를 static처럼 바꿔보거나 여기저기 lifetime을 붙여봤지만 잘 풀리지 않았다. 결국 커뮤니티에 질문했다.</p>
+<p>https://users.rust-lang.org/t/lifetime-and-closure/123655</p>
+<h2 id="haegyeol">해결</h2>
+<p>jofas라는 분이 10분 만에 답을 달아주셨다. 정답은 <code>Box&lt;dyn FnMut(&amp;str)&gt;</code>의 lifetime을 <code>Box&lt;dyn FnMut(&amp;str) + 'a&gt;</code>로 바꾸는 것이었다.
+boxed closure의 lifetime이 <code>Test</code>보다 오래 살아야 한다고 강제하지 않도록 만들면 문제가 해결된다.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;middleware&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Middleware
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;smart-pointer&#x2F;">
+              Smart Pointer<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

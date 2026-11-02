@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - Typescript</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/typescript/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-10-14T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/typescript/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>영화 후보 등록 앱</title>
+        <published>2020-10-14T00:00:00+00:00</published>
+        <updated>2020-10-14T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/projects/movie/"/>
+        <id>https://emptyfridge.dev/ko/projects/movie/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/projects/movie/">&lt;h1 id=&quot;github-repository&quot;&gt;GitHub Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;bds0900&#x2F;shoppie-front&quot;&gt;여기서 보기&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;teseuteu-aepeulrikeisyeon&quot;&gt;테스트 애플리케이션&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;bds0900.github.io&#x2F;shoppie-front&#x2F;&quot;&gt;여기서 실행&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;peurojegteu&quot;&gt;프로젝트&lt;&#x2F;h1&gt;
+&lt;p&gt;Shopify Web Developer Intern Challenge&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;gif&quot;&gt;GIF&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;reactapp.gif&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;sayonghan-gisul-framework&quot;&gt;사용한 기술&#x2F;framework&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;reactjs.org&#x2F;&quot;&gt;React&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.typescriptlang.org&#x2F;&quot;&gt;Typescript&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;hoseuting-seobiseu&quot;&gt;호스팅 서비스&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;pages.github.com&#x2F;&quot;&gt;GitHub Pages&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;gineung&quot;&gt;기능&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;OMDB에서 영화를 검색하고 결과를 표시한다. 영화만 대상으로 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;검색 결과에서 영화를 nomination list에 추가한다.&lt;&#x2F;li&gt;
+&lt;li&gt;이미 nomination한 영화 목록을 확인한다.&lt;&#x2F;li&gt;
+&lt;li&gt;nomination list에서 영화를 제거한다.&lt;&#x2F;li&gt;
+&lt;li&gt;사용자가 페이지를 떠나도 nomination list를 저장한다.&lt;&#x2F;li&gt;
+&lt;li&gt;공유 가능한 링크를 생성한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Layer 4 — runc (Low-level OCI Runtime)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Layer 4 — runc (Low-level OCI Runtime)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1001 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/runc/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>runc</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oci/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>oci</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/layers/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>layers</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <blockquote>
+<p>Part 4 of the Docker layers series. From top to bottom, the stack is:</p>
+<ol>
+<li>docker CLI → 2. dockerd → 3. containerd → <strong>4. runc</strong> →</li>
+<li>Linux kernel. See the <a href="https://emptyfridge.dev/docker/layer4-runc/./component_and_layers.md">overview article</a>.</li>
+</ol>
+</blockquote>
+<h2 id="identity">Identity</h2>
+<p><code>runc</code> is the <strong>low-level runtime</strong>: the program that <em>actually creates containers</em>.
+Everything above it, including the CLI, dockerd, and containerd, is orchestration.
+<code>runc</code> is the point where a container stops being an abstract idea and becomes a real,
+isolated process on top of the <a href="https://emptyfridge.dev/docker/layer4-runc/./component_and_layers.md">Linux kernel</a>.</p>
+<p>It is small, does one job, and <strong>exits immediately</strong> after starting the container. It is
+the <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/implementations.md">reference implementation</a>
+of the <a rel="external" href="https://github.com/opencontainers/runtime-spec"><strong>OCI Runtime Spec</strong></a>.</p>
+<h2 id="what-creating-a-container-actually-means">What "creating a container" actually means</h2>
+<p>A container is not a virtual machine. It is an ordinary Linux process that has been
+<strong>lied to about the surrounding world</strong>. <code>runc</code> tells that lie using three Linux kernel
+features:</p>
+<ul>
+<li><a rel="external" href="https://man7.org/linux/man-pages/man7/namespaces.7.html"><strong>namespaces</strong></a>: isolate
+<em>what the process can see</em>. The <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces">OCI spec defines eight namespace types</a>:
+PID (its own PID 1), mount (its own filesystem view), network (its own interfaces),
+user, hostname (UTS), IPC, cgroup (its own cgroup view), and time (its own clock).</li>
+<li><a rel="external" href="https://man7.org/linux/man-pages/man7/cgroups.7.html"><strong>cgroups</strong></a>, or control groups:
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups">limit</a>
+<em>what and how much the process can use</em>: CPU, memory, PID count, and I/O. This is how
+<code>--memory=512m</code> is enforced.</li>
+<li><strong>root filesystem, or rootfs</strong>: <code>runc</code> uses <code>pivot_root</code> into the filesystem that
+containerd prepared from image layers, so the process sees the image's files as <code>/</code>
+instead of the host's files.</li>
+</ul>
+<p>It also applies security layers:
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config.md"><strong>capabilities</strong></a>
+for dropping root privileges,
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp"><strong>seccomp</strong></a>
+for syscall filtering, and optionally AppArmor/SELinux. Then it <code>exec</code>s the container's
+entrypoint as PID 1 inside that constructed world, and exits.</p>
+<h2 id="why-it-almost-never-appears-in-ps">Why it almost never appears in <code>ps</code></h2>
+<p><code>runc</code> is <strong>not long-lived</strong>. It runs only while the container is being <em>created</em>, hands
+off to the <a href="https://emptyfridge.dev/docker/layer4-runc/./layer3_containerd.md">shim</a>, and exits. So:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;ps -e -o comm | grep -E &quot;dockerd|containerd|runc&quot;&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">dockerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">containerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">containerd-shim-runc-v2</span><span style="color: #5A6673;font-style: italic;">     # long-lived parent</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># runc is usually not here — it already exited</span></span></code></pre>
+<p>To catch <code>runc</code> in the process list, you have to look while <code>docker run</code> is starting
+something slow. After that, the container process is reparented to the shim and <code>runc</code>
+disappears. This is intentional. See the shim explanation in <a href="https://emptyfridge.dev/docker/layer4-runc/./layer3_containerd.md">Layer 3</a>.</p>
+<h2 id="oci-runtime-spec-why-runc-can-be-replaced">OCI Runtime Spec: why runc can be replaced</h2>
+<p><code>runc</code> is only the <em>reference</em> implementation of the <strong>Open Container Initiative (OCI)
+Runtime Specification</strong>. The spec defines a standard
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/bundle.md">"bundle"</a>, meaning
+rootfs + <code>config.json</code>, and the
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/runtime.md">commands</a> that a
+runtime must support, such as <code>create</code>, <code>start</code>, <code>kill</code>, and <code>delete</code>.</p>
+<p>Because <a href="https://emptyfridge.dev/docker/layer4-runc/./layer3_containerd.md">containerd</a> speaks through this spec, any OCI-compliant
+runtime can be swapped in:</p>
+<table><thead><tr><th>Low-level runtime</th><th>What changes</th></tr></thead><tbody>
+<tr><td><a rel="external" href="https://github.com/opencontainers/runc"><strong>runc</strong></a></td><td>Default. Standard Linux namespaces + cgroups. Written in Go.</td></tr>
+<tr><td><a rel="external" href="https://github.com/containers/crun"><strong>crun</strong></a></td><td>Same model, written in C: faster startup and lower memory use.</td></tr>
+<tr><td><a rel="external" href="https://gvisor.dev/docs/architecture_guide/security/"><strong>gVisor (<code>runsc</code>)</strong></a></td><td>Puts a <strong>userspace kernel</strong> in front of the real kernel: stronger isolation with some overhead.</td></tr>
+<tr><td><a rel="external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md"><strong>Kata Containers</strong></a></td><td>Runs each container inside a <strong>lightweight micro VM</strong>: VM-grade isolation with container ergonomics.</td></tr>
+<tr><td><a rel="external" href="https://github.com/youki-dev/youki"><strong>youki</strong></a></td><td>runc-compatible runtime written in Rust.</td></tr>
+</tbody></table>
+<p>Because they implement the same OCI interface, changing the runtime, for example for
+stronger isolation, does <strong>not</strong> require touching the CLI, dockerd, or containerd. You
+only change the runtime-class configuration.</p>
+<h2 id="seeing-the-spec-consumed-by-runc">Seeing the spec consumed by runc</h2>
+<p>You can inspect runc directly inside the VM:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;command -v runc; runc --version&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">/usr/bin/runc</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">runc</span><span style="color: #AAD94C;"> version 1.x.x</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">spec:</span><span style="color: #AAD94C;"> 1.x.x</span><span style="color: #5A6673;font-style: italic;">          # &lt;- OCI Runtime Spec version it implements</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># runc consumes a &quot;bundle&quot;: rootfs directory + config.json</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># config.json describes namespaces, cgroups, mounts, capabilities, and the process</span></span></code></pre>
+<p>That <code>config.json</code> is what containerd creates and passes to <code>runc</code>. <code>runc</code> reads it and
+creates exactly the container described there.</p>
+<h2 id="full-handoff-flow">Full handoff flow</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>docker run nginx</span></span>
+<span class="giallo-l"><span>  └─ dockerd                    [Layer 2] image interpretation, network/volume setup</span></span>
+<span class="giallo-l"><span>       └─ containerd            [Layer 3] image → unpack rootfs, create &quot;task&quot;</span></span>
+<span class="giallo-l"><span>            └─ containerd-shim-runc-v2    (resident process)</span></span>
+<span class="giallo-l"><span>                 └─ runc        [Layer 4] namespace/cgroup, pivot_root, exec → exit</span></span>
+<span class="giallo-l"><span>                      └─ nginx  [       ] PID 1 inside the container</span></span>
+<span class="giallo-l"><span>                           └─   [Layer 5] Linux kernel</span></span></code></pre><h2 id="summary">Summary</h2>
+<ul>
+<li><code>runc</code> is where a container becomes a <strong>real isolated Linux process</strong>: namespaces for what it sees, cgroups for what it uses, and rootfs for its filesystem.</li>
+<li>It is <strong>short-lived</strong>: it creates the container, hands off to the shim, and exits, so it usually does not appear in <code>ps</code>.</li>
+<li>It implements the <strong>OCI Runtime Spec</strong>, so it is <strong>replaceable</strong> without changing upper layers: crun, gVisor, Kata, youki.</li>
+<li>When using <code>runc</code>, the <strong>Linux kernel</strong> underneath it, Layer 5, is the non-swappable foundation. Its namespaces and cgroups make all of this possible. gVisor can abstract that foundation with a userspace kernel, and Kata can abstract it with a guest kernel.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>runc, OCI Runtime Spec reference implementation with seccomp, AppArmor, and SELinux support: <a rel="external" href="https://github.com/opencontainers/runc">https://github.com/opencontainers/runc</a></li>
+<li>OCI Runtime Spec implementation list, where runc is the reference: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/implementations.md">https://github.com/opencontainers/runtime-spec/blob/main/implementations.md</a></li>
+<li>OCI Runtime Spec, eight namespace types: PID, mount, network, user, UTS, IPC, cgroup, time: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces</a></li>
+<li>OCI Runtime Spec, cgroup resource limits for CPU, memory, PIDs, and Block IO: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups</a></li>
+<li>OCI Runtime Spec, capabilities definition: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config.md">https://github.com/opencontainers/runtime-spec/blob/main/config.md</a></li>
+<li>OCI Runtime Spec, seccomp filter configuration: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp</a></li>
+<li>OCI Runtime Spec, bundle format with rootfs + config.json: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/bundle.md">https://github.com/opencontainers/runtime-spec/blob/main/bundle.md</a></li>
+<li>OCI Runtime Spec, lifecycle commands create, start, kill, delete: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/runtime.md">https://github.com/opencontainers/runtime-spec/blob/main/runtime.md</a></li>
+<li>Linux namespaces(7) man page: <a rel="external" href="https://man7.org/linux/man-pages/man7/namespaces.7.html">https://man7.org/linux/man-pages/man7/namespaces.7.html</a></li>
+<li>cgroups(7) man page: <a rel="external" href="https://man7.org/linux/man-pages/man7/cgroups.7.html">https://man7.org/linux/man-pages/man7/cgroups.7.html</a></li>
+<li>crun, written in C with 49.4% faster startup than runc: <a rel="external" href="https://github.com/containers/crun">https://github.com/containers/crun</a></li>
+<li>gVisor security architecture, syscall interception through the userspace kernel Sentry: <a rel="external" href="https://gvisor.dev/docs/architecture_guide/security/">https://gvisor.dev/docs/architecture_guide/security/</a></li>
+<li>Kata Containers architecture, lightweight VM-based container isolation: <a rel="external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md">https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md</a></li>
+<li>youki, OCI runtime written in Rust: <a rel="external" href="https://github.com/youki-dev/youki">https://github.com/youki-dev/youki</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;docker&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Docker? Dockerd? Containerd?
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer3-containerd&#x2F;">
+              Layer 3 — containerd (Container Runtime)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

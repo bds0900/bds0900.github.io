@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | IdentityServer UserClaims 이해하기: User, Identity Resource, API Resource의 차이
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            IdentityServer UserClaims 이해하기: User, Identity Resource, API Resource의 차이
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-06">July 06, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>13 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2508 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/asp-net-core/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ASP.NET Core</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/identityserver/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>IdentityServer</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oauth-2-0/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OAuth 2.0</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openid-connect/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenID Connect</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/claims/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Claims</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>IdentityServer 관리 화면을 처음 보면 <code>UserClaims</code>라는 이름이 여러 곳에 반복해서 등장한다.</p>
+<ul>
+<li>Users/Roles의 User에 있는 UserClaims</li>
+<li>Identity Resource의 UserClaims</li>
+<li>API Resource의 UserClaims</li>
+<li>버전에 따라 API Scope에도 있는 UserClaims</li>
+</ul>
+<p>이름은 같지만 같은 데이터를 저장하는 필드는 아니다. 이 차이를 놓치면 Identity Resource가 사용자의 Claim을 소유한다고 생각하거나, User 자체도 Resource라고 생각하기 쉽다.</p>
+<p>핵심은 한 문장으로 정리할 수 있다.</p>
+<blockquote>
+<p>User의 UserClaims는 실제 type/value 데이터이고, Resource의 UserClaims는 token에 필요한 claim type을 고르는 선택 목록이다.</p>
+</blockquote>
+<h2 id="claimeun-typegwa-valuero-irueojinda">Claim은 type과 value로 이루어진다</h2>
+<p>Claim은 어떤 주체에 관한 한 가지 사실이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>type = department</span></span>
+<span class="giallo-l"><span>value = Engineering</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>type = app_role</span></span>
+<span class="giallo-l"><span>value = platform_admin</span></span></code></pre>
+<p><code>department</code>와 <code>app_role</code>은 claim type이고, <code>Engineering</code>과 <code>platform_admin</code>은 해당 사용자의 claim value다.</p>
+<p>.NET에서는 다음처럼 표현한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;app_role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Claim type은 문자열이다. <code>role</code>도 token 안에서는 다른 Claim과 같은 문자열 type이다. 어떤 Claim을 이름이나 role로 해석할지는 Claim 자체가 아니라 IdentityServer의 발급 과정과 ASP.NET Core의 소비 설정이 결정한다.</p>
+<h2 id="claim-scope-resourceneun-seoro-dareun-jilmune-dabhanda">Claim, Scope, Resource는 서로 다른 질문에 답한다</h2>
+<p>Claim, Scope, Resource는 모두 token 발급 과정에 등장하지만 같은 계층의 개념이 아니다.</p>
+<table><thead><tr><th>개념</th><th>답하는 질문</th><th>예시</th></tr></thead><tbody>
+<tr><td>Claim</td><td>이 user, client, token에 관해 어떤 사실을 알고 있는가?</td><td><code>sub = alice-id</code>, <code>email = alice@example.com</code>, <code>app_role = platform_admin</code></td></tr>
+<tr><td>Scope</td><td>client가 어떤 접근 범위를 요청했고 허가받았는가?</td><td><code>openid</code>, <code>profile</code>, <code>omniapi.read</code></td></tr>
+<tr><td>Resource</td><td>보호하려는 대상은 무엇인가?</td><td>사용자 identity data, <code>omniapi</code> API</td></tr>
+</tbody></table>
+<p>한 요청에서 세 개념은 다음 순서로 연결된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Client</span></span>
+<span class="giallo-l"><span>  │</span></span>
+<span class="giallo-l"><span>  │ scope=openid profile omniapi.read</span></span>
+<span class="giallo-l"><span>  ▼</span></span>
+<span class="giallo-l"><span>IdentityServer</span></span>
+<span class="giallo-l"><span>  ├── 어떤 Identity Resource가 요청되었는가?</span></span>
+<span class="giallo-l"><span>  ├── 어떤 API Scope가 요청되었는가?</span></span>
+<span class="giallo-l"><span>  ├── 그 API Scope는 어떤 API Resource에 속하는가?</span></span>
+<span class="giallo-l"><span>  └── 각 Resource/Scope가 어떤 Claim type을 요구하는가?</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        ▼</span></span>
+<span class="giallo-l"><span>Profile Service가 현재 User의 Claim value 조회</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        ├── identity token / userinfo</span></span>
+<span class="giallo-l"><span>        └── access token</span></span></code></pre><h3 id="claimeun-pandane-sayonghal-deiteoda">Claim은 판단에 사용할 데이터다</h3>
+<p>Claim은 subject 또는 client에 관한 assertion이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>sub       = alice-id</span></span>
+<span class="giallo-l"><span>email     = alice@example.com</span></span>
+<span class="giallo-l"><span>app_role = platform_admin</span></span></code></pre>
+<p>Claim은 그 자체로 접근 요청이 아니다. <code>app_role = platform_admin</code>이 token에 있어도 API가 그 Claim을 검사하는 authorization rule을 만들지 않으면 권한 판단에 사용되지 않는다.</p>
+<p>반대로 Claim은 permission만 표현하는 것도 아니다. <code>name</code>, <code>locale</code>, <code>birthdate</code>처럼 단순한 identity 정보도 Claim이다. <code>iss</code>, <code>aud</code>, <code>exp</code>처럼 token 자체를 설명하고 검증하는 Claim도 있다.</p>
+<h3 id="scopeneun-clientga-yoceonghaneun-jeobgeun-beomwida">Scope는 client가 요청하는 접근 범위다</h3>
+<p>OAuth에서 scope는 space로 구분된 대소문자 구분 문자열이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=omniapi.read omniapi.write</span></span></code></pre>
+<p>scope 이름의 구체적인 의미는 authorization server와 API가 정의한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>omniapi.read  = Omni API 읽기 범위</span></span>
+<span class="giallo-l"><span>omniapi.write = Omni API 쓰기 범위</span></span></code></pre>
+<p>client가 scope를 요청했다고 항상 허가되는 것은 아니다. client의 AllowedScopes, user 동의, server policy를 거쳐 실제로 허가된 scope만 access token에 반영된다.</p>
+<p>여기서 <code>scope</code>라는 단어는 두 위치에 나타날 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Authorization request의 parameter</span></span>
+<span class="giallo-l"><span>  scope=omniapi.read</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>발급된 access token의 Claim</span></span>
+<span class="giallo-l"><span>  scope=omniapi.read</span></span></code></pre>
+<p>첫 번째는 client의 요청이다. 두 번째는 authorization server가 실제로 허가한 범위를 API에 전달하는 결과다. 따라서 scope는 protocol 개념이고, 그 결과가 token 안에서는 <code>scope</code> Claim으로 직렬화될 수 있다.</p>
+<h3 id="resourceneun-bohoharyeoneun-daesangida">Resource는 보호하려는 대상이다</h3>
+<p>Resource는 client가 접근하려는 보호 대상이다.</p>
+<p>IdentityServer는 Resource를 두 종류로 모델링한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Resource</span></span>
+<span class="giallo-l"><span>  ├── Identity Resource: user의 identity 정보</span></span>
+<span class="giallo-l"><span>  └── API Resource: 호출할 API 또는 기능</span></span></code></pre>
+<p>Identity Resource의 예는 <code>profile</code>이다. 여기서 보호하는 대상은 <code>name</code>, <code>email</code>, <code>locale</code> 같은 사용자 정보다.</p>
+<p>API Resource의 예는 <code>omniapi</code>다. 여기서 보호하는 대상은 Omni API의 endpoint와 기능이다. API Resource 이름은 access token의 <code>aud</code> audience를 구성하는 데 사용될 수 있다.</p>
+<p>Resource와 Scope의 차이는 다음처럼 생각할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Resource = 어디에 접근하는가?</span></span>
+<span class="giallo-l"><span>Scope    = 그곳에서 어느 범위까지 허용되는가?</span></span>
+<span class="giallo-l"><span>Claim    = 판단과 전달에 사용하는 사실은 무엇인가?</span></span></code></pre>
+<p>예를 들어 <code>omniapi</code>는 Resource이고, <code>omniapi.read</code>와 <code>omniapi.write</code>는 그 Resource에서 허용할 수 있는 서로 다른 Scope다. <code>app_role = platform_admin</code>은 API가 추가 authorization 판단에 사용할 수 있는 Claim이다.</p>
+<h2 id="identity-resourcewa-api-resourcega-yoceongeul-ceorihaneun-bangsig">Identity Resource와 API Resource가 요청을 처리하는 방식</h2>
+<p>다음 설정을 생각해보자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resources</span></span>
+<span class="giallo-l"><span>  openid  → [sub]</span></span>
+<span class="giallo-l"><span>  profile → [name, email, locale]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Resource</span></span>
+<span class="giallo-l"><span>  omniapi</span></span>
+<span class="giallo-l"><span>    Scopes → [omniapi.read, omniapi.write]</span></span>
+<span class="giallo-l"><span>    UserClaims → [app_role]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Scope</span></span>
+<span class="giallo-l"><span>  omniapi.read  → []</span></span>
+<span class="giallo-l"><span>  omniapi.write → [approval_level]</span></span></code></pre>
+<p>client가 다음을 요청한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile omniapi.read</span></span></code></pre>
+<p>IdentityServer는 요청된 이름을 다음처럼 해석한다.</p>
+<table><thead><tr><th>요청된 scope</th><th>찾는 설정</th><th>결과</th></tr></thead><tbody>
+<tr><td><code>openid</code></td><td>Identity Resource <code>openid</code></td><td><code>sub</code> type 요청</td></tr>
+<tr><td><code>profile</code></td><td>Identity Resource <code>profile</code></td><td><code>name</code>, <code>email</code>, <code>locale</code> type 요청</td></tr>
+<tr><td><code>omniapi.read</code></td><td>API Scope <code>omniapi.read</code></td><td>scope 허가 범위 결정</td></tr>
+<tr><td><code>omniapi.read</code>의 연결 Resource</td><td>API Resource <code>omniapi</code></td><td>access token audience와 공통 <code>app_role</code> type 결정</td></tr>
+</tbody></table>
+<p>그 결과를 단순화하면 다음과 같다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>identity 정보 쪽</span></span>
+<span class="giallo-l"><span>  openid + profile</span></span>
+<span class="giallo-l"><span>    → sub, name, email, locale</span></span>
+<span class="giallo-l"><span>    → identity token / userinfo 처리</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API 접근 쪽</span></span>
+<span class="giallo-l"><span>  omniapi.read</span></span>
+<span class="giallo-l"><span>    → aud = omniapi</span></span>
+<span class="giallo-l"><span>    → scope = omniapi.read</span></span>
+<span class="giallo-l"><span>    → app_role Claim 요청</span></span>
+<span class="giallo-l"><span>    → access token 처리</span></span></code></pre>
+<p>같은 <code>scope</code> parameter 안에 identity scope와 API scope가 함께 들어가지만 역할은 다르다. Identity scope는 공개할 사용자 정보 집합을 고르고, API scope는 API에 대한 위임된 접근 범위를 고른다.</p>
+<h2 id="api-resourceeneun-scopesga-issneunde-identity-resourceeneun-eobsneun-iyu">API Resource에는 Scopes가 있는데 Identity Resource에는 없는 이유</h2>
+<p>Identity Resource에 scope가 없는 것이 아니다. 정확히는 <strong>Identity Resource 자체가 하나의 이름 있는 scope처럼 요청된다.</strong></p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> IdentityResource</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;profile&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;email&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;locale&quot;</span><span> })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>이 설정에서는 <code>Name</code>인 <code>profile</code>이 곧 client가 요청하는 scope value다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=profile</span></span></code></pre>
+<p>Identity Resource의 관계는 기본적으로 다음과 같은 일대일 mapping이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource 이름</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        │ 같은 이름으로 scope 요청</span></span>
+<span class="giallo-l"><span>        ▼</span></span>
+<span class="giallo-l"><span>Claim type 묶음</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>profile → [name, email, locale]</span></span>
+<span class="giallo-l"><span>email   → [email, email_verified]</span></span>
+<span class="giallo-l"><span>openid  → [sub]</span></span></code></pre>
+<p>따라서 Identity Resource 아래에 다시 child scope collection을 둘 필요가 없다. <code>profile</code>이라는 Identity Resource가 이미 <code>profile</code> scope의 설정 객체 역할을 한다.</p>
+<p>반면 API Resource는 API 자체 또는 audience를 나타낸다. 하나의 API는 여러 접근 범위를 제공할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource: omniapi</span></span>
+<span class="giallo-l"><span>  ├── omniapi.read</span></span>
+<span class="giallo-l"><span>  ├── omniapi.write</span></span>
+<span class="giallo-l"><span>  ├── omniapi.export</span></span>
+<span class="giallo-l"><span>  └── omniapi.admin</span></span></code></pre>
+<p>그래서 API Resource에는 여러 API Scope 이름을 연결하는 <code>Scopes</code> collection이 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiResource</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Omni API&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    Scopes</span><span style="color: #F29668;"> =</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.export&quot;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>각 API Scope는 별도로 정의되고 client가 독립적으로 요청할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Read Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Write Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.export&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Export Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>즉 구조가 다른 이유는 대상의 모델링 방식이 다르기 때문이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource</span></span>
+<span class="giallo-l"><span>  하나의 scope 이름 = 하나의 identity Claim bundle</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Resource</span></span>
+<span class="giallo-l"><span>  하나의 API/audience = 여러 개의 독립적인 API Scope</span></span></code></pre><h3 id="api-resource-userclaimswa-api-scope-userclaimsyi-cai">API Resource UserClaims와 API Scope UserClaims의 차이</h3>
+<p>API Resource와 API Scope 모두 UserClaims를 가질 수 있다. 적용 범위가 다르다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource omniapi</span></span>
+<span class="giallo-l"><span>  UserClaims = [app_role]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Scope omniapi.write</span></span>
+<span class="giallo-l"><span>  UserClaims = [approval_level]</span></span></code></pre>
+<ul>
+<li><code>app_role</code>: <code>omniapi</code> Resource를 위한 공통 사용자 정보</li>
+<li><code>approval_level</code>: <code>omniapi.write</code> Scope를 요청했을 때 필요한 정보</li>
+</ul>
+<p>client가 <code>omniapi.read</code>만 요청하면 <code>app_role</code>은 요청되지만 <code>approval_level</code>은 요청되지 않는다. <code>omniapi.write</code>를 요청하면 Resource 공통 Claim과 write Scope 전용 Claim이 함께 요청될 수 있다.</p>
+<p>따라서 어디에 UserClaims를 둘지는 다음 질문으로 결정한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>이 Claim이 API 전체에서 필요한가?</span></span>
+<span class="giallo-l"><span>  → API Resource.UserClaims</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>특정 접근 범위에서만 필요한가?</span></span>
+<span class="giallo-l"><span>  → API Scope.UserClaims</span></span></code></pre><h2 id="se-gosyi-userclaimsneun-yeoghali-dareuda">세 곳의 UserClaims는 역할이 다르다</h2>
+<p>같은 <code>UserClaims</code>라는 이름을 다음처럼 구분해야 한다.</p>
+<table><thead><tr><th>위치</th><th>저장하는 것</th><th>역할</th></tr></thead><tbody>
+<tr><td>User → UserClaims</td><td>type과 value</td><td>특정 사용자에게 속한 실제 데이터</td></tr>
+<tr><td>Identity Resource → UserClaims</td><td>type 이름</td><td>identity scope가 요청할 사용자 정보 목록</td></tr>
+<tr><td>API Resource / API Scope → UserClaims</td><td>type 이름</td><td>access token에 필요하다고 요청할 사용자 정보 목록</td></tr>
+</tbody></table>
+<p>첫 번째는 <strong>데이터</strong>다. 나머지 두 개는 <strong>선택자(selector)</strong> 또는 <strong>포장 목록(packing list)</strong> 이다.</p>
+<h2 id="useryi-userclaimsneun-silje-sayongjabyeol-deiteoda">User의 UserClaims는 실제 사용자별 데이터다</h2>
+<p>Alice에게 다음 Claim이 저장되어 있다고 하자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User: Alice</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>department = Engineering</span></span>
+<span class="giallo-l"><span>app_role  = platform_admin</span></span>
+<span class="giallo-l"><span>locale     = ko-KR</span></span></code></pre>
+<p>Bob은 다른 값을 가질 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User: Bob</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>department = Support</span></span>
+<span class="giallo-l"><span>app_role  = platform_member</span></span>
+<span class="giallo-l"><span>locale     = en-US</span></span></code></pre>
+<p>이 값들은 사용자별 데이터다. ASP.NET Core Identity를 저장소로 사용한다면 raw user claim은 일반적으로 <code>AspNetUserClaims</code> 같은 별도 table에 저장된다. 따라서 "User entity에 붙은 Claim"이라고 이해할 수 있지만, 반드시 User table의 column이라는 뜻은 아니다.</p>
+<p>같은 type에 여러 value를 갖는 것도 가능하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>role = Admin</span></span>
+<span class="giallo-l"><span>role = Auditor</span></span></code></pre>
+<p>Resource 설정에는 <code>role</code>을 한 번만 적는다. 그 설정은 특정 value 하나가 아니라 <code>role</code>이라는 type을 선택하기 때문이다. Profile Service가 두 값을 모두 발급하면 token에서는 배열 또는 여러 Claim으로 표현될 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Auditor&quot;</span><span>]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>완전히 같은 type/value 쌍을 중복 저장하는 것은 의미가 없으므로 피하는 것이 좋다.</p>
+<h2 id="identity-resourceyi-userclaimsneun-identity-claim-type-mogrogida">Identity Resource의 UserClaims는 identity claim type 목록이다</h2>
+<p>Identity Resource는 사용자 한 명을 나타내지 않는다. 클라이언트가 OIDC <code>scope</code> parameter로 요청할 수 있는 <strong>이름이 붙은 identity 정보 묶음</strong>이다.</p>
+<p>예를 들어 다음 Identity Resource는 <code>name</code>, <code>email</code>, <code>locale</code> type을 묶는다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> IdentityResource</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;profile&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;email&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;locale&quot;</span><span> }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    displayName</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;User profile&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>클라이언트는 다음처럼 <code>profile</code> scope를 요청한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile</span></span></code></pre>
+<p>여기서 Identity Resource의 UserClaims에는 value가 없다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>name</span></span>
+<span class="giallo-l"><span>email</span></span>
+<span class="giallo-l"><span>locale</span></span></code></pre>
+<p>이 목록의 뜻은 다음과 같다.</p>
+<blockquote>
+<p>현재 로그인한 사용자의 <code>name</code>, <code>email</code>, <code>locale</code> 값을 Profile Service에 요청하라.</p>
+</blockquote>
+<p>Alice가 <code>locale = ko-KR</code>을 가지고 있으면 Alice의 값이 발급된다. Bob이 <code>locale = en-US</code>를 가지고 있으면 같은 Identity Resource를 요청해도 Bob의 값이 발급된다. Resource에 <code>ko-KR</code>이나 <code>en-US</code>가 저장되는 것은 아니다.</p>
+<p>Identity Resource에서 선택된 Claim은 identity token 또는 userinfo 처리에 사용된다. 정확히 어느 응답에 포함되는지는 flow와 IdentityServer 설정에 따라 달라질 수 있지만, API 호출 권한을 나타내는 API Scope와는 목적이 다르다.</p>
+<h2 id="api-resourceyi-userclaimsneun-access-tokenyong-claim-type-mogrogida">API Resource의 UserClaims는 access token용 claim type 목록이다</h2>
+<p>API Resource는 보호할 논리적 API를 나타낸다. 일반적으로 access token의 audience와 관련되며 여러 API Scope를 묶을 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> omniApi</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ApiResource</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Omni API&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    Scopes</span><span style="color: #F29668;"> =</span><span> {</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;omniapi.write&quot;</span><span> }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>    UserClaims</span><span style="color: #F29668;"> =</span><span> {</span><span style="color: #AAD94C;"> &quot;app_role&quot;</span><span> }</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>이 설정은 <code>app_role</code> 값을 API Resource 안에 저장한다는 의미가 아니다.</p>
+<blockquote>
+<p><code>omniapi</code>용 access token을 만들 때 현재 사용자의 <code>app_role</code> Claim을 요청하라.</p>
+</blockquote>
+<p>Alice의 사용자 데이터에 다음 값이 있다면,</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>app_role = platform_admin</span></span></code></pre>
+<p>Profile Service가 해당 값을 읽어 access token에 넣을 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;scope&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>API Scope에도 UserClaims를 설정할 수 있다. 차이는 적용 단위다.</p>
+<ul>
+<li>API Resource UserClaims: Resource에 속한 scope 전반에서 공통으로 필요한 Claim</li>
+<li>API Scope UserClaims: 특정 scope를 요청했을 때만 필요한 Claim</li>
+</ul>
+<p>예를 들어 <code>omniapi.write</code>에서만 <code>approval_level</code>이 필요하다면 API Scope에 둘 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    displayName</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Write access&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;approval_level&quot;</span><span> })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><h2 id="profile-servicega-deiteowa-seontaeg-mogrogeul-yeongyeolhanda">Profile Service가 데이터와 선택 목록을 연결한다</h2>
+<p>Resource 설정이 Claim value를 직접 읽어 token에 복사하는 것은 아니다. IdentityServer는 Claim이 필요할 때 Profile Service를 호출한다.</p>
+<p>Profile Service가 받는 중요한 정보는 다음과 같다.</p>
+<ul>
+<li>어떤 client가 요청했는가</li>
+<li>현재 user는 누구인가</li>
+<li>identity token, access token, userinfo 중 어떤 요청인가</li>
+<li>어떤 claim type들이 요청되었는가</li>
+</ul>
+<p>단순화하면 다음과 같은 흐름이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Client가 scope/resource 요청</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdentityServer가 Resource 설정에서 claim type 수집</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>Profile Service에 RequestedClaimTypes 전달</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>Profile Service가 현재 User의 실제 값 조회 또는 계산</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>허용된 Claim을 token/userinfo에 발급</span></span></code></pre>
+<p>개념적인 코드는 다음과 같다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public async</span><span style="color: #59C2FF;"> Task</span><span style="color: #FFB454;"> GetProfileDataAsync</span><span>(</span><span style="color: #59C2FF;">ProfileDataRequestContext context</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> userClaims</span><span style="color: #F29668;"> = await</span><span style="color: #FFB454;"> LoadClaimsForCurrentUser</span><span>(context</span><span style="color: #F29668;">.</span><span>Subject)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    context</span><span style="color: #F29668;">.</span><span>IssuedClaims</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddRange</span><span>(</span></span>
+<span class="giallo-l"><span>        userClaims</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Where</span><span>(</span><span style="color: #59C2FF;">claim</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>            context</span><span style="color: #F29668;">.</span><span>RequestedClaimTypes</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Contains</span><span>(claim</span><span style="color: #F29668;">.</span><span>Type)))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>실제 구현에서는 user 활성 상태, client별 공개 범위, 동의, 민감 정보, 중복 Claim 등을 함께 처리해야 한다. 중요한 점은 Profile Service가 연결 지점이라는 것이다.</p>
+<p>또한 Claim value가 반드시 Users/Roles 화면의 UserClaims에서 올 필요는 없다. Profile Service는 여러 source를 사용할 수 있다.</p>
+<ul>
+<li>raw user claims</li>
+<li>managed role assignment</li>
+<li>별도 application database</li>
+<li>LDAP 또는 외부 identity provider</li>
+<li>요청 시 계산한 값</li>
+</ul>
+<p>Resource의 UserClaims는 source를 지정하지 않는다. 필요한 <strong>type</strong>만 지정한다.</p>
+<h2 id="userga-resourceneun-anida">User가 Resource는 아니다</h2>
+<p>IdentityServer의 용어에서 User와 Resource는 역할이 다르다.</p>
+<ul>
+<li>User: client를 사용해 로그인하고 Resource에 접근하는 사람, 즉 token의 subject</li>
+<li>Client: token을 요청하는 application</li>
+<li>Identity Resource: 요청 가능한 사용자 identity 정보 묶음</li>
+<li>API Resource: 보호할 API 또는 기능</li>
+</ul>
+<p>OAuth 용어로 User를 resource owner라고 부르기도 한다. 하지만 resource owner와 IdentityServer 설정 객체인 Resource는 같은 뜻이 아니다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User ──사용──▶ Client ──token 요청──▶ IdentityServer</span></span>
+<span class="giallo-l"><span>  │                                      │</span></span>
+<span class="giallo-l"><span>  └──────── Resource에 접근 ◀────────────┘</span></span></code></pre>
+<p>Identity Resource가 사용자 Claim을 묶기 때문에 User 자체도 Resource처럼 보일 수 있다. 그러나 Identity Resource가 나타내는 것은 User 객체가 아니라, client가 요청할 수 있도록 정의한 <strong>사용자 정보의 일부</strong>다.</p>
+<p>예를 들어 <code>profile</code>은 Alice라는 사용자가 아니다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>profile = [name, email, locale]이라는 요청 가능한 schema</span></span>
+<span class="giallo-l"><span>Alice   = 그 schema에 실제 값을 제공하는 subject</span></span></code></pre><h2 id="eodiggaji-pyojunigo-eodibuteo-identityserver-guhyeoninga">어디까지 표준이고 어디부터 IdentityServer 구현인가?</h2>
+<p>IdentityServer가 Claim 개념 전체를 발명한 것은 아니다. OAuth 2.0, OpenID Connect, JWT가 정의한 protocol 위에 IdentityServer가 자신의 configuration과 확장 model을 제공한다.</p>
+<table><thead><tr><th>구조</th><th>표준 여부</th><th>정의한 곳</th></tr></thead><tbody>
+<tr><td>JWT claim set과 <code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code></td><td>표준</td><td>RFC 7519</td></tr>
+<tr><td>ID token, UserInfo, <code>openid</code>, <code>profile</code>, <code>email</code> scope</td><td>표준</td><td>OpenID Connect</td></tr>
+<tr><td><code>IdentityResource</code>, <code>ApiResource</code>, <code>UserClaims</code> collection</td><td>제품 구현</td><td>Duende IdentityServer</td></tr>
+<tr><td><code>ProfileService</code>와 store interface</td><td>제품 구현</td><td>Duende IdentityServer</td></tr>
+<tr><td><code>Claim</code>, <code>ClaimsIdentity</code>, <code>ClaimsPrincipal</code></td><td>framework 구현</td><td>.NET</td></tr>
+<tr><td><code>AspNetUserClaims</code>, <code>AspNetUserRoles</code> table</td><td>framework 구현</td><td>ASP.NET Core Identity</td></tr>
+</tbody></table>
+<p>표준은 주로 system 사이에서 교환할 message와 의미를 정의한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Provider</span></span>
+<span class="giallo-l"><span>    │</span></span>
+<span class="giallo-l"><span>    │ 표준화된 protocol/message</span></span>
+<span class="giallo-l"><span>    │ ID token, UserInfo, JWT claim set</span></span>
+<span class="giallo-l"><span>    ▼</span></span>
+<span class="giallo-l"><span>Client / API</span></span></code></pre>
+<p>예를 들어 JWT는 JSON claim set의 표현 방법과 registered claim name을 정의한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783378800</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code>는 JWT registered claim이다. <code>app_role</code>은 application이 정의한 private claim이다. JWT는 registered, public, private claim name을 모두 허용한다.</p>
+<p>OpenID Connect는 <code>sub</code>, <code>name</code>, <code>email</code>, <code>picture</code> 같은 standard claim과 이를 요청하는 <code>openid</code>, <code>profile</code>, <code>email</code> 등의 scope를 정의한다. 그러나 <code>IdentityResource</code>라는 C# class나 관리 화면의 UserClaims field는 정의하지 않는다.</p>
+<p>IdentityServer의 <code>IdentityResource</code>는 다음 표준 동작을 구현하기 위한 configuration abstraction이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>OIDC 표준 개념</span></span>
+<span class="giallo-l"><span>  profile scope → name, family_name, picture 등의 Claim 요청</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>IdentityServer 구현</span></span>
+<span class="giallo-l"><span>  IdentityResource(&quot;profile&quot;)</span></span>
+<span class="giallo-l"><span>      UserClaims = [name, family_name, picture]</span></span></code></pre>
+<p>API Resource와 Profile Service도 마찬가지다. 보호할 API, audience, scope, 사용자 Claim 발급이라는 protocol 요구사항은 표준에서 오지만, 이를 <code>ApiResource</code> class와 <code>IProfileService</code> interface로 구성하는 방식은 IdentityServer의 설계다.</p>
+<p>또한 OAuth access token이 항상 JWT인 것은 아니다. Authorization server는 opaque access token을 발급할 수도 있다. JWT를 사용하는 경우에만 API가 JSON claim set을 직접 볼 수 있다.</p>
+<h2 id="claim-jeojang-gujoneun-pyojunhwadoeeo-issneunga">Claim 저장 구조는 표준화되어 있는가?</h2>
+<p>OAuth, OpenID Connect, JWT는 IdP 내부 database schema를 규정하지 않는다. 다음 중 무엇을 사용해도 token이 protocol 규칙을 지키면 상호 운용할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Provider 내부</span></span>
+<span class="giallo-l"><span>  ├── relational database</span></span>
+<span class="giallo-l"><span>  ├── ASP.NET Core Identity table</span></span>
+<span class="giallo-l"><span>  ├── LDAP / Active Directory</span></span>
+<span class="giallo-l"><span>  ├── 외부 identity provider</span></span>
+<span class="giallo-l"><span>  ├── 별도 user-management API</span></span>
+<span class="giallo-l"><span>  └── 요청 시 계산한 Claim</span></span></code></pre>
+<p>따라서 다음 table 구조는 표준이 아니다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>AspNetUsers</span></span>
+<span class="giallo-l"><span>AspNetUserClaims</span></span>
+<span class="giallo-l"><span>AspNetRoles</span></span>
+<span class="giallo-l"><span>AspNetUserRoles</span></span></code></pre>
+<p>다른 IdP는 완전히 다른 schema를 사용할 수 있다. IdentityServer도 configuration, resource, persisted grant 등을 위한 store interface를 제공하며, in-memory store나 custom database implementation을 선택할 수 있다. User 저장소 역시 ASP.NET Core Identity로 고정되지 않는다.</p>
+<p>표준이 내부 저장소를 강제하지 않는 이유는 Claim source가 다양하기 때문이다. <code>department</code>는 HR database에서, <code>role</code>은 directory group에서, <code>email</code>은 external IdP에서, 요청 시 계산하는 <code>risk_level</code>은 별도 service에서 올 수 있다. Profile Service는 이런 source를 token claim으로 projection하는 IdentityServer의 연결 지점이다.</p>
+<h2 id="scimeun-mueoseul-pyojunhwahaneunga">SCIM은 무엇을 표준화하는가?</h2>
+<p>사용자와 group을 system 사이에서 provisioning하기 위한 별도 표준으로 SCIM(System for Cross-domain Identity Management)이 있다.</p>
+<p>SCIM은 다음을 정의한다.</p>
+<ul>
+<li>User와 Group의 JSON resource schema</li>
+<li><code>userName</code>, <code>name</code>, <code>emails</code>, <code>groups</code>, <code>roles</code>, <code>entitlements</code> 같은 attribute</li>
+<li>schema extension과 namespace</li>
+<li>HTTP를 이용한 생성, 조회, 수정, 삭제 protocol</li>
+</ul>
+<p>SCIM User는 다음과 같은 형태다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;schemas&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;urn:ietf:params:scim:schemas:core:2.0:User&quot;</span></span>
+<span class="giallo-l"><span>  ]</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;userName&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice@example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;name&quot;</span><span style="color: #BFBDB6B3;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">    &quot;givenName&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Alice&quot;</span></span>
+<span class="giallo-l"><span>  }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;roles&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #39BAE6;"> &quot;value&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span> }</span></span>
+<span class="giallo-l"><span>  ]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>SCIM은 여러 system이 User와 Group 데이터를 같은 형식으로 provisioning하게 해준다. 하지만 다음은 여전히 결정하지 않는다.</p>
+<ul>
+<li>실제 database table을 어떻게 설계할지</li>
+<li>SCIM attribute를 어떤 token claim으로 변환할지</li>
+<li><code>Admin</code> role이 실제로 어떤 권한을 부여할지</li>
+<li>IdentityServer의 어느 Resource가 해당 Claim을 요청할지</li>
+</ul>
+<p>즉 SCIM은 <strong>user-management API와 교환 schema</strong>를 표준화하지만, IdP의 물리적 저장 구조나 token 발급 정책까지 표준화하지 않는다.</p>
+<p>전체 경계를 정리하면 다음과 같다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>SCIM</span></span>
+<span class="giallo-l"><span>  User/Group provisioning과 교환 schema를 표준화</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdP 내부 저장소</span></span>
+<span class="giallo-l"><span>  제품 또는 조직이 자유롭게 설계</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdentityServer configuration + Profile Service</span></span>
+<span class="giallo-l"><span>  저장된 정보를 token Claim으로 projection</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>OAuth / OpenID Connect / JWT</span></span>
+<span class="giallo-l"><span>  외부로 전달되는 protocol과 message를 표준화</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>.NET Claim / ClaimsIdentity / ClaimsPrincipal</span></span>
+<span class="giallo-l"><span>  API process 내부의 runtime object로 변환</span></span></code></pre><h2 id="roleeun-yeyagdoen-claim-typeinga"><code>role</code>은 예약된 Claim type인가?</h2>
+<p><code>role</code>은 token 형식 수준에서 예약된 특별한 자료형이 아니다. 문자열 claim type이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>하지만 실제 system에서는 관례적으로 특별하게 취급될 수 있다.</p>
+<ol>
+<li>Identity provider의 Role 관리 기능이 role assignment를 <code>role</code> Claim으로 변환할 수 있다.</li>
+<li>Resource가 <code>role</code> type을 요청하면 그 값들이 token에 들어갈 수 있다.</li>
+<li>ASP.NET Core가 <code>role</code>을 <code>RoleClaimType</code>으로 지정하면 <code>IsInRole()</code>이 그 Claim을 role로 해석한다.</li>
+</ol>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;">.</span><span>RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>위 코드는 개념적으로 현재 <code>ClaimsIdentity</code>에 <code>type = role</code>, <code>value = Admin</code>인 Claim이 있는지 검사한다.</p>
+<p>따라서 <code>role</code>은 기술적으로 임의의 문자열이지만, system이 role namespace로 채택하면 운영상 소유권이 있는 이름처럼 다뤄야 한다.</p>
+<h2 id="raw-user-claimgwa-managed-role-assignment">raw user claim과 managed role assignment</h2>
+<p>사용자에게 role 정보를 부여하는 방법은 두 가지가 있을 수 있다.</p>
+<h3 id="raw-user-claim">raw user claim</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>UserClaims</span></span>
+<span class="giallo-l"><span>  type  = role</span></span>
+<span class="giallo-l"><span>  value = Admin</span></span></code></pre><h3 id="managed-role-assignment">managed role assignment</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Roles</span></span>
+<span class="giallo-l"><span>  Admin</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>UserRoles</span></span>
+<span class="giallo-l"><span>  Alice → Admin</span></span></code></pre>
+<p>저장 구조는 다르지만 Profile Service가 둘을 같은 방식으로 projection하면 token 결과는 같을 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>managed role은 role 정의, 사용자 assignment, group inheritance, 관리 UI 같은 구조를 제공한다. raw user claim은 단순하고 유연하지만 typo와 잘못된 value를 통제하기 어렵다.</p>
+<p>두 방식을 동시에 사용한다면 중복 또는 충돌 규칙을 명확히 해야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Role assignment → role = Admin</span></span>
+<span class="giallo-l"><span>Raw user claim  → role = Support</span></span></code></pre>
+<p>둘 다 발급되면 API 입장에서는 사용자가 <code>Admin</code>과 <code>Support</code> role을 모두 가진다. API는 어느 값이 어느 저장 source에서 왔는지 token만 보고 구분할 수 없다.</p>
+<h2 id="gongyu-idpeseoneun-claim-typeeul-namespacero-bunrihanda">공유 IdP에서는 claim type을 namespace로 분리한다</h2>
+<p>여러 제품이 하나의 IdP를 공유한다면 generic한 <code>role</code>은 충돌하기 쉽다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>role = Admin</span></span></code></pre>
+<p>이 값만 보면 어느 제품의 Admin인지 알 수 없다. 각 제품이 같은 type과 value를 사용하면 다른 제품의 role이 잘못된 권한으로 해석될 수 있다.</p>
+<p>제품별 type을 사용하면 경계가 명확해진다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>app_role     = platform_admin</span></span>
+<span class="giallo-l"><span>billing_role = auditor</span></span>
+<span class="giallo-l"><span>support_role = agent</span></span></code></pre>
+<p>Omni API는 다음과 같이 자신의 type만 role로 지정할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;">.</span><span>RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>그러면 다음 검사는 <code>app_role</code>만 확인한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;platform_admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>value도 <code>Admin</code>이나 <code>Manager</code>처럼 문맥이 부족한 이름보다 <code>platform_admin</code>, <code>platform_member</code>처럼 의미가 드러나는 이름이 안전하다. Claim value 비교는 일반적으로 정확한 문자열 일치를 사용하므로 대소문자와 spelling도 계약의 일부로 관리해야 한다.</p>
+<h2 id="jeonce-yejero-dasi-bogi">전체 예제로 다시 보기</h2>
+<h3 id="1-usere-silje-gabseul-jeojanghanda">1. User에 실제 값을 저장한다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Alice</span></span>
+<span class="giallo-l"><span>  sub       = alice-id</span></span>
+<span class="giallo-l"><span>  name      = Alice</span></span>
+<span class="giallo-l"><span>  email     = alice@example.com</span></span>
+<span class="giallo-l"><span>  app_role = platform_admin</span></span></code></pre><h3 id="2-identity-resourceneun-identity-claim-typeeul-goreunda">2. Identity Resource는 identity claim type을 고른다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource: profile</span></span>
+<span class="giallo-l"><span>UserClaims: name, email</span></span></code></pre><h3 id="3-api-resourceneun-access-token-claim-typeeul-goreunda">3. API Resource는 access token claim type을 고른다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource: omniapi</span></span>
+<span class="giallo-l"><span>Scopes: omniapi.read, omniapi.write</span></span>
+<span class="giallo-l"><span>UserClaims: app_role</span></span></code></pre><h3 id="4-clientga-yoceonghanda">4. Client가 요청한다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile omniapi.read</span></span></code></pre><h3 id="5-profile-servicega-aliceyi-gabseul-cajneunda">5. Profile Service가 Alice의 값을 찾는다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>요청된 identity type: name, email</span></span>
+<span class="giallo-l"><span>요청된 API type: app_role</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Alice의 값:</span></span>
+<span class="giallo-l"><span>  name = Alice</span></span>
+<span class="giallo-l"><span>  email = alice@example.com</span></span>
+<span class="giallo-l"><span>  app_role = platform_admin</span></span></code></pre><h3 id="6-apineun-access-tokenman-bonda">6. API는 access token만 본다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;scope&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>API에 도착하면 Identity Resource, API Resource, Users/Roles 화면 구조는 사라진다. JWT bearer handler는 token을 검증하고 Claim 목록으로 <code>ClaimsIdentity</code>와 <code>ClaimsPrincipal</code>을 만든다. API는 최종 Claim만 소비한다.</p>
+<h2 id="jaju-haneun-ohae">자주 하는 오해</h2>
+<h3 id="resourceyi-userclaimse-valuereul-jeojanghandago-saenggaghanda">Resource의 UserClaims에 value를 저장한다고 생각한다</h3>
+<p>Resource에는 type 이름만 저장한다. 실제 value는 현재 User와 Profile Service가 제공한다.</p>
+<h3 id="userclaimse-jeojanghamyeon-jadongeuro-modeun-tokene-deuleogandago-saenggaghanda">UserClaims에 저장하면 자동으로 모든 token에 들어간다고 생각한다</h3>
+<p>저장과 발급은 별개다. Profile Service와 요청된 scope/resource의 filtering 정책이 해당 Claim을 발급해야 한다.</p>
+<h3 id="identity-resourcewa-api-resourcega-gateun-tokeneul-ggumindago-saenggaghanda">Identity Resource와 API Resource가 같은 token을 꾸민다고 생각한다</h3>
+<p>둘 다 사용자 Claim type을 선택하지만 목적이 다르다. Identity Resource는 identity 정보 공개를 모델링하고, API Resource/API Scope는 API access token에 필요한 정보를 모델링한다.</p>
+<h3 id="roleiraneun-ireum-jacega-gweonhaneul-buyeohandago-saenggaghanda"><code>role</code>이라는 이름 자체가 권한을 부여한다고 생각한다</h3>
+<p>Claim은 데이터다. API가 해당 type을 <code>RoleClaimType</code>으로 지정하거나 authorization policy에서 검사해야 권한 판단에 사용된다.</p>
+<h3 id="userga-identity-resourcerago-saenggaghanda">User가 Identity Resource라고 생각한다</h3>
+<p>User는 subject/resource owner다. Identity Resource는 그 User에 관한 요청 가능한 정보 묶음이다.</p>
+<h2 id="seolgye-cekeuriseuteu">설계 체크리스트</h2>
+<ul>
+<li>Claim type과 value를 명확히 구분했는가?</li>
+<li>User의 실제 데이터와 Resource의 type 선택 목록을 구분했는가?</li>
+<li>각 Claim이 identity token/userinfo와 access token 중 어디에 필요한지 결정했는가?</li>
+<li>Claim value의 source와 Profile Service projection 규칙이 명확한가?</li>
+<li>같은 type에 여러 value가 있을 때 API가 올바르게 처리하는가?</li>
+<li>raw user claim과 managed role assignment를 중복 사용하고 있지 않은가?</li>
+<li>공유 IdP라면 제품별 claim type namespace를 사용하는가?</li>
+<li>API의 <code>RoleClaimType</code>이 발급된 claim type과 정확히 일치하는가?</li>
+<li>token을 decode해 <code>aud</code>, <code>scope</code>, claim type/value를 실제로 확인했는가?</li>
+</ul>
+<h2 id="jeongri">정리</h2>
+<p>IdentityServer의 여러 화면에서 <code>UserClaims</code>라는 이름이 반복되지만 의미는 두 가지로 나뉜다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User의 UserClaims</span></span>
+<span class="giallo-l"><span>  = 현재 사용자에게 속한 실제 type/value 데이터</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Resource의 UserClaims</span></span>
+<span class="giallo-l"><span>  = Profile Service에 요청할 claim type 이름 목록</span></span></code></pre>
+<p>Identity Resource는 사용자 자체가 아니라 요청 가능한 identity 정보 묶음이다. API Resource는 보호할 API다. Profile Service는 Resource가 선택한 type과 현재 User의 실제 value를 연결해 token에 발급한다.</p>
+<p>이 구조를 이해하면 <code>role</code>도 자연스럽게 설명된다. <code>role</code>은 문자열 Claim type이지만 IdP의 role projection과 ASP.NET Core의 <code>RoleClaimType</code> 설정이 그 Claim을 role 인가에 사용하도록 만든다. 공유 IdP에서는 <code>app_role</code>처럼 namespace가 분리된 type을 사용하는 편이 안전하다.</p>
+<h2 id="ref">Ref</h2>
+<ul>
+<li>Duende IdentityServer terminology: <a rel="external" href="https://docs.duendesoftware.com/identityserver/overview/terminology/">https://docs.duendesoftware.com/identityserver/overview/terminology/</a></li>
+<li>Duende IdentityServer claims: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/claims/">https://docs.duendesoftware.com/identityserver/fundamentals/claims/</a></li>
+<li>Duende IdentityServer resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/</a></li>
+<li>Duende IdentityServer identity resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/identity/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/identity/</a></li>
+<li>Duende IdentityServer Identity Resource model: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v8/models/identity-resource/">https://docs.duendesoftware.com/identityserver/reference/v8/models/identity-resource/</a></li>
+<li>Duende IdentityServer API resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-resources/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-resources/</a></li>
+<li>Duende IdentityServer API scopes: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-scopes/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-scopes/</a></li>
+<li>Duende IdentityServer Profile Service: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v8/services/profile-service/">https://docs.duendesoftware.com/identityserver/reference/v8/services/profile-service/</a></li>
+<li>Duende IdentityServer stores: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v7/stores/">https://docs.duendesoftware.com/identityserver/reference/v7/stores/</a></li>
+<li>ASP.NET Core role-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles</a></li>
+<li><code>ClaimsIdentity.RoleClaimType</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsidentity.roleclaimtype">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsidentity.roleclaimtype</a></li>
+<li><code>TokenValidationParameters.RoleClaimType</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationparameters.roleclaimtype">https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationparameters.roleclaimtype</a></li>
+<li><code>ClaimsPrincipal.IsInRole</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsprincipal.isinrole">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsprincipal.isinrole</a></li>
+<li>OAuth 2.0 Authorization Framework, RFC 6749: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc6749">https://www.rfc-editor.org/rfc/rfc6749</a></li>
+<li>JSON Web Token, RFC 7519: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a></li>
+<li>OpenID Connect Core 1.0: <a rel="external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a></li>
+<li>SCIM Core Schema, RFC 7643: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7643">https://www.rfc-editor.org/rfc/rfc7643</a></li>
+<li>SCIM Protocol, RFC 7644: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7644">https://www.rfc-editor.org/rfc/rfc7644</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp&#x2F;identity-openiddict-claims-authorization&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              ASP.NET Core Identity와 OpenIddict, Claims 인증 구조 이해하기
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

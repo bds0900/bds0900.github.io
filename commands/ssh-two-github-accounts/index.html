@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Using two GitHub accounts with SSH on one machine (work + personal)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Using two GitHub accounts with SSH on one machine (work + personal)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1004 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/git/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>git</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/ssh/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ssh</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/github/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>github</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/command/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>command</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>If you have two GitHub accounts, one for work and one personal, using both on the same Mac is awkward with HTTPS.
+macOS Keychain stores one token per <code>github.com</code>, so the token from the account you logged into most recently can overwrite the previous one.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>remote: Permission to emptyfridge0900/repo.git denied to bds0900.</span></span>
+<span class="giallo-l"><span>fatal: unable to access &#39;...&#39;: The requested URL returned error: 403</span></span></code></pre>
+<p>The clean fix is to create separate SSH keys per account and route them through <code>~/.ssh/config</code>.</p>
+<hr />
+<h2 id="overall-flow">Overall flow</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>1. Check existing SSH keys</span></span>
+<span class="giallo-l"><span>2. Understand SSH key file naming</span></span>
+<span class="giallo-l"><span>3. Create a new SSH key for the work account (ssh-keygen)</span></span>
+<span class="giallo-l"><span>4. Register Host aliases in ~/.ssh/config</span></span>
+<span class="giallo-l"><span>5. Add keys to the SSH agent (ssh-add)</span></span>
+<span class="giallo-l"><span>6. Register the public key in the work GitHub account</span></span>
+<span class="giallo-l"><span>7. Test the connection (ssh -T)</span></span>
+<span class="giallo-l"><span>8. Change existing repo remote URLs to SSH</span></span>
+<span class="giallo-l"><span>9. Make the setup survive reboot (AddKeysToAgent)</span></span>
+<span class="giallo-l"><span>10. Separate GitHub CLI(`gh`) accounts too (`GH_CONFIG_DIR`)</span></span></code></pre>
+<hr />
+<h2 id="1-check-existing-ssh-keys">1. Check existing SSH keys</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ls</span><span style="color: #95E6CB;"> -la</span><span style="color: #AAD94C;"> ~/.ssh/</span></span></code></pre>
+<p>If <code>id_ed25519</code> and <code>id_ed25519.pub</code> exist, you already have one SSH key.
+To see which account it belongs to, check the last part of the public key file.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">cat</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519.pub</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># ssh-ed25519 AAAA... personal@gmail.com</span></span></code></pre>
+<p>Also verify that it connects to GitHub.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github.com</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi emptyfridge0900! You&#39;ve successfully authenticated...</span></span></code></pre>
+<p><code>ssh -T</code> tests authentication without opening a terminal shell session (<code>-T</code> = no pseudo-terminal).</p>
+<hr />
+<h2 id="2-understand-ssh-key-file-naming">2. Understand SSH key file naming</h2>
+<p>An SSH key filename has two parts.</p>
+<table><thead><tr><th>Part</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>id_</code></td><td>Short for "identity." A standard prefix for files used by SSH authentication.</td></tr>
+<tr><td><code>ed25519</code></td><td>The encryption algorithm name, Edwards-curve Digital Signature Algorithm 25519. It is currently the recommended default.</td></tr>
+</tbody></table>
+<p>Creating a key always produces two files.</p>
+<ul>
+<li><code>id_ed25519</code> — <strong>private key</strong>. Never share this.</li>
+<li><code>id_ed25519.pub</code> — <strong>public key</strong>. This is the file you register in GitHub.</li>
+</ul>
+<hr />
+<h2 id="3-create-an-ssh-key-for-the-work-account">3. Create an SSH key for the work account</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-keygen</span><span style="color: #95E6CB;"> -t</span><span style="color: #AAD94C;"> ed25519</span><span style="color: #95E6CB;"> -C</span><span style="color: #AAD94C;"> &quot;work@company.com&quot;</span><span style="color: #95E6CB;"> -f</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company</span><span style="color: #95E6CB;"> -N</span><span style="color: #AAD94C;"> &quot;&quot;</span></span></code></pre>
+<p>Option meanings:</p>
+<table><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>-t ed25519</code></td><td>Sets the algorithm type. <code>ed25519</code> is the current standard. It is shorter, faster, and safer than older <code>rsa</code> usage.</td></tr>
+<tr><td><code>-C "work@company.com"</code></td><td>Comment. A label appended to the end of the public key file. It helps identify which account the key belongs to. It does not have to be an email, but that is common.</td></tr>
+<tr><td><code>-f ~/.ssh/id_ed25519_company</code></td><td>Sets the output path. The default is <code>~/.ssh/id_ed25519</code>, but the personal key already uses that name, so this key needs a different filename.</td></tr>
+<tr><td><code>-N ""</code></td><td>Sets an empty passphrase. The command creates the key without opening an interactive prompt.</td></tr>
+</tbody></table>
+<p>After running it, two files are created.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>~/.ssh/id_ed25519_company      # private key</span></span>
+<span class="giallo-l"><span>~/.ssh/id_ed25519_company.pub  # public key</span></span></code></pre>
+<hr />
+<h2 id="4-configure-ssh-config">4. Configure <code>~/.ssh/config</code></h2>
+<p>The SSH client reads <code>~/.ssh/config</code> when connecting and decides which key to use.
+Create a <code>Host</code> alias per account.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span># Personal GitHub (emptyfridge0900)</span></span>
+<span class="giallo-l"><span>Host github-personal</span></span>
+<span class="giallo-l"><span>  HostName github.com</span></span>
+<span class="giallo-l"><span>  User git</span></span>
+<span class="giallo-l"><span>  IdentityFile ~/.ssh/id_ed25519</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span># Work GitHub (bds0900)</span></span>
+<span class="giallo-l"><span>Host github-company</span></span>
+<span class="giallo-l"><span>  HostName github.com</span></span>
+<span class="giallo-l"><span>  User git</span></span>
+<span class="giallo-l"><span>  IdentityFile ~/.ssh/id_ed25519_company</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes</span></span></code></pre>
+<p>Directive meanings:</p>
+<table><thead><tr><th>Directive</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>Host github-personal</code></td><td>The alias for this block. When you use <code>git@github-personal:...</code>, this block is applied.</td></tr>
+<tr><td><code>HostName github.com</code></td><td>The real server address. Even with different aliases, both connect to <code>github.com</code>.</td></tr>
+<tr><td><code>User git</code></td><td>SSH username. GitHub always uses the <code>git</code> user; account identity is determined by the key.</td></tr>
+<tr><td><code>IdentityFile</code></td><td>Private key path to use for this alias.</td></tr>
+<tr><td><code>AddKeysToAgent yes</code></td><td>Automatically adds the key to the SSH agent on first use, so you do not have to run <code>ssh-add</code> manually after reboot.</td></tr>
+</tbody></table>
+<hr />
+<h2 id="5-add-keys-to-the-ssh-agent">5. Add keys to the SSH agent</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company</span></span></code></pre>
+<p>The <strong>SSH agent(<code>ssh-agent</code>)</strong> is a background process that keeps private keys in memory and provides them when needed.
+Once a key is registered in the agent, you do not have to specify the key file path every time.</p>
+<p>Main <code>ssh-add</code> options:</p>
+<table><thead><tr><th>Option</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>~/.ssh/id_ed25519</code></td><td>Private key file path to add.</td></tr>
+<tr><td><code>-l</code></td><td>List keys currently registered in the agent.</td></tr>
+<tr><td><code>-d ~/.ssh/id_ed25519</code></td><td>Remove a specific key from the agent.</td></tr>
+<tr><td><code>-D</code></td><td>Remove all keys from the agent.</td></tr>
+</tbody></table>
+<p>Verify registration:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #95E6CB;"> -l</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 256 SHA256:xxx personal@gmail.com (ED25519)</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 256 SHA256:yyy work@company.com (ED25519)</span></span></code></pre>
+<blockquote>
+<p>Keys added with <code>ssh-add</code> disappear after reboot. If <code>AddKeysToAgent yes</code> is in the config, SSH automatically re-adds the key on first use.</p>
+</blockquote>
+<hr />
+<h2 id="6-register-the-public-key-in-the-work-github-account">6. Register the public key in the work GitHub account</h2>
+<p>Copy the public key to the clipboard.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">cat</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company.pub</span><span style="color: #F29668;"> |</span><span style="color: #59C2FF;"> pbcopy</span></span></code></pre>
+<p>In GitHub, go to <strong>Settings</strong> -&gt; <strong>SSH and GPG keys</strong> -&gt; <strong>New SSH key</strong>, paste it, and save.</p>
+<hr />
+<h2 id="7-test-connections">7. Test connections</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github-personal</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi emptyfridge0900! You&#39;ve successfully authenticated...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github-company</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi bds0900! You&#39;ve successfully authenticated...</span></span></code></pre>
+<p><code>github-personal</code> and <code>github-company</code> are aliases from <code>~/.ssh/config</code>.
+They both connect to <code>github.com</code>, but they use different keys.</p>
+<hr />
+<h2 id="8-change-remote-urls">8. Change remote URLs</h2>
+<h3 id="existing-repo-https-ssh">Existing repo (HTTPS -&gt; SSH)</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> remote set-url origin git@github-personal:emptyfridge0900/repo-name.git</span></span></code></pre>
+<p>Check with <code>git remote -v</code>:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>origin  git@github-personal:emptyfridge0900/repo-name.git (fetch)</span></span>
+<span class="giallo-l"><span>origin  git@github-personal:emptyfridge0900/repo-name.git (push)</span></span></code></pre><h3 id="work-repo">Work repo</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> remote set-url origin git@github-company:bds0900/repo-name.git</span></span></code></pre><h3 id="cloning-a-new-repo">Cloning a new repo</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Personal account repo</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> clone git@github-personal:emptyfridge0900/repo-name.git</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Work account repo</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> clone git@github-company:bds0900/repo-name.git</span></span></code></pre>
+<p>URL structure: <code>git@&lt;Host alias&gt;:&lt;GitHub username&gt;/&lt;repository name&gt;.git</code></p>
+<hr />
+<h2 id="9-make-it-survive-reboot">9. Make it survive reboot</h2>
+<p>Keys added to the agent with <code>ssh-add</code> <strong>disappear after reboot</strong> because terminal session memory is cleared.</p>
+<p>Putting <code>AddKeysToAgent yes</code> in <code>~/.ssh/config</code> solves this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Host github-personal</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes   # &lt;- this line</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Host github-company</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes   # &lt;- this line</span></span></code></pre>
+<p>What <code>AddKeysToAgent yes</code> does:</p>
+<ul>
+<li>After reboot, the first <code>git push</code> or <code>git pull</code> causes SSH to read <code>~/.ssh/config</code>.</li>
+<li>If the matching <code>Host</code> has <code>AddKeysToAgent yes</code>, SSH automatically runs the equivalent of <code>ssh-add</code> and loads the key into the agent.</li>
+<li>After that, it will not ask again in the same session.</li>
+</ul>
+<p>So after reboot, you do not need to run <code>ssh-add</code> manually. The first git command reloads the key automatically.</p>
+<blockquote>
+<p>On macOS, the <code>~/.ssh/config</code> file itself is persistent. It remains after reboot.
+What disappears is <strong>agent memory(the result of ssh-add)</strong>, and <code>AddKeysToAgent yes</code> fills it again automatically.</p>
+</blockquote>
+<hr />
+<h2 id="final-setup-summary">Final setup summary</h2>
+<table><thead><tr><th>Account</th><th>Host alias</th><th>Key file</th></tr></thead><tbody>
+<tr><td><code>emptyfridge0900</code> (personal)</td><td><code>git@github-personal</code></td><td><code>~/.ssh/id_ed25519</code></td></tr>
+<tr><td><code>bds0900</code> (work)</td><td><code>git@github-company</code></td><td><code>~/.ssh/id_ed25519_company</code></td></tr>
+</tbody></table>
+<p>Now you do not have to think about GitHub accounts when running <code>git push</code> or <code>git pull</code>.
+The Host alias in the repo remote URL chooses the correct key.</p>
+<hr />
+<h2 id="extra">Extra</h2>
+<h2 id="10-separate-github-cli-gh-accounts-too">10. Separate GitHub CLI(<code>gh</code>) accounts too</h2>
+<p>At this point, <code>git push</code> and <code>git pull</code> are separated correctly by account-specific SSH keys.
+But GitHub CLI commands such as <code>gh issue create</code> and <code>gh pr create</code> use GitHub API tokens, not SSH keys.
+So even if the remote URL is <code>git@github-personal:...</code>, issue creation in a personal repo can fail if <code>gh</code> is logged in with the work account token.</p>
+<p>The first solution that comes to mind is <code>gh auth switch</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> auth switch</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> emptyfridge0900</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> emptyfridge0900/repo-name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> auth switch</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> bds0900</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> bds0900/repo-name</span></span></code></pre>
+<p>But switching accounts every time is annoying and easy to get wrong.
+A better approach is to separate the <code>gh</code> config directory per account.
+<code>gh</code> can change where it stores configuration through the <code>GH_CONFIG_DIR</code> environment variable.</p>
+<p>Add aliases to a shell config file such as <code>~/.zshrc</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #FF8F40;">alias</span><span> ghp</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&#39;GH_CONFIG_DIR=$HOME/.config/gh-personal gh&#39;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">alias</span><span> ghc</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&#39;GH_CONFIG_DIR=$HOME/.config/gh-company gh&#39;</span></span></code></pre>
+<p>Then log in once with each alias.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span>GH_CONFIG_DIR</span><span style="color: #F29668;">=</span><span>$HOME</span><span style="color: #AAD94C;">/.config/gh-personal</span><span style="color: #59C2FF;"> gh</span><span style="color: #AAD94C;"> auth login</span><span style="color: #95E6CB;"> -h</span><span style="color: #AAD94C;"> github.com</span><span style="color: #95E6CB;"> --git-protocol</span><span style="color: #AAD94C;"> ssh</span></span>
+<span class="giallo-l"><span>GH_CONFIG_DIR</span><span style="color: #F29668;">=</span><span>$HOME</span><span style="color: #AAD94C;">/.config/gh-company</span><span style="color: #59C2FF;"> gh</span><span style="color: #AAD94C;"> auth login</span><span style="color: #95E6CB;"> -h</span><span style="color: #AAD94C;"> github.com</span><span style="color: #95E6CB;"> --git-protocol</span><span style="color: #AAD94C;"> ssh</span></span></code></pre>
+<p>After that, distinguish accounts by command instead of switching accounts.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Create an issue in a personal repo using the personal account</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ghp</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> emptyfridge0900/repo-name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Create an issue in a work repo using the work account</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ghc</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> bds0900/repo-name</span></span></code></pre>
+<p>The final split looks like this:</p>
+<table><thead><tr><th>Tool</th><th>Account separation method</th><th>Example</th></tr></thead><tbody>
+<tr><td><code>git</code></td><td>SSH Host alias</td><td><code>git@github-personal:emptyfridge0900/repo-name.git</code></td></tr>
+<tr><td><code>gh</code></td><td>Separate <code>GH_CONFIG_DIR</code></td><td><code>ghp issue create -R emptyfridge0900/repo-name</code></td></tr>
+</tbody></table>
+<p>With this setup, both <code>git</code> and <code>gh</code> can be used without account switching.
+Personal work stays fixed to <code>github-personal</code> + <code>ghp</code>, and work tasks stay fixed to <code>github-company</code> + <code>ghc</code>.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands&#x2F;git-connect-unrelated-release-branches&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Git unrelated histories: connecting dev, stg, and main branches
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

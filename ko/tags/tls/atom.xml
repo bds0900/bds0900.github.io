@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - tls</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/tls/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-22T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/tls/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>웹훅이 핸드쉐이크에서 죽었다: ERR_TLS_CERT_ALTNAME_INVALID 디버깅</title>
+        <published>2026-06-22T00:00:00+00:00</published>
+        <updated>2026-06-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/"/>
+        <id>https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/">&lt;p&gt;Node.js 서비스가 웹훅을 백엔드 API로 전달하다가 이런 에러를 뱉었다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[onRaw] webhook forwarding error: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  name: &amp;#39;ApiError&amp;#39;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  title: &amp;#39;Webhook forwarding failed&amp;#39;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  status: 502,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  message: &amp;quot;Hostname&#x2F;IP does not match certificate&amp;#39;s altnames:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Host: example.com. is not in the cert&amp;#39;s altnames:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            DNS:*.azurewebsites.net, DNS:*.scm.azurewebsites.net, ...&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  code: &amp;#39;ERR_TLS_CERT_ALTNAME_INVALID&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;페이로드 자체는 멀쩡했다. 데이터 문제가 아니라는 거다. 근데 왜 502가 뜨는 걸까?&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;weonin-sane-eobsneun-domein&quot;&gt;원인: SAN에 없는 도메인&lt;&#x2F;h2&gt;
+&lt;p&gt;포워더가 &lt;code&gt;example.com&lt;&#x2F;code&gt;으로 HTTPS 연결을 열었다. TLS 핸드셰이크 과정에서 서버가 돌려준 인증서의 &lt;strong&gt;SAN(Subject Alternative Names)&lt;&#x2F;strong&gt; 목록에 &lt;code&gt;example.com&lt;&#x2F;code&gt;이 없었다. 위 에러에서는 &lt;code&gt;*.azurewebsites.net&lt;&#x2F;code&gt; 계열 이름들만 들어있는 걸 볼 수 있는데 — 이건 Azure 특유의 이야기가 아니다. 어떤 플랫폼이든, 어떤 서버든, 커스텀 도메인을 &lt;em&gt;연결&lt;&#x2F;em&gt;만 해놓고 그 도메인을 커버하는 인증서를 &lt;em&gt;바인딩&lt;&#x2F;em&gt;하지 않으면 똑같은 에러가 난다.&lt;&#x2F;p&gt;
+&lt;p&gt;TLS 클라이언트는 &quot;내가 연결하려는 호스트명이 인증서에 있나?&quot;를 필수로 체크하는데, 없으니까 &lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;로 연결을 끊어버린다. 포워더는 이걸 502로 감싸서 올려보낸 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;한 문장 요약:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;으로 트래픽이 &lt;em&gt;라우팅&lt;&#x2F;em&gt;되도록 설정은 했지만, &lt;code&gt;example.com&lt;&#x2F;code&gt;을 커버하는 TLS 인증서는 &lt;em&gt;바인딩하지 않아서&lt;&#x2F;em&gt; — 서버가 기본 인증서(플랫폼&#x2F;서버의 다른 이름)로 폴백했고, 클라이언트가 연결한 이름과 맞지 않았다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;haegsim-gaenyeom-dns-rauting-tls-sinweonjeungmyeong&quot;&gt;핵심 개념: DNS(라우팅) ≠ TLS(신원증명)&lt;&#x2F;h2&gt;
+&lt;p&gt;이 두 개를 헷갈리면 계속 막힌다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;레이어&lt;&#x2F;th&gt;&lt;th&gt;묻는 질문&lt;&#x2F;th&gt;&lt;th&gt;동작 방식&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;DNS &#x2F; 라우팅&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;트래픽을 &lt;em&gt;어디로&lt;&#x2F;em&gt; 보내지?&quot;&lt;&#x2F;td&gt;&lt;td&gt;A &#x2F; CNAME 레코드&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;TLS &#x2F; 신원&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;서버가 &lt;code&gt;example.com&lt;&#x2F;code&gt;임을 &lt;em&gt;증명&lt;&#x2F;em&gt;할 수 있나?&quot;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;이 포함된 인증서&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;도메인으로 트래픽이 들어온다고 그 도메인의 인증서가 생기는 게 아니다.&lt;&#x2F;strong&gt; 인증서는 따로 발급받고, 따로 바인딩해야 한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;비유하자면, DNS는 회사 전화번호부다 — 어디로 연결하면 되는지 알려준다. TLS 인증서는 직원증이다. &lt;code&gt;example.com&lt;&#x2F;code&gt;으로 편지가 도착했다고 해서 그 사람이 &lt;code&gt;example.com&lt;&#x2F;code&gt;이라고 적힌 신분증을 들고 있는 건 아니다. 경비(TLS 검사)가 신분증을 확인하고, 없으면 돌려보낸다.&lt;&#x2F;p&gt;
+&lt;p&gt;그리고 핸드셰이크가 &lt;strong&gt;HTTP 요청 전에&lt;&#x2F;strong&gt; 실패하기 때문에 백엔드 애플리케이션에는 아무 로그도 안 찍힌다. 서비스 코드 디버깅은 의미가 없다. 순수하게 인프라&#x2F;인증서 문제다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;sujeong-bangbeob-injeungseo-balgeub-bainding&quot;&gt;수정 방법: 인증서 발급 + 바인딩&lt;&#x2F;h2&gt;
+&lt;p&gt;서버가 어디에 있든 수정 방향은 동일하다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;injeungseo-vs-bainding&quot;&gt;인증서 vs 바인딩&lt;&#x2F;h3&gt;
+&lt;p&gt;이 둘은 별개다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;객체&lt;&#x2F;th&gt;&lt;th&gt;정체&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;인증서&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;&lt;code&gt;example.com&lt;&#x2F;code&gt;임을 증명하는&quot; 서명된 파일&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;바인딩&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;이 도메인으로 요청이 오면 이 인증서를 제시해라&quot;는 설정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;인증서가 서버에 있더라도 바인딩이 없으면 서버는 엉뚱한 기본 인증서를 내놓는다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ilbanjeogin-sujeong-jeolca&quot;&gt;일반적인 수정 절차&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;을 커버하는 인증서를 발급받는다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Let&#x27;s Encrypt (무료, &lt;code&gt;certbot&lt;&#x2F;code&gt; 사용) — 가장 흔한 방법&lt;&#x2F;li&gt;
+&lt;li&gt;호스팅 플랫폼의 managed certificate (플랫폼이 자동 발급·갱신)&lt;&#x2F;li&gt;
+&lt;li&gt;직접 구매한 인증서 (.pem &#x2F; .pfx)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;인증서를 서버&#x2F;플랫폼에 바인딩한다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nginx: &lt;code&gt;ssl_certificate&lt;&#x2F;code&gt;, &lt;code&gt;ssl_certificate_key&lt;&#x2F;code&gt; 지시어로 지정&lt;&#x2F;li&gt;
+&lt;li&gt;Apache: &lt;code&gt;SSLCertificateFile&lt;&#x2F;code&gt;, &lt;code&gt;SSLCertificateKeyFile&lt;&#x2F;code&gt;로 지정&lt;&#x2F;li&gt;
+&lt;li&gt;클라우드 플랫폼: 커스텀 도메인 설정 화면에서 인증서 선택 후 바인딩&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;nginx-yesi&quot;&gt;Nginx 예시&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;nginx&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    listen&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 443&lt;&#x2F;span&gt;&lt;span&gt; ssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    server_name&lt;&#x2F;span&gt;&lt;span&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    ssl_certificate&lt;&#x2F;span&gt;&lt;span&gt;     &#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;example.com&#x2F;fullchain.pem&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    ssl_certificate_key&lt;&#x2F;span&gt;&lt;span&gt; &#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;example.com&#x2F;privkey.pem&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;certbot을 쓴다면:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;certbot&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --nginx -d&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# certbot이 nginx 설정까지 자동으로 잡아준다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;azure-yesi-app-service-container-apps&quot;&gt;Azure 예시 (App Service &#x2F; Container Apps)&lt;&#x2F;h3&gt;
+&lt;p&gt;포털에서:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;앱 리소스 → Custom domains&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → example.com 옆 &amp;quot;No binding&amp;quot; 클릭&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Add binding&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Source = Create managed certificate&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → TLS&#x2F;SSL type = SNI SSL&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Add&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;App Service:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 1. managed cert 발급&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 2. thumbprint 확인&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl list&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --query&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;[?subjectName==&amp;#39;example.com&amp;#39;].thumbprint&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -o&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; tsv&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 3. 바인딩 (SNI SSL)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl bind&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --certificate-thumbprint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;thumbprin&lt;&#x2F;span&gt;&lt;span&gt;t&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --ssl-type&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; SNI&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Container Apps&lt;&#x2F;strong&gt; (인증서는 앱이 아니라 Environment에 붙는다):&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; containerapp hostname add&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  -g&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -n&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; containerapp hostname bind&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -g&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -n&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --environment&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;environmen&lt;&#x2F;span&gt;&lt;span&gt;t&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --validation-method&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; CNAME&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;hwagin&quot;&gt;확인&lt;&#x2F;h3&gt;
+&lt;p&gt;어느 플랫폼이든 확인 방법은 동일하다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;openssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; s_client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -connect&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com:443&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -servername&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;dev&#x2F;null&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; 2&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;dev&#x2F;null&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;  |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; openssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; x509&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -noout -subject -ext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; subjectAltName&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;출력에서 SAN에 &lt;code&gt;example.com&lt;&#x2F;code&gt;이 들어있으면 성공이다. &lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;는 더 이상 뜨지 않는다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;juyisahang&quot;&gt;주의사항&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TLS를 실제로 종료하는 곳에 바인딩해야 한다.&lt;&#x2F;strong&gt; 리버스 프록시(Nginx, Caddy, 로드밸런서)가 앞에 있으면 인증서는 프록시에 걸려야 한다. 백엔드 앱 서버에 걸어봐야 의미가 없다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;DNS 조건이 먼저 맞아야 인증서 발급이 된다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;루트 도메인 (&lt;code&gt;example.com&lt;&#x2F;code&gt;) → A 레코드 필요&lt;&#x2F;li&gt;
+&lt;li&gt;서브도메인 (&lt;code&gt;www.example.com&lt;&#x2F;code&gt;) → CNAME 가능&lt;&#x2F;li&gt;
+&lt;li&gt;CAA 레코드가 있다면 사용하는 CA를 허용해야 함 (예: &lt;code&gt;0 issue letsencrypt.org&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;와일드카드 인증서가 아니면 호스트네임별로 따로 발급해야 한다.&lt;&#x2F;strong&gt; &lt;code&gt;example.com&lt;&#x2F;code&gt;과 &lt;code&gt;www.example.com&lt;&#x2F;code&gt;은 별개다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;rejectUnauthorized: false&lt;&#x2F;code&gt;로 퉁치지 말자.&lt;&#x2F;strong&gt; 에러는 사라지지만 TLS 검증을 통째로 꺼버리는 거다. 웹훅 채널이 위조 공격에 노출된다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;자동 갱신은 조건부다.&lt;&#x2F;strong&gt; Let&#x27;s Encrypt든 managed cert든, DNS 레코드가 살아있고 도메인이 서버를 가리키고 있어야 갱신이 된다. A&#x2F;CNAME 레코드가 바뀌면 갱신 실패한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;3jul-yoyag&quot;&gt;3줄 요약&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;는 서버 인증서의 SAN 목록에 접속하려는 호스트명이 없을 때 발생한다 — 플랫폼 불문, 도메인을 라우팅만 해놓고 인증서를 바인딩하지 않으면 생기는 일이다.&lt;&#x2F;li&gt;
+&lt;li&gt;DNS 라우팅(도메인 → 서버로 트래픽 전달)과 TLS 신원(서버가 그 도메인임을 증명)은 완전히 독립적이다 — 트래픽이 도착한다고 인증서가 생기는 게 아니다.&lt;&#x2F;li&gt;
+&lt;li&gt;수정은 해당 도메인의 인증서를 발급받고 서버에 바인딩하는 것으로 끝난다; 핸드셰이크 전에 실패하는 문제이므로 애플리케이션 코드를 디버깅해봐야 의미없다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+        
+    </entry>
+</feed>

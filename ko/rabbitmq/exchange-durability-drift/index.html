@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | 선빵친놈이 이긴다 — RabbitMQ Exchange 상태 불일치 디버깅
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            선빵친놈이 이긴다 — RabbitMQ Exchange 상태 불일치 디버깅
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-22">June 22, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1008 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/masstransit/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>MassTransit</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/debugging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>debugging</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/messaging/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>messaging</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>프로덕션에서 WeChat inbound 메시지 경로가 통째로 끊겼다. 코드를 뒤졌는데 손댈 곳이 단 한 줄도 없었다. 범인은 <strong>브로커에 남아 있던 잘못된 exchange 정의</strong>였고, 그걸 가능하게 한 건 RabbitMQ의 한 가지 핵심 속성이었다.</p>
+<h2 id="jeungsang">증상</h2>
+<p>프로덕션 아래와 같은 에러가 무한 반복되고 있었다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>MassTransit.RabbitMqConnectionException: ReceiveTransport faulted ...</span></span>
+<span class="giallo-l"><span>RabbitMQ.Client.Exceptions.OperationInterruptedException:</span></span>
+<span class="giallo-l"><span>  code=406, text=&#39;PRECONDITION_FAILED - inequivalent arg &#39;durable&#39;</span></span>
+<span class="giallo-l"><span>  for exchange &#39;...:DispatchInboundWechatMessageCreated&#39;</span></span>
+<span class="giallo-l"><span>  in vhost &#39;/&#39;: received &#39;true&#39; but current is &#39;false&#39;&#39;</span></span></code></pre>
+<p>해석하면 이렇다.</p>
+<ul>
+<li>우리 앱이 exchange를 <strong><code>durable=true</code>로 선언</strong> 하려고 한다 (<code>received 'true'</code>).</li>
+<li>브로커에 <strong>이미 존재하는</strong> 같은 이름의 exchange는 <strong><code>durable=false</code></strong> 다 (<code>current is 'false'</code>).</li>
+<li>RabbitMQ: "둘이 다르잖아. 못 받아줘." → <code>406 PRECONDITION_FAILED</code> → 채널 종료.</li>
+</ul>
+<p>결과적으로 MassTransit의 receive transport가 fault → 재연결 → 또 fault 루프에 빠지면서 <strong>WeChat inbound 메시지 처리가 전혀 안 됐다.</strong></p>
+<h2 id="jiggwanjeogeuro-ige-daece-museun-sanghwanginga">직관적으로 — 이게 대체 무슨 상황인가</h2>
+<p>벽에 콘센트(exchange)가 하나 박혀 있다고 하자. 이 콘센트는 <strong>처음 설치한 사람이 규격을 정해서 못으로 박아버린다.</strong> 한 번 박히면 규격을 바꿀 수 없다.</p>
+<ul>
+<li>우리 앱은 <strong>220V 규격(durable)</strong> 콘센트를 기대하고 플러그를 꽂으려 한다.</li>
+<li>누군가가 예전에 이 자리에 <strong>110V 규격(non-durable)</strong> 콘센트를 먼저 박아놨다.</li>
+<li>플러그가 안 맞는다. 그렇다고 RabbitMQ가 콘센트를 220V로 바꿔주지도 않는다. 그냥 "규격 안 맞음"이라고 채널을 끊어버린다.</li>
+</ul>
+<p>핵심 직관 두 가지:</p>
+<ol>
+<li><strong>exchange 규격은 처음 선언한 사람이 정하고, 그 뒤로는 불변이다.</strong> → first-declarer-wins.</li>
+<li><strong>규격이 안 맞으면 RabbitMQ는 고쳐주는 게 아니라 거절한다.</strong> → <code>PRECONDITION_FAILED</code>.</li>
+</ol>
+<p>"코드를 고친다"고 풀리는 문제가 아니다. <strong>브로커에 잘못 남은 exchange를 뽑아내야</strong> 우리 앱이 올바른 규격으로 다시 만들 수 있다.</p>
+<h2 id="beomini-doen-rabbitmq-sogseongdeul">범인이 된 RabbitMQ 속성들</h2>
+<h3 id="seoneon-myeogdeungseong-dongdeungseong-geomsa-gajang-haegsim">선언 멱등성 + 동등성 검사 (가장 핵심)</h3>
+<p><code>exchange.declare</code>는 <strong>멱등(idempotent)</strong> 이다. 같은 걸 여러 번 선언해도 문제없다 — 인자가 똑같을 때만. 이미 존재하는 exchange를 <strong>다른 인자</strong>로 선언하면 수정이 아니라 거절이다.</p>
+<blockquote>
+<p>"이미 있는 거랑 인자가 다르네. 안 해줄래." → <code>406 PRECONDITION_FAILED</code>, 채널 종료.</p>
+</blockquote>
+<p>exchange의 속성(<code>type</code>, <code>durable</code>, <code>auto_delete</code>, <code>internal</code>, <code>arguments</code>)은 <strong>생성 시점에 고정, 이후 변경 불가.</strong> 바꾸려면 지우고 다시 만드는 수밖에 없다.</p>
+<h3 id="durable-vs-transient">Durable vs Transient</h3>
+<table><thead><tr><th></th><th>설명</th></tr></thead><tbody>
+<tr><td><code>durable=true</code></td><td>exchange 정의가 디스크에 저장 → <strong>브로커 재시작 후에도 살아남는다</strong></td></tr>
+<tr><td><code>durable=false</code></td><td>메모리에만 존재 → 브로커 재시작 시 사라진다</td></tr>
+</tbody></table>
+<p>문제의 exchange는 <code>durable=false</code>였고, 우리 앱은 <code>durable=true</code>를 원했다.</p>
+<h3 id="auto-delete">Auto-delete</h3>
+<p><code>auto-delete=true</code>이면 마지막 바인딩이 사라질 때 exchange가 스스로 삭제된다. 관리 UI에서 Features 컬럼에 <code>AD</code>로 표시된다. 문제의 exchange는 <code>AD</code> + non-durable 조합 — <strong>"임시 exchange"의 전형적인 모양이다.</strong></p>
+<h3 id="topology-yeongsogseong">Topology 영속성</h3>
+<p>exchange/queue/binding은 <strong>서버(브로커) 측 상태</strong>다. 그걸 만든 클라이언트 연결이 끊겨도 정의는 브로커에 남는다. 브로커 컨테이너 수명이 <code>Persistent</code>라서, 한 번 잘못 만들어진 정의가 계속 살아남아 있었다.</p>
+<h2 id="wae-ige-kodeu-beogeuga-aninga">왜 이게 코드 버그가 아닌가</h2>
+<p>처음엔 "코드 어딘가에서 <code>durable=false</code>로 선언했겠지"라고 의심했다. 두 가지가 그 가설을 깨뜨렸다.</p>
+<h3 id="jeunggeo-1-git-jeonce-hiseutorie-durability-seoljeongi-dan-han-beondo-eobseossda">증거 1: git 전체 히스토리에 durability 설정이 단 한 번도 없었다</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> log</span><span style="color: #95E6CB;"> --all -S</span><span style="color: #AAD94C;"> &quot;Durable&quot;</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> &#39;*.cs&#39;</span><span style="color: #5A6673;font-style: italic;">                                    # → (없음)</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> log</span><span style="color: #95E6CB;"> --all -G</span><span style="color: #AAD94C;"> &quot;Durable|AutoDelete|Temporary|PublishTopology&quot;</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> &#39;*.cs&#39;</span><span style="color: #5A6673;font-style: italic;">  # → (없음)</span></span></code></pre>
+<p>durability/auto-delete를 설정하거나 바꾼 커밋이 역사상 존재하지 않았다. 코드는 항상 MassTransit의 기본값(=durable)만 썼다.</p>
+<h3 id="jeunggeo-2-wechatman-ggaejigo-whatsapp-lineneun-meoljjeonghaessda">증거 2: WeChat만 깨지고 WhatsApp/LINE는 멀쩡했다</h3>
+<p>WeChat, WhatsApp, LINE, Internal 네 컨텍스트의 inbound dispatch 코드는 <strong>구조적으로 완전히 동일</strong>하다.</p>
+<blockquote>
+<p>코드/설정 문제였다면 네 개가 <strong>똑같이</strong> 깨졌어야 한다. 그런데 WeChat 하나만 깨졌다.</p>
+</blockquote>
+<p>이 비대칭이 코드 원인설을 확정적으로 배제한다. <strong>이건 코드 버그도 설계 결함도 아니다. 브로커에 남은 잘못된 exchange 정의와 코드 선언 사이의 "상태 불일치(state mismatch)"다.</strong></p>
+<h2 id="wae-hapil-wechatman-first-declarer-winsneun-exchange-danwi">왜 하필 WeChat만? — first-declarer-wins는 exchange 단위</h2>
+<p>durability 고정이 exchange <strong>하나하나</strong> 단위로 일어난다는 게 핵심이다.</p>
+<ul>
+<li>WhatsApp/LINE/Internal exchange: 처음 선언한 게 우리 앱(durable) → durable로 굳음 → 평화.</li>
+<li>WeChat exchange: <strong>처음 선언한 누군가가 transient(non-durable+auto-delete)</strong> 였다 → AD로 굳음 → 이후 우리 앱의 durable 선언이 매번 충돌.</li>
+</ul>
+<p>벽에 콘센트 네 개를 박는데 세 개는 규격대로 박혔고, 하나만 다른 사람이 먼저 엉뚱한 규격으로 박아버린 것이다. 설계도(코드)는 네 개 다 똑같다.</p>
+<blockquote>
+<p><strong>WhatsApp과 LINE은 "안전"한 게 아니라 "운이 좋았던" 것이다.</strong> 잘못된 클라이언트가 그들의 exchange를 먼저 transient로 선언하면 똑같이 깨진다.</p>
+</blockquote>
+<h2 id="jindan-beomini-ajig-salaissna">진단 — 범인이 아직 살아있나?</h2>
+<p>지우기 전에 한 가지 확인이 필요했다. 시나리오가 두 가지였기 때문이다.</p>
+<ul>
+<li><strong>(A) 살아 있는 외부 publisher</strong>: 지금도 이 exchange를 transient로 계속 다시 만든다 → 내가 지워도 곧바로 다시 AD로 생긴다. 먼저 그 클라이언트를 멈춰야 한다.</li>
+<li><strong>(B) 오래된 잔재(orphaned leftover)</strong>: 과거에 누군가 한 번 만들어 놨고 그 클라이언트는 이미 사라졌다 → 한 번 지우면 끝.</li>
+</ul>
+<p>브로커의 연결 목록으로 확인했다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqctl</span><span style="color: #AAD94C;"> list_connections name peer_host user channels</span></span></code></pre>
+<p>연결은 <strong>딱 둘</strong>, 둘 다 우리 앱(채널 59개 = MassTransit 풀 버스, 두 개의 replica)이었다. 제3의 의심스러운 연결 없음 → <strong>(B) 오래된 잔재 케이스.</strong> 그냥 지우면 된다.</p>
+<h2 id="haegyeol-jiumyeon-aebi-alaseo-dasi-mandeunda">해결 — 지우면 앱이 알아서 다시 만든다</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqadmin</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> &quot;</span><span>$RABBITMQ_DEFAULT_USER</span><span style="color: #AAD94C;">&quot;</span><span style="color: #95E6CB;"> -p</span><span style="color: #AAD94C;"> &quot;</span><span>$RABBITMQ_DEFAULT_PASS</span><span style="color: #AAD94C;">&quot;</span><span style="color: #95E6CB;"> --vhost</span><span style="color: #AAD94C;"> /</span><span style="color: #95E6CB;"> \</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">  delete exchange</span><span style="color: #95E6CB;"> --name</span><span style="color: #AAD94C;"> &#39;...:DispatchInboundWechatMessageCreated&#39;</span></span></code></pre>
+<p>지운 직후, MassTransit의 재연결 루프가 다음 시도에서 exchange를 <strong>durable로 다시 선언</strong>했다. 충돌할 대상이 없으니 성공이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">rabbitmqctl</span><span style="color: #AAD94C;"> list_exchanges name durable auto_delete</span><span style="color: #F29668;"> |</span><span style="color: #59C2FF;"> grep</span><span style="color: #AAD94C;"> DispatchInboundWechat</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># → ... true  false   (durable=true, auto_delete=false) ✅</span></span></code></pre>
+<p>관리 UI에서도 Features가 <code>D</code>로 돌아왔다. <code>precondition_failed</code> 로그가 멈췄고, <code>ReceiveTransport faulted ... Retrying</code> 루프도 멈췄다.</p>
+<p>exchange 삭제는 <strong>queue와 그 안의 메시지를 건드리지 않는다.</strong> exchange와 binding만 사라지고, MassTransit이 binding도 자동으로 재생성한다.</p>
+<h2 id="jaebal-bangji">재발 방지</h2>
+<p>코드 리뷰로는 절대 못 잡는 종류의 문제(브로커 상태)이기 때문에, <strong>런타임 감시 장치</strong>가 필요했다.</p>
+<p><code>RabbitMqExchangeTopologyGuard</code>를 추가했다.</p>
+<ul>
+<li>시작 시 + 10분마다 도는 read-only <code>BackgroundService</code></li>
+<li>RabbitMQ management API(<code>/api/exchanges/{vhost}</code>)를 GET해서 <code>Omni.</code> 접두 exchange 중 <strong>non-durable이거나 auto-delete인 것</strong>을 <code>LogWarning</code>으로 띄운다</li>
+<li><code>bus-*</code>, <code>amq.*</code> 같은 정상적인 임시 endpoint는 제외 (MassTransit의 임시 bus/reply endpoint는 원래 AD가 맞다)</li>
+<li><strong>브로커를 건드리지 않는다.</strong> 실제 복구는 삭제→재선언으로 수동 처리</li>
+</ul>
+<p>이 가드가 <strong>"감지"는 하지만 "예방/자동복구"는 못 한다.</strong> 진짜로 재발을 없애려면 추가로:</p>
+<ol>
+<li><code>LogWarning</code>을 <strong>실제 알림/health check로 승격</strong> — 로그만으로는 묻힌다.</li>
+<li>드리프트 발생 시 <code>/api/connections</code>까지 조회해 범인 연결을 같이 로깅.</li>
+<li><strong>환경 점검</strong>: prod 브로커 연결 문자열을 들고 있는 non-prod 인스턴스가 없는지 감사.</li>
+</ol>
+<h2 id="gyohun">교훈</h2>
+<ol>
+<li>
+<p><strong>코드에 없으면 코드 문제가 아니다.</strong> git pickaxe(<code>-S</code>/<code>-G</code>)로 "그 설정을 만진 커밋이 존재하는가"를 먼저 확인하면, 엉뚱한 곳을 파는 시간을 아낀다.</p>
+</li>
+<li>
+<p><strong>분산 시스템 버그는 "코드"가 아니라 "상태"에 있을 수 있다.</strong> 브로커, DB, 캐시처럼 오래 사는 외부 상태는 코드와 별개의 진실을 갖는다.</p>
+</li>
+<li>
+<p><strong>비대칭은 강력한 진단 신호다.</strong> "똑같은 코드인데 왜 하나만?" → 원인이 코드/설정(대칭)이 아니라 인스턴스별 상태(비대칭)에 있다는 뜻이다.</p>
+</li>
+<li>
+<p><strong>first-declarer-wins를 기억하라.</strong> RabbitMQ exchange/queue 인자는 최초 선언 시 고정 + 불변이다. 같은 브로커를 여러 클라이언트가 공유하면, 누가 먼저 선언하느냐로 영구적 차이가 생긴다.</p>
+</li>
+<li>
+<p><strong>"안 깨진 것"과 "안전한 것"은 다르다.</strong> WhatsApp/LINE는 구조적으로 보호된 게 아니라 운이 좋았을 뿐이다.</p>
+</li>
+</ol>
+<hr />
+<h2 id="3jul-yoyag">3줄 요약</h2>
+<ol>
+<li>RabbitMQ exchange의 속성(durable, auto-delete 등)은 <strong>최초 선언 시 고정, 이후 불변</strong>이다 — 다른 인자로 재선언하면 수정이 아니라 <code>406 PRECONDITION_FAILED</code>로 채널이 끊긴다(first-declarer-wins).</li>
+<li>WeChat exchange만 깨진 건 코드 문제가 아니라 <strong>상태 불일치</strong>였다 — 과거에 누군가 transient로 선언한 잔재가 브로커에 남아 우리 앱의 durable 선언을 매번 막고 있었다.</li>
+<li>해결은 잘못된 exchange 삭제 하나로 끝났다; <code>list_connections</code>로 "살아 있는 재선언자가 없음"을 먼저 확인한 뒤 지우면 앱이 알아서 durable로 재선언한다.</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq&#x2F;work-queeus&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Work Queues
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq&#x2F;transactional-outbox-pattern&#x2F;">
+              Transactional Outbox Pattern: DB와 브로커를 일관되게 맞추기<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

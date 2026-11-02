@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - daemon</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/daemon/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-17T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/daemon/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Layer 2 — dockerd (데몬 &#x2F; API 서버)</title>
+        <published>2026-06-17T00:00:00+00:00</published>
+        <updated>2026-06-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/docker/layer2-dockerd/"/>
+        <id>https://emptyfridge.dev/ko/docker/layer2-dockerd/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/docker/layer2-dockerd/">&lt;blockquote&gt;
+&lt;p&gt;Docker 레이어 시리즈 2편. 스택은 위에서 아래로:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;docker CLI → &lt;strong&gt;2. dockerd (데몬)&lt;&#x2F;strong&gt; → 3. containerd → 4. runc →&lt;&#x2F;li&gt;
+&lt;li&gt;Linux 커널. &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer2-dockerd&#x2F;.&#x2F;component_and_layers.md&quot;&gt;개요 글&lt;&#x2F;a&gt; 참고.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;jeongce&quot;&gt;정체&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;는 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&quot;&gt;&lt;strong&gt;Docker 데몬&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt; —
+사람들이 &quot;Docker&quot;라고 하면 흔히 떠올리는 그 오래 떠 있는 서버 프로세스다. &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer2-dockerd&#x2F;.&#x2F;layer1_docker_cli.md&quot;&gt;docker CLI&lt;&#x2F;a&gt;는 클라이언트일
+뿐이고, &lt;code&gt;dockerd&lt;&#x2F;code&gt;가 실제 관리 일을 하는 서버다. socket에서 듣고 있다가 Docker API
+요청을 받아, 그걸 처리하는 데 필요한 모든 걸 조율한다.&lt;&#x2F;p&gt;
+&lt;p&gt;맥에서 흔히 보는 &lt;code&gt;Cannot connect to the Docker daemon... Is the docker daemon running?&lt;&#x2F;code&gt; 에러의 주인공이 바로 이 프로세스다 — CLI가 socket에는 닿았지만 듣고
+있는 &lt;code&gt;dockerd&lt;&#x2F;code&gt;가 없다는 뜻이다 (맥에서는 그걸 돌릴 VM이 안 떠 있어서).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;mueoseul-caegimjina&quot;&gt;무엇을 책임지나&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;는 &quot;컨테이너를 날것으로 실행하는 행위&quot;를 &lt;strong&gt;제외한&lt;&#x2F;strong&gt; 모든 &quot;Docker 레벨&quot;
+개념을 소유한다:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;이미지&lt;&#x2F;strong&gt;: 레지스트리에서 pull, 빌드(&lt;code&gt;docker build&lt;&#x2F;code&gt;), 태깅, 레이어 저장,
+빌드 캐시 관리.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;네트워킹&lt;&#x2F;strong&gt;: bridge 네트워크 생성, 포트 매핑(&lt;code&gt;-p 8080:80&lt;&#x2F;code&gt;), 컨테이너 간 DNS,
+기본 &lt;code&gt;bridge&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;host&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;none&lt;&#x2F;code&gt; 네트워크.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;볼륨 &amp;amp; 스토리지&lt;&#x2F;strong&gt;: named volume, bind mount, 이미지 레이어를 쌓는 스토리지
+드라이버(&lt;code&gt;overlay2&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;API 표면&lt;&#x2F;strong&gt;: 전체 Docker Engine API를 클라이언트에 제공.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;고수준 객체&lt;&#x2F;strong&gt;: &lt;code&gt;docker compose&lt;&#x2F;code&gt;(데몬 경유), swarm 모드, 플러그인.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;정작 컨테이너의 저수준 실행 자체는 직접 하지 않는다 —
+&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer2-dockerd&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;containerd&lt;&#x2F;a&gt;로 위임한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;docker-engine-server-api-client&quot;&gt;&quot;Docker engine = server + api + client&quot;&lt;&#x2F;h2&gt;
+&lt;p&gt;Docker &lt;strong&gt;Engine&lt;&#x2F;strong&gt;은 세 가지다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Docker Engine&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├── client   →  docker (CLI)             [레이어 1]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;├── api      →  Docker Engine REST API (둘 사이의 계약)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;└── server   →  dockerd (데몬)           [레이어 2]  ← 이 글&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그래서 맥에서 &quot;Docker를 깔았는데 안 돌아간다&quot;는 보통: &lt;strong&gt;클라이언트&lt;&#x2F;strong&gt;는 깔렸는데
+&lt;strong&gt;서버&lt;&#x2F;strong&gt;(&lt;code&gt;dockerd&lt;&#x2F;code&gt;)가 돌 곳이 없다는 뜻이다. &lt;code&gt;dockerd&lt;&#x2F;code&gt;는 Linux 프로세스인데
+맥은 Linux가 아니니까.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;wae-maegeseo-neitibeuro-mos-dona&quot;&gt;왜 맥에서 네이티브로 못 도나&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;&quot;&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;는 Linux 또는 Windows에서 도는 프로그램이다&lt;&#x2F;a&gt;.
+Linux에서는 커널 기능(namespace, cgroup, overlay 파일시스템)에, Windows에서는
+HCS(Host Compute Service)에 의존한다. macOS(Darwin) 커널 위에서는 돌 수 없다. 이게
+Docker Desktop &#x2F; Colima &#x2F; Lima가 존재하는 이유 전부다: 얘네가 &lt;strong&gt;Linux VM&lt;&#x2F;strong&gt;을
+띄우고 그 &lt;em&gt;안에서&lt;&#x2F;em&gt; &lt;code&gt;dockerd&lt;&#x2F;code&gt;를 돌린다. 그럼 내 맥의 CLI가 포워딩된 socket을 통해
+VM 안으로 손을 뻗는 것이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# dockerd는 맥이 아니라 Colima VM 안에 산다:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; colima ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; sh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -c&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;command -v dockerd; ps -e -o comm | grep dockerd&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;&#x2F;usr&#x2F;bin&#x2F;dockerd&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;dockerd&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;monolrisig-haece-dockerdneun-araero-wiimhanda&quot;&gt;모놀리식 해체: dockerd는 아래로 위임한다&lt;&#x2F;h2&gt;
+&lt;p&gt;Docker는 원래 &lt;strong&gt;모놀리식&lt;&#x2F;strong&gt;이었다 — 한 프로그램이 API 서빙, 이미지 관리, 실제
+컨테이너 실행을 다 했다. 시간이 지나며 쪼개졌다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   예전 (모놀리식)                   지금&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   ┌──────────────┐                  ┌──────────────┐  dockerd: API, 이미지,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   │              │                  │   dockerd    │  네트워킹, 볼륨&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   │    docker    │                  └──────┬───────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   │   (전부 다)   │        →                │ gRPC&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   │              │                  ┌──────▼───────┐  containerd: 런타임,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   │              │                  │  containerd  │  라이프사이클, 이미지 콘텐츠&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;   └──────────────┘                  └──────┬───────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                            │&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                     ┌──────▼───────┐  runc: 컨테이너 생성하고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                     │     runc     │  바로 종료&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                                     └──────────────┘&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그래서 &lt;code&gt;docker run&lt;&#x2F;code&gt;을 하면 &lt;code&gt;dockerd&lt;&#x2F;code&gt;가 이미지를 해석하고 네트워킹·볼륨을 세팅한
+뒤, 로컬 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;&quot;&gt;gRPC API&lt;&#x2F;a&gt;로
+&lt;strong&gt;containerd&lt;&#x2F;strong&gt;를 불러 실제로 컨테이너를 시작시킨다. &lt;code&gt;dockerd&lt;&#x2F;code&gt;는
+계속 떠서 전체를 관리하고, 실행 자체는 위임한다.&lt;&#x2F;p&gt;
+&lt;p&gt;이 분리 덕에 &lt;strong&gt;Kubernetes가 &lt;code&gt;dockerd&lt;&#x2F;code&gt;를 버릴 수 있었다&lt;&#x2F;strong&gt;
+(&quot;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;blog&#x2F;2022&#x2F;05&#x2F;03&#x2F;dockershim-historical-context&#x2F;&quot;&gt;dockershim 제거&lt;&#x2F;a&gt;&quot;):
+Docker Engine은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;concepts&#x2F;containers&#x2F;cri&#x2F;&quot;&gt;CRI&lt;&#x2F;a&gt;를
+네이티브로 구현하지 않아서 Kubernetes가 dockershim이라는 브릿지를 유지해야 했다.
+그 부담을 없애기 위해 Kubernetes는 CRI를 직접 구현하는 &lt;code&gt;containerd&lt;&#x2F;code&gt;에 말하고
+&lt;code&gt;dockerd&lt;&#x2F;code&gt; 레이어를 통째로 건너뛴다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;demon-seoljeong&quot;&gt;데몬 설정&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;의 동작은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;#daemon-configuration-file&quot;&gt;&lt;code&gt;daemon.json&lt;&#x2F;code&gt;&lt;&#x2F;a&gt;으로
+제어한다 (Colima에서는 VM 안에 있다):&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;jsonc&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;&#x2F;&#x2F; &#x2F;etc&#x2F;docker&#x2F;daemon.json&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt;  &amp;quot;storage-driver&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;overlay2&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt;  &amp;quot;registry-mirrors&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;https:&#x2F;&#x2F;...&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt;  &amp;quot;log-driver&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;json-file&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt;  &amp;quot;log-opts&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt; &amp;quot;max-size&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;10m&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;&quot;&gt; &amp;quot;max-file&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;3&amp;quot;&lt;&#x2F;span&gt;&lt;span&gt; }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;일반 Linux 호스트에서는 systemd가 &lt;code&gt;dockerd&lt;&#x2F;code&gt;를 띄우거나(&lt;code&gt;systemctl start docker&lt;&#x2F;code&gt;),
+디버깅용으로 포그라운드로 직접 돌린다(&lt;code&gt;sudo dockerd&lt;&#x2F;code&gt;). Colima에서는 직접 띄울 일이
+없다 — &lt;code&gt;colima start&lt;&#x2F;code&gt;가 VM을 부팅하면 VM이 알아서 &lt;code&gt;dockerd&lt;&#x2F;code&gt;를 띄운다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;i-seulroseul-caeuneun-daeandeul&quot;&gt;이 슬롯을 채우는 대안들&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;도구&lt;&#x2F;th&gt;&lt;th&gt;dockerd와 다른 점&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.podman.io&#x2F;en&#x2F;stable&#x2F;markdown&#x2F;podman.1.html&quot;&gt;&lt;strong&gt;Podman&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;strong&gt;데몬리스&lt;&#x2F;strong&gt; — 항상 떠 있는 서버 없이 컨테이너를 자식 프로세스로 실행. 기본 rootless.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cri-o.io&#x2F;&quot;&gt;&lt;strong&gt;CRI-O&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;Kubernetes &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;concepts&#x2F;containers&#x2F;cri&#x2F;&quot;&gt;CRI&lt;&#x2F;a&gt; 전용 최소 런타임. Docker API도 &lt;code&gt;build&lt;&#x2F;code&gt;도 없음.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;containerd (단독)&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt; 없이도 사용 가능 (예: &lt;code&gt;nerdctl&lt;&#x2F;code&gt;).&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;jeongri&quot;&gt;정리&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt;는 &lt;strong&gt;서버&lt;&#x2F;strong&gt; — 이미지·네트워킹·볼륨, 그리고 API를 소유한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&quot;Docker daemon not running&quot; = 서버가 안 떠 있다는 뜻 (맥에서는 VM이 안 떠 있는 것).&lt;&#x2F;li&gt;
+&lt;li&gt;컨테이너를 가장 낮은 레벨에서 돌리는 건 얘가 &lt;strong&gt;아니다&lt;&#x2F;strong&gt; —
+&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer2-dockerd&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;containerd&lt;&#x2F;a&gt;로 &lt;strong&gt;위임&lt;&#x2F;strong&gt;한다 (다음 레이어).&lt;&#x2F;li&gt;
+&lt;li&gt;Kubernetes는 이 레이어를 통째로 건너뛰고 containerd에 직접 말한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Docker 아키텍처 — dockerd가 이미지·네트워크·볼륨을 소유하는 구조: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;docker-overview&#x2F;#docker-architecture&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;dockerd&lt;&#x2F;code&gt; 레퍼런스 — &lt;code&gt;--containerd&lt;&#x2F;code&gt; gRPC 주소, daemon.json 설정, Linux&#x2F;Windows 의존성: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;daemon.json 설정 (storage-driver, log-driver 등): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;#daemon-configuration-file&quot;&gt;https:&#x2F;&#x2F;docs.docker.com&#x2F;reference&#x2F;cli&#x2F;dockerd&#x2F;#daemon-configuration-file&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Dockershim 제거의 역사적 배경 — Docker가 CRI를 구현하지 않은 이유: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;blog&#x2F;2022&#x2F;05&#x2F;03&#x2F;dockershim-historical-context&#x2F;&quot;&gt;https:&#x2F;&#x2F;kubernetes.io&#x2F;blog&#x2F;2022&#x2F;05&#x2F;03&#x2F;dockershim-historical-context&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Dockershim 제거 FAQ: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;blog&#x2F;2022&#x2F;02&#x2F;17&#x2F;dockershim-faq&#x2F;&quot;&gt;https:&#x2F;&#x2F;kubernetes.io&#x2F;blog&#x2F;2022&#x2F;02&#x2F;17&#x2F;dockershim-faq&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Kubernetes Container Runtime Interface(CRI) 스펙: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;concepts&#x2F;containers&#x2F;cri&#x2F;&quot;&gt;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;concepts&#x2F;containers&#x2F;cri&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Kubernetes 컨테이너 런타임 설정 (containerd, CRI-O): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;setup&#x2F;production-environment&#x2F;container-runtimes&#x2F;&quot;&gt;https:&#x2F;&#x2F;kubernetes.io&#x2F;docs&#x2F;setup&#x2F;production-environment&#x2F;container-runtimes&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Podman — 데몬리스 OCI 컨테이너 엔진: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.podman.io&#x2F;en&#x2F;stable&#x2F;markdown&#x2F;podman.1.html&quot;&gt;https:&#x2F;&#x2F;docs.podman.io&#x2F;en&#x2F;stable&#x2F;markdown&#x2F;podman.1.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

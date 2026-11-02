@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Understanding ASP.NET Core Identity, OpenIddict, and Claims Authentication
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Understanding ASP.NET Core Identity, OpenIddict, and Claims Authentication
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-04">July 04, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>15 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2954 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/asp-net-core/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ASP.NET Core</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/identity/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Identity</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openiddict/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenIddict</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oauth-2-0/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OAuth 2.0</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openid-connect/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenID Connect</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>When studying authentication in ASP.NET Core, Identity, OpenIddict, JWT, Claim, Role, and Policy all appear at once. They are all related to authentication and authorization, but they do not solve the same problem. The overall structure becomes especially hard to understand if ASP.NET Core Identity and OpenIddict are treated as competitors, or if JWT itself is considered the thing that authenticates users.</p>
+<p>This article organizes each component's responsibility and how they connect when handling a request.</p>
+<h2 id="start-by-separating-authentication-and-authorization">Start by separating authentication and authorization</h2>
+<p>First, authentication and authorization need to be separated.</p>
+<ul>
+<li>Authentication: confirms who sent the request.</li>
+<li>Authorization: decides whether the authenticated subject can perform a specific action.</li>
+</ul>
+<p>Checking a password during login is authentication. Checking whether the logged-in user can access an admin page is authorization.</p>
+<h2 id="roles-of-asp-net-core-identity-and-openiddict">Roles of ASP.NET Core Identity and OpenIddict</h2>
+<h3 id="asp-net-core-identity">ASP.NET Core Identity</h3>
+<p>ASP.NET Core Identity manages application user accounts and login features.</p>
+<ul>
+<li>Storing users and password hashes</li>
+<li>Registration and login</li>
+<li>Managing roles and user claims</li>
+<li>Email confirmation and password reset</li>
+<li>Two-factor authentication</li>
+<li>Creating authentication cookies</li>
+<li>Login through external providers such as Google or Microsoft</li>
+</ul>
+<p>In short, Identity's core question is:</p>
+<blockquote>
+<p>Who is this user, and how does the user prove their identity?</p>
+</blockquote>
+<p>Even though Identity can use external OAuth/OIDC providers, Identity itself does not become an OAuth 2.0 or OpenID Connect server. In that case, the application acts as a <strong>client</strong> of an external provider such as Google.</p>
+<h3 id="openiddict">OpenIddict</h3>
+<p>OpenIddict is a framework for implementing OAuth 2.0/OpenID Connect protocols. With its server stack, an application can become an authorization server or OpenID Provider.</p>
+<ul>
+<li>Handling protocol endpoints such as authorization, token, and logout</li>
+<li>Managing OAuth client applications</li>
+<li>Managing scopes and authorizations</li>
+<li>Issuing access tokens, refresh tokens, and ID tokens</li>
+<li>Token validation, introspection, and revocation</li>
+<li>Handling authorization code, client credentials, device flow, and similar flows</li>
+</ul>
+<p>OpenIddict's core question is:</p>
+<blockquote>
+<p>Through what process does a client receive a token, and which APIs can that token access?</p>
+</blockquote>
+<p>OpenIddict is not a complete user-management product. Login pages, registration, password recovery, and user management UI need to be implemented through another system such as Identity.</p>
+<h2 id="they-can-be-used-together-but-they-do-not-depend-on-each-other">They can be used together, but they do not depend on each other</h2>
+<p>Identity and OpenIddict are often used together like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User credentials</span></span>
+<span class="giallo-l"><span>    ↓</span></span>
+<span class="giallo-l"><span>ASP.NET Core Identity</span></span>
+<span class="giallo-l"><span>    ↓ creates ClaimsPrincipal for the authenticated user</span></span>
+<span class="giallo-l"><span>OpenIddict</span></span>
+<span class="giallo-l"><span>    ↓ issues OAuth/OIDC token</span></span>
+<span class="giallo-l"><span>Client application</span></span>
+<span class="giallo-l"><span>    ↓ requests with access token</span></span>
+<span class="giallo-l"><span>Protected API</span></span></code></pre>
+<p>But OpenIddict does not internally use Identity. The <code>ClaimsPrincipal</code> passed to OpenIddict can be created from many places.</p>
+<ul>
+<li>ASP.NET Core Identity</li>
+<li>A separate user table</li>
+<li>LDAP or Active Directory</li>
+<li>External authentication provider</li>
+<li>Client credentials flow without a user</li>
+</ul>
+<p>Identity is only one convenient way to authenticate users and create a <code>ClaimsPrincipal</code>.</p>
+<h2 id="relationship-between-jwt-claim-claimsidentity-claimsprincipal-and-user">Relationship between JWT, Claim, ClaimsIdentity, ClaimsPrincipal, and User</h2>
+<p>A typical API request using JWT authentication is processed in this order.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>JWT</span></span>
+<span class="giallo-l"><span>  → token handler validates signature, issuer, audience, expiration, etc.</span></span>
+<span class="giallo-l"><span>  → payload values are converted into Claims</span></span>
+<span class="giallo-l"><span>  → ClaimsIdentity is created with those Claims</span></span>
+<span class="giallo-l"><span>  → one or more ClaimsIdentity instances are wrapped in ClaimsPrincipal</span></span>
+<span class="giallo-l"><span>  → assigned to HttpContext.User</span></span></code></pre><h3 id="jwt">JWT</h3>
+<p>JWT is a token <strong>format</strong> for carrying information. The payload can contain claims such as:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;name&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Alice&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;orders-api&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783123200</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>A JWT is not the same object as a <code>ClaimsPrincipal</code>, and not every <code>ClaimsPrincipal</code> is created from a JWT. Cookies, client certificates, external login, and custom authentication handlers can also create a <code>ClaimsPrincipal</code>.</p>
+<h3 id="claim">Claim</h3>
+<p>A <code>Claim</code> is one type/value item about an authenticated subject.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>A claim is just data. Having a claim does not automatically grant access. Authorization rules decide how to interpret that claim.</p>
+<h3 id="claimsidentity">ClaimsIdentity</h3>
+<p><code>ClaimsIdentity</code> contains a set of claims and information about the authentication method.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> identity</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ClaimsIdentity</span><span>(</span></span>
+<span class="giallo-l"><span>    claims</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    authenticationType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Bearer&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    nameType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    roleType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Here, <code>nameType</code> and <code>roleType</code> specify which claim should be interpreted as the name and role.</p>
+<h3 id="claimsprincipal">ClaimsPrincipal</h3>
+<p><code>ClaimsPrincipal</code> contains one or more <code>ClaimsIdentity</code> instances. A single subject can have identities from multiple authentication methods.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> principal</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ClaimsPrincipal</span><span>(identity)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><h3 id="httpcontext-user">HttpContext.User</h3>
+<p>In ASP.NET Core, <code>HttpContext.User</code>, or <code>User</code> in a controller, is not a separate user entity. It is a property pointing to the current request's <code>ClaimsPrincipal</code>.</p>
+<p>Therefore, the following code does not read the token or cookie directly. It queries the <code>ClaimsPrincipal</code> created by the authentication handler.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> subject</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> authenticated</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span>Identity</span><span style="color: #F29668;">?.</span><span>IsAuthenticated</span><span style="color: #F29668;"> ==</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> isAdmin</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Identity's <code>ApplicationUser</code> and <code>HttpContext.User</code> should also be separated. <code>ApplicationUser</code> is a user entity stored in the database, while <code>HttpContext.User</code> is the security context included in the current request.</p>
+<h2 id="why-is-role-based-authorization-claim-based">Why is role-based authorization claim-based?</h2>
+<p>At ASP.NET Core runtime, a role is represented as a claim with the configured role claim type.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>[</span><span style="color: #59C2FF;">Authorize</span><span>(</span><span style="color: #59C2FF;">Roles</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public</span><span style="color: #59C2FF;"> IActionResult</span><span style="color: #FFB454;"> AdminOnly</span><span>()</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> Ok</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Conceptually, this check asks:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Among the authenticated ClaimsIdentity instances in the current ClaimsPrincipal,</span></span>
+<span class="giallo-l"><span>is there a Claim whose type matches RoleClaimType and whose value is &quot;Admin&quot;?</span></span></code></pre>
+<p>The default <code>RoleClaimType</code> is <code>ClaimTypes.Role</code>, but that is not the only possible value. It can also be configured to use the JWT-native name <code>role</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> TokenValidationParameters</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>    NameClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;name&quot;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>So instead of saying "a role is always a <code>ClaimTypes.Role</code> claim," this is more accurate:</p>
+<blockquote>
+<p>ASP.NET Core interprets claims whose type matches <code>ClaimsIdentity.RoleClaimType</code> as roles.</p>
+</blockquote>
+<h2 id="claim-based-authorization-and-policy-based-authorization">Claim-based authorization and policy-based authorization</h2>
+<p>Policy is the general execution model for ASP.NET Core authorization. A policy is composed of one or more requirements, and authorization handlers evaluate those requirements.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>builder</span><span style="color: #F29668;">.</span><span>Services</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddAuthorization</span><span>(</span><span style="color: #59C2FF;">options</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    options</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddPolicy</span><span>(</span><span style="color: #AAD94C;">&quot;EngineeringOnly&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> policy</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>        policy</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">RequireClaim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>})</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>[</span><span style="color: #59C2FF;">Authorize</span><span>(</span><span style="color: #59C2FF;">Policy</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;EngineeringOnly&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public</span><span style="color: #59C2FF;"> IActionResult</span><span style="color: #FFB454;"> EngineeringDashboard</span><span>()</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> Ok</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Both role checks and claim checks run as requirements in the policy engine.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Policy-based authorization</span></span>
+<span class="giallo-l"><span>  ├── Role requirement</span></span>
+<span class="giallo-l"><span>  ├── Claim requirement</span></span>
+<span class="giallo-l"><span>  ├── Authentication requirement</span></span>
+<span class="giallo-l"><span>  └── Custom requirement + handler</span></span></code></pre>
+<p>So instead of equating "claim-based authorization" with "policy-based authorization," it is more accurate to understand it this way:</p>
+<blockquote>
+<p>Policy is the general framework for executing authorization rules, and role and claim checks are representative requirements provided by that framework.</p>
+</blockquote>
+<p>Complex rules are hard to express with a single claim check. For example, a rule like "is the current user in this tenant and either the owner of this order or a support agent?" is better handled with resource-based authorization or a custom requirement.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public sealed class</span><span style="color: #59C2FF;"> OrderAccessRequirement</span></span>
+<span class="giallo-l"><span style="color: #BFBDB6B3;">    :</span><span style="color: #59C2FF;"> IAuthorizationRequirement</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public sealed class</span><span style="color: #59C2FF;"> OrderAccessHandler</span></span>
+<span class="giallo-l"><span style="color: #BFBDB6B3;">    :</span><span style="color: #59C2FF;"> AuthorizationHandler</span><span>&lt;</span><span style="color: #59C2FF;">OrderAccessRequirement</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> Order</span><span>&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    protected override</span><span style="color: #59C2FF;"> Task</span><span style="color: #FFB454;"> HandleRequirementAsync</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        AuthorizationHandlerContext context</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        OrderAccessRequirement requirement</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Order order</span><span>)</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        var</span><span style="color: #59C2FF;"> userId</span><span style="color: #F29668;"> =</span><span> context</span><span style="color: #F29668;">.</span><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        var</span><span style="color: #59C2FF;"> tenantId</span><span style="color: #F29668;"> =</span><span> context</span><span style="color: #F29668;">.</span><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;tenant_id&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if</span><span> (order</span><span style="color: #F29668;">.</span><span>UserId</span><span style="color: #F29668;"> ==</span><span> userId</span><span style="color: #F29668;"> &amp;&amp;</span><span> order</span><span style="color: #F29668;">.</span><span>TenantId</span><span style="color: #F29668;"> ==</span><span> tenantId)</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            context</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Succeed</span><span>(requirement)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span> Task</span><span style="color: #F29668;">.</span><span>CompletedTask</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="why-claimtypes-and-jwt-oidc-claim-names-differ">Why ClaimTypes and JWT/OIDC claim names differ</h2>
+<p>.NET's <code>System.Security.Claims.ClaimTypes</code> provides well-known claim types as string constants.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>Name</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>NameIdentifier</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>Role</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.microsoft.com/ws/2008/06/identity/claims/role</span></span></code></pre><h3 id="are-the-long-claimtypes-strings-xml-namespace-uris">Are the long ClaimTypes strings XML namespace URIs?</h3>
+<p>Yes. The long strings in <code>ClaimTypes</code> use <strong>XML namespace-style schema URIs</strong> as claim type identifiers from the XML/SOAP era. WS-* technologies such as WIF(Windows Identity Foundation) and WS-Federation used URI namespaces so names defined by different standards and providers would not collide. <code>ClaimTypes</code> inherited that naming convention.</p>
+<p>However, this does not mean they are literally <code>xmlns</code> declarations in an XML document. Values such as <code>ClaimTypes.Name</code> are strings that identify the .NET <code>Claim.Type</code>. It is more accurate to understand them as <strong>schema URI identifiers</strong> using the same URI namespacing style as XML namespaces.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="xml"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">&lt;!-- XML namespaces also use URIs as namespace identifiers. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">&lt;</span><span style="color: #39BAE6;">claims</span><span style="color: #FFB454;"> xmlns</span><span>=</span><span style="color: #AAD94C;">&quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims&quot;</span><span style="color: #39BAE680;">&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">    &lt;</span><span style="color: #39BAE6;">name</span><span style="color: #39BAE680;">&gt;</span><span>Alice</span><span style="color: #39BAE680;">&lt;/</span><span style="color: #39BAE6;">name</span><span style="color: #39BAE680;">&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">&lt;/</span><span style="color: #39BAE6;">claims</span><span style="color: #39BAE680;">&gt;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// In .NET, the full URI is the Claim.Type string.</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> claim</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> Claim</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;Alice&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Debug</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Assert</span><span>(claim</span><span style="color: #F29668;">.</span><span>Type</span><span style="color: #F29668;"> ==</span><span> ClaimTypes</span><span style="color: #F29668;">.</span><span>Name)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>They start with <code>http://</code> and look like URLs, but they do not have to point to an actual network resource or be visitable in a browser. The purpose of the URI here is not location; it is to provide a globally distinguishable name. Microsoft documentation also describes these values as URIs for well-known claim types, and they should not be expected to behave as hyperlinks.</p>
+<p>Because these values were created before JWT, they do not directly match the short JSON claim names used by OIDC/JWT.</p>
+<table><thead><tr><th>Meaning</th><th>.NET <code>ClaimTypes</code> URI</th><th>JWT/OIDC name</th></tr></thead><tbody>
+<tr><td>User identifier</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier</code></td><td><code>sub</code></td></tr>
+<tr><td>Display name</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name</code></td><td><code>name</code></td></tr>
+<tr><td>Email</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code></td><td><code>email</code></td></tr>
+<tr><td>Role</td><td><code>http://schemas.microsoft.com/ws/2008/06/identity/claims/role</code></td><td><code>role</code> or <code>roles</code>, depending on implementation</td></tr>
+</tbody></table>
+<p>JWT and OpenID Connect instead use short names that fit JSON well.</p>
+<h3 id="registered-claim-name-is-more-accurate-than-reserved-claim">"Registered Claim Name" is more accurate than "reserved claim"</h3>
+<p>JWT claims are often called "reserved claims," but RFC 7519's official term is <strong>Registered Claim Name</strong>. "Reserved" can misleadingly imply that the name must be used, or that every JWT must include it.</p>
+<p>RFC 7519 divides claim names into three categories.</p>
+<table><thead><tr><th>Category</th><th>Meaning</th><th>Example</th></tr></thead><tbody>
+<tr><td>Registered</td><td>Names registered in the IANA registry so multiple systems can use the same meaning</td><td><code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code></td></tr>
+<tr><td>Public</td><td>Names publicly registered or using collision-resistant names to avoid conflicts</td><td><code>https://example.com/claims/tenant_id</code></td></tr>
+<tr><td>Private</td><td>Names agreed on by issuer and consumer, with no global meaning or collision guarantee</td><td><code>tenant_id</code>, <code>permission</code></td></tr>
+</tbody></table>
+<p>The important point is that <strong>RFC 7519 itself does not require registered claims in every JWT</strong>. Whether a claim is required is decided by the higher-level protocol or application profile that uses JWT.</p>
+<p>For example, <code>exp</code> is optional in a generic JWT, but required in an OpenID Connect ID token. The correct explanation is not "it is required because it is a standard JWT claim," but "the OIDC ID token rules require <code>exp</code> in that JWT."</p>
+<h3 id="basic-registered-claim-names-in-rfc-7519">Basic Registered Claim Names in RFC 7519</h3>
+<p>The seven claims originally registered by RFC 7519 are:</p>
+<table><thead><tr><th>Claim</th><th>Name</th><th>Value shape</th><th>Meaning and validation point</th></tr></thead><tbody>
+<tr><td><code>iss</code></td><td>Issuer</td><td>case-sensitive string or URI</td><td>Identifies the token issuer. Must exactly match the trusted issuer.</td></tr>
+<tr><td><code>sub</code></td><td>Subject</td><td>case-sensitive string or URI</td><td>The subject described by the token. Must be unique within the issuer. It can be a user ID, or in client credentials flow it can represent the client.</td></tr>
+<tr><td><code>aud</code></td><td>Audience</td><td>string or string array</td><td>Identifies the token recipient. If the current API is not in the audience, reject the token.</td></tr>
+<tr><td><code>exp</code></td><td>Expiration Time</td><td>NumericDate</td><td>The token must not be accepted after this time. Validation can allow limited clock skew.</td></tr>
+<tr><td><code>nbf</code></td><td>Not Before</td><td>NumericDate</td><td>The token must not be accepted before this time.</td></tr>
+<tr><td><code>iat</code></td><td>Issued At</td><td>NumericDate</td><td>The time the token was issued. Can be used for token age calculations, but does not by itself determine expiration.</td></tr>
+<tr><td><code>jti</code></td><td>JWT ID</td><td>case-sensitive string</td><td>Unique token identifier. Can be used for replay prevention or revocation records, but does not automatically prevent replay unless stored and checked.</td></tr>
+</tbody></table>
+<p><code>NumericDate</code> is a JSON number representing seconds since 1970-01-01 UTC. It is not an ISO 8601 string.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;orders-api&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;billing-api&quot;</span><span>]</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783123200</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;nbf&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783119300</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iat&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783119600</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;jti&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;01JXYZ8M6Y4V7Q9R2K3P&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>These values are not just user profile information; they form the token's security context. In particular, if you validate only the signature and not <code>iss</code>, <code>aud</code>, and <code>exp</code>, you can accidentally accept a token that was validly signed but issued for a different API.</p>
+<h3 id="the-iana-registry-does-not-stop-at-rfc-7519-s-seven-claims">The IANA registry does not stop at RFC 7519's seven claims</h3>
+<p>The IANA JSON Web Token Claims registry also includes names registered later by other standards. Examples include:</p>
+<ul>
+<li>OIDC user information: <code>name</code>, <code>email</code>, <code>email_verified</code>, <code>picture</code></li>
+<li>Authentication information: <code>auth_time</code>, <code>nonce</code>, <code>acr</code>, <code>amr</code>, <code>azp</code></li>
+<li>OAuth information: <code>client_id</code>, <code>scope</code></li>
+<li>Authorization information: <code>groups</code>, <code>roles</code>, <code>entitlements</code></li>
+</ul>
+<p>Therefore, "registered claim" does not mean only the seven RFC 7519 claims. It means the full set of names currently registered in the registry, and each claim's meaning and requirements should be checked in the specification that registered it.</p>
+<p>Also distinguish singular <code>role</code> and plural <code>roles</code>. RFC 9068's JWT access token profile recommends <code>groups</code>, <code>roles</code>, and <code>entitlements</code> for authorization information. Many .NET or identity provider implementations, however, conventionally use <code>role</code> or the Microsoft URI form <code>ClaimTypes.Role</code>. The actual claim name in the token must match ASP.NET Core's <code>RoleClaimType</code>.</p>
+<h3 id="claims-in-an-openid-connect-id-token">Claims in an OpenID Connect ID token</h3>
+<p>An ID token is not "an OAuth access token with a little user information added." It is a separate token that lets the client verify the result of user authentication at the authorization server, and it is always a JWT.</p>
+<p>Core claims required or defined by OIDC Core include:</p>
+<table><thead><tr><th>Claim</th><th>Requirement</th><th>Meaning</th></tr></thead><tbody>
+<tr><td><code>iss</code></td><td>Required</td><td>OpenID Provider that issued the ID token</td></tr>
+<tr><td><code>sub</code></td><td>Required</td><td>User identifier that is unique and never reassigned within the issuer</td></tr>
+<tr><td><code>aud</code></td><td>Required</td><td>Client that receives this ID token. Usually includes <code>client_id</code>.</td></tr>
+<tr><td><code>exp</code></td><td>Required</td><td>ID token expiration time</td></tr>
+<tr><td><code>iat</code></td><td>Required</td><td>ID token issued-at time</td></tr>
+<tr><td><code>auth_time</code></td><td>Required depending on request</td><td>Time the user actually authenticated</td></tr>
+<tr><td><code>nonce</code></td><td>Required if sent in the authorization request</td><td>Connects request and response and prevents replay attacks. The client must compare it with the original value.</td></tr>
+<tr><td><code>acr</code></td><td>Optional</td><td>Authentication Context Class. Can indicate authentication strength or policy.</td></tr>
+<tr><td><code>amr</code></td><td>Optional</td><td>Authentication Methods References. Example: password, OTP</td></tr>
+<tr><td><code>azp</code></td><td>Used in specific conditions</td><td>Authorized party for which the ID token was issued. Important especially when there are multiple audiences.</td></tr>
+</tbody></table>
+<p><code>sub</code> should be treated as a stable internal identifier rather than a login name or email address. Email can change or be reused, but OIDC <code>sub</code> is designed to identify the user stably within the issuer. When linking an external user in a database, <code>(iss, sub)</code> is usually used as the key because different issuers can issue the same <code>sub</code> value.</p>
+<p>OIDC Standard Claims describe user profile information.</p>
+<table><thead><tr><th>Area</th><th>Claims</th></tr></thead><tbody>
+<tr><td>Name</td><td><code>name</code>, <code>given_name</code>, <code>family_name</code>, <code>middle_name</code>, <code>nickname</code>, <code>preferred_username</code></td></tr>
+<tr><td>Profile</td><td><code>profile</code>, <code>picture</code>, <code>website</code></td></tr>
+<tr><td>Contact</td><td><code>email</code>, <code>email_verified</code>, <code>phone_number</code>, <code>phone_number_verified</code></td></tr>
+<tr><td>Other</td><td><code>gender</code>, <code>birthdate</code>, <code>zoneinfo</code>, <code>locale</code>, <code>address</code>, <code>updated_at</code></td></tr>
+</tbody></table>
+<p>These claims are not automatically included in the ID token just because they are defined. Depending on requested scopes, the <code>claims</code> parameter, user consent, and provider policy, they may be provided in the ID token or UserInfo response.</p>
+<p>Representative scope-to-claim relationships are:</p>
+<ul>
+<li><code>openid</code>: makes the request an OIDC request. It does not mean the full user profile.</li>
+<li><code>profile</code>: requests profile claims such as name, picture, locale, and <code>updated_at</code>.</li>
+<li><code>email</code>: requests <code>email</code> and <code>email_verified</code>.</li>
+<li><code>phone</code>: requests <code>phone_number</code> and <code>phone_number_verified</code>.</li>
+<li><code>address</code>: requests <code>address</code>.</li>
+</ul>
+<p>A scope is not a simple command meaning "put this claim in the token." It represents the access range requested by the client, and the actual result is affected by consent and provider policy.</p>
+<h3 id="do-not-confuse-id-token-claims-and-access-token-claims">Do not confuse ID token claims and access token claims</h3>
+<p>The audience of an ID token is the <strong>client application</strong>, while the audience of an access token is usually the <strong>resource server/API</strong>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>ID token</span></span>
+<span class="giallo-l"><span>  issuer ──authentication result──&gt; client application</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Access token</span></span>
+<span class="giallo-l"><span>  issuer ──API access right──&gt; resource server</span></span></code></pre>
+<p>Therefore, an API must not accept an ID token as a substitute for an access token. Even if both tokens are JWTs and contain similar claims, their purpose and audience differ.</p>
+<p>Also, an OAuth access token does not have to be a JWT. OpenIddict can also use opaque access tokens. If a JWT access token follows the RFC 9068 profile, these claims are required:</p>
+<ul>
+<li><code>iss</code></li>
+<li><code>sub</code></li>
+<li><code>aud</code></li>
+<li><code>exp</code></li>
+<li><code>iat</code></li>
+<li><code>jti</code></li>
+<li><code>client_id</code></li>
+</ul>
+<p>If the authorization request included scope, RFC 9068 recommends including a <code>scope</code> claim in the access token. But clients should treat access tokens as opaque values and not depend on their internal structure. The consumer of the access token is the API. If a client reads token payloads to decide UI permissions or login state, it becomes fragile when the token format changes.</p>
+<h3 id="how-to-name-custom-claims">How to name custom claims</h3>
+<p>For claims used only inside an internal system, short private names can be used.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;permission&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;orders.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;orders.write&quot;</span><span>]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>But if tokens are exchanged across multiple organizations or products, short names can collide with future standards or claims from other providers. In that case, a collision-resistant name under a namespace you control is safer.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;https://auth.example.com/claims/tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>A URI-shaped claim name does not need to be an actually reachable URL. The important part is that it is a unique identifier under a namespace you control. Note that RFC 7519's <code>StringOrURI</code> rule is about the data type of some <strong>claim values</strong>, such as <code>iss</code> or <code>sub</code>, and does not apply to all claim names.</p>
+<p>When designing custom claims, check these points:</p>
+<ol>
+<li>Is there already a registered claim with the same meaning in the IANA registry?</li>
+<li>Is the consumer of this claim the client or the API?</li>
+<li>Is the value shape defined by contract: string, array, boolean, etc.?</li>
+<li>If naming conflicts are possible, are you using a collision-resistant name?</li>
+<li>Is this sensitive information that the API could query from the server instead of putting it in the token?</li>
+<li>If the value changes, is it acceptable for already issued tokens to keep stale permissions until expiration?</li>
+</ol>
+<p>If a JWT payload is an unencrypted JWS, anyone can base64url-decode and read it. The signature prevents tampering, but it does not provide confidentiality. Do not put passwords, secrets, or unnecessary personal information in claims. For authorization data, also consider that values can remain stale until the token expires.</p>
+<h2 id="inbound-claim-mapping">Inbound claim mapping</h2>
+<p>The JWT bearer handler can map short token claim names to .NET URI-style claim types. For example, <code>sub</code> can be converted to <code>ClaimTypes.NameIdentifier</code>.</p>
+<p>This behavior can be disabled per scheme.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>builder</span><span style="color: #F29668;">.</span><span>Services</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">AddAuthentication</span><span>(JwtBearerDefaults</span><span style="color: #F29668;">.</span><span>AuthenticationScheme)</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">AddJwtBearer</span><span>(</span><span style="color: #59C2FF;">options</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>        options</span><span style="color: #F29668;">.</span><span>MapInboundClaims</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> TokenValidationParameters</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            NameClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>            RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span></span>
+<span class="giallo-l"><span>        }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>If mapping is disabled, you can use token-native names such as <code>User.FindFirst("sub")</code>. The important part is not whether mapping is on or off, but that claim names, <code>NameClaimType</code>, and <code>RoleClaimType</code> are used consistently throughout the application.</p>
+<h2 id="identity-bearer-tokens-and-oauth-tokens-are-different">Identity bearer tokens and OAuth tokens are different</h2>
+<p>Recent ASP.NET Core Identity API endpoints can issue bearer tokens for first-party clients. However, these tokens are Identity-specific proprietary tokens; they do not implement an OAuth 2.0/OIDC token server.</p>
+<p>If you need the following features, use an OAuth/OIDC server framework such as OpenIddict.</p>
+<ul>
+<li>Registering multiple client applications</li>
+<li>Authorization code + PKCE</li>
+<li>Standard scopes and consent</li>
+<li>ID tokens and OIDC discovery</li>
+<li>Refresh token policies</li>
+<li>Token introspection and revocation</li>
+<li>Standards-based interoperability with external applications</li>
+</ul>
+<p>For new applications with users, prefer authorization code flow with PKCE over password grant. Password grant is not recommended because the client directly receives the user's password. For server-to-server communication, client credentials flow is appropriate.</p>
+<h2 id="full-structure">Full structure</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>                        Authentication</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Credential / Cookie / JWT / Certificate</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>          Authentication Handler</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>              ClaimsIdentity</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>             ClaimsPrincipal</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>           HttpContext.User</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>                         Authorization</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>           HttpContext.User + Resource</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>          Authorization Policy</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>    Role / Claim / Custom Requirements</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>              Allow or Deny</span></span></code></pre>
+<p>Finally, each term in one sentence:</p>
+<ul>
+<li>Identity: manages user accounts and the login lifecycle.</li>
+<li>OpenIddict: handles OAuth 2.0/OIDC protocols and issues or validates standard tokens.</li>
+<li>JWT: a signed token format that can carry claims.</li>
+<li>Claim: type/value information about a subject.</li>
+<li>ClaimsIdentity: a set of claims from one authentication source.</li>
+<li>ClaimsPrincipal: the current security principal containing one or more ClaimsIdentity instances.</li>
+<li><code>HttpContext.User</code>: the current request's ClaimsPrincipal.</li>
+<li>Role: a claim that ASP.NET Core interprets as a role according to RoleClaimType.</li>
+<li>Policy: an authorization rule that evaluates roles, claims, and custom requirements.</li>
+</ul>
+<h2 id="ref">Ref</h2>
+<ul>
+<li>ASP.NET Core Identity overview: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity">https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity</a></li>
+<li>Identity API authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization">https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization</a></li>
+<li>Claims-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims</a></li>
+<li>Policy-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies</a></li>
+<li>Role-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles</a></li>
+<li><code>ClaimTypes</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimtypes">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimtypes</a></li>
+<li><code>JwtBearerOptions.MapInboundClaims</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbeareroptions.mapinboundclaims">https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbeareroptions.mapinboundclaims</a></li>
+<li>OpenIddict introduction: <a rel="external" href="https://documentation.openiddict.com/introduction">https://documentation.openiddict.com/introduction</a></li>
+<li>OpenIddict getting started: <a rel="external" href="https://documentation.openiddict.com/guides/getting-started/">https://documentation.openiddict.com/guides/getting-started/</a></li>
+<li>Choosing an OAuth/OIDC flow with OpenIddict: <a rel="external" href="https://documentation.openiddict.com/guides/choosing-the-right-flow.html">https://documentation.openiddict.com/guides/choosing-the-right-flow.html</a></li>
+<li>JSON Web Token, RFC 7519: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a></li>
+<li>IANA JSON Web Token Claims registry: <a rel="external" href="https://www.iana.org/assignments/jwt/jwt.xhtml">https://www.iana.org/assignments/jwt/jwt.xhtml</a></li>
+<li>JWT Profile for OAuth 2.0 Access Tokens, RFC 9068: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc9068">https://www.rfc-editor.org/rfc/rfc9068</a></li>
+<li>OpenID Connect Core 1.0: <a rel="external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;dotnet-framework&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              CLI? CIL? CLR?
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;identityserver-userclaims&#x2F;">
+              Understanding IdentityServer UserClaims: The Difference Between User, Identity Resource, and API Resource<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

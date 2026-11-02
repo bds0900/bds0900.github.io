@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Layer 3 — containerd (Container Runtime)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Layer 3 — containerd (Container Runtime)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>837 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/containerd/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>containerd</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/runtime/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>runtime</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/layers/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>layers</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <blockquote>
+<p>Part 3 of the Docker layers series. From top to bottom, the stack is:</p>
+<ol>
+<li>docker CLI → 2. dockerd → <strong>3. containerd</strong> → 4. runc →</li>
+<li>Linux kernel. See the <a href="https://emptyfridge.dev/docker/layer3-containerd/./component_and_layers.md">overview article</a>.</li>
+</ol>
+</blockquote>
+<h2 id="identity">Identity</h2>
+<p><code>containerd</code> is a <strong>container runtime</strong>: the daemon that sits between
+<a href="https://emptyfridge.dev/docker/layer3-containerd/./layer2_dockerd.md">dockerd</a> above and <a href="https://emptyfridge.dev/docker/layer3-containerd/./layer4_runc.md">runc</a> below. It handles the
+hard parts of the container lifecycle: pulling and storing image content, unpacking it
+into a filesystem, and supervising containers from start to stop.</p>
+<p>It is a CNCF <a rel="external" href="https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/"><strong>graduated project</strong></a>
+and an industry standard. The same <code>containerd</code> powers Docker, most Kubernetes clusters,
+and tools such as <code>nerdctl</code>. That is exactly why it was split out of Docker.</p>
+<h2 id="why-it-exists-breaking-up-the-monolith">Why it exists: breaking up the monolith</h2>
+<p>Docker was originally monolithic. As Docker
+<a rel="external" href="https://www.docker.com/blog/docker-engine-1-11-runc/">modularized its architecture</a>,
+the runtime became an independent project (Docker 1.11, 2016). Later, Kubernetes'
+<a rel="external" href="https://kubernetes.io/docs/concepts/containers/cri/"><strong>CRI, or Container Runtime Interface</strong></a>,
+reinforced the split so other systems could use the runtime <strong>without</strong> the whole Docker
+engine:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>        dockerd   ── needs ──►  containerd  ◄── needs ──  Kubernetes (kubelet)</span></span>
+<span class="giallo-l"><span>       (Docker)                  (shared)                 (through CRI)</span></span></code></pre>
+<p>So <code>containerd</code> serves two very different owners through two APIs:</p>
+<ul>
+<li><strong>dockerd</strong> talks through containerd's <a rel="external" href="https://github.com/containerd/containerd/blob/main/RELEASES.md"><strong>native gRPC API</strong></a>.</li>
+<li><strong>Kubernetes</strong> talks through <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md"><strong>CRI</strong></a>, the gRPC API defined by Kubernetes.</li>
+</ul>
+<p>Because of this double role, dropping <code>dockerd</code> in Kubernetes ("dockershim removal") did
+not change the actual runtime. Kubernetes simply talks directly to the same <code>containerd</code>.</p>
+<h2 id="what-it-owns">What it owns</h2>
+<p><code>containerd</code> owns runtime concerns: a layer more concrete than <code>dockerd</code>, but more
+abstract than <code>runc</code>.</p>
+<ul>
+<li><strong>Image management</strong>: pulls images, verifies digests, stores <strong>content</strong> in a content-addressable store, and manages snapshots/layers.</li>
+<li><strong>Snapshots</strong>: prepares container root filesystems from image layers through a <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md"><em>snapshotter</em></a>, such as <code>overlayfs</code>.</li>
+<li><strong>Container lifecycle</strong>: create, start, pause, stop, delete, and <strong>supervise</strong> running processes so they survive even if <code>dockerd</code> restarts.</li>
+<li><strong>Task</strong>: the actual running instance of a container.</li>
+<li><strong>Shim</strong>: a small <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md"><code>containerd-shim-runc-v2</code></a> process attached to each container. It separates container I/O and exit status from the main containerd daemon.</li>
+</ul>
+<p>It does not directly create namespaces or cgroups. That final step is delegated to
+<a href="https://emptyfridge.dev/docker/layer3-containerd/./layer4_runc.md">runc</a>.</p>
+<h2 id="shim-why-containerd-can-restart-safely">shim: why containerd can restart safely</h2>
+<p>The key design point: <code>containerd</code> does not remain the direct parent of every container.
+Instead, it starts a <strong>shim</strong> for each container:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>containerd</span></span>
+<span class="giallo-l"><span>   └─ containerd-shim-runc-v2   ← lives for the container&#39;s lifetime</span></span>
+<span class="giallo-l"><span>         └─ runc  (runs briefly to create the container, then exits)</span></span>
+<span class="giallo-l"><span>               └─ my container process (PID 1 inside the container)</span></span></code></pre>
+<p>Because the long-lived parent is the shim, not containerd:</p>
+<ul>
+<li><strong>Running containers do not die when <code>containerd</code> or <code>dockerd</code> restarts or upgrades</strong>. The shim keeps them alive and reconnects.</li>
+<li>The shim captures the container's <strong>stdout/stderr</strong> and reports the <strong>exit code</strong> back to containerd.</li>
+</ul>
+<p>This is the structural reason <code>runc</code> rarely appears in <code>ps</code>: after it finishes its job and
+exits, the shim takes over.</p>
+<h2 id="seeing-it-on-this-mac">Seeing it on this Mac</h2>
+<p><code>containerd</code> runs inside the Colima VM:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;command -v containerd; ctr --version&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">/usr/bin/containerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ctr</span><span style="color: #AAD94C;"> github.com/containerd/containerd v1.7.x</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># `ctr` is containerd&#39;s low-level debug CLI, separate from docker:</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sudo ctr namespaces ls</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">NAME</span><span style="color: #AAD94C;">    LABELS</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">default</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">moby</span><span style="color: #5A6673;font-style: italic;">            # &lt;- namespace used by dockerd inside containerd</span></span></code></pre>
+<p><code>moby</code> is the <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/namespaces.md">containerd namespace</a>
+used by Docker. <a rel="external" href="https://github.com/moby/moby">Moby</a> is the name of Docker's upstream
+open-source project. Seeing this namespace shows that <code>dockerd</code> is controlling
+<code>containerd</code> underneath.</p>
+<h2 id="containerd-and-surrounding-layers">containerd and surrounding layers</h2>
+<table><thead><tr><th>Concern</th><th>Owner</th></tr></thead><tbody>
+<tr><td><code>docker build</code>, networking, volumes, Docker API</td><td><strong>dockerd</strong> (Layer 2)</td></tr>
+<tr><td>Image pull/storage, snapshots, lifecycle, shim</td><td><strong>containerd</strong> (Layer 3)</td></tr>
+<tr><td>Namespace/cgroup creation, process <code>exec</code></td><td><strong>runc</strong> (Layer 4)</td></tr>
+</tbody></table>
+<h2 id="alternatives-that-fill-this-slot">Alternatives that fill this slot</h2>
+<ul>
+<li><a rel="external" href="https://github.com/cri-o/cri-o"><strong>CRI-O</strong></a>: a runtime built <em>only</em> for Kubernetes CRI. It is lighter than containerd for that single purpose and has no Docker API.</li>
+<li><strong>containerd with another low-level runtime</strong>: through runtime classes, containerd can choose <code>runc</code>, <code>crun</code>, gVisor (<code>runsc</code>), or Kata. See <a href="https://emptyfridge.dev/docker/layer3-containerd/./layer4_runc.md">Layer 4</a>.</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<ul>
+<li><code>containerd</code> is the <strong>standard runtime</strong> for image content, snapshots, and container lifecycle.</li>
+<li>It was <strong>split out of Docker</strong> so Kubernetes and other systems could use it directly through CRI and bypass <code>dockerd</code>.</li>
+<li>The <strong>shim</strong> design lets containers keep running even when daemons restart.</li>
+<li>The final low-level container creation is still delegated to <a href="https://emptyfridge.dev/docker/layer3-containerd/./layer4_runc.md">runc</a>, the next layer.</li>
+</ul>
+<h2 id="references">References</h2>
+<ul>
+<li>CNCF containerd graduation announcement (2019): <a rel="external" href="https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/">https://www.cncf.io/announcements/2019/02/28/cncf-announces-containerd-graduation/</a></li>
+<li>Docker 1.11, the first release to move to containerd/runc: <a rel="external" href="https://www.docker.com/blog/docker-engine-1-11-runc/">https://www.docker.com/blog/docker-engine-1-11-runc/</a></li>
+<li>Docker, "Introducing containerd" and the modularization background: <a rel="external" href="https://www.docker.com/blog/introducing-containerd/">https://www.docker.com/blog/introducing-containerd/</a></li>
+<li>containerd CRI plugin architecture for Kubernetes integration: <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md">https://github.com/containerd/containerd/blob/main/docs/cri/architecture.md</a></li>
+<li>containerd native gRPC API, "the primary product of containerd": <a rel="external" href="https://github.com/containerd/containerd/blob/main/RELEASES.md">https://github.com/containerd/containerd/blob/main/RELEASES.md</a></li>
+<li>Snapshotter, preparing rootfs from image layers: <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md">https://github.com/containerd/containerd/blob/main/docs/snapshotters/README.md</a></li>
+<li>Content flow, from image pull to rootfs: <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/content-flow.md">https://github.com/containerd/containerd/blob/main/docs/content-flow.md</a></li>
+<li>Runtime v2 shim, container survival across daemon restarts: <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md">https://github.com/containerd/containerd/blob/main/docs/runtime-v2.md</a></li>
+<li>containerd namespaces, including <code>moby</code> multitenancy: <a rel="external" href="https://github.com/containerd/containerd/blob/main/docs/namespaces.md">https://github.com/containerd/containerd/blob/main/docs/namespaces.md</a></li>
+<li>Moby, Docker's upstream open-source project: <a rel="external" href="https://github.com/moby/moby">https://github.com/moby/moby</a></li>
+<li>CRI-O, lightweight runtime dedicated to Kubernetes CRI: <a rel="external" href="https://github.com/cri-o/cri-o">https://github.com/cri-o/cri-o</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer4-runc&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Layer 4 — runc (Low-level OCI Runtime)
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker&#x2F;layer2-dockerd&#x2F;">
+              Layer 2 — dockerd (Daemon &#x2F; API Server)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

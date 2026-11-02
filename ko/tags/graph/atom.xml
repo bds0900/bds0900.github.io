@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - graph</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/graph/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2021-01-18T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/graph/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Graph 자료구조</title>
+        <published>2021-01-18T00:00:00+00:00</published>
+        <updated>2021-01-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/data_structure/graph/"/>
+        <id>https://emptyfridge.dev/ko/data_structure/graph/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/data_structure/graph/">&lt;p&gt;Graph는 &lt;strong&gt;node(vertex)&lt;&#x2F;strong&gt; 와 &lt;strong&gt;edge&lt;&#x2F;strong&gt; 로 관계를 표현하는 자료구조다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;G = (V, E)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;V = vertices, nodes&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;E = edges, relationships between vertices&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Tree도 graph의 한 종류다. 정확히는 cycle이 없는 connected undirected graph를 tree라고
+볼 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;graphga-pilyohan-sungan&quot;&gt;Graph가 필요한 순간&lt;&#x2F;h2&gt;
+&lt;p&gt;Graph는 &quot;데이터 사이의 관계&quot;가 핵심일 때 쓴다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Social network: 사람 = vertex, 친구 관계 = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Map: 도시&#x2F;교차로 = vertex, 도로 = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Dependency graph: package&#x2F;module = vertex, dependency = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Web: page = vertex, hyperlink = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Workflow&#x2F;state machine: state = vertex, transition = edge&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Array나 list가 &quot;순서&quot; 중심이라면, graph는 &quot;연결&quot; 중심이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;graph-jongryu&quot;&gt;Graph 종류&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;undirected-graph&quot;&gt;Undirected Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;Edge에 방향이 없다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A -- B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;A&lt;&#x2F;code&gt;가 &lt;code&gt;B&lt;&#x2F;code&gt;와 연결되어 있으면 &lt;code&gt;B&lt;&#x2F;code&gt;도 &lt;code&gt;A&lt;&#x2F;code&gt;와 연결되어 있다. Facebook 친구 관계 같은 모델에
+어울린다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;directed-graph&quot;&gt;Directed Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;Edge에 방향이 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A -&amp;gt; B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;A&lt;&#x2F;code&gt;가 &lt;code&gt;B&lt;&#x2F;code&gt;를 가리킨다고 해서 &lt;code&gt;B&lt;&#x2F;code&gt;가 &lt;code&gt;A&lt;&#x2F;code&gt;를 가리키는 것은 아니다. Twitter follow, package
+dependency, web link 같은 모델에 어울린다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;weighted-graph&quot;&gt;Weighted Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;Edge에 비용이나 거리 같은 값이 붙는다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A --(7)-- B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;도로 거리, 네트워크 latency, 환승 비용, similarity score 등을 표현할 때 쓴다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;cyclic-acyclic-graph&quot;&gt;Cyclic &#x2F; Acyclic Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;Cycle은 어떤 vertex에서 시작해서 edge를 따라 이동했을 때 다시 자기 자신으로 돌아올 수 있는
+경로다.&lt;&#x2F;p&gt;
+&lt;p&gt;Cycle이 없는 directed graph를 DAG(Directed Acyclic Graph)라고 한다. Build dependency,
+course prerequisite, job scheduling 같은 문제에서 많이 나온다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;connected-graph&quot;&gt;Connected Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;Undirected graph에서 모든 vertex가 서로 도달 가능하면 connected graph다. 연결되지 않은
+부분이 여러 개 있으면 connected component가 여러 개 있다고 말한다.&lt;&#x2F;p&gt;
+&lt;p&gt;Directed graph에서는 방향까지 고려해서 서로 도달 가능한 경우 strongly connected라고 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;graph-pyohyeon-bangbeob&quot;&gt;Graph 표현 방법&lt;&#x2F;h2&gt;
+&lt;p&gt;Graph 알고리즘을 풀 때는 표현 방법이 매우 중요하다. Vertex 수를 &lt;code&gt;V&lt;&#x2F;code&gt;, edge 수를 &lt;code&gt;E&lt;&#x2F;code&gt;라고
+하자.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;adjacency-matrix&quot;&gt;Adjacency Matrix&lt;&#x2F;h3&gt;
+&lt;p&gt;2차원 배열로 edge 존재 여부나 weight를 저장한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;matrix[u][v] = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;matrix[u][v] = weight&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;작업&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Complexity&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Memory&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V^2)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge 존재 확인&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(1)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어떤 vertex의 모든 neighbor 순회&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;장점:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;구현이 쉽다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;u&lt;&#x2F;code&gt;와 &lt;code&gt;v&lt;&#x2F;code&gt;가 연결되어 있는지 바로 확인할 수 있다.&lt;&#x2F;li&gt;
+&lt;li&gt;Dense graph(edge가 매우 많은 graph)에 적합하다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;단점:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sparse graph에서는 memory 낭비가 심하다.&lt;&#x2F;li&gt;
+&lt;li&gt;Neighbor를 찾으려면 한 row 전체를 훑어야 한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;adjacency-list&quot;&gt;Adjacency List&lt;&#x2F;h3&gt;
+&lt;p&gt;각 vertex마다 연결된 neighbor 목록을 저장한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;0: [1, 2]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;1: [0, 3]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;2: [0]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;3: [1]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Rust로는 보통 이렇게 표현한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Weighted graph라면 neighbor와 weight를 같이 저장한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;)&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;), (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;), (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;작업&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Complexity&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Memory&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V + E)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge 존재 확인&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg(u)), set을 쓰면 평균 O(1)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어떤 vertex의 모든 neighbor 순회&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg(u))&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;장점:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sparse graph에 memory 효율적이다.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS&#x2F;DFS처럼 neighbor를 순회하는 알고리즘에 좋다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;단점:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;특정 edge 존재 여부만 자주 묻는 문제에서는 matrix보다 느릴 수 있다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;edge-list&quot;&gt;Edge List&lt;&#x2F;h3&gt;
+&lt;p&gt;Edge 목록만 저장한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; edges&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Kruskal MST처럼 edge를 정렬해서 처리하는 알고리즘에 잘 맞는다. 하지만 특정 vertex의
+neighbor를 자주 찾아야 한다면 매번 edge 전체를 훑어야 해서 비효율적이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;pyohyeon-bangbeob-bigyo&quot;&gt;표현 방법 비교&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;표현&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Memory&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Edge check&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Neighbor traversal&lt;&#x2F;th&gt;&lt;th&gt;잘 맞는 경우&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Adjacency matrix&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V^2)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(1)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V)&lt;&#x2F;td&gt;&lt;td&gt;Dense graph, 빠른 edge lookup&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Adjacency list&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V + E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg)&lt;&#x2F;td&gt;&lt;td&gt;Sparse graph, BFS&#x2F;DFS&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge list&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td&gt;Edge 중심 알고리즘, Kruskal&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;대부분의 코딩 테스트 graph 문제는 sparse graph가 많아서 adjacency list가 기본 선택이다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;bfs&quot;&gt;BFS&lt;&#x2F;h2&gt;
+&lt;p&gt;BFS(Breadth-First Search)는 시작점에서 가까운 vertex부터 방문한다. Queue를 사용한다.&lt;&#x2F;p&gt;
+&lt;p&gt;Unweighted graph에서 BFS는 시작점으로부터의 &lt;strong&gt;최단 edge 수&lt;&#x2F;strong&gt;를 구할 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; std&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;collections&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;VecDeque&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; bfs&lt;&#x2F;span&gt;&lt;span&gt;(graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;], start&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; distance&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;None&lt;&#x2F;span&gt;&lt;span&gt;; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;()];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; VecDeque&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    distance[start]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(start);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    while let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(current)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;pop_front&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; next_distance&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; distance[current]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;unwrap&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;next&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; in&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;graph[current] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; distance[next]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;is_none&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                distance[next]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(next_distance);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(next);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    distance&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;시간 복잡도는 adjacency list 기준 &lt;code&gt;O(V + E)&lt;&#x2F;code&gt;다.&lt;&#x2F;p&gt;
+&lt;p&gt;자주 쓰이는 문제:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Unweighted shortest path&lt;&#x2F;li&gt;
+&lt;li&gt;Connected component 찾기&lt;&#x2F;li&gt;
+&lt;li&gt;Bipartite graph 검사&lt;&#x2F;li&gt;
+&lt;li&gt;Level-order traversal&lt;&#x2F;li&gt;
+&lt;li&gt;Grid에서 최소 이동 횟수 구하기&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;dfs&quot;&gt;DFS&lt;&#x2F;h2&gt;
+&lt;p&gt;DFS(Depth-First Search)는 한 경로를 끝까지 들어갔다가 되돌아온다. Recursion 또는 stack으로
+구현한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; dfs&lt;&#x2F;span&gt;&lt;span&gt;(graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;], current&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;, visited&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;bool&lt;&#x2F;span&gt;&lt;span&gt;]) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    visited[current]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; true&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;next&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; in&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;graph[current] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; !&lt;&#x2F;span&gt;&lt;span&gt;visited[next] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;            dfs&lt;&#x2F;span&gt;&lt;span&gt;(graph, next, visited);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;시간 복잡도는 adjacency list 기준 &lt;code&gt;O(V + E)&lt;&#x2F;code&gt;다.&lt;&#x2F;p&gt;
+&lt;p&gt;자주 쓰이는 문제:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cycle detection&lt;&#x2F;li&gt;
+&lt;li&gt;Connected component 찾기&lt;&#x2F;li&gt;
+&lt;li&gt;Topological sort&lt;&#x2F;li&gt;
+&lt;li&gt;Backtracking&lt;&#x2F;li&gt;
+&lt;li&gt;Tree&#x2F;graph traversal&lt;&#x2F;li&gt;
+&lt;li&gt;Strongly connected component 알고리즘의 기본 재료&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;daepyo-algorijeum&quot;&gt;대표 알고리즘&lt;&#x2F;h2&gt;
+&lt;p&gt;Graph 문제는 보통 &quot;무엇을 구해야 하는가&quot;로 알고리즘을 고른다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;문제&lt;&#x2F;th&gt;&lt;th&gt;대표 알고리즘&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Unweighted shortest path&lt;&#x2F;td&gt;&lt;td&gt;BFS&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Non-negative weighted shortest path&lt;&#x2F;td&gt;&lt;td&gt;Dijkstra&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Negative edge가 있는 shortest path&lt;&#x2F;td&gt;&lt;td&gt;Bellman-Ford&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;All-pairs shortest path&lt;&#x2F;td&gt;&lt;td&gt;Floyd-Warshall&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Minimum spanning tree&lt;&#x2F;td&gt;&lt;td&gt;Kruskal, Prim&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Topological order&lt;&#x2F;td&gt;&lt;td&gt;DFS 또는 Kahn&#x27;s algorithm&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Strongly connected components&lt;&#x2F;td&gt;&lt;td&gt;Kosaraju, Tarjan&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Bipartite check&lt;&#x2F;td&gt;&lt;td&gt;BFS&#x2F;DFS coloring&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Connectivity &#x2F; cycle in undirected graph&lt;&#x2F;td&gt;&lt;td&gt;DFS, Union-Find&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;tree-vs-graph&quot;&gt;Tree vs Graph&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Tree&lt;&#x2F;th&gt;&lt;th&gt;Graph&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Graph의 특수한 형태&lt;&#x2F;td&gt;&lt;td&gt;더 일반적인 관계 모델&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Connected + acyclic&lt;&#x2F;td&gt;&lt;td&gt;connected일 수도 있고 아닐 수도 있음&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;node &lt;code&gt;n&lt;&#x2F;code&gt;개면 edge &lt;code&gt;n - 1&lt;&#x2F;code&gt;개&lt;&#x2F;td&gt;&lt;td&gt;edge 개수 제한이 훨씬 자유로움&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;두 node 사이 path가 정확히 하나&lt;&#x2F;td&gt;&lt;td&gt;path가 0개, 1개, 여러 개일 수 있음&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보통 root&#x2F;parent&#x2F;child가 있음&lt;&#x2F;td&gt;&lt;td&gt;root가 없을 수도 있음&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Tree 문제처럼 보여도 입력이 &quot;parent-child&quot; 관계가 아니라 임의 edge 목록으로 주어진다면
+graph로 보고 cycle, visited 처리를 생각해야 한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;heunhan-silsu&quot;&gt;흔한 실수&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Undirected graph에서 edge를 한 방향만 추가함&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;visited&lt;&#x2F;code&gt; 처리를 queue에 넣을 때 하지 않고 pop할 때 해서 중복 enqueue가 많아짐&lt;&#x2F;li&gt;
+&lt;li&gt;Weighted graph에 BFS를 사용함&lt;&#x2F;li&gt;
+&lt;li&gt;Dijkstra에 negative weight edge를 사용함&lt;&#x2F;li&gt;
+&lt;li&gt;Directed graph와 undirected graph의 cycle detection 방식을 섞음&lt;&#x2F;li&gt;
+&lt;li&gt;Recursion DFS에서 graph가 깊을 때 stack overflow 가능성을 무시함&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;gieoghal-jeom&quot;&gt;기억할 점&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Graph는 관계를 표현하는 자료구조다.&lt;&#x2F;li&gt;
+&lt;li&gt;Sparse graph는 adjacency list, dense graph는 adjacency matrix가 잘 맞는다.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS는 queue, DFS는 stack 또는 recursion을 사용한다.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS는 unweighted shortest path에 적합하다.&lt;&#x2F;li&gt;
+&lt;li&gt;Weighted shortest path는 weight 조건에 따라 Dijkstra, Bellman-Ford 등을 골라야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;Tree는 graph의 특수한 형태다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Graph data structure: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_(abstract_data_type)&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_(abstract_data_type)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Graph theory: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_theory&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_theory&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Adjacency list: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_list&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_list&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Adjacency matrix: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_matrix&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_matrix&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Breadth First Search: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;breadth-first-search.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;breadth-first-search.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Depth First Search: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;depth-first-search.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;depth-first-search.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Dijkstra: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;dijkstra.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;dijkstra.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Minimum Spanning Tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;mst_kruskal.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;mst_kruskal.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

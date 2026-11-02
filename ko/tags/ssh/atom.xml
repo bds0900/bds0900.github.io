@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - ssh</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/ssh/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-17T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/ssh/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>SSH로 GitHub 계정 두 개 동시에 쓰기 (회사 + 개인)</title>
+        <published>2026-06-17T00:00:00+00:00</published>
+        <updated>2026-06-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/commands/ssh-two-github-accounts/"/>
+        <id>https://emptyfridge.dev/ko/commands/ssh-two-github-accounts/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/commands/ssh-two-github-accounts/">&lt;p&gt;GitHub 계정이 두 개(회사용, 개인용)인데 같은 맥에서 쓰려면 HTTPS 방식으로는 한계가 있다.
+macOS Keychain이 &lt;code&gt;github.com&lt;&#x2F;code&gt; 당 토큰을 하나만 저장하기 때문에, 나중에 로그인한 계정의 토큰으로 항상 덮어씌워진다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;remote: Permission to emptyfridge0900&#x2F;repo.git denied to bds0900.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;fatal: unable to access &amp;#39;...&amp;#39;: The requested URL returned error: 403&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;SSH 키를 계정별로 따로 만들고 &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt;로 라우팅하면 이 문제를 깔끔하게 해결할 수 있다.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;jeonce-heureum&quot;&gt;전체 흐름&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;1. 기존 SSH 키 확인&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;2. 파일 이름 규칙 이해&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;3. 회사 계정용 SSH 키 새로 생성 (ssh-keygen)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;4. ~&#x2F;.ssh&#x2F;config 에 Host 별칭 등록&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;5. SSH 에이전트에 키 추가 (ssh-add)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;6. 회사 GitHub 에 공개키 등록&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;7. 연결 테스트 (ssh -T)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;8. 기존 repo의 remote URL 을 SSH 방식으로 변경&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;9. 재부팅 후에도 유지되게 만들기 (AddKeysToAgent)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;10. GitHub CLI(`gh`) 계정도 분리하기 (`GH_CONFIG_DIR`)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;1-gijon-ssh-ki-hwagin&quot;&gt;1. 기존 SSH 키 확인&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ls&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -la&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;id_ed25519&lt;&#x2F;code&gt; 와 &lt;code&gt;id_ed25519.pub&lt;&#x2F;code&gt; 가 있으면 이미 SSH 키가 하나 있는 것이다.
+어느 계정에 연결되어 있는지는 공개키 파일 마지막 줄을 보면 알 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;cat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;id_ed25519.pub&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# ssh-ed25519 AAAA... personal@gmail.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;GitHub 에 실제로 연결되는지도 확인한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -T&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; git@github.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# Hi emptyfridge0900! You&amp;#39;ve successfully authenticated...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;ssh -T&lt;&#x2F;code&gt;는 &lt;strong&gt;터미널(shell) 세션 없이 인증만 테스트&lt;&#x2F;strong&gt;하는 옵션이다 (&lt;code&gt;-T&lt;&#x2F;code&gt; = no pseudo-terminal).&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;2-pail-ireum-gyucig-ihae&quot;&gt;2. 파일 이름 규칙 이해&lt;&#x2F;h2&gt;
+&lt;p&gt;SSH 키 파일 이름은 두 부분으로 구성된다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;부분&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;id_&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;identity&quot;의 약자. SSH가 인증에 쓰는 파일임을 나타내는 표준 접두사&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;ed25519&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;암호화 알고리즘 이름 (Edwards-curve Digital Signature Algorithm 25519). 현재 가장 권장되는 방식&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;키를 생성하면 항상 두 파일이 만들어진다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;id_ed25519&lt;&#x2F;code&gt; — &lt;strong&gt;개인키(private key)&lt;&#x2F;strong&gt;. 절대 외부에 공유하지 않는다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;id_ed25519.pub&lt;&#x2F;code&gt; — &lt;strong&gt;공개키(public key)&lt;&#x2F;strong&gt;. GitHub 에 등록하는 파일.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;3-hoesa-gyejeongyong-ssh-ki-saengseong&quot;&gt;3. 회사 계정용 SSH 키 생성&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh-keygen&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -t&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ed25519&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -C&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;work@company.com&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -f&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;id_ed25519_company&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -N&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;각 옵션 설명:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;옵션&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-t ed25519&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;알고리즘 타입 지정. &lt;code&gt;ed25519&lt;&#x2F;code&gt;가 현재 표준 (기존의 &lt;code&gt;rsa&lt;&#x2F;code&gt; 보다 짧고 빠르고 안전)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-C &quot;work@company.com&quot;&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;Comment. 공개키 파일 맨 끝에 붙는 &lt;strong&gt;라벨&lt;&#x2F;strong&gt;. 어떤 계정 키인지 구분하는 용도. 이메일일 필요는 없지만 관례적으로 사용&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-f ~&#x2F;.ssh&#x2F;id_ed25519_company&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;저장할 파일 경로 지정. 기본값은 &lt;code&gt;~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;code&gt; 인데, 이미 개인용 키가 거기 있으니 이름을 다르게 준다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-N &quot;&quot;&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;패스프레이즈(암호)를 빈 값으로 설정. 입력창이 뜨지 않고 바로 생성된다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;실행 후 두 파일이 생긴다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;~&#x2F;.ssh&#x2F;id_ed25519_company      # 개인키&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;~&#x2F;.ssh&#x2F;id_ed25519_company.pub  # 공개키&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;4-ssh-config-seoljeong&quot;&gt;4. &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 설정&lt;&#x2F;h2&gt;
+&lt;p&gt;SSH 클라이언트는 연결 시 &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 를 읽어서 어떤 키를 쓸지 결정한다.
+계정별로 &lt;code&gt;Host&lt;&#x2F;code&gt; 별칭을 만들어주면 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;# 개인 GitHub (emptyfridge0900)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Host github-personal&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  HostName github.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  User git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  IdentityFile ~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  AddKeysToAgent yes&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;# 회사 GitHub (bds0900)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Host github-company&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  HostName github.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  User git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  IdentityFile ~&#x2F;.ssh&#x2F;id_ed25519_company&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  AddKeysToAgent yes&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;각 지시어 설명:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;지시어&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;Host github-personal&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;이 블록에 붙이는 &lt;strong&gt;별칭&lt;&#x2F;strong&gt;. &lt;code&gt;git@github-personal:...&lt;&#x2F;code&gt; 처럼 쓰면 이 설정이 적용됨&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;HostName github.com&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;실제 접속할 서버 주소. 별칭이 달라도 실제로는 &lt;code&gt;github.com&lt;&#x2F;code&gt; 에 연결&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;User git&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;SSH 로그인할 유저명. GitHub 은 항상 &lt;code&gt;git&lt;&#x2F;code&gt; 유저를 사용 (계정 구분은 키로 함)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;IdentityFile&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;이 별칭으로 접속할 때 사용할 개인키 경로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;처음 사용 시 자동으로 SSH 에이전트에 키를 등록. 재부팅 후에도 &lt;code&gt;ssh-add&lt;&#x2F;code&gt; 를 수동으로 안 해도 됨&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;5-ssh-eijeonteue-ki-cuga&quot;&gt;5. SSH 에이전트에 키 추가&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh-add&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh-add&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;id_ed25519_company&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;SSH 에이전트(&lt;code&gt;ssh-agent&lt;&#x2F;code&gt;)&lt;&#x2F;strong&gt; 란 개인키를 메모리에 올려두고 필요할 때 꺼내주는 백그라운드 프로세스다.
+키를 에이전트에 등록하면 매번 키 파일 경로를 지정하지 않아도 된다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;ssh-add&lt;&#x2F;code&gt; 주요 옵션:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;옵션&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;등록할 개인키 파일 경로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-l&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;현재 에이전트에 등록된 키 목록 확인 (list)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-d ~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;에이전트에서 특정 키 제거 (delete)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;-D&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;에이전트의 모든 키 제거&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;등록 확인:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh-add&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -l&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 256 SHA256:xxx personal@gmail.com (ED25519)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 256 SHA256:yyy work@company.com (ED25519)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;ssh-add&lt;&#x2F;code&gt; 로 추가한 키는 재부팅하면 사라진다. &lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt; 를 config 에 넣으면 첫 사용 시 자동 재등록된다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;6-hoesa-github-e-gonggaeki-deungrog&quot;&gt;6. 회사 GitHub 에 공개키 등록&lt;&#x2F;h2&gt;
+&lt;p&gt;공개키를 클립보드에 복사한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;cat&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ~&#x2F;.ssh&#x2F;id_ed25519_company.pub&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; pbcopy&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;GitHub → &lt;strong&gt;Settings&lt;&#x2F;strong&gt; → &lt;strong&gt;SSH and GPG keys&lt;&#x2F;strong&gt; → &lt;strong&gt;New SSH key&lt;&#x2F;strong&gt; 에서 붙여넣기 후 저장.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;7-yeongyeol-teseuteu&quot;&gt;7. 연결 테스트&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -T&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; git@github-personal&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# Hi emptyfridge0900! You&amp;#39;ve successfully authenticated...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -T&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; git@github-company&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# Hi bds0900! You&amp;#39;ve successfully authenticated...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;github-personal&lt;&#x2F;code&gt; &#x2F; &lt;code&gt;github-company&lt;&#x2F;code&gt; 는 &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 에서 만든 별칭이다.
+실제로는 둘 다 &lt;code&gt;github.com&lt;&#x2F;code&gt; 에 접속하지만, 서로 다른 키를 쓴다.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;8-remote-url-byeongyeonghagi&quot;&gt;8. Remote URL 변경하기&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;gijon-reporeul-httpseseo-sshro-baggugi&quot;&gt;기존 repo를 HTTPS에서 SSH로 바꾸기&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; remote set-url origin git@github-personal:emptyfridge0900&#x2F;repo-name.git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;git remote -v&lt;&#x2F;code&gt; 로 확인:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;origin  git@github-personal:emptyfridge0900&#x2F;repo-name.git (fetch)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;origin  git@github-personal:emptyfridge0900&#x2F;repo-name.git (push)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;hoesa-repo-seoljeong&quot;&gt;회사 repo 설정&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; remote set-url origin git@github-company:bds0900&#x2F;repo-name.git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;sae-reporeul-clonehal-ddae&quot;&gt;새 repo를 clone할 때&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 개인 계정 repo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; clone git@github-personal:emptyfridge0900&#x2F;repo-name.git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 회사 계정 repo&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; clone git@github-company:bds0900&#x2F;repo-name.git&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;URL 구조는 &lt;code&gt;git@&amp;lt;Host별칭&amp;gt;:&amp;lt;GitHub유저명&amp;gt;&#x2F;&amp;lt;저장소이름&amp;gt;.git&lt;&#x2F;code&gt;이다.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;9-jaebuting-huedo-yujidoege-mandeulgi&quot;&gt;9. 재부팅 후에도 유지되게 만들기&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;ssh-add&lt;&#x2F;code&gt; 로 에이전트에 등록한 키는 &lt;strong&gt;재부팅하면 사라진다&lt;&#x2F;strong&gt;. 터미널 세션이 닫히면 메모리에서 내려가기 때문이다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 에 &lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt; 를 넣으면 해결된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Host github-personal&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  AddKeysToAgent yes   # ← 이 줄&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;Host github-company&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  AddKeysToAgent yes   # ← 이 줄&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt; 가 하는 일:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;재부팅 후 처음으로 &lt;code&gt;git push&lt;&#x2F;code&gt; 나 &lt;code&gt;git pull&lt;&#x2F;code&gt; 을 실행하면 SSH가 &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 를 읽는다.&lt;&#x2F;li&gt;
+&lt;li&gt;해당 Host 에 &lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt; 가 있으면, SSH가 &lt;strong&gt;자동으로 &lt;code&gt;ssh-add&lt;&#x2F;code&gt; 를 대신 실행&lt;&#x2F;strong&gt;해서 에이전트에 키를 올린다.&lt;&#x2F;li&gt;
+&lt;li&gt;그 이후부터는 같은 세션에서 다시 물어보지 않는다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;즉, 재부팅 후 수동으로 &lt;code&gt;ssh-add&lt;&#x2F;code&gt; 를 칠 필요가 없다. 첫 git 명령 한 번이면 자동으로 로드된다.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;macOS 에서 &lt;code&gt;~&#x2F;.ssh&#x2F;config&lt;&#x2F;code&gt; 파일 자체는 영구적이다. 재부팅해도 설정은 그대로 남는다.
+휘발되는 건 &lt;strong&gt;에이전트 메모리(ssh-add 결과)&lt;&#x2F;strong&gt; 뿐이고, &lt;code&gt;AddKeysToAgent yes&lt;&#x2F;code&gt; 가 그걸 자동으로 채워준다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;coejong-guseong-yoyag&quot;&gt;최종 구성 요약&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;계정&lt;&#x2F;th&gt;&lt;th&gt;Host 별칭&lt;&#x2F;th&gt;&lt;th&gt;키 파일&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;emptyfridge0900&lt;&#x2F;code&gt; (개인)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;git@github-personal&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;~&#x2F;.ssh&#x2F;id_ed25519&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;bds0900&lt;&#x2F;code&gt; (회사)&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;git@github-company&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;~&#x2F;.ssh&#x2F;id_ed25519_company&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;이제 &lt;code&gt;git push&lt;&#x2F;code&gt; &#x2F; &lt;code&gt;git pull&lt;&#x2F;code&gt; 할 때 GitHub 계정을 의식하지 않아도 된다.
+repo의 remote URL에 붙인 Host 별칭이 알아서 맞는 키를 골라 쓴다.&lt;&#x2F;p&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;cuga-gineung&quot;&gt;추가 기능&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;10-github-cli-gh-gyejeongdo-bunrihagi&quot;&gt;10. GitHub CLI(&lt;code&gt;gh&lt;&#x2F;code&gt;) 계정도 분리하기&lt;&#x2F;h2&gt;
+&lt;p&gt;여기까지 설정하면 &lt;code&gt;git push&lt;&#x2F;code&gt; &#x2F; &lt;code&gt;git pull&lt;&#x2F;code&gt; 은 계정별 SSH 키로 잘 분리된다.
+하지만 &lt;code&gt;gh issue create&lt;&#x2F;code&gt;, &lt;code&gt;gh pr create&lt;&#x2F;code&gt; 같은 GitHub CLI 명령은 SSH 키가 아니라 GitHub API 토큰을 쓴다.
+즉, remote URL 이 &lt;code&gt;git@github-personal:...&lt;&#x2F;code&gt; 이어도 &lt;code&gt;gh&lt;&#x2F;code&gt; 가 회사 계정 토큰으로 로그인되어 있으면 개인 repo 이슈 생성이 실패할 수 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;처음 떠오르는 해결책은 &lt;code&gt;gh auth switch&lt;&#x2F;code&gt; 이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; auth switch&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -u&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; emptyfridge0900&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; issue create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; emptyfridge0900&#x2F;repo-name&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; auth switch&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -u&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; bds0900&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; issue create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; bds0900&#x2F;repo-name&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;하지만 매번 계정을 바꾸는 방식은 귀찮고 실수하기 쉽다.
+더 나은 방법은 &lt;code&gt;gh&lt;&#x2F;code&gt; 설정 디렉터리를 계정별로 나누는 것이다.
+&lt;code&gt;gh&lt;&#x2F;code&gt; 는 &lt;code&gt;GH_CONFIG_DIR&lt;&#x2F;code&gt; 환경변수로 설정 저장 위치를 바꿀 수 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;쉘 설정 파일(&lt;code&gt;~&#x2F;.zshrc&lt;&#x2F;code&gt; 등)에 alias 를 추가한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;alias&lt;&#x2F;span&gt;&lt;span&gt; ghp&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;#39;GH_CONFIG_DIR=$HOME&#x2F;.config&#x2F;gh-personal gh&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;alias&lt;&#x2F;span&gt;&lt;span&gt; ghc&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;#39;GH_CONFIG_DIR=$HOME&#x2F;.config&#x2F;gh-company gh&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그 다음 각 alias 로 한 번씩만 로그인한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;GH_CONFIG_DIR&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;$HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;.config&#x2F;gh-personal&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; auth login&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -h&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; github.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --git-protocol&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ssh&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;GH_CONFIG_DIR&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span&gt;$HOME&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;.config&#x2F;gh-company&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; gh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; auth login&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -h&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; github.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --git-protocol&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; ssh&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이후부터는 계정을 전환하지 않고 명령어만 구분해서 쓰면 된다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 개인 계정으로 개인 repo 이슈 생성&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ghp&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; issue create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; emptyfridge0900&#x2F;repo-name&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 회사 계정으로 회사 repo 이슈 생성&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ghc&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; issue create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -R&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; bds0900&#x2F;repo-name&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;정리하면 역할이 이렇게 나뉜다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;도구&lt;&#x2F;th&gt;&lt;th&gt;계정 분리 방법&lt;&#x2F;th&gt;&lt;th&gt;예시&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;git&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;SSH Host 별칭&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;git@github-personal:emptyfridge0900&#x2F;repo-name.git&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;gh&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;GH_CONFIG_DIR&lt;&#x2F;code&gt; 별도 설정&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;ghp issue create -R emptyfridge0900&#x2F;repo-name&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;이렇게 하면 &lt;code&gt;git&lt;&#x2F;code&gt; 도 &lt;code&gt;gh&lt;&#x2F;code&gt; 도 계정 전환 없이 사용할 수 있다.
+개인 작업은 &lt;code&gt;github-personal&lt;&#x2F;code&gt; + &lt;code&gt;ghp&lt;&#x2F;code&gt;, 회사 작업은 &lt;code&gt;github-company&lt;&#x2F;code&gt; + &lt;code&gt;ghc&lt;&#x2F;code&gt; 로 고정하면 된다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

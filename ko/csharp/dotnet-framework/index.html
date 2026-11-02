@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | CLI? CIL? CLR?
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            CLI? CIL? CLR?
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-09">July 09, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>624 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>인터뷰 준비를 하면서 예상 질문들을 찾아보면 꼭 이런 질문들이 나온다.</p>
+<ul>
+<li>.NET이란 무엇인가?</li>
+<li>CIL은 무엇인가?</li>
+<li>CLR은 무엇인가?</li>
+</ul>
+<p>그동안 이런 질문들은 대충 넘기고 문법이나 아키텍처 같은 것에만 집중했는데, 오늘은 잠깐 삼천포로 빠져 보았다.</p>
+<p>이런 용어들의 기원을 따라가다 보면 끝이 없다. CIL을 보면 bytecode가 나오고, machine code가 나오고, compiled code와 interpreted code가 나오고, JIT, runtime, cross-platform 같은 말이 줄줄이 따라 나온다.</p>
+<h3 id="common-intermediate-language">Common Intermediate Language</h3>
+<p>가장 낮은 단계의 코드는 machine code다. CPU가 직접 실행할 수 있는 코드다.</p>
+<p>machine code는 사람이 읽기 어렵기 때문에, 사람이 조금 더 이해할 수 있는 명령어와 machine code를 대응시킨 것이 assembly라고 볼 수 있다. CPU마다 지원하는 machine code가 다르고, 그에 맞는 assembly도 다르다.</p>
+<p>assembly로 직접 개발하기에는 생산성이 낮기 때문에 compiler가 등장했다. C 같은 high-level language로 코드를 작성하면 compiler가 target machine에서 실행 가능한 machine code로 변환해 준다.</p>
+<p>compiled language와 interpreted language의 구분은 단순히 "개발이 어렵다/쉽다"로 나누기에는 훨씬 복잡하다. 여기서 중요한 점은 .NET이 source code를 곧바로 특정 CPU용 machine code로만 compile하지 않는다는 것이다.</p>
+<p>오늘의 주제인 Intermediate Language, 즉 중간 언어는 말 그대로 중간 단계에 있는 언어다.</p>
+<p>C#, F#, VB 같은 .NET 언어를 compile하면 보통 assembly(<code>.dll</code>/<code>.exe</code>)가 나오고, 그 안에는 metadata와 Intermediate Language가 들어간다. .NET에서는 이 IL을 CIL(Common Intermediate Language)이라고도 부른다.</p>
+<p>CIL은 실행 시 CLR이 대부분 Just-In-Time(JIT) compile을 통해 machine code로 바꿔 실행한다. 따라서 ".NET은 compile된 CIL을 그냥 interpret한다"라고만 말하면 정확하지 않다. 현대 .NET에는 JIT뿐 아니라 ReadyToRun, Native AOT 같은 ahead-of-time 옵션도 있다.</p>
+<p>.NET에서는 CIL이라고 부르고, Java에서는 비슷한 중간 표현을 보통 bytecode라고 부른다.</p>
+<h3 id="common-language-runtime">Common Language Runtime</h3>
+<p>이제 CIL이 무엇인지 대략 알았다. 그렇다면 CLR은 무엇일까?</p>
+<p>간단히 말하면 CLR은 .NET runtime environment다. 이미 한 번 compile된 중간 언어(CIL)를 실행 시점에 machine code로 바꾸고, 실행 과정 전체를 관리하는 역할을 한다고 보면 된다.</p>
+<p>자세한 내용은 <a rel="external" href="https://en.wikipedia.org/wiki/Just-in-time_compilation">Just In Time</a>이나 <a rel="external" href="https://en.wikipedia.org/wiki/Managed_code">Managed Code</a>를 읽어보는 것이 좋다.
+JIT 은 컴파일 하는 방식이고 Managed Code는 <strong>실행이 CLR에 의해 관리되는 코드</strong> 를 뜻한다.</p>
+<p>C#, VB, F# 같은 .NET 언어로 작성한 코드를 컴파일하면 CIL이 나오고, CLR이 그걸 JIT으로 머신코드로 바꿔서 실행한다 — 이 실행 과정 전체를 CLR이 "관리"한다는 의미다.</p>
+<p>CLR이 managed code에 제공하는 것들:</p>
+<ul>
+<li><strong>자동 메모리 관리 (GC)</strong>: 더 이상 사용하지 않는 객체를 자동으로 해제</li>
+<li><strong>타입 안전성</strong>: 잘못된 캐스팅, 잘못된 메서드 호출, 메모리 크기 오류 방지</li>
+<li><strong>보안 경계</strong></li>
+<li><strong>예외 처리</strong></li>
+</ul>
+<p>C나 C++ 같은 unmanaged 코드는 이것들을 프로그래머가 직접 다 챙겨야 한다. Managed code는 그 부담을 CLR이 대신 져준다.</p>
+<p>CIL 자체가 managed code이기도 하지만, managed code는 "중간 언어"라는 형식의 이름이 아니라 "CLR이 관리하는 실행 환경 전체"를 가리키는 개념이다.</p>
+<h3 id="common-language-infrastructure">Common Language Infrastructure</h3>
+<p>그럼 CIL은 compile된 중간 언어이고, CLR은 그 중간 언어를 실행해 주는 runtime이라면, CLI는 무엇일까?</p>
+<p>CLI(Common Language Infrastructure)를 직역하면 공통 언어 기반 시설 정도가 되는데, 한국어로는 감이 잘 오지 않는다. 간단히 말하면 기술 명세서다. "runtime, type system, metadata, 중간 언어를 이런 규칙에 맞게 구현하세요"라고 정해 놓은 표준이라고 보면 된다.</p>
+<p>CLI의 runtime 영역을 표준 문서에서는 VES(Virtual Execution System)라고 부르고, Microsoft의 구현체가 CLR이다. 현대 .NET에서는 CoreCLR이 그 역할을 한다.</p>
+<p>.NET은 runtime만 뜻하지 않는다. runtime, base libraries, SDK, compilers, app stack(ASP.NET Core, Windows Forms, WPF 등)을 포함한 개발 플랫폼이다. CLR/CoreCLR은 그중 실행을 담당하는 핵심 runtime이다.</p>
+<h3 id="3julyoyag">3줄요약</h3>
+<ol>
+<li>아... 공부하기 싫다</li>
+<li>정리해야 할게 너무 많다. 그냥 아래 링크를 따라가 읽자</li>
+<li>면접을 10번 넘게 봤지만, 어차피 이런 건 잘 안 물어본다.</li>
+</ol>
+<h3 id="ref">Ref</h3>
+<p>https://blog.naver.com/ya3344/223125448918
+https://en.wikipedia.org/wiki/Common_Intermediate_Language
+https://en.wikipedia.org/wiki/Common_Language_Runtime
+https://www.sysnet.pe.kr/2/0/1697
+https://blog.naver.com/leusin/223697119291
+https://namu.wiki/w/%EA%B8%B0%EA%B3%84%EC%96%B4
+https://learn.microsoft.com/en-us/dotnet/core/introduction
+https://learn.microsoft.com/en-us/dotnet/standard/managed-code
+https://learn.microsoft.com/en-us/dotnet/standard/clr
+https://learn.microsoft.com/en-us/dotnet/standard/assembly/
+https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/language-specification/introduction
+https://learn.microsoft.com/en-us/dotnet/core/deploying/native-aot/</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp&#x2F;jquery-post-request&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Razor Page에서 Ajax로 Post 요청하기
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp&#x2F;identity-openiddict-claims-authorization&#x2F;">
+              ASP.NET Core Identity와 OpenIddict, Claims 인증 구조 이해하기<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

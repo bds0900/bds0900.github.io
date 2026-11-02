@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Fully Understanding T: Send + Sync + &#x27;static
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Fully Understanding T: Send + Sync + &#x27;static
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-01">July 01, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>10 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1806 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>When working with threads or async tasks in Rust, this bound appears often.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Send</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Sync</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span></span></code></pre>
+<p>At first glance, it can look like it means "<code>T</code> must live until the program ends and be sent to another thread." But the actual meaning is different.</p>
+<p>In one sentence:</p>
+<blockquote>
+<p><code>T: Send + Sync + 'static</code> means ownership of <code>T</code> can be safely moved to another thread, multiple threads can safely access <code>T</code> through shared references, and <code>T</code> does not contain short-lived references.</p>
+</blockquote>
+<p><code>Send</code>, <code>Sync</code>, and <code>'static</code> are independent conditions. Let's separate them one by one.</p>
+<h2 id="send-ownership-can-be-safely-moved-to-another-thread"><code>Send</code>: ownership can be safely moved to another thread</h2>
+<p><code>Send</code> is a marker trait indicating that a value can be safely moved from one thread to another.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub unsafe</span><span> auto</span><span style="color: #FF8F40;"> trait</span><span style="color: #59C2FF;"> Send</span><span> {}</span></span></code></pre>
+<p>Most common types automatically become <code>Send</code> if all of their components are <code>Send</code>. For example, <code>String</code>, <code>Vec&lt;T&gt;</code>, and <code>Box&lt;T&gt;</code> can move to another thread when their inner types satisfy the condition.</p>
+<p>On the other hand, <code>Rc&lt;T&gt;</code> is not <code>Send</code>. Its reference count is not updated atomically, so using it across multiple threads is unsafe.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">rc</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Rc</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> value</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>));</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        println!</span><span>(</span><span style="color: #AAD94C;">&quot;{value}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>    });</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>This code does not compile. The <code>move</code> closure tries to move ownership of <code>Rc&lt;String&gt;</code> into a new thread, but <code>Rc&lt;String&gt;: Send</code> is not true.</p>
+<h2 id="sync-shared-references-can-be-safely-accessed-by-multiple-threads"><code>Sync</code>: shared references can be safely accessed by multiple threads</h2>
+<p><code>Sync</code> is a marker trait indicating that multiple threads can safely use shared references to one value.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub unsafe</span><span> auto</span><span style="color: #FF8F40;"> trait</span><span style="color: #59C2FF;"> Sync</span><span> {}</span></span></code></pre>
+<p>The Rust standard library defines the relationship like this:</p>
+<blockquote>
+<p><code>T</code> is <code>Sync</code> if and only if <code>&amp;T</code> is <code>Send</code>.</p>
+</blockquote>
+<p>In other words, if it is safe to send <code>&amp;T</code> to another thread, then <code>T: Sync</code>. <code>Sync</code> answers not "can ownership move?" but "can shared references be used by multiple threads?"</p>
+<p><code>Cell&lt;T&gt;</code> shows the difference between the two conditions well. <code>Cell&lt;i32&gt;</code> is <code>Send</code> because its whole ownership can move to another thread, but it is not <code>Sync</code> because shared references can mutate the inner value without synchronization.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">cell</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Cell</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> require_send</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Send</span><span>&gt;() {}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> require_sync</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Sync</span><span>&gt;() {}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    require_send</span><span style="color: #F29668;">::</span><span>&lt;</span><span style="color: #59C2FF;">Cell</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;();</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    require_sync</span><span style="color: #F29668;">::</span><span>&lt;</span><span style="color: #59C2FF;">Cell</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;();</span><span style="color: #5A6673;font-style: italic;"> // compile error: Cell&lt;i32&gt; is not Sync.</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>When a value needs to be shared across multiple threads, <code>Arc&lt;T&gt;</code> is usually used.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">sync</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Arc</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> value</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> cloned</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">clone</span><span>(</span><span style="color: #F29668;">&amp;</span><span>value);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> handle</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        println!</span><span>(</span><span style="color: #AAD94C;">&quot;{cloned}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>    });</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    handle</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">join</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>However, <code>Arc&lt;T&gt;</code> does not automatically make the inner value thread-safe. <code>Arc</code> only manages the reference count atomically. For <code>Arc&lt;T&gt;</code> to move safely between threads, the inner <code>T</code> must also satisfy <code>Send + Sync</code>.</p>
+<p>If the shared value must be mutated, you also need a tool that synchronizes access itself, such as <code>Arc&lt;Mutex&lt;T&gt;&gt;</code>, <code>Arc&lt;RwLock&lt;T&gt;&gt;</code>, or atomic types.</p>
+<p>The three conditions can appear together in a generic API that sends a shared value to a background thread.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">fmt</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Debug</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">sync</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Arc</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">thread</span><span style="color: #F29668;">::</span><span>{</span><span style="color: #39BAE6;font-style: italic;">self</span><span>,</span><span style="color: #59C2FF;"> JoinHandle</span><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> print_in_background</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;(value</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Arc</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> JoinHandle</span><span>&lt;()&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Debug</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Send</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Sync</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span style="color: #FFB454;"> println!</span><span>(</span><span style="color: #AAD94C;">&quot;{value:?}&quot;</span><span>))</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<ul>
+<li><code>Send</code>: ownership of <code>Arc&lt;T&gt;</code> must be movable into the new thread.</li>
+<li><code>Sync</code>: multiple <code>Arc</code>s must be able to access the same <code>T</code> through shared references.</li>
+<li><code>'static</code>: <code>T</code> must not contain short-lived references into the caller's stack.</li>
+</ul>
+<h2 id="static-it-does-not-mean-the-value-must-live-forever"><code>'static</code>: it does not mean the value must live forever</h2>
+<p><code>'static</code> appears differently in two positions.</p>
+<p>The first is the lifetime of a reference itself.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> message</span><span style="color: #F29668;">: &amp;</span><span>&#39;</span><span style="color: #59C2FF;">static str</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span>;</span></span></code></pre>
+<p>String literals are stored in the program binary, so this reference is valid for the entire execution of the program.</p>
+<p>The second is a lifetime bound attached to a type.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span> &#39;</span><span style="color: #59C2FF;">static</span></span></code></pre>
+<p>This expression does not mean <code>T</code> itself must live until the program ends. It means all references inside <code>T</code> must not be shorter than <code>'static</code>. More practically, it means <code>T</code> must not contain short-lived borrowed values.</p>
+<p>Owned values usually satisfy this condition naturally.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> accept_static</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>&gt;(value</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    drop</span><span>(value);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    accept_static</span><span>(message);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>String</code> owns its data, so <code>String: 'static</code>. But the function above drops the value immediately. Therefore, interpreting <code>T: 'static</code> as "the value itself lives forever" is wrong.</p>
+<p>The following type contains a short-lived reference, so it does not satisfy the <code>'static</code> condition.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> accept_static</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>&gt;(_</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>) {}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> borrowed</span><span style="color: #F29668;"> = &amp;</span><span>message;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">    accept_static</span><span>(borrowed);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The type of <code>borrowed</code> is <code>&amp;String</code> tied to the lifetime of the local variable <code>message</code>. This reference is not <code>'static</code>.</p>
+<h2 id="why-does-thread-spawn-show-only-send-static">Why does <code>thread::spawn</code> show only <code>Send + 'static</code>?</h2>
+<p>Simplified, the signature of <code>std::thread::spawn</code> looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> spawn</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>,</span><span style="color: #59C2FF;"> T</span><span>&gt;(f</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> JoinHandle</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> FnOnce</span><span>()</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> T</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Send</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Send</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span></code></pre>
+<p>A new thread may run longer than the function that called <code>spawn</code>. If the <code>JoinHandle</code> is dropped, the thread may detach and continue running. The compiler cannot know when the new thread will end, so it cannot allow the closure to leave with short references to local variables. That is why <code>'static</code> is required.</p>
+<p>The closure itself moves into the new thread. Therefore, values captured by the closure must also be safely movable. That is why <code>Send</code> is required.</p>
+<p>The return value <code>T</code> has the same bounds. <code>T</code> is created in the new thread, stored in <code>JoinHandle&lt;T&gt;</code>, and then delivered to the thread that calls <code>join</code>, so it must be <code>Send</code>. A normal thread and <code>JoinHandle&lt;T&gt;</code> can move outside the scope where they were created, so <code>T: 'static</code> ensures the return value does not contain short references tied to that scope.</p>
+<p>This bound is not what prevents returning a reference to a local variable inside the new thread. Such a reference becomes invalid when the function ends, so the borrow checker rejects it regardless of the <code>'static</code> bound. In contrast, <code>ScopedJoinHandle&lt;'scope, T&gt;</code> cannot leave its scope, so it only requires <code>T: 'scope</code> and can return values borrowed from the outer scope.</p>
+<p>There is no <code>Sync</code> here. If a value is only <strong>moved</strong> into one new thread, multiple threads are not simultaneously accessing it through shared references. For example, <code>Cell&lt;i32&gt;</code> is not <code>Sync</code>, but the following code is valid because the whole ownership moves into the new thread.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">cell</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Cell</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> value</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Cell</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #D2A6FF;">42</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span>        value</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set</span><span>(</span><span style="color: #D2A6FF;">43</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        assert_eq!</span><span>(value</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">get</span><span>(),</span><span style="color: #D2A6FF;"> 43</span><span>);</span></span>
+<span class="giallo-l"><span>    })</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">join</span><span>()</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>So do not add <code>Sync</code> to every generic type just because threads are involved. It is needed only when multiple threads actually share the same value.</p>
+<h2 id="move-does-not-make-a-borrowed-value-static"><code>move</code> does not make a borrowed value <code>'static</code></h2>
+<p>This is a common failure case.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> borrowed</span><span style="color: #F29668;"> = &amp;</span><span>message;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        println!</span><span>(</span><span style="color: #AAD94C;">&quot;{borrowed}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>    });</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>move</code> makes the closure capture <strong>variables</strong> by value. But the value captured here is not <code>String</code>; it is <code>&amp;String</code>. Moving a reference does not extend the lifetime of the data it points to.</p>
+<p>Move the owned <code>String</code> itself into the closure to fix it.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> handle</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        println!</span><span>(</span><span style="color: #AAD94C;">&quot;{message}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>    });</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    handle</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">join</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Now the closure owns the data directly. <code>String</code> satisfies <code>Send + 'static</code>, so there is no risk that the reference becomes invalid no matter how long the new thread runs.</p>
+<h2 id="use-thread-scope-when-borrowed-values-are-needed">Use <code>thread::scope</code> when borrowed values are needed</h2>
+<p>You do not always need to clone data or wrap it in <code>Arc</code>. If you can guarantee that the thread ends within a specific scope, you can use <code>std::thread::scope</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> main</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">scope</span><span>(</span><span style="color: #F29668;">|</span><span>scope</span><span style="color: #F29668;">|</span><span> {</span></span>
+<span class="giallo-l"><span>        scope</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #F29668;">||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">            println!</span><span>(</span><span style="color: #AAD94C;">&quot;{message}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span>        });</span></span>
+<span class="giallo-l"><span>    });</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>thread::scope</code> joins all threads created inside it before leaving the scope. Therefore, the new thread cannot outlive <code>message</code>, and the closure can borrow a non-<code>'static</code> reference.</p>
+<p>The thread boundary still exists, so the <code>Send</code> requirement needed for safe cross-thread movement does not disappear. What disappears is the <code>'static</code> requirement needed for independently running threads.</p>
+<h2 id="the-three-conditions-are-independent">The three conditions are independent</h2>
+<p>This table helps separate them.</p>
+<table><thead><tr><th>Type</th><th style="text-align: right"><code>Send</code></th><th style="text-align: right"><code>Sync</code></th><th style="text-align: right"><code>'static</code></th><th>Reason</th></tr></thead><tbody>
+<tr><td><code>String</code></td><td style="text-align: right">Yes</td><td style="text-align: right">Yes</td><td style="text-align: right">Yes</td><td>It owns data and can be safely moved or shared.</td></tr>
+<tr><td><code>Rc&lt;String&gt;</code></td><td style="text-align: right">No</td><td style="text-align: right">No</td><td style="text-align: right">Yes</td><td>It owns data, but the reference count is not thread-safe.</td></tr>
+<tr><td><code>Cell&lt;i32&gt;</code></td><td style="text-align: right">Yes</td><td style="text-align: right">No</td><td style="text-align: right">Yes</td><td>Ownership can move, but mutation through shared references is not synchronized.</td></tr>
+<tr><td><code>&amp;String</code> pointing to a local <code>String</code></td><td style="text-align: right">Yes</td><td style="text-align: right">Yes</td><td style="text-align: right">No</td><td>The referenced value is safe to share, but the reference is tied to a local value's lifetime.</td></tr>
+<tr><td><code>&amp;'static str</code></td><td style="text-align: right">Yes</td><td style="text-align: right">Yes</td><td style="text-align: right">Yes</td><td>The referenced data is valid for the whole program execution.</td></tr>
+</tbody></table>
+<p>An owned type is not necessarily <code>Send</code> or <code>Sync</code>, and a thread-safe reference is not necessarily <code>'static</code>.</p>
+<h2 id="the-same-principle-applies-in-async-code">The same principle applies in async code</h2>
+<p><code>tokio::spawn</code> on a multi-threaded runtime also generally requires <code>Send + 'static</code> on the future.</p>
+<ul>
+<li><code>Send</code>: the runtime may move the future to another worker thread.</li>
+<li><code>'static</code>: the spawned task may run longer than the current function.</li>
+</ul>
+<p><code>spawn_local</code> runs the task only on the current local executor, so it does not require <code>Send</code>. But that does not mean the task can freely borrow the caller's stack, so a <code>'static</code> bound generally remains.</p>
+<p><code>tokio::spawn</code> also does not require the future itself to be <code>Sync</code>. However, if the future holds <code>&amp;T</code> across an <code>.await</code> point and the runtime may move that future to another thread, <code>T: Sync</code> may become indirectly required so that the reference is <code>Send</code>.</p>
+<h2 id="when-should-these-bounds-be-added-directly">When should these bounds be added directly?</h2>
+<p>Habitually adding <code>Send + Sync + 'static</code> to generic types unnecessarily restricts the API. Add them only when the actual behavior requires them.</p>
+<p>Common cases that require <code>Send</code>:</p>
+<ul>
+<li>Moving a value to another OS thread</li>
+<li>A multi-threaded async executor moving work between worker threads</li>
+<li>Passing a value through a thread-safe queue or channel</li>
+</ul>
+<p>Common cases that require <code>Sync</code>:</p>
+<ul>
+<li>Multiple threads use <code>&amp;T</code> at the same time</li>
+<li>The same value is shared across multiple threads or tasks with <code>Arc&lt;T&gt;</code></li>
+<li>One instance is shared by concurrent callers, such as server state, handlers, or callbacks</li>
+</ul>
+<p>Common cases that require <code>'static</code>:</p>
+<ul>
+<li>Work may outlive the current function call</li>
+<li>A value is stored in a long-lived object or global registry</li>
+<li>A callback or task is stored for later execution</li>
+</ul>
+<p>You can understand <code>Send + 'static</code> as: "send work to another thread that can run independently of the caller's lifetime." If <code>Sync</code> is added too, the contract also says the value can be accessed through shared references by multiple threads.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">thread</span><span style="color: #F29668;">::</span><span>{</span><span style="color: #39BAE6;font-style: italic;">self</span><span>,</span><span style="color: #59C2FF;"> JoinHandle</span><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> run_in_background</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;(value</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> JoinHandle</span><span>&lt;()&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Send</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span style="color: #FFB454;"> drop</span><span>(value))</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>On the other hand, if a function uses a value synchronously and returns, these bounds are usually unnecessary. The function can safely work with short references.</p>
+<h2 id="decision-order-when-a-compiler-error-appears">Decision order when a compiler error appears</h2>
+<p>When an error related to <code>Send + Sync + 'static</code> appears, do not blindly add bounds. Check in this order.</p>
+<ol>
+<li><strong>Does the work really need to outlive the caller?</strong> If not, run it directly or consider lifetime-limited APIs such as <code>thread::scope</code>.</li>
+<li><strong>Can the closure take owned values instead of references?</strong> Move values with <code>move</code>, or clone only the necessary pieces.</li>
+<li><strong>Do multiple tasks need to share data?</strong> If so, consider concurrency tools such as <code>Arc</code>, <code>Mutex</code>, or channels.</li>
+<li><strong>Why is the type not <code>Send</code>?</strong> Check whether it contains values that must not cross thread boundaries, such as <code>Rc</code>, thread-local values, or lock guards.</li>
+<li><strong>Does the type really need to be <code>Sync</code>?</strong> If ownership only moves to one thread, <code>Sync</code> may not be needed. If sharing is needed, check for unsynchronized interior mutability.</li>
+<li><strong>Is multi-threaded execution really required?</strong> If a single-thread local executor can be used, you may avoid <code>Send</code> and <code>Sync</code> requirements.</li>
+</ol>
+<p><code>T: Send + Sync + 'static</code> is not an incantation to appease the compiler. It is a contract that tells the caller <strong>where ownership of the value can move</strong>, <strong>how the value can be shared</strong>, and <strong>how long it can be stored</strong>.</p>
+<h2 id="references">References</h2>
+<ul>
+<li><a rel="external" href="https://doc.rust-lang.org/std/marker/trait.Send.html">Rust standard library: <code>Send</code></a></li>
+<li><a rel="external" href="https://doc.rust-lang.org/std/marker/trait.Sync.html">Rust standard library: <code>Sync</code></a></li>
+<li><a rel="external" href="https://doc.rust-lang.org/std/thread/fn.spawn.html">Rust standard library: <code>std::thread::spawn</code></a></li>
+<li><a rel="external" href="https://doc.rust-lang.org/std/thread/fn.scope.html">Rust standard library: <code>std::thread::scope</code></a></li>
+<li><a rel="external" href="https://doc.rust-lang.org/reference/trait-bounds.html#lifetime-bounds">The Rust Reference: Lifetime bounds</a></li>
+<li><a rel="external" href="https://docs.rs/tokio/latest/tokio/task/fn.spawn.html">Tokio: <code>tokio::spawn</code></a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust&#x2F;package&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Package manager
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

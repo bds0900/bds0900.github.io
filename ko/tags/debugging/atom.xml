@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - debugging</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/debugging/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-22T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/debugging/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>웹훅이 핸드쉐이크에서 죽었다: ERR_TLS_CERT_ALTNAME_INVALID 디버깅</title>
+        <published>2026-06-22T00:00:00+00:00</published>
+        <updated>2026-06-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/"/>
+        <id>https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/azure/tls-cert-altname-webhook/">&lt;p&gt;Node.js 서비스가 웹훅을 백엔드 API로 전달하다가 이런 에러를 뱉었다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;[onRaw] webhook forwarding error: {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  name: &amp;#39;ApiError&amp;#39;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  title: &amp;#39;Webhook forwarding failed&amp;#39;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  status: 502,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  message: &amp;quot;Hostname&#x2F;IP does not match certificate&amp;#39;s altnames:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            Host: example.com. is not in the cert&amp;#39;s altnames:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            DNS:*.azurewebsites.net, DNS:*.scm.azurewebsites.net, ...&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  code: &amp;#39;ERR_TLS_CERT_ALTNAME_INVALID&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;페이로드 자체는 멀쩡했다. 데이터 문제가 아니라는 거다. 근데 왜 502가 뜨는 걸까?&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;weonin-sane-eobsneun-domein&quot;&gt;원인: SAN에 없는 도메인&lt;&#x2F;h2&gt;
+&lt;p&gt;포워더가 &lt;code&gt;example.com&lt;&#x2F;code&gt;으로 HTTPS 연결을 열었다. TLS 핸드셰이크 과정에서 서버가 돌려준 인증서의 &lt;strong&gt;SAN(Subject Alternative Names)&lt;&#x2F;strong&gt; 목록에 &lt;code&gt;example.com&lt;&#x2F;code&gt;이 없었다. 위 에러에서는 &lt;code&gt;*.azurewebsites.net&lt;&#x2F;code&gt; 계열 이름들만 들어있는 걸 볼 수 있는데 — 이건 Azure 특유의 이야기가 아니다. 어떤 플랫폼이든, 어떤 서버든, 커스텀 도메인을 &lt;em&gt;연결&lt;&#x2F;em&gt;만 해놓고 그 도메인을 커버하는 인증서를 &lt;em&gt;바인딩&lt;&#x2F;em&gt;하지 않으면 똑같은 에러가 난다.&lt;&#x2F;p&gt;
+&lt;p&gt;TLS 클라이언트는 &quot;내가 연결하려는 호스트명이 인증서에 있나?&quot;를 필수로 체크하는데, 없으니까 &lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;로 연결을 끊어버린다. 포워더는 이걸 502로 감싸서 올려보낸 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;strong&gt;한 문장 요약:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;으로 트래픽이 &lt;em&gt;라우팅&lt;&#x2F;em&gt;되도록 설정은 했지만, &lt;code&gt;example.com&lt;&#x2F;code&gt;을 커버하는 TLS 인증서는 &lt;em&gt;바인딩하지 않아서&lt;&#x2F;em&gt; — 서버가 기본 인증서(플랫폼&#x2F;서버의 다른 이름)로 폴백했고, 클라이언트가 연결한 이름과 맞지 않았다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;haegsim-gaenyeom-dns-rauting-tls-sinweonjeungmyeong&quot;&gt;핵심 개념: DNS(라우팅) ≠ TLS(신원증명)&lt;&#x2F;h2&gt;
+&lt;p&gt;이 두 개를 헷갈리면 계속 막힌다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;레이어&lt;&#x2F;th&gt;&lt;th&gt;묻는 질문&lt;&#x2F;th&gt;&lt;th&gt;동작 방식&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;DNS &#x2F; 라우팅&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;트래픽을 &lt;em&gt;어디로&lt;&#x2F;em&gt; 보내지?&quot;&lt;&#x2F;td&gt;&lt;td&gt;A &#x2F; CNAME 레코드&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;TLS &#x2F; 신원&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;서버가 &lt;code&gt;example.com&lt;&#x2F;code&gt;임을 &lt;em&gt;증명&lt;&#x2F;em&gt;할 수 있나?&quot;&lt;&#x2F;td&gt;&lt;td&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;이 포함된 인증서&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;도메인으로 트래픽이 들어온다고 그 도메인의 인증서가 생기는 게 아니다.&lt;&#x2F;strong&gt; 인증서는 따로 발급받고, 따로 바인딩해야 한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;비유하자면, DNS는 회사 전화번호부다 — 어디로 연결하면 되는지 알려준다. TLS 인증서는 직원증이다. &lt;code&gt;example.com&lt;&#x2F;code&gt;으로 편지가 도착했다고 해서 그 사람이 &lt;code&gt;example.com&lt;&#x2F;code&gt;이라고 적힌 신분증을 들고 있는 건 아니다. 경비(TLS 검사)가 신분증을 확인하고, 없으면 돌려보낸다.&lt;&#x2F;p&gt;
+&lt;p&gt;그리고 핸드셰이크가 &lt;strong&gt;HTTP 요청 전에&lt;&#x2F;strong&gt; 실패하기 때문에 백엔드 애플리케이션에는 아무 로그도 안 찍힌다. 서비스 코드 디버깅은 의미가 없다. 순수하게 인프라&#x2F;인증서 문제다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;sujeong-bangbeob-injeungseo-balgeub-bainding&quot;&gt;수정 방법: 인증서 발급 + 바인딩&lt;&#x2F;h2&gt;
+&lt;p&gt;서버가 어디에 있든 수정 방향은 동일하다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;injeungseo-vs-bainding&quot;&gt;인증서 vs 바인딩&lt;&#x2F;h3&gt;
+&lt;p&gt;이 둘은 별개다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;객체&lt;&#x2F;th&gt;&lt;th&gt;정체&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;인증서&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;&lt;code&gt;example.com&lt;&#x2F;code&gt;임을 증명하는&quot; 서명된 파일&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;strong&gt;바인딩&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;td&gt;&quot;이 도메인으로 요청이 오면 이 인증서를 제시해라&quot;는 설정&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;인증서가 서버에 있더라도 바인딩이 없으면 서버는 엉뚱한 기본 인증서를 내놓는다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ilbanjeogin-sujeong-jeolca&quot;&gt;일반적인 수정 절차&lt;&#x2F;h3&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;example.com&lt;&#x2F;code&gt;을 커버하는 인증서를 발급받는다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Let&#x27;s Encrypt (무료, &lt;code&gt;certbot&lt;&#x2F;code&gt; 사용) — 가장 흔한 방법&lt;&#x2F;li&gt;
+&lt;li&gt;호스팅 플랫폼의 managed certificate (플랫폼이 자동 발급·갱신)&lt;&#x2F;li&gt;
+&lt;li&gt;직접 구매한 인증서 (.pem &#x2F; .pfx)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;인증서를 서버&#x2F;플랫폼에 바인딩한다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Nginx: &lt;code&gt;ssl_certificate&lt;&#x2F;code&gt;, &lt;code&gt;ssl_certificate_key&lt;&#x2F;code&gt; 지시어로 지정&lt;&#x2F;li&gt;
+&lt;li&gt;Apache: &lt;code&gt;SSLCertificateFile&lt;&#x2F;code&gt;, &lt;code&gt;SSLCertificateKeyFile&lt;&#x2F;code&gt;로 지정&lt;&#x2F;li&gt;
+&lt;li&gt;클라우드 플랫폼: 커스텀 도메인 설정 화면에서 인증서 선택 후 바인딩&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h3 id=&quot;nginx-yesi&quot;&gt;Nginx 예시&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;nginx&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;server&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    listen&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 443&lt;&#x2F;span&gt;&lt;span&gt; ssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    server_name&lt;&#x2F;span&gt;&lt;span&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    ssl_certificate&lt;&#x2F;span&gt;&lt;span&gt;     &#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;example.com&#x2F;fullchain.pem&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    ssl_certificate_key&lt;&#x2F;span&gt;&lt;span&gt; &#x2F;etc&#x2F;letsencrypt&#x2F;live&#x2F;example.com&#x2F;privkey.pem&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;certbot을 쓴다면:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;certbot&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --nginx -d&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# certbot이 nginx 설정까지 자동으로 잡아준다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;azure-yesi-app-service-container-apps&quot;&gt;Azure 예시 (App Service &#x2F; Container Apps)&lt;&#x2F;h3&gt;
+&lt;p&gt;포털에서:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;앱 리소스 → Custom domains&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → example.com 옆 &amp;quot;No binding&amp;quot; 클릭&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Add binding&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Source = Create managed certificate&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → TLS&#x2F;SSL type = SNI SSL&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  → Add&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;App Service:&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 1. managed cert 발급&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl create&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 2. thumbprint 확인&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl list&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --query&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;[?subjectName==&amp;#39;example.com&amp;#39;].thumbprint&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -o&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; tsv&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# 3. 바인딩 (SNI SSL)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; webapp config ssl bind&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --resource-group&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --certificate-thumbprint&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;thumbprin&lt;&#x2F;span&gt;&lt;span&gt;t&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --ssl-type&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; SNI&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;strong&gt;Container Apps&lt;&#x2F;strong&gt; (인증서는 앱이 아니라 Environment에 붙는다):&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; containerapp hostname add&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  -g&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -n&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;az&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; containerapp hostname bind&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -g&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;resource-grou&lt;&#x2F;span&gt;&lt;span&gt;p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -n&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;app-nam&lt;&#x2F;span&gt;&lt;span&gt;e&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --hostname&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt;  --environment&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;environmen&lt;&#x2F;span&gt;&lt;span&gt;t&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --validation-method&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; CNAME&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;hwagin&quot;&gt;확인&lt;&#x2F;h3&gt;
+&lt;p&gt;어느 플랫폼이든 확인 방법은 동일하다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;openssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; s_client&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -connect&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com:443&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -servername&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; example.com&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;dev&#x2F;null&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; 2&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&#x2F;dev&#x2F;null&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;  |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; openssl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; x509&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -noout -subject -ext&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; subjectAltName&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;출력에서 SAN에 &lt;code&gt;example.com&lt;&#x2F;code&gt;이 들어있으면 성공이다. &lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;는 더 이상 뜨지 않는다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;juyisahang&quot;&gt;주의사항&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;TLS를 실제로 종료하는 곳에 바인딩해야 한다.&lt;&#x2F;strong&gt; 리버스 프록시(Nginx, Caddy, 로드밸런서)가 앞에 있으면 인증서는 프록시에 걸려야 한다. 백엔드 앱 서버에 걸어봐야 의미가 없다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;DNS 조건이 먼저 맞아야 인증서 발급이 된다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;루트 도메인 (&lt;code&gt;example.com&lt;&#x2F;code&gt;) → A 레코드 필요&lt;&#x2F;li&gt;
+&lt;li&gt;서브도메인 (&lt;code&gt;www.example.com&lt;&#x2F;code&gt;) → CNAME 가능&lt;&#x2F;li&gt;
+&lt;li&gt;CAA 레코드가 있다면 사용하는 CA를 허용해야 함 (예: &lt;code&gt;0 issue letsencrypt.org&lt;&#x2F;code&gt;)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;와일드카드 인증서가 아니면 호스트네임별로 따로 발급해야 한다.&lt;&#x2F;strong&gt; &lt;code&gt;example.com&lt;&#x2F;code&gt;과 &lt;code&gt;www.example.com&lt;&#x2F;code&gt;은 별개다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&lt;code&gt;rejectUnauthorized: false&lt;&#x2F;code&gt;로 퉁치지 말자.&lt;&#x2F;strong&gt; 에러는 사라지지만 TLS 검증을 통째로 꺼버리는 거다. 웹훅 채널이 위조 공격에 노출된다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;자동 갱신은 조건부다.&lt;&#x2F;strong&gt; Let&#x27;s Encrypt든 managed cert든, DNS 레코드가 살아있고 도메인이 서버를 가리키고 있어야 갱신이 된다. A&#x2F;CNAME 레코드가 바뀌면 갱신 실패한다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;3jul-yoyag&quot;&gt;3줄 요약&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;ERR_TLS_CERT_ALTNAME_INVALID&lt;&#x2F;code&gt;는 서버 인증서의 SAN 목록에 접속하려는 호스트명이 없을 때 발생한다 — 플랫폼 불문, 도메인을 라우팅만 해놓고 인증서를 바인딩하지 않으면 생기는 일이다.&lt;&#x2F;li&gt;
+&lt;li&gt;DNS 라우팅(도메인 → 서버로 트래픽 전달)과 TLS 신원(서버가 그 도메인임을 증명)은 완전히 독립적이다 — 트래픽이 도착한다고 인증서가 생기는 게 아니다.&lt;&#x2F;li&gt;
+&lt;li&gt;수정은 해당 도메인의 인증서를 발급받고 서버에 바인딩하는 것으로 끝난다; 핸드셰이크 전에 실패하는 문제이므로 애플리케이션 코드를 디버깅해봐야 의미없다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ko">
+        <title>선빵친놈이 이긴다 — RabbitMQ Exchange 상태 불일치 디버깅</title>
+        <published>2026-06-22T00:00:00+00:00</published>
+        <updated>2026-06-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/rabbitmq/exchange-durability-drift/"/>
+        <id>https://emptyfridge.dev/ko/rabbitmq/exchange-durability-drift/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/rabbitmq/exchange-durability-drift/">&lt;p&gt;프로덕션에서 WeChat inbound 메시지 경로가 통째로 끊겼다. 코드를 뒤졌는데 손댈 곳이 단 한 줄도 없었다. 범인은 &lt;strong&gt;브로커에 남아 있던 잘못된 exchange 정의&lt;&#x2F;strong&gt;였고, 그걸 가능하게 한 건 RabbitMQ의 한 가지 핵심 속성이었다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;jeungsang&quot;&gt;증상&lt;&#x2F;h2&gt;
+&lt;p&gt;프로덕션 아래와 같은 에러가 무한 반복되고 있었다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;MassTransit.RabbitMqConnectionException: ReceiveTransport faulted ...&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;RabbitMQ.Client.Exceptions.OperationInterruptedException:&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  code=406, text=&amp;#39;PRECONDITION_FAILED - inequivalent arg &amp;#39;durable&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  for exchange &amp;#39;...:DispatchInboundWechatMessageCreated&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  in vhost &amp;#39;&#x2F;&amp;#39;: received &amp;#39;true&amp;#39; but current is &amp;#39;false&amp;#39;&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;해석하면 이렇다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;우리 앱이 exchange를 &lt;strong&gt;&lt;code&gt;durable=true&lt;&#x2F;code&gt;로 선언&lt;&#x2F;strong&gt; 하려고 한다 (&lt;code&gt;received &#x27;true&#x27;&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;브로커에 &lt;strong&gt;이미 존재하는&lt;&#x2F;strong&gt; 같은 이름의 exchange는 &lt;strong&gt;&lt;code&gt;durable=false&lt;&#x2F;code&gt;&lt;&#x2F;strong&gt; 다 (&lt;code&gt;current is &#x27;false&#x27;&lt;&#x2F;code&gt;).&lt;&#x2F;li&gt;
+&lt;li&gt;RabbitMQ: &quot;둘이 다르잖아. 못 받아줘.&quot; → &lt;code&gt;406 PRECONDITION_FAILED&lt;&#x2F;code&gt; → 채널 종료.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;결과적으로 MassTransit의 receive transport가 fault → 재연결 → 또 fault 루프에 빠지면서 &lt;strong&gt;WeChat inbound 메시지 처리가 전혀 안 됐다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;jiggwanjeogeuro-ige-daece-museun-sanghwanginga&quot;&gt;직관적으로 — 이게 대체 무슨 상황인가&lt;&#x2F;h2&gt;
+&lt;p&gt;벽에 콘센트(exchange)가 하나 박혀 있다고 하자. 이 콘센트는 &lt;strong&gt;처음 설치한 사람이 규격을 정해서 못으로 박아버린다.&lt;&#x2F;strong&gt; 한 번 박히면 규격을 바꿀 수 없다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;우리 앱은 &lt;strong&gt;220V 규격(durable)&lt;&#x2F;strong&gt; 콘센트를 기대하고 플러그를 꽂으려 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;누군가가 예전에 이 자리에 &lt;strong&gt;110V 규격(non-durable)&lt;&#x2F;strong&gt; 콘센트를 먼저 박아놨다.&lt;&#x2F;li&gt;
+&lt;li&gt;플러그가 안 맞는다. 그렇다고 RabbitMQ가 콘센트를 220V로 바꿔주지도 않는다. 그냥 &quot;규격 안 맞음&quot;이라고 채널을 끊어버린다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;핵심 직관 두 가지:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;exchange 규격은 처음 선언한 사람이 정하고, 그 뒤로는 불변이다.&lt;&#x2F;strong&gt; → first-declarer-wins.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;규격이 안 맞으면 RabbitMQ는 고쳐주는 게 아니라 거절한다.&lt;&#x2F;strong&gt; → &lt;code&gt;PRECONDITION_FAILED&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;&quot;코드를 고친다&quot;고 풀리는 문제가 아니다. &lt;strong&gt;브로커에 잘못 남은 exchange를 뽑아내야&lt;&#x2F;strong&gt; 우리 앱이 올바른 규격으로 다시 만들 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;beomini-doen-rabbitmq-sogseongdeul&quot;&gt;범인이 된 RabbitMQ 속성들&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;seoneon-myeogdeungseong-dongdeungseong-geomsa-gajang-haegsim&quot;&gt;선언 멱등성 + 동등성 검사 (가장 핵심)&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;exchange.declare&lt;&#x2F;code&gt;는 &lt;strong&gt;멱등(idempotent)&lt;&#x2F;strong&gt; 이다. 같은 걸 여러 번 선언해도 문제없다 — 인자가 똑같을 때만. 이미 존재하는 exchange를 &lt;strong&gt;다른 인자&lt;&#x2F;strong&gt;로 선언하면 수정이 아니라 거절이다.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&quot;이미 있는 거랑 인자가 다르네. 안 해줄래.&quot; → &lt;code&gt;406 PRECONDITION_FAILED&lt;&#x2F;code&gt;, 채널 종료.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;exchange의 속성(&lt;code&gt;type&lt;&#x2F;code&gt;, &lt;code&gt;durable&lt;&#x2F;code&gt;, &lt;code&gt;auto_delete&lt;&#x2F;code&gt;, &lt;code&gt;internal&lt;&#x2F;code&gt;, &lt;code&gt;arguments&lt;&#x2F;code&gt;)은 &lt;strong&gt;생성 시점에 고정, 이후 변경 불가.&lt;&#x2F;strong&gt; 바꾸려면 지우고 다시 만드는 수밖에 없다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;durable-vs-transient&quot;&gt;Durable vs Transient&lt;&#x2F;h3&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;설명&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;durable=true&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;exchange 정의가 디스크에 저장 → &lt;strong&gt;브로커 재시작 후에도 살아남는다&lt;&#x2F;strong&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;code&gt;durable=false&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;메모리에만 존재 → 브로커 재시작 시 사라진다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;문제의 exchange는 &lt;code&gt;durable=false&lt;&#x2F;code&gt;였고, 우리 앱은 &lt;code&gt;durable=true&lt;&#x2F;code&gt;를 원했다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;auto-delete&quot;&gt;Auto-delete&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;auto-delete=true&lt;&#x2F;code&gt;이면 마지막 바인딩이 사라질 때 exchange가 스스로 삭제된다. 관리 UI에서 Features 컬럼에 &lt;code&gt;AD&lt;&#x2F;code&gt;로 표시된다. 문제의 exchange는 &lt;code&gt;AD&lt;&#x2F;code&gt; + non-durable 조합 — &lt;strong&gt;&quot;임시 exchange&quot;의 전형적인 모양이다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;topology-yeongsogseong&quot;&gt;Topology 영속성&lt;&#x2F;h3&gt;
+&lt;p&gt;exchange&#x2F;queue&#x2F;binding은 &lt;strong&gt;서버(브로커) 측 상태&lt;&#x2F;strong&gt;다. 그걸 만든 클라이언트 연결이 끊겨도 정의는 브로커에 남는다. 브로커 컨테이너 수명이 &lt;code&gt;Persistent&lt;&#x2F;code&gt;라서, 한 번 잘못 만들어진 정의가 계속 살아남아 있었다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;wae-ige-kodeu-beogeuga-aninga&quot;&gt;왜 이게 코드 버그가 아닌가&lt;&#x2F;h2&gt;
+&lt;p&gt;처음엔 &quot;코드 어딘가에서 &lt;code&gt;durable=false&lt;&#x2F;code&gt;로 선언했겠지&quot;라고 의심했다. 두 가지가 그 가설을 깨뜨렸다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;jeunggeo-1-git-jeonce-hiseutorie-durability-seoljeongi-dan-han-beondo-eobseossda&quot;&gt;증거 1: git 전체 히스토리에 durability 설정이 단 한 번도 없었다&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; log&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --all -S&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;Durable&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;*.cs&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;                                    # → (없음)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;git&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; log&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --all -G&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;Durable|AutoDelete|Temporary|PublishTopology&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;*.cs&amp;#39;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;  # → (없음)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;durability&#x2F;auto-delete를 설정하거나 바꾼 커밋이 역사상 존재하지 않았다. 코드는 항상 MassTransit의 기본값(=durable)만 썼다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;jeunggeo-2-wechatman-ggaejigo-whatsapp-lineneun-meoljjeonghaessda&quot;&gt;증거 2: WeChat만 깨지고 WhatsApp&#x2F;LINE는 멀쩡했다&lt;&#x2F;h3&gt;
+&lt;p&gt;WeChat, WhatsApp, LINE, Internal 네 컨텍스트의 inbound dispatch 코드는 &lt;strong&gt;구조적으로 완전히 동일&lt;&#x2F;strong&gt;하다.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;코드&#x2F;설정 문제였다면 네 개가 &lt;strong&gt;똑같이&lt;&#x2F;strong&gt; 깨졌어야 한다. 그런데 WeChat 하나만 깨졌다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;p&gt;이 비대칭이 코드 원인설을 확정적으로 배제한다. &lt;strong&gt;이건 코드 버그도 설계 결함도 아니다. 브로커에 남은 잘못된 exchange 정의와 코드 선언 사이의 &quot;상태 불일치(state mismatch)&quot;다.&lt;&#x2F;strong&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;wae-hapil-wechatman-first-declarer-winsneun-exchange-danwi&quot;&gt;왜 하필 WeChat만? — first-declarer-wins는 exchange 단위&lt;&#x2F;h2&gt;
+&lt;p&gt;durability 고정이 exchange &lt;strong&gt;하나하나&lt;&#x2F;strong&gt; 단위로 일어난다는 게 핵심이다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;WhatsApp&#x2F;LINE&#x2F;Internal exchange: 처음 선언한 게 우리 앱(durable) → durable로 굳음 → 평화.&lt;&#x2F;li&gt;
+&lt;li&gt;WeChat exchange: &lt;strong&gt;처음 선언한 누군가가 transient(non-durable+auto-delete)&lt;&#x2F;strong&gt; 였다 → AD로 굳음 → 이후 우리 앱의 durable 선언이 매번 충돌.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;벽에 콘센트 네 개를 박는데 세 개는 규격대로 박혔고, 하나만 다른 사람이 먼저 엉뚱한 규격으로 박아버린 것이다. 설계도(코드)는 네 개 다 똑같다.&lt;&#x2F;p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;&lt;strong&gt;WhatsApp과 LINE은 &quot;안전&quot;한 게 아니라 &quot;운이 좋았던&quot; 것이다.&lt;&#x2F;strong&gt; 잘못된 클라이언트가 그들의 exchange를 먼저 transient로 선언하면 똑같이 깨진다.&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;jindan-beomini-ajig-salaissna&quot;&gt;진단 — 범인이 아직 살아있나?&lt;&#x2F;h2&gt;
+&lt;p&gt;지우기 전에 한 가지 확인이 필요했다. 시나리오가 두 가지였기 때문이다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;(A) 살아 있는 외부 publisher&lt;&#x2F;strong&gt;: 지금도 이 exchange를 transient로 계속 다시 만든다 → 내가 지워도 곧바로 다시 AD로 생긴다. 먼저 그 클라이언트를 멈춰야 한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;(B) 오래된 잔재(orphaned leftover)&lt;&#x2F;strong&gt;: 과거에 누군가 한 번 만들어 놨고 그 클라이언트는 이미 사라졌다 → 한 번 지우면 끝.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;브로커의 연결 목록으로 확인했다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;rabbitmqctl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; list_connections name peer_host user channels&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;연결은 &lt;strong&gt;딱 둘&lt;&#x2F;strong&gt;, 둘 다 우리 앱(채널 59개 = MassTransit 풀 버스, 두 개의 replica)이었다. 제3의 의심스러운 연결 없음 → &lt;strong&gt;(B) 오래된 잔재 케이스.&lt;&#x2F;strong&gt; 그냥 지우면 된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;haegyeol-jiumyeon-aebi-alaseo-dasi-mandeunda&quot;&gt;해결 — 지우면 앱이 알아서 다시 만든다&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;rabbitmqadmin&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -u&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$RABBITMQ_DEFAULT_USER&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -p&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;quot;&lt;&#x2F;span&gt;&lt;span&gt;$RABBITMQ_DEFAULT_PASS&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --vhost&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &#x2F;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; \&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;  delete exchange&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --name&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;...:DispatchInboundWechatMessageCreated&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;지운 직후, MassTransit의 재연결 루프가 다음 시도에서 exchange를 &lt;strong&gt;durable로 다시 선언&lt;&#x2F;strong&gt;했다. 충돌할 대상이 없으니 성공이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;rabbitmqctl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; list_exchanges name durable auto_delete&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; |&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; grep&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; DispatchInboundWechat&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# → ... true  false   (durable=true, auto_delete=false) ✅&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;관리 UI에서도 Features가 &lt;code&gt;D&lt;&#x2F;code&gt;로 돌아왔다. &lt;code&gt;precondition_failed&lt;&#x2F;code&gt; 로그가 멈췄고, &lt;code&gt;ReceiveTransport faulted ... Retrying&lt;&#x2F;code&gt; 루프도 멈췄다.&lt;&#x2F;p&gt;
+&lt;p&gt;exchange 삭제는 &lt;strong&gt;queue와 그 안의 메시지를 건드리지 않는다.&lt;&#x2F;strong&gt; exchange와 binding만 사라지고, MassTransit이 binding도 자동으로 재생성한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;jaebal-bangji&quot;&gt;재발 방지&lt;&#x2F;h2&gt;
+&lt;p&gt;코드 리뷰로는 절대 못 잡는 종류의 문제(브로커 상태)이기 때문에, &lt;strong&gt;런타임 감시 장치&lt;&#x2F;strong&gt;가 필요했다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;code&gt;RabbitMqExchangeTopologyGuard&lt;&#x2F;code&gt;를 추가했다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;시작 시 + 10분마다 도는 read-only &lt;code&gt;BackgroundService&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;RabbitMQ management API(&lt;code&gt;&#x2F;api&#x2F;exchanges&#x2F;{vhost}&lt;&#x2F;code&gt;)를 GET해서 &lt;code&gt;Omni.&lt;&#x2F;code&gt; 접두 exchange 중 &lt;strong&gt;non-durable이거나 auto-delete인 것&lt;&#x2F;strong&gt;을 &lt;code&gt;LogWarning&lt;&#x2F;code&gt;으로 띄운다&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;bus-*&lt;&#x2F;code&gt;, &lt;code&gt;amq.*&lt;&#x2F;code&gt; 같은 정상적인 임시 endpoint는 제외 (MassTransit의 임시 bus&#x2F;reply endpoint는 원래 AD가 맞다)&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;브로커를 건드리지 않는다.&lt;&#x2F;strong&gt; 실제 복구는 삭제→재선언으로 수동 처리&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;이 가드가 &lt;strong&gt;&quot;감지&quot;는 하지만 &quot;예방&#x2F;자동복구&quot;는 못 한다.&lt;&#x2F;strong&gt; 진짜로 재발을 없애려면 추가로:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;code&gt;LogWarning&lt;&#x2F;code&gt;을 &lt;strong&gt;실제 알림&#x2F;health check로 승격&lt;&#x2F;strong&gt; — 로그만으로는 묻힌다.&lt;&#x2F;li&gt;
+&lt;li&gt;드리프트 발생 시 &lt;code&gt;&#x2F;api&#x2F;connections&lt;&#x2F;code&gt;까지 조회해 범인 연결을 같이 로깅.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;환경 점검&lt;&#x2F;strong&gt;: prod 브로커 연결 문자열을 들고 있는 non-prod 인스턴스가 없는지 감사.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;h2 id=&quot;gyohun&quot;&gt;교훈&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;코드에 없으면 코드 문제가 아니다.&lt;&#x2F;strong&gt; git pickaxe(&lt;code&gt;-S&lt;&#x2F;code&gt;&#x2F;&lt;code&gt;-G&lt;&#x2F;code&gt;)로 &quot;그 설정을 만진 커밋이 존재하는가&quot;를 먼저 확인하면, 엉뚱한 곳을 파는 시간을 아낀다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;분산 시스템 버그는 &quot;코드&quot;가 아니라 &quot;상태&quot;에 있을 수 있다.&lt;&#x2F;strong&gt; 브로커, DB, 캐시처럼 오래 사는 외부 상태는 코드와 별개의 진실을 갖는다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;비대칭은 강력한 진단 신호다.&lt;&#x2F;strong&gt; &quot;똑같은 코드인데 왜 하나만?&quot; → 원인이 코드&#x2F;설정(대칭)이 아니라 인스턴스별 상태(비대칭)에 있다는 뜻이다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;first-declarer-wins를 기억하라.&lt;&#x2F;strong&gt; RabbitMQ exchange&#x2F;queue 인자는 최초 선언 시 고정 + 불변이다. 같은 브로커를 여러 클라이언트가 공유하면, 누가 먼저 선언하느냐로 영구적 차이가 생긴다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;&quot;안 깨진 것&quot;과 &quot;안전한 것&quot;은 다르다.&lt;&#x2F;strong&gt; WhatsApp&#x2F;LINE는 구조적으로 보호된 게 아니라 운이 좋았을 뿐이다.&lt;&#x2F;p&gt;
+&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;hr &#x2F;&gt;
+&lt;h2 id=&quot;3jul-yoyag&quot;&gt;3줄 요약&lt;&#x2F;h2&gt;
+&lt;ol&gt;
+&lt;li&gt;RabbitMQ exchange의 속성(durable, auto-delete 등)은 &lt;strong&gt;최초 선언 시 고정, 이후 불변&lt;&#x2F;strong&gt;이다 — 다른 인자로 재선언하면 수정이 아니라 &lt;code&gt;406 PRECONDITION_FAILED&lt;&#x2F;code&gt;로 채널이 끊긴다(first-declarer-wins).&lt;&#x2F;li&gt;
+&lt;li&gt;WeChat exchange만 깨진 건 코드 문제가 아니라 &lt;strong&gt;상태 불일치&lt;&#x2F;strong&gt;였다 — 과거에 누군가 transient로 선언한 잔재가 브로커에 남아 우리 앱의 durable 선언을 매번 막고 있었다.&lt;&#x2F;li&gt;
+&lt;li&gt;해결은 잘못된 exchange 삭제 하나로 끝났다; &lt;code&gt;list_connections&lt;&#x2F;code&gt;로 &quot;살아 있는 재선언자가 없음&quot;을 먼저 확인한 뒤 지우면 앱이 알아서 durable로 재선언한다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+</content>
+        
+    </entry>
+</feed>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Doosan&#x27;s Blog - Docker</title>
+    <subtitle>Learning is an endless process</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/docker/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-20T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/docker/atom.xml</id>
+    <entry xml:lang="en">
+        <title>docker run</title>
+        <published>2023-05-20T00:00:00+00:00</published>
+        <updated>2023-05-20T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/commands/run/"/>
+        <id>https://emptyfridge.dev/commands/run/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/commands/run/">&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker run [OPTIONS] IMAGE [COMMAND] [ARG...]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Pulls the image, creates a new container, and starts it in one command.&lt;&#x2F;p&gt;
+&lt;p&gt;Commonly used options:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th style=&quot;text-align: left&quot;&gt;Option&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: center&quot;&gt;&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;--name&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;name&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-d&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;detach&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-p&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;publish&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-v&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;volumn&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-e&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;environment variable&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-i&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;interactive&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;-t&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;tty&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;it&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;interactive + tty&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td style=&quot;text-align: left&quot;&gt;--link&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: center&quot;&gt;link to other container&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Example:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker run -d `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;--name mysqlserver `        # container name is mysqlserver&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e &amp;#39;ACCEPT_EULA=Y&amp;#39; `        # SQL Server environment variable, not a Docker variable&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e &amp;#39;SA_PASSWORD=Pa55w@rd&amp;#39; ` # SA password&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e &amp;#39;MSSQL_PID=Express&amp;#39; `	# also a SQL Server environment variable; default MSSQL_PID is &amp;#39;Developer&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-p 1433:1433 `              # map host port 1433 to container port 1433. host:container&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-v c:\Users\Doosan\sqlserver\data:&#x2F;var&#x2F;opt&#x2F;mssql&#x2F;data ` # mount host directory into the container&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-v c:\Users\Doosan\sqlserver\log:&#x2F;var&#x2F;opt&#x2F;mssql&#x2F;log `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-v c:\Users\Doosan\sqlserver\secrets:&#x2F;var&#x2F;opt&#x2F;mssql&#x2F;secrets `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;mcr.microsoft.com&#x2F;mssql&#x2F;server:2019-latest  # image to use&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Each line ends with a space and a backtick. This is just PowerShell line continuation so a long command can be written across multiple readable lines.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker run -d `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;--name mymongo `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-p 27017:27017 `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e MONGO_INITDB_ROOT_USERNAME=mongoadmin `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e MONGO_INITDB_ROOT_PASSWORD=secret `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-v c:\Users\Doosan\mongo:&#x2F;data&#x2F;db `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker run -d `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;--name mypostgres `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-p 5432:5432 `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e POSTGRES_USER=doosan ` # if omitted, the default user is postgres&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e POSTGRES_PASSWORD=postgres `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e PGDATA=&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data&#x2F;pgdata `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-e tz=Asia&#x2F;Seoul `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;-v c:\Users\Doosan\postgres:&#x2F;var&#x2F;lib&#x2F;postgresql&#x2F;data `&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;postgres&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</content>
+        
+    </entry>
+</feed>

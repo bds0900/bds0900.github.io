@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Doosan&#x27;s Blog - Korean</title>
+    <subtitle>Learning is an endless process</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/korean/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-05-22T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/korean/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Korean Grammar Terms</title>
+        <published>2025-05-22T00:00:00+00:00</published>
+        <updated>2025-05-22T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/korean/term/"/>
+        <id>https://emptyfridge.dev/korean/term/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/korean/term/">&lt;p&gt;This note organizes basic grammar terms that are easy to confuse while studying Korean grammar. They often do not map one-to-one to English grammar terms, so it is better to first understand what role each term plays inside Korean grammar.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;big-picture&quot;&gt;Big picture&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;sentence&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;└── eojeol, spacing unit&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    └── word&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        └── morpheme&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Example sentence:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Unit&lt;&#x2F;th&gt;&lt;th&gt;Analysis&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Sentence&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Eojeol, spacing unit&lt;&#x2F;td&gt;&lt;td&gt;철수가 &#x2F; 밥을 &#x2F; 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Word&lt;&#x2F;td&gt;&lt;td&gt;철수, 가, 밥, 을, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Morpheme&lt;&#x2F;td&gt;&lt;td&gt;철수 &#x2F; 가 &#x2F; 밥 &#x2F; 을 &#x2F; 먹- &#x2F; -었- &#x2F; -다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;basic-units&quot;&gt;Basic units&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Korean term&lt;&#x2F;th&gt;&lt;th&gt;English feel&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;음절&lt;&#x2F;td&gt;&lt;td&gt;syllable&lt;&#x2F;td&gt;&lt;td&gt;A sound unit pronounced at once&lt;&#x2F;td&gt;&lt;td&gt;철 &#x2F; 수 &#x2F; 가&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;형태소&lt;&#x2F;td&gt;&lt;td&gt;morpheme&lt;&#x2F;td&gt;&lt;td&gt;The smallest unit of language with meaning&lt;&#x2F;td&gt;&lt;td&gt;먹-, -었-, -다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;단어&lt;&#x2F;td&gt;&lt;td&gt;word&lt;&#x2F;td&gt;&lt;td&gt;A unit that can stand alone or take a particle&lt;&#x2F;td&gt;&lt;td&gt;철수, 밥, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어절&lt;&#x2F;td&gt;&lt;td&gt;spacing unit&lt;&#x2F;td&gt;&lt;td&gt;A unit separated by spaces in writing&lt;&#x2F;td&gt;&lt;td&gt;철수가, 밥을, 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;구&lt;&#x2F;td&gt;&lt;td&gt;phrase&lt;&#x2F;td&gt;&lt;td&gt;Two or more words acting like one sentence component&lt;&#x2F;td&gt;&lt;td&gt;아주 예쁜 꽃&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;절&lt;&#x2F;td&gt;&lt;td&gt;clause&lt;&#x2F;td&gt;&lt;td&gt;A chunk with a subject-predicate structure&lt;&#x2F;td&gt;&lt;td&gt;비가 오면&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;문장&lt;&#x2F;td&gt;&lt;td&gt;sentence&lt;&#x2F;td&gt;&lt;td&gt;A complete expression of thought&lt;&#x2F;td&gt;&lt;td&gt;비가 온다.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;In Korean, &lt;strong&gt;어절&lt;&#x2F;strong&gt; is important. It is visible because it corresponds to spacing, and one eojeol is usually made of:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;substantive morpheme + formal morpheme&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 = 철수 + 가&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 = 밥 + 을&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;parts-of-speech&quot;&gt;Parts of speech&lt;&#x2F;h2&gt;
+&lt;p&gt;Korean school grammar usually uses nine parts of speech.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Broad class&lt;&#x2F;th&gt;&lt;th&gt;Part of speech&lt;&#x2F;th&gt;&lt;th&gt;English feel&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;명사&lt;&#x2F;td&gt;&lt;td&gt;noun&lt;&#x2F;td&gt;&lt;td&gt;사람, 학교, 사랑&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;대명사&lt;&#x2F;td&gt;&lt;td&gt;pronoun&lt;&#x2F;td&gt;&lt;td&gt;나, 너, 이것&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;체언&lt;&#x2F;td&gt;&lt;td&gt;수사&lt;&#x2F;td&gt;&lt;td&gt;numeral&lt;&#x2F;td&gt;&lt;td&gt;하나, 둘, 첫째&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;용언&lt;&#x2F;td&gt;&lt;td&gt;동사&lt;&#x2F;td&gt;&lt;td&gt;verb &#x2F; action verb&lt;&#x2F;td&gt;&lt;td&gt;먹다, 가다, 웃다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;용언&lt;&#x2F;td&gt;&lt;td&gt;형용사&lt;&#x2F;td&gt;&lt;td&gt;adjective &#x2F; descriptive verb&lt;&#x2F;td&gt;&lt;td&gt;예쁘다, 크다, 좋다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;수식언&lt;&#x2F;td&gt;&lt;td&gt;관형사&lt;&#x2F;td&gt;&lt;td&gt;determiner&lt;&#x2F;td&gt;&lt;td&gt;새, 헌, 이, 그&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;수식언&lt;&#x2F;td&gt;&lt;td&gt;부사&lt;&#x2F;td&gt;&lt;td&gt;adverb&lt;&#x2F;td&gt;&lt;td&gt;빨리, 매우, 잘&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;관계언&lt;&#x2F;td&gt;&lt;td&gt;조사&lt;&#x2F;td&gt;&lt;td&gt;particle&lt;&#x2F;td&gt;&lt;td&gt;이&#x2F;가, 은&#x2F;는, 을&#x2F;를&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;독립언&lt;&#x2F;td&gt;&lt;td&gt;감탄사&lt;&#x2F;td&gt;&lt;td&gt;interjection&lt;&#x2F;td&gt;&lt;td&gt;아!, 어머!, 와!&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;nominal-words-ceeon&quot;&gt;Nominal words, 체언&lt;&#x2F;h3&gt;
+&lt;p&gt;체언 can be used as the subject, object, complement, and similar sentence components. Particles attach to them.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 왔다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 학생이다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;둘이 먼저 갔다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;철수&lt;&#x2F;code&gt;: noun&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;나&lt;&#x2F;code&gt;: pronoun&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;둘&lt;&#x2F;code&gt;: numeral&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;predicative-words-yongeon&quot;&gt;Predicative words, 용언&lt;&#x2F;h3&gt;
+&lt;p&gt;용언 can become the predicate of a sentence and conjugate. In Korean, both verbs and adjectives change form when endings attach.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 -&amp;gt; 먹었다 -&amp;gt; 먹는다 -&amp;gt; 먹고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;예쁘다 -&amp;gt; 예뻤다 -&amp;gt; 예쁘다 -&amp;gt; 예쁘고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;From an English grammar mindset, Korean adjectives are closer to &lt;strong&gt;descriptive verbs &#x2F; state verbs&lt;&#x2F;strong&gt; than to English adjectives. &lt;code&gt;예쁘다&lt;&#x2F;code&gt;, &lt;code&gt;크다&lt;&#x2F;code&gt;, and &lt;code&gt;춥다&lt;&#x2F;code&gt; are 용언 in Korean, and they conjugate.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;modifiers-susigeon&quot;&gt;Modifiers, 수식언&lt;&#x2F;h3&gt;
+&lt;p&gt;수식언 modify other words.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;새 책을 샀다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아주 빨리 달렸다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;새&lt;&#x2F;code&gt;: determiner. It modifies the following noun &lt;code&gt;책&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;아주&lt;&#x2F;code&gt;, &lt;code&gt;빨리&lt;&#x2F;code&gt;: adverbs. They modify a following adverb or predicative word.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;relational-words-gwangyeeon&quot;&gt;Relational words, 관계언&lt;&#x2F;h3&gt;
+&lt;p&gt;Particles attach to the preceding word and mark relationships inside the sentence.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 학교에 간다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;가&lt;&#x2F;code&gt;: subject case particle&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;을&lt;&#x2F;code&gt;: object case particle&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;에&lt;&#x2F;code&gt;: adverbial case particle&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;independent-words-dogribeon&quot;&gt;Independent words, 독립언&lt;&#x2F;h3&gt;
+&lt;p&gt;Interjections are used independently, without a direct grammatical relationship to other sentence components.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;와, 정말 예쁘다!&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아, 이제 알겠다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;sentence-components&quot;&gt;Sentence components&lt;&#x2F;h2&gt;
+&lt;p&gt;Sentence components are not word classes. They are &lt;strong&gt;roles inside a sentence&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Component&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;주어&lt;&#x2F;td&gt;&lt;td&gt;Subject of an action&#x2F;state&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;서술어&lt;&#x2F;td&gt;&lt;td&gt;Describes the subject&#x27;s action&#x2F;state&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;목적어&lt;&#x2F;td&gt;&lt;td&gt;Object of an action&lt;&#x2F;td&gt;&lt;td&gt;철수가 밥을 먹었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보어&lt;&#x2F;td&gt;&lt;td&gt;Required before &lt;code&gt;되다&lt;&#x2F;code&gt;, &lt;code&gt;아니다&lt;&#x2F;code&gt;&lt;&#x2F;td&gt;&lt;td&gt;철수가 의사가 되었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;관형어&lt;&#x2F;td&gt;&lt;td&gt;Modifies a nominal word&lt;&#x2F;td&gt;&lt;td&gt;예쁜 꽃이 피었다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;부사어&lt;&#x2F;td&gt;&lt;td&gt;Modifies a predicative word, determiner phrase, adverbial, or whole sentence&lt;&#x2F;td&gt;&lt;td&gt;철수가 빨리 달렸다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;독립어&lt;&#x2F;td&gt;&lt;td&gt;Used independently from the sentence&lt;&#x2F;td&gt;&lt;td&gt;와, 정말 좋다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;The same word can play different roles depending on its sentence position.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 학생이다.       -&amp;gt; 철수가: subject&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;나는 철수를 만났다.   -&amp;gt; 철수를: object&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;root-affix-stem-and-ending&quot;&gt;Root, affix, stem, and ending&lt;&#x2F;h2&gt;
+&lt;p&gt;This is the part that is easiest to confuse.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Korean term&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;어근&lt;&#x2F;td&gt;&lt;td&gt;The part carrying the core meaning of a word&lt;&#x2F;td&gt;&lt;td&gt;먹-, 예쁘-, 믿-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;접사&lt;&#x2F;td&gt;&lt;td&gt;An element that attaches to a root to make a new word&lt;&#x2F;td&gt;&lt;td&gt;맨-, 풋-, -이, -히&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어간&lt;&#x2F;td&gt;&lt;td&gt;The central part that does not change during conjugation&lt;&#x2F;td&gt;&lt;td&gt;먹-, 가-, 예쁘-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;어미&lt;&#x2F;td&gt;&lt;td&gt;The part attached after a predicative stem to create conjugation&lt;&#x2F;td&gt;&lt;td&gt;-다, -고, -면, -었-&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;eogeun-vs-eogan&quot;&gt;어근 vs 어간&lt;&#x2F;h3&gt;
+&lt;p&gt;어근 is a word-formation concept. 어간 is a predicative conjugation concept.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 = 먹- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;먹-&lt;&#x2F;code&gt;: both root and stem&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;-다&lt;&#x2F;code&gt;: ending&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;풋사과 = 풋- + 사과&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;사과&lt;&#x2F;code&gt;: root&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;풋-&lt;&#x2F;code&gt;: prefix&lt;&#x2F;li&gt;
+&lt;li&gt;This word is not a predicative conjugation, so stem&#x2F;ending analysis is not the key point.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;affixes&quot;&gt;Affixes&lt;&#x2F;h2&gt;
+&lt;p&gt;Affixes attach to roots and create new words. They are similar to English prefixes&#x2F;suffixes, but in Korean grammar they must be distinguished from conjugational endings.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Type&lt;&#x2F;th&gt;&lt;th&gt;Position&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Prefix&lt;&#x2F;td&gt;&lt;td&gt;Attaches before&lt;&#x2F;td&gt;&lt;td&gt;맨손, 풋사과, 헛수고&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Suffix&lt;&#x2F;td&gt;&lt;td&gt;Attaches after&lt;&#x2F;td&gt;&lt;td&gt;먹이, 높이, 사람답다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 -&amp;gt; 먹이&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The &lt;code&gt;-이&lt;&#x2F;code&gt; in &lt;code&gt;먹이&lt;&#x2F;code&gt; is a suffix that creates a new noun.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;endings&quot;&gt;Endings&lt;&#x2F;h2&gt;
+&lt;p&gt;Endings attach after the stem of a predicative word and create grammatical meaning such as tense, honorifics, connection, and sentence ending.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹다 = 먹- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹고 = 먹- + -고&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹으면 = 먹- + -으면&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;pre-final-ending-seoneomal-eomi&quot;&gt;Pre-final ending, 선어말 어미&lt;&#x2F;h3&gt;
+&lt;p&gt;A pre-final ending comes before the final ending.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;먹었다 = 먹- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;가셨다 = 가- + -시- + -었- + -다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;-었-&lt;&#x2F;code&gt;: past-tense pre-final ending&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;-시-&lt;&#x2F;code&gt;: subject-honorific pre-final ending&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;-았-&#x2F;-었-&lt;&#x2F;code&gt; is not a suffix. It is a &lt;strong&gt;pre-final ending&lt;&#x2F;strong&gt;. &lt;code&gt;먹었다&lt;&#x2F;code&gt; is analyzed as &lt;code&gt;먹- + -었- + -다&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;final-ending-eomal-eomi&quot;&gt;Final ending, 어말 어미&lt;&#x2F;h3&gt;
+&lt;p&gt;A final ending comes at the end of the word.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Type&lt;&#x2F;th&gt;&lt;th&gt;Role&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Sentence-final ending&lt;&#x2F;td&gt;&lt;td&gt;Ends a sentence&lt;&#x2F;td&gt;&lt;td&gt;-다, -어요, -습니다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Connective ending&lt;&#x2F;td&gt;&lt;td&gt;Connects clauses&#x2F;sentences&lt;&#x2F;td&gt;&lt;td&gt;-고, -지만, -면&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Transformative ending&lt;&#x2F;td&gt;&lt;td&gt;Lets a predicative word act like a noun, determiner, or adverb&lt;&#x2F;td&gt;&lt;td&gt;-기, -ㅁ, -는, -게&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Examples:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹었다.      -&amp;gt; -다: sentence-final ending&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹고 잤다.   -&amp;gt; -고: connective ending&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹기 싫다.   -&amp;gt; -기: nominalizing transformative ending&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥을 먹는 사람    -&amp;gt; -는: adnominal transformative ending&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;빠르게 달린다.    -&amp;gt; -게: adverbial transformative ending&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;particles&quot;&gt;Particles&lt;&#x2F;h2&gt;
+&lt;p&gt;Particles attach after nominal words, adverbs, or endings and add grammatical relationships or meaning.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Type&lt;&#x2F;th&gt;&lt;th&gt;Role&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Case particle&lt;&#x2F;td&gt;&lt;td&gt;Marks the case of a sentence component&lt;&#x2F;td&gt;&lt;td&gt;이&#x2F;가, 을&#x2F;를, 에, 에서, 로&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Auxiliary particle&lt;&#x2F;td&gt;&lt;td&gt;Adds special meaning&lt;&#x2F;td&gt;&lt;td&gt;은&#x2F;는, 도, 만, 까지, 조차&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Conjunctive particle&lt;&#x2F;td&gt;&lt;td&gt;Connects words&lt;&#x2F;td&gt;&lt;td&gt;와&#x2F;과, 하고, 랑&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;case-particles&quot;&gt;Case particles&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 밥을 학교에서 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;철수가&lt;&#x2F;code&gt;: &lt;code&gt;가&lt;&#x2F;code&gt; marks the subject&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;밥을&lt;&#x2F;code&gt;: &lt;code&gt;을&lt;&#x2F;code&gt; marks the object&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;학교에서&lt;&#x2F;code&gt;: &lt;code&gt;에서&lt;&#x2F;code&gt; marks an adverbial of place&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;auxiliary-particles&quot;&gt;Auxiliary particles&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수는 밥도 먹었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;는&lt;&#x2F;code&gt;: topic&#x2F;contrast feel&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;도&lt;&#x2F;code&gt;: also&#x2F;even feel&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;&lt;code&gt;은&#x2F;는&lt;&#x2F;code&gt; is often explained as a topic marker, but it is not always exactly the same as English topic. It can carry several nuances: contrast, introducing a topic, or marking information already known in the discourse.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;types-of-verbs&quot;&gt;Types of verbs&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Korean term&lt;&#x2F;th&gt;&lt;th&gt;English feel&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;자동사&lt;&#x2F;td&gt;&lt;td&gt;intransitive verb&lt;&#x2F;td&gt;&lt;td&gt;A verb used without an object&lt;&#x2F;td&gt;&lt;td&gt;아이가 웃는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;타동사&lt;&#x2F;td&gt;&lt;td&gt;transitive verb&lt;&#x2F;td&gt;&lt;td&gt;A verb that requires an object&lt;&#x2F;td&gt;&lt;td&gt;밥을 먹는다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;보조 동사&lt;&#x2F;td&gt;&lt;td&gt;auxiliary verb&lt;&#x2F;td&gt;&lt;td&gt;Adds meaning after another predicative word&lt;&#x2F;td&gt;&lt;td&gt;먹어 보다, 가고 싶다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;사동사&lt;&#x2F;td&gt;&lt;td&gt;causative verb&lt;&#x2F;td&gt;&lt;td&gt;Makes someone perform an action&lt;&#x2F;td&gt;&lt;td&gt;먹이다, 앉히다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;피동사&lt;&#x2F;td&gt;&lt;td&gt;passive verb&lt;&#x2F;td&gt;&lt;td&gt;Receives an action&lt;&#x2F;td&gt;&lt;td&gt;먹히다, 잡히다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h3 id=&quot;intransitive-transitive-verbs&quot;&gt;Intransitive &#x2F; transitive verbs&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아이가 웃는다.      -&amp;gt; 웃다: intransitive verb&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;아이가 밥을 먹는다. -&amp;gt; 먹다: transitive verb&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h3 id=&quot;auxiliary-verbs&quot;&gt;Auxiliary verbs&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;한번 먹어 보았다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;집에 가고 싶다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;보다&lt;&#x2F;code&gt;: adds a sense of attempt&#x2F;experience&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;싶다&lt;&#x2F;code&gt;: adds a sense of desire&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;causative-passive&quot;&gt;Causative &#x2F; passive&lt;&#x2F;h3&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;엄마가 아이에게 밥을 먹였다. -&amp;gt; causative&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;밥이 아이에게 먹혔다.       -&amp;gt; passive&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Causative&#x2F;passive forms can be made with affixes, or with constructions such as &lt;code&gt;-게 하다&lt;&#x2F;code&gt; and &lt;code&gt;-어지다&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;adjectives&quot;&gt;Adjectives&lt;&#x2F;h2&gt;
+&lt;p&gt;Korean adjectives are predicative words that express states. They do not work the same way as English adjectives placed directly before nouns.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;꽃이 예쁘다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;예쁜 꽃이 피었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;날씨가 춥다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;추운 날씨가 계속된다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;For &lt;code&gt;예쁘다&lt;&#x2F;code&gt; to modify a noun like an adnominal, it must conjugate into a form such as &lt;code&gt;예쁜&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;commonly-confusing-terms&quot;&gt;Commonly confusing terms&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Question&lt;&#x2F;th&gt;&lt;th&gt;Answer&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Is &lt;code&gt;-았-&#x2F;-었-&lt;&#x2F;code&gt; a suffix?&lt;&#x2F;td&gt;&lt;td&gt;No. It is a past-tense pre-final ending.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;What is &lt;code&gt;-어요&lt;&#x2F;code&gt;?&lt;&#x2F;td&gt;&lt;td&gt;It is a sentence-final ending. It ends a sentence in 해요체 style.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Do both verbs and adjectives conjugate?&lt;&#x2F;td&gt;&lt;td&gt;Yes. Both are 용언.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Are particles words?&lt;&#x2F;td&gt;&lt;td&gt;In school grammar, particles are treated as words, but they are written attached to the preceding word.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Are eojeol and word the same?&lt;&#x2F;td&gt;&lt;td&gt;No. &lt;code&gt;철수가&lt;&#x2F;code&gt; is one eojeol, but it can be analyzed as two words: &lt;code&gt;철수&lt;&#x2F;code&gt; + &lt;code&gt;가&lt;&#x2F;code&gt;.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;When is a complement used?&lt;&#x2F;td&gt;&lt;td&gt;Mainly before &lt;code&gt;되다&lt;&#x2F;code&gt; and &lt;code&gt;아니다&lt;&#x2F;code&gt;.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;one-sentence-analysis-example&quot;&gt;One-sentence analysis example&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;철수가 새 책을 빨리 읽었다.&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Expression&lt;&#x2F;th&gt;&lt;th&gt;Analysis&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;철수&lt;&#x2F;td&gt;&lt;td&gt;noun, 체언&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;가&lt;&#x2F;td&gt;&lt;td&gt;subject case particle&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;철수가&lt;&#x2F;td&gt;&lt;td&gt;subject&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;새&lt;&#x2F;td&gt;&lt;td&gt;determiner, adnominal modifier&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;책&lt;&#x2F;td&gt;&lt;td&gt;noun, 체언&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;을&lt;&#x2F;td&gt;&lt;td&gt;object case particle&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;책을&lt;&#x2F;td&gt;&lt;td&gt;object&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;빨리&lt;&#x2F;td&gt;&lt;td&gt;adverb, adverbial&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;읽었다&lt;&#x2F;td&gt;&lt;td&gt;verb, predicate&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;읽-&lt;&#x2F;td&gt;&lt;td&gt;stem&#x2F;root&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;-었-&lt;&#x2F;td&gt;&lt;td&gt;past-tense pre-final ending&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;-다&lt;&#x2F;td&gt;&lt;td&gt;sentence-final ending&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;National Institute of Korean Language Standard Korean Dictionary: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;stdict.korean.go.kr&#x2F;&quot;&gt;https:&#x2F;&#x2F;stdict.korean.go.kr&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;National Institute of Korean Language Korean Teaching-Learning Center: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;kcenter.korean.go.kr&#x2F;&quot;&gt;https:&#x2F;&#x2F;kcenter.korean.go.kr&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Korean parts of speech: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%ED%95%9C%EA%B5%AD%EC%96%B4%EC%9D%98_%ED%92%88%EC%82%AC&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Korean particles: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%A1%B0%EC%82%AC_(%ED%92%88%EC%82%AC)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Korean endings: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%96%B4%EB%AF%B8&quot;&gt;https:&#x2F;&#x2F;ko.wikipedia.org&#x2F;wiki&#x2F;%EC%96%B4%EB%AF%B8&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

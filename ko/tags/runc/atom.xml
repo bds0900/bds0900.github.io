@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - runc</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/runc/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2026-06-17T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/runc/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Layer 4 — runc (저수준 OCI 런타임)</title>
+        <published>2026-06-17T00:00:00+00:00</published>
+        <updated>2026-06-17T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/docker/layer4-runc/"/>
+        <id>https://emptyfridge.dev/ko/docker/layer4-runc/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/docker/layer4-runc/">&lt;blockquote&gt;
+&lt;p&gt;Docker 레이어 시리즈 4편. 스택은 위에서 아래로:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;docker CLI → 2. dockerd → 3. containerd → &lt;strong&gt;4. runc&lt;&#x2F;strong&gt; →&lt;&#x2F;li&gt;
+&lt;li&gt;Linux 커널. &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;.&#x2F;component_and_layers.md&quot;&gt;개요 글&lt;&#x2F;a&gt; 참고.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;h2 id=&quot;jeongce&quot;&gt;정체&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;는 &lt;strong&gt;저수준 런타임&lt;&#x2F;strong&gt; — &lt;em&gt;실제로 컨테이너를 생성하는&lt;&#x2F;em&gt; 프로그램이다. 그 위의
+모든 것(CLI, dockerd, containerd)은 오케스트레이션이고, &lt;code&gt;runc&lt;&#x2F;code&gt;는 컨테이너가
+추상 개념이기를 멈추고 &lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;.&#x2F;component_and_layers.md&quot;&gt;Linux 커널&lt;&#x2F;a&gt; 위의 진짜 격리된
+프로세스가 되는 지점이다.&lt;&#x2F;p&gt;
+&lt;p&gt;작고, 한 가지 일만 하고, 컨테이너를 시작시킨 뒤 &lt;strong&gt;즉시 종료&lt;&#x2F;strong&gt;한다.
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&quot;&gt;&lt;strong&gt;OCI Runtime Spec&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;의
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;implementations.md&quot;&gt;레퍼런스 구현체&lt;&#x2F;a&gt;다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;keonteineoreul-saengseonghanda-neun-ge-siljero-museun-ddeusinga&quot;&gt;&quot;컨테이너를 생성한다&quot;는 게 실제로 무슨 뜻인가&lt;&#x2F;h2&gt;
+&lt;p&gt;컨테이너는 가상머신이 아니다. 그냥 &lt;strong&gt;주변 세상에 대해 속고 있는 평범한 Linux
+프로세스&lt;&#x2F;strong&gt;다. &lt;code&gt;runc&lt;&#x2F;code&gt;가 Linux 커널의 세 가지 기능으로 그 거짓말을 한다:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;namespaces.7.html&quot;&gt;&lt;strong&gt;namespace&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt; —
+프로세스가 &lt;em&gt;무엇을 볼 수 있는지&lt;&#x2F;em&gt;를 격리한다.
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#namespaces&quot;&gt;OCI spec이 정의하는 8종&lt;&#x2F;a&gt;:
+PID(자기만의 PID 1), 마운트(자기만의 파일시스템 뷰), 네트워크(자기만의 인터페이스),
+사용자, 호스트명(UTS), IPC, cgroup(자기만의 cgroup 뷰), time(자기만의 시계)을
+각각 분리한다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;cgroups.7.html&quot;&gt;&lt;strong&gt;cgroup&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;(control group) —
+프로세스가 &lt;em&gt;무엇을 얼마나 쓸 수 있는지&lt;&#x2F;em&gt;를
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#control-groups&quot;&gt;제한한다&lt;&#x2F;a&gt;:
+CPU, 메모리, PID 수, I&#x2F;O. &lt;code&gt;--memory=512m&lt;&#x2F;code&gt;이 강제되는 방식이 이거다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;루트 파일시스템(rootfs)&lt;&#x2F;strong&gt; — &lt;code&gt;runc&lt;&#x2F;code&gt;가 containerd가 이미지 레이어로 준비해 둔
+파일시스템으로 &lt;code&gt;pivot_root&lt;&#x2F;code&gt; 해서, 프로세스가 호스트가 아니라 이미지의 파일을
+&lt;code&gt;&#x2F;&lt;&#x2F;code&gt;로 보게 만든다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;여기에 보안 레이어도 적용한다:
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config.md&quot;&gt;&lt;strong&gt;capabilities&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;(root 권한 떨구기),
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#seccomp&quot;&gt;&lt;strong&gt;seccomp&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;(syscall 필터),
+옵션으로 AppArmor&#x2F;SELinux. 그런 다음 그 만들어진 세상 안에서
+컨테이너의 entrypoint를 PID 1로 &lt;code&gt;exec&lt;&#x2F;code&gt;하고 — 종료한다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;wae-pse-geoyi-an-naona&quot;&gt;왜 &lt;code&gt;ps&lt;&#x2F;code&gt;에 거의 안 나오나&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;는 &lt;strong&gt;오래 살지 않는다&lt;&#x2F;strong&gt;. 컨테이너 &lt;em&gt;생성&lt;&#x2F;em&gt; 동안만 돌고,
+&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;shim&lt;&#x2F;a&gt;에게 넘긴 뒤 종료한다. 그래서:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; colima ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; sh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -c&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;ps -e -o comm | grep -E &amp;quot;dockerd|containerd|runc&amp;quot;&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;dockerd&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;containerd&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;containerd-shim-runc-v2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;     # 오래 사는 부모&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# runc는 보통 여기 없다 — 이미 종료됨&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;를 프로세스 목록에서 잡으려면 시작이 느린 무언가를 &lt;code&gt;docker run&lt;&#x2F;code&gt; 하는 &lt;em&gt;도중에&lt;&#x2F;em&gt;
+봐야 한다. 그 후엔 컨테이너 프로세스가 shim에 reparent되고, &lt;code&gt;runc&lt;&#x2F;code&gt;는 사라진다.
+이건 의도된 설계다 (&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;레이어 3&lt;&#x2F;a&gt;의 shim 설명 참고).&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;oci-runtime-spec-runcga-gyoce-ganeunghan-iyu&quot;&gt;OCI Runtime Spec — runc가 교체 가능한 이유&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;는 그저 &lt;strong&gt;Open Container Initiative(OCI) Runtime Specification&lt;&#x2F;strong&gt;의 &lt;em&gt;레퍼런스&lt;&#x2F;em&gt;
+구현일 뿐이다. 이 spec은 표준
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;bundle.md&quot;&gt;&quot;bundle&quot;&lt;&#x2F;a&gt;(rootfs + &lt;code&gt;config.json&lt;&#x2F;code&gt;)과
+런타임이 지원해야 하는
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;runtime.md&quot;&gt;명령들&lt;&#x2F;a&gt;(&lt;code&gt;create&lt;&#x2F;code&gt;, &lt;code&gt;start&lt;&#x2F;code&gt;, &lt;code&gt;kill&lt;&#x2F;code&gt;, &lt;code&gt;delete&lt;&#x2F;code&gt;)을
+정의한다.
+&lt;a href=&quot;https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer4-runc&#x2F;.&#x2F;layer3_containerd.md&quot;&gt;containerd&lt;&#x2F;a&gt;가 이 spec으로 말하므로, OCI를 따르는 어떤
+런타임이든 갈아끼울 수 있다:&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;저수준 런타임&lt;&#x2F;th&gt;&lt;th&gt;바뀌는 점&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runc&quot;&gt;&lt;strong&gt;runc&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;기본값. 표준 Linux namespace + cgroup. Go로 작성.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;containers&#x2F;crun&quot;&gt;&lt;strong&gt;crun&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;같은 모델, C로 작성 — 시작 빠르고 메모리 적음.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;gvisor.dev&#x2F;docs&#x2F;architecture_guide&#x2F;security&#x2F;&quot;&gt;&lt;strong&gt;gVisor (&lt;code&gt;runsc&lt;&#x2F;code&gt;)&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;실제 커널 앞에 &lt;strong&gt;유저 공간 커널&lt;&#x2F;strong&gt;을 둔다 — 격리 강함, 약간의 오버헤드.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kata-containers&#x2F;kata-containers&#x2F;blob&#x2F;main&#x2F;docs&#x2F;design&#x2F;architecture&#x2F;README.md&quot;&gt;&lt;strong&gt;Kata Containers&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;각 컨테이너를 &lt;strong&gt;경량 마이크로 VM&lt;&#x2F;strong&gt;에서 실행 — VM급 격리 + 컨테이너 사용성.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;youki-dev&#x2F;youki&quot;&gt;&lt;strong&gt;youki&lt;&#x2F;strong&gt;&lt;&#x2F;a&gt;&lt;&#x2F;td&gt;&lt;td&gt;Rust로 작성한 runc 호환 런타임.&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;모두 같은 OCI 인터페이스를 구현하므로, (예: 더 강한 격리를 위해) 런타임을 바꿔도
+CLI·dockerd·containerd는 &lt;strong&gt;건드릴 필요가 없다&lt;&#x2F;strong&gt; — runtime-class 설정만 바꾸면 된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;runcga-sobihaneun-spec-bogi&quot;&gt;runc가 소비하는 spec 보기&lt;&#x2F;h2&gt;
+&lt;p&gt;VM 안에서 runc를 직접 들여다볼 수 있다:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;shellscript&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;$&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; colima ssh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; --&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; sh&lt;&#x2F;span&gt;&lt;span style=&quot;color: #95E6CB;&quot;&gt; -c&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; &amp;#39;command -v runc; runc --version&amp;#39;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;&#x2F;usr&#x2F;bin&#x2F;runc&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;runc&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; version 1.x.x&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;spec:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt; 1.x.x&lt;&#x2F;span&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;          # &amp;lt;- 구현하는 OCI Runtime Spec 버전&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# runc는 &amp;quot;bundle&amp;quot;을 다룬다: rootfs 디렉터리 + config.json&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #5A6673;font-style: italic;&quot;&gt;# config.json이 namespace, cgroup, 마운트, capabilities, 프로세스를 기술한다&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그 &lt;code&gt;config.json&lt;&#x2F;code&gt;이 바로 containerd가 생성해서 &lt;code&gt;runc&lt;&#x2F;code&gt;에 건네는 것이고, &lt;code&gt;runc&lt;&#x2F;code&gt;는
+그걸 읽어 거기 적힌 그대로의 컨테이너를 만든다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;jeonce-haendeuopeu-heureum&quot;&gt;전체 핸드오프 흐름&lt;&#x2F;h2&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;docker run nginx&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;  └─ dockerd                    [레이어 2] 이미지 해석, 네트워크&#x2F;볼륨 세팅&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;       └─ containerd            [레이어 3] 이미지 → rootfs 풀기, &amp;quot;task&amp;quot; 생성&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            └─ containerd-shim-runc-v2    (상주 프로세스)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                 └─ runc        [레이어 4] namespace&#x2F;cgroup, pivot_root, exec → 종료&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                      └─ nginx  [       ] 컨테이너 안 PID 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                           └─   [레이어 5] Linux 커널&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;h2 id=&quot;jeongri&quot;&gt;정리&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;는 컨테이너가 &lt;strong&gt;진짜 격리된 Linux 프로세스&lt;&#x2F;strong&gt;가 되는 곳이다 —
+namespace(보는 것), cgroup(쓰는 것), rootfs(파일시스템).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;수명이 짧다&lt;&#x2F;strong&gt;: 컨테이너를 만들고 shim에 넘긴 뒤 종료한다 — 그래서 &lt;code&gt;ps&lt;&#x2F;code&gt;에 보통
+안 보인다.&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;strong&gt;OCI Runtime Spec&lt;&#x2F;strong&gt;을 구현하므로 위 레이어를 건드리지 않고 &lt;strong&gt;교체 가능&lt;&#x2F;strong&gt;하다
+(crun, gVisor, Kata, youki).&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;code&gt;runc&lt;&#x2F;code&gt;를 쓸 때 그 아래의 &lt;strong&gt;Linux 커널&lt;&#x2F;strong&gt;(레이어 5)은 갈아끼울 수 없는 토대다.
+그 namespace와 cgroup이 이 모든 걸 가능하게 한다. 단, gVisor는 유저 공간 커널로,
+Kata는 게스트 커널로 이 토대를 추상화할 수 있다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;runc — OCI Runtime Spec 레퍼런스 구현 (seccomp, AppArmor, SELinux 포함): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runc&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runc&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec 구현체 목록 — runc가 레퍼런스: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;implementations.md&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;implementations.md&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — namespace 8종 정의 (PID, mount, network, user, UTS, IPC, cgroup, time): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#namespaces&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#namespaces&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — cgroup 리소스 제한 (CPU, memory, PIDs, Block IO): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#control-groups&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#control-groups&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — capabilities 정의: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config.md&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config.md&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — seccomp 필터 설정: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#seccomp&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;config-linux.md#seccomp&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — bundle 포맷 (rootfs + config.json): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;bundle.md&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;bundle.md&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;OCI Runtime Spec — 라이프사이클 (create, start, kill, delete): &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;runtime.md&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;opencontainers&#x2F;runtime-spec&#x2F;blob&#x2F;main&#x2F;runtime.md&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Linux namespaces(7) man page: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;namespaces.7.html&quot;&gt;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;namespaces.7.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;cgroups(7) man page: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;cgroups.7.html&quot;&gt;https:&#x2F;&#x2F;man7.org&#x2F;linux&#x2F;man-pages&#x2F;man7&#x2F;cgroups.7.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;crun — C로 작성, runc 대비 49.4% 빠른 시작: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;containers&#x2F;crun&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;containers&#x2F;crun&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;gVisor 보안 아키텍처 — 유저 공간 커널(Sentry)로 syscall 가로채기: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;gvisor.dev&#x2F;docs&#x2F;architecture_guide&#x2F;security&#x2F;&quot;&gt;https:&#x2F;&#x2F;gvisor.dev&#x2F;docs&#x2F;architecture_guide&#x2F;security&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Kata Containers 아키텍처 — 경량 VM 기반 컨테이너 격리: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;kata-containers&#x2F;kata-containers&#x2F;blob&#x2F;main&#x2F;docs&#x2F;design&#x2F;architecture&#x2F;README.md&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;kata-containers&#x2F;kata-containers&#x2F;blob&#x2F;main&#x2F;docs&#x2F;design&#x2F;architecture&#x2F;README.md&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;youki — Rust로 작성한 OCI 런타임: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;youki-dev&#x2F;youki&quot;&gt;https:&#x2F;&#x2F;github.com&#x2F;youki-dev&#x2F;youki&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

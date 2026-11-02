@@ -1,0 +1,435 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="en">
+    <title>Doosan&#x27;s Blog - Data Structure</title>
+    <subtitle>Learning is an endless process</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/categories/data-structure/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-05T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/categories/data-structure/atom.xml</id>
+    <entry xml:lang="en">
+        <title>Tree</title>
+        <published>2023-05-05T00:00:00+00:00</published>
+        <updated>2023-05-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/data_structure/tree/"/>
+        <id>https://emptyfridge.dev/data_structure/tree/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/data_structure/tree/">&lt;p&gt;A tree is a hierarchical data structure made of nodes and edges. From a graph perspective, it is a &lt;strong&gt;connected acyclic graph&lt;&#x2F;strong&gt;: every node is connected, and there are no cycles.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;Treedatastructure.png&quot; alt=&quot;tree&quot; &#x2F;&gt;
+source: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;core-properties&quot;&gt;Core properties&lt;&#x2F;h2&gt;
+&lt;p&gt;The three most important properties of a tree are:&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;A tree with &lt;code&gt;n&lt;&#x2F;code&gt; nodes has &lt;code&gt;n - 1&lt;&#x2F;code&gt; edges.&lt;&#x2F;li&gt;
+&lt;li&gt;Between any two nodes, exactly one path exists.&lt;&#x2F;li&gt;
+&lt;li&gt;Adding one edge creates a cycle, and removing one edge disconnects the tree.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;In programming, the word tree usually means a &lt;strong&gt;rooted tree&lt;&#x2F;strong&gt;, which has a root. The root defines parent-child relationships, and depth increases as nodes get farther from the root.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;terminology&quot;&gt;Terminology&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Term&lt;&#x2F;th&gt;&lt;th&gt;Meaning&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Root&lt;&#x2F;td&gt;&lt;td&gt;The starting node with no parent&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Parent&lt;&#x2F;td&gt;&lt;td&gt;The node directly above another node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Child&lt;&#x2F;td&gt;&lt;td&gt;The node directly below another node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Sibling&lt;&#x2F;td&gt;&lt;td&gt;A node with the same parent&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Leaf&lt;&#x2F;td&gt;&lt;td&gt;A node with no children&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Internal node&lt;&#x2F;td&gt;&lt;td&gt;A node that is not a leaf&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Degree&lt;&#x2F;td&gt;&lt;td&gt;Number of children&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Depth&lt;&#x2F;td&gt;&lt;td&gt;Number of edges from the root to the node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Height&lt;&#x2F;td&gt;&lt;td&gt;Number of edges from the node to the farthest leaf&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Subtree&lt;&#x2F;td&gt;&lt;td&gt;A partial tree rooted at a specific node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;For example, the root&#x27;s depth is &lt;code&gt;0&lt;&#x2F;code&gt;, and a leaf&#x27;s height is &lt;code&gt;0&lt;&#x2F;code&gt;. Some problems define height by the number of nodes instead of the number of edges, so in interviews or algorithm problems, it is best to confirm the definition first.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;types-of-trees&quot;&gt;Types of trees&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;binary-tree&quot;&gt;Binary Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;A binary tree is a tree where each node has at most two children. The children are usually called &lt;code&gt;left&lt;&#x2F;code&gt; and &lt;code&gt;right&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;binary-search-tree&quot;&gt;Binary Search Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;A binary search tree is a binary tree with an ordering rule.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;all values in left subtree &amp;lt; root value &amp;lt; all values in right subtree&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Because of this rule, search, insert, and delete can be &lt;code&gt;O(log n)&lt;&#x2F;code&gt; on average. But if the tree becomes skewed to one side, its height becomes &lt;code&gt;n&lt;&#x2F;code&gt;, and those operations can degrade to &lt;code&gt;O(n)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;self-balancing-search-tree&quot;&gt;Self-balancing Search Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;A self-balancing search tree adjusts itself after insert&#x2F;delete operations so its height does not grow too large.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;AVL tree&lt;&#x2F;li&gt;
+&lt;li&gt;Red-black tree&lt;&#x2F;li&gt;
+&lt;li&gt;B-tree&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Important note: &lt;strong&gt;a B-tree is not a binary tree.&lt;&#x2F;strong&gt; It is a multi-way balanced search tree where one node can have multiple keys and multiple children. It commonly appears in database indexes and filesystems.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;full-complete-perfect-binary-tree&quot;&gt;Full &#x2F; Complete &#x2F; Perfect Binary Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;These three terms look similar, so they are easy to confuse.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Type&lt;&#x2F;th&gt;&lt;th&gt;Condition&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Full binary tree&lt;&#x2F;td&gt;&lt;td&gt;Every node has either 0 or 2 children&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Complete binary tree&lt;&#x2F;td&gt;&lt;td&gt;Every level except the last is full, and the last level is filled from the left&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Perfect binary tree&lt;&#x2F;td&gt;&lt;td&gt;Every internal node has 2 children, and all leaves are at the same depth&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;A perfect binary tree is always both full and complete. But a full tree is not necessarily complete, and a complete tree is not necessarily full.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;traversal&quot;&gt;Traversal&lt;&#x2F;h2&gt;
+&lt;p&gt;Traversal is a method for visiting every node in a tree exactly once. If a tree has &lt;code&gt;n&lt;&#x2F;code&gt; nodes, every traversal is basically &lt;code&gt;O(n)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;full_binary_tree.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;dfs-depth-first-search&quot;&gt;DFS: Depth-First Search&lt;&#x2F;h3&gt;
+&lt;p&gt;DFS goes all the way down in one direction, then comes back. It can be implemented with the recursive call stack or with an explicit stack.&lt;&#x2F;p&gt;
+&lt;p&gt;In a binary tree, DFS traversals are named by when the root is visited.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Traversal&lt;&#x2F;th&gt;&lt;th&gt;Order&lt;&#x2F;th&gt;&lt;th&gt;Example&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Preorder&lt;&#x2F;td&gt;&lt;td&gt;Root -&amp;gt; Left -&amp;gt; Right&lt;&#x2F;td&gt;&lt;td&gt;A-B-D-E-H-I-C-F-G&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Inorder&lt;&#x2F;td&gt;&lt;td&gt;Left -&amp;gt; Root -&amp;gt; Right&lt;&#x2F;td&gt;&lt;td&gt;D-B-H-E-I-A-F-C-G&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Postorder&lt;&#x2F;td&gt;&lt;td&gt;Left -&amp;gt; Right -&amp;gt; Root&lt;&#x2F;td&gt;&lt;td&gt;D-H-I-E-B-F-G-C-A&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;The way to remember this is simple. Left always comes before Right. If Root comes first, it is preorder. If Root is in the middle, it is inorder. If Root comes last, it is postorder.&lt;&#x2F;p&gt;
+&lt;p&gt;Inorder traversal is especially important for binary search trees. Traversing a BST inorder produces values in sorted order.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;, output&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(node)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;        inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;(), output);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        output&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;val);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;        inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;(), output);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The extra space for DFS is &lt;code&gt;O(h)&lt;&#x2F;code&gt; from the recursive call stack, where &lt;code&gt;h&lt;&#x2F;code&gt; is the tree height. For a balanced tree it is &lt;code&gt;O(log n)&lt;&#x2F;code&gt;, and for a tree skewed to one side it is &lt;code&gt;O(n)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;bfs-breadth-first-search&quot;&gt;BFS: Breadth-First Search&lt;&#x2F;h3&gt;
+&lt;p&gt;BFS is also called level-order traversal. It starts from the root, visits nodes at the same depth first, then moves down to the next level.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;binary_tree_level_order.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;BFS is implemented with a queue. It appears often in problems involving level-by-level tree processing, shortest edge counts, and serialization.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; std&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;collections&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;VecDeque&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; level_order&lt;&#x2F;span&gt;&lt;span&gt;(root&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; result&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; VecDeque&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(root)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; root {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(root);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    while let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(node)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;pop_front&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        result&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;val);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(left)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(left);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(right)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(right);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    result&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The extra space for BFS is proportional to the maximum number of nodes stored in the queue. If the tree&#x27;s maximum width is &lt;code&gt;w&lt;&#x2F;code&gt;, the space is &lt;code&gt;O(w)&lt;&#x2F;code&gt;. In a complete binary tree, the last level contains many nodes, so the worst case can be &lt;code&gt;O(n)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;representation&quot;&gt;Representation&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;linked-node&quot;&gt;Linked node&lt;&#x2F;h3&gt;
+&lt;p&gt;This is the most common representation. Each node points to its children.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;#[derive(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Debug&lt;&#x2F;span&gt;&lt;span&gt;)]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;pub struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TreeNode&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; val&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;impl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TreeNode&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; new&lt;&#x2F;span&gt;&lt;span&gt;(val&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt; Self&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        Self&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            val,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; None&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; None&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In Rust tree problems on LeetCode, you often see &lt;code&gt;Option&amp;lt;Rc&amp;lt;RefCell&amp;lt;TreeNode&amp;gt;&amp;gt;&amp;gt;&lt;&#x2F;code&gt; because of shared ownership and interior mutability. But when explaining the tree concept itself, &lt;code&gt;Box&amp;lt;TreeNode&amp;gt;&lt;&#x2F;code&gt; is simpler.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;array&quot;&gt;Array&lt;&#x2F;h3&gt;
+&lt;p&gt;Trees with almost no empty spaces, such as complete binary trees, are easy to represent with an array.&lt;&#x2F;p&gt;
+&lt;p&gt;If the root index is &lt;code&gt;0&lt;&#x2F;code&gt;:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;left child  = 2 * i + 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;right child = 2 * i + 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;parent      = (i - 1) &#x2F; 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Heaps use this representation.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ArrayTree&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    nodes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;impl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ArrayTree&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; left_index&lt;&#x2F;span&gt;&lt;span&gt;(parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;        2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; *&lt;&#x2F;span&gt;&lt;span&gt; parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; right_index&lt;&#x2F;span&gt;&lt;span&gt;(parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;        2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; *&lt;&#x2F;span&gt;&lt;span&gt; parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;The array representation has fast index calculation and good cache locality. But for sparse trees, many empty slots are needed, so memory is wasted.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;complexity&quot;&gt;Complexity&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Operation&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;General binary tree&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Balanced BST&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Skewed BST&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Search&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Insert&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n), or O(1) if the position is known&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Delete&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Traversal&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;The important thing in tree problems is to first distinguish whether it is a binary tree, a BST, or a balanced tree. If you mix those up, it is easy to get the time complexity wrong.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;where-trees-are-used&quot;&gt;Where trees are used&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Filesystem directory structures&lt;&#x2F;li&gt;
+&lt;li&gt;HTML&#x2F;XML DOM&lt;&#x2F;li&gt;
+&lt;li&gt;Compiler AST, or Abstract Syntax Tree&lt;&#x2F;li&gt;
+&lt;li&gt;Database indexes such as B-tree and B+tree&lt;&#x2F;li&gt;
+&lt;li&gt;Priority queue, or heap&lt;&#x2F;li&gt;
+&lt;li&gt;Prefix search, or trie&lt;&#x2F;li&gt;
+&lt;li&gt;Range query structures such as segment tree and Fenwick tree&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;things-to-remember&quot;&gt;Things to remember&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A tree is a connected graph with no cycles.&lt;&#x2F;li&gt;
+&lt;li&gt;In a rooted tree, parent-child relationships exist.&lt;&#x2F;li&gt;
+&lt;li&gt;A binary tree and a binary search tree are different.&lt;&#x2F;li&gt;
+&lt;li&gt;A balanced BST keeps height low so search&#x2F;insert&#x2F;delete stay close to &lt;code&gt;O(log n)&lt;&#x2F;code&gt;.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS uses a queue, while DFS uses a stack or recursion.&lt;&#x2F;li&gt;
+&lt;li&gt;Array tree representation fits complete binary trees and heaps, but is inefficient for sparse trees.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tree data structure: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Tree_(data_structure)&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Tree_(data_structure)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary search tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_search_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_search_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Self-balancing binary search tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Self-balancing_binary_search_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Self-balancing_binary_search_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;B-tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;B-tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;B-tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary heap: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_heap&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_heap&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Segment Tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;data_structures&#x2F;segment_tree.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;data_structures&#x2F;segment_tree.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;GeeksforGeeks - Binary tree array implementation: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="en">
+        <title>Graph</title>
+        <published>2021-01-18T00:00:00+00:00</published>
+        <updated>2021-01-18T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/data_structure/graph/"/>
+        <id>https://emptyfridge.dev/data_structure/graph/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/data_structure/graph/">&lt;p&gt;A graph is a data structure that represents relationships using &lt;strong&gt;nodes, also called vertices&lt;&#x2F;strong&gt;, and &lt;strong&gt;edges&lt;&#x2F;strong&gt;.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;G = (V, E)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;V = vertices, nodes&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;E = edges, relationships between vertices&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;A tree is also a kind of graph. More precisely, it can be viewed as a connected undirected graph with no cycles.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;when-graphs-are-needed&quot;&gt;When graphs are needed&lt;&#x2F;h2&gt;
+&lt;p&gt;Graphs are useful when the core of the data is the relationship between items.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Social network: person = vertex, friendship = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Map: city&#x2F;intersection = vertex, road = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Dependency graph: package&#x2F;module = vertex, dependency = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Web: page = vertex, hyperlink = edge&lt;&#x2F;li&gt;
+&lt;li&gt;Workflow&#x2F;state machine: state = vertex, transition = edge&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;If arrays and lists focus on order, graphs focus on connection.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;types-of-graphs&quot;&gt;Types of graphs&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;undirected-graph&quot;&gt;Undirected Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;The edges have no direction.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A -- B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;If &lt;code&gt;A&lt;&#x2F;code&gt; is connected to &lt;code&gt;B&lt;&#x2F;code&gt;, then &lt;code&gt;B&lt;&#x2F;code&gt; is also connected to &lt;code&gt;A&lt;&#x2F;code&gt;. This fits models such as Facebook friendships.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;directed-graph&quot;&gt;Directed Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;The edges have direction.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A -&amp;gt; B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Just because &lt;code&gt;A&lt;&#x2F;code&gt; points to &lt;code&gt;B&lt;&#x2F;code&gt; does not mean &lt;code&gt;B&lt;&#x2F;code&gt; points to &lt;code&gt;A&lt;&#x2F;code&gt;. This fits models such as Twitter follows, package dependencies, and web links.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;weighted-graph&quot;&gt;Weighted Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;The edges have values such as cost or distance.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;A --(7)-- B&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Weighted graphs are used to represent road distance, network latency, transfer cost, similarity score, and similar values.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;cyclic-acyclic-graph&quot;&gt;Cyclic &#x2F; Acyclic Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;A cycle is a path where you start at a vertex, move along edges, and can return to the same vertex.&lt;&#x2F;p&gt;
+&lt;p&gt;A directed graph with no cycles is called a DAG, or Directed Acyclic Graph. DAGs appear often in build dependencies, course prerequisites, and job scheduling problems.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;connected-graph&quot;&gt;Connected Graph&lt;&#x2F;h3&gt;
+&lt;p&gt;In an undirected graph, if every vertex can reach every other vertex, it is a connected graph. If the graph has several disconnected parts, those parts are called connected components.&lt;&#x2F;p&gt;
+&lt;p&gt;In a directed graph, when vertices can reach each other while respecting direction, they are called strongly connected.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;graph-representation&quot;&gt;Graph representation&lt;&#x2F;h2&gt;
+&lt;p&gt;Representation is very important when solving graph algorithms. Let &lt;code&gt;V&lt;&#x2F;code&gt; be the number of vertices and &lt;code&gt;E&lt;&#x2F;code&gt; the number of edges.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;adjacency-matrix&quot;&gt;Adjacency Matrix&lt;&#x2F;h3&gt;
+&lt;p&gt;An adjacency matrix stores whether an edge exists, or the edge weight, in a two-dimensional array.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;matrix[u][v] = true&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;matrix[u][v] = weight&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Operation&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Complexity&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Memory&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V^2)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge existence check&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(1)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Iterate all neighbors of a vertex&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Advantages:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is easy to implement.&lt;&#x2F;li&gt;
+&lt;li&gt;You can immediately check whether &lt;code&gt;u&lt;&#x2F;code&gt; and &lt;code&gt;v&lt;&#x2F;code&gt; are connected.&lt;&#x2F;li&gt;
+&lt;li&gt;It is suitable for dense graphs, meaning graphs with many edges.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Disadvantages:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Sparse graphs waste a lot of memory.&lt;&#x2F;li&gt;
+&lt;li&gt;To find neighbors, you must scan the entire row.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;adjacency-list&quot;&gt;Adjacency List&lt;&#x2F;h3&gt;
+&lt;p&gt;An adjacency list stores a list of connected neighbors for each vertex.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;0: [1, 2]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;1: [0, 3]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;2: [0]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;3: [1]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;In Rust, it is usually represented like this.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;For a weighted graph, store the neighbor and weight together.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;)&amp;gt;&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;), (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;2&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;), (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;3&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;    vec!&lt;&#x2F;span&gt;&lt;span&gt;[(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;)],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Operation&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Complexity&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Memory&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V + E)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge existence check&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg(u)), average O(1) with a set&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Iterate all neighbors of a vertex&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg(u))&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Advantages:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It is memory-efficient for sparse graphs.&lt;&#x2F;li&gt;
+&lt;li&gt;It works well for algorithms that iterate neighbors, such as BFS and DFS.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;Disadvantages:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;It can be slower than a matrix for problems that frequently ask only whether a specific edge exists.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;edge-list&quot;&gt;Edge List&lt;&#x2F;h3&gt;
+&lt;p&gt;An edge list stores only the list of edges.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;let&lt;&#x2F;span&gt;&lt;span&gt; edges&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 7&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    (&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;1&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 3&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;span&gt;),&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;It fits algorithms such as Kruskal MST, where edges are sorted and processed. But if you often need to find the neighbors of a specific vertex, it is inefficient because you must scan the whole edge list every time.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;representation-comparison&quot;&gt;Representation comparison&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Representation&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Memory&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Edge check&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;Neighbor traversal&lt;&#x2F;th&gt;&lt;th&gt;Best fit&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Adjacency matrix&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V^2)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(1)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V)&lt;&#x2F;td&gt;&lt;td&gt;Dense graph, fast edge lookup&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Adjacency list&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(V + E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(deg)&lt;&#x2F;td&gt;&lt;td&gt;Sparse graph, BFS&#x2F;DFS&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Edge list&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(E)&lt;&#x2F;td&gt;&lt;td&gt;Edge-centered algorithms, Kruskal&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Most coding-test graph problems use sparse graphs, so an adjacency list is the default choice.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;bfs&quot;&gt;BFS&lt;&#x2F;h2&gt;
+&lt;p&gt;BFS, or Breadth-First Search, visits vertices closest to the start first. It uses a queue.&lt;&#x2F;p&gt;
+&lt;p&gt;In an unweighted graph, BFS can find the &lt;strong&gt;shortest number of edges&lt;&#x2F;strong&gt; from the starting point.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; std&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;collections&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;VecDeque&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; bfs&lt;&#x2F;span&gt;&lt;span&gt;(graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;], start&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; distance&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; vec!&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;None&lt;&#x2F;span&gt;&lt;span&gt;; graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;len&lt;&#x2F;span&gt;&lt;span&gt;()];&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; VecDeque&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    distance[start]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;0&lt;&#x2F;span&gt;&lt;span&gt;);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(start);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    while let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(current)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;pop_front&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        let&lt;&#x2F;span&gt;&lt;span&gt; next_distance&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; distance[current]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;unwrap&lt;&#x2F;span&gt;&lt;span&gt;()&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;next&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; in&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;graph[current] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;            if&lt;&#x2F;span&gt;&lt;span&gt; distance[next]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;is_none&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                distance[next]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(next_distance);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;                queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(next);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    distance&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;With an adjacency list, the complexity is &lt;code&gt;O(V + E)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Common use cases:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Unweighted shortest path&lt;&#x2F;li&gt;
+&lt;li&gt;Finding connected components&lt;&#x2F;li&gt;
+&lt;li&gt;Bipartite graph check&lt;&#x2F;li&gt;
+&lt;li&gt;Level-order traversal&lt;&#x2F;li&gt;
+&lt;li&gt;Finding the minimum number of moves in a grid&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;dfs&quot;&gt;DFS&lt;&#x2F;h2&gt;
+&lt;p&gt;DFS, or Depth-First Search, follows one path all the way down, then backtracks. It can be implemented with recursion or with a stack.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; dfs&lt;&#x2F;span&gt;&lt;span&gt;(graph&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;[&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;usize&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;], current&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;, visited&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span&gt; [&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;bool&lt;&#x2F;span&gt;&lt;span&gt;]) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    visited[current]&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; true&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    for&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;next&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; in&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &amp;amp;&lt;&#x2F;span&gt;&lt;span&gt;graph[current] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; !&lt;&#x2F;span&gt;&lt;span&gt;visited[next] {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;            dfs&lt;&#x2F;span&gt;&lt;span&gt;(graph, next, visited);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;With an adjacency list, the complexity is &lt;code&gt;O(V + E)&lt;&#x2F;code&gt;.&lt;&#x2F;p&gt;
+&lt;p&gt;Common use cases:&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cycle detection&lt;&#x2F;li&gt;
+&lt;li&gt;Finding connected components&lt;&#x2F;li&gt;
+&lt;li&gt;Topological sort&lt;&#x2F;li&gt;
+&lt;li&gt;Backtracking&lt;&#x2F;li&gt;
+&lt;li&gt;Tree&#x2F;graph traversal&lt;&#x2F;li&gt;
+&lt;li&gt;Building block for strongly connected component algorithms&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;representative-algorithms&quot;&gt;Representative algorithms&lt;&#x2F;h2&gt;
+&lt;p&gt;For graph problems, the algorithm is usually chosen by asking, &quot;What do we need to find?&quot;&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Problem&lt;&#x2F;th&gt;&lt;th&gt;Representative algorithm&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Unweighted shortest path&lt;&#x2F;td&gt;&lt;td&gt;BFS&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Non-negative weighted shortest path&lt;&#x2F;td&gt;&lt;td&gt;Dijkstra&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Shortest path with negative edges&lt;&#x2F;td&gt;&lt;td&gt;Bellman-Ford&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;All-pairs shortest path&lt;&#x2F;td&gt;&lt;td&gt;Floyd-Warshall&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Minimum spanning tree&lt;&#x2F;td&gt;&lt;td&gt;Kruskal, Prim&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Topological order&lt;&#x2F;td&gt;&lt;td&gt;DFS or Kahn&#x27;s algorithm&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Strongly connected components&lt;&#x2F;td&gt;&lt;td&gt;Kosaraju, Tarjan&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Bipartite check&lt;&#x2F;td&gt;&lt;td&gt;BFS&#x2F;DFS coloring&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Connectivity &#x2F; cycle in undirected graph&lt;&#x2F;td&gt;&lt;td&gt;DFS, Union-Find&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;h2 id=&quot;tree-vs-graph&quot;&gt;Tree vs Graph&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;Tree&lt;&#x2F;th&gt;&lt;th&gt;Graph&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;A special form of graph&lt;&#x2F;td&gt;&lt;td&gt;A more general relationship model&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Connected + acyclic&lt;&#x2F;td&gt;&lt;td&gt;May or may not be connected&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;If there are &lt;code&gt;n&lt;&#x2F;code&gt; nodes, there are &lt;code&gt;n - 1&lt;&#x2F;code&gt; edges&lt;&#x2F;td&gt;&lt;td&gt;Edge count is much more flexible&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Exactly one path exists between two nodes&lt;&#x2F;td&gt;&lt;td&gt;There can be zero, one, or many paths&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Usually has root&#x2F;parent&#x2F;child&lt;&#x2F;td&gt;&lt;td&gt;May have no root&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Even if a problem looks like a tree problem, if the input is given as arbitrary edges instead of parent-child relationships, treat it as a graph and think about cycle handling and &lt;code&gt;visited&lt;&#x2F;code&gt; tracking.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;common-mistakes&quot;&gt;Common mistakes&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Adding an edge in only one direction for an undirected graph&lt;&#x2F;li&gt;
+&lt;li&gt;Marking &lt;code&gt;visited&lt;&#x2F;code&gt; when popping from the queue instead of when pushing, causing duplicate enqueues&lt;&#x2F;li&gt;
+&lt;li&gt;Using BFS on a weighted graph&lt;&#x2F;li&gt;
+&lt;li&gt;Using Dijkstra with negative-weight edges&lt;&#x2F;li&gt;
+&lt;li&gt;Mixing up cycle detection methods for directed and undirected graphs&lt;&#x2F;li&gt;
+&lt;li&gt;Ignoring stack overflow risk when recursive DFS runs on a deep graph&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;things-to-remember&quot;&gt;Things to remember&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;A graph is a data structure that represents relationships.&lt;&#x2F;li&gt;
+&lt;li&gt;Sparse graphs fit adjacency lists, and dense graphs fit adjacency matrices.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS uses a queue, while DFS uses a stack or recursion.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS is suitable for unweighted shortest path.&lt;&#x2F;li&gt;
+&lt;li&gt;For weighted shortest path, choose Dijkstra, Bellman-Ford, or another algorithm based on the weight conditions.&lt;&#x2F;li&gt;
+&lt;li&gt;A tree is a special form of graph.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Graph data structure: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_(abstract_data_type)&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_(abstract_data_type)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Graph theory: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_theory&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Graph_theory&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Adjacency list: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_list&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_list&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Adjacency matrix: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_matrix&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Adjacency_matrix&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Breadth First Search: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;breadth-first-search.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;breadth-first-search.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Depth First Search: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;depth-first-search.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;depth-first-search.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Dijkstra: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;dijkstra.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;dijkstra.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Minimum Spanning Tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;mst_kruskal.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;graph&#x2F;mst_kruskal.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

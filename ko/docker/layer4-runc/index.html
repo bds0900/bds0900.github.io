@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Layer 4 — runc (저수준 OCI 런타임)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Layer 4 — runc (저수준 OCI 런타임)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>850 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/docker/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>docker</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/runc/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>runc</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oci/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>oci</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/layers/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>layers</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <blockquote>
+<p>Docker 레이어 시리즈 4편. 스택은 위에서 아래로:</p>
+<ol>
+<li>docker CLI → 2. dockerd → 3. containerd → <strong>4. runc</strong> →</li>
+<li>Linux 커널. <a href="https://emptyfridge.dev/ko/docker/layer4-runc/./component_and_layers.md">개요 글</a> 참고.</li>
+</ol>
+</blockquote>
+<h2 id="jeongce">정체</h2>
+<p><code>runc</code>는 <strong>저수준 런타임</strong> — <em>실제로 컨테이너를 생성하는</em> 프로그램이다. 그 위의
+모든 것(CLI, dockerd, containerd)은 오케스트레이션이고, <code>runc</code>는 컨테이너가
+추상 개념이기를 멈추고 <a href="https://emptyfridge.dev/ko/docker/layer4-runc/./component_and_layers.md">Linux 커널</a> 위의 진짜 격리된
+프로세스가 되는 지점이다.</p>
+<p>작고, 한 가지 일만 하고, 컨테이너를 시작시킨 뒤 <strong>즉시 종료</strong>한다.
+<a rel="external" href="https://github.com/opencontainers/runtime-spec"><strong>OCI Runtime Spec</strong></a>의
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/implementations.md">레퍼런스 구현체</a>다.</p>
+<h2 id="keonteineoreul-saengseonghanda-neun-ge-siljero-museun-ddeusinga">"컨테이너를 생성한다"는 게 실제로 무슨 뜻인가</h2>
+<p>컨테이너는 가상머신이 아니다. 그냥 <strong>주변 세상에 대해 속고 있는 평범한 Linux
+프로세스</strong>다. <code>runc</code>가 Linux 커널의 세 가지 기능으로 그 거짓말을 한다:</p>
+<ul>
+<li><a rel="external" href="https://man7.org/linux/man-pages/man7/namespaces.7.html"><strong>namespace</strong></a> —
+프로세스가 <em>무엇을 볼 수 있는지</em>를 격리한다.
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces">OCI spec이 정의하는 8종</a>:
+PID(자기만의 PID 1), 마운트(자기만의 파일시스템 뷰), 네트워크(자기만의 인터페이스),
+사용자, 호스트명(UTS), IPC, cgroup(자기만의 cgroup 뷰), time(자기만의 시계)을
+각각 분리한다.</li>
+<li><a rel="external" href="https://man7.org/linux/man-pages/man7/cgroups.7.html"><strong>cgroup</strong></a>(control group) —
+프로세스가 <em>무엇을 얼마나 쓸 수 있는지</em>를
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups">제한한다</a>:
+CPU, 메모리, PID 수, I/O. <code>--memory=512m</code>이 강제되는 방식이 이거다.</li>
+<li><strong>루트 파일시스템(rootfs)</strong> — <code>runc</code>가 containerd가 이미지 레이어로 준비해 둔
+파일시스템으로 <code>pivot_root</code> 해서, 프로세스가 호스트가 아니라 이미지의 파일을
+<code>/</code>로 보게 만든다.</li>
+</ul>
+<p>여기에 보안 레이어도 적용한다:
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config.md"><strong>capabilities</strong></a>(root 권한 떨구기),
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp"><strong>seccomp</strong></a>(syscall 필터),
+옵션으로 AppArmor/SELinux. 그런 다음 그 만들어진 세상 안에서
+컨테이너의 entrypoint를 PID 1로 <code>exec</code>하고 — 종료한다.</p>
+<h2 id="wae-pse-geoyi-an-naona">왜 <code>ps</code>에 거의 안 나오나</h2>
+<p><code>runc</code>는 <strong>오래 살지 않는다</strong>. 컨테이너 <em>생성</em> 동안만 돌고,
+<a href="https://emptyfridge.dev/ko/docker/layer4-runc/./layer3_containerd.md">shim</a>에게 넘긴 뒤 종료한다. 그래서:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;ps -e -o comm | grep -E &quot;dockerd|containerd|runc&quot;&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">dockerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">containerd</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">containerd-shim-runc-v2</span><span style="color: #5A6673;font-style: italic;">     # 오래 사는 부모</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># runc는 보통 여기 없다 — 이미 종료됨</span></span></code></pre>
+<p><code>runc</code>를 프로세스 목록에서 잡으려면 시작이 느린 무언가를 <code>docker run</code> 하는 <em>도중에</em>
+봐야 한다. 그 후엔 컨테이너 프로세스가 shim에 reparent되고, <code>runc</code>는 사라진다.
+이건 의도된 설계다 (<a href="https://emptyfridge.dev/ko/docker/layer4-runc/./layer3_containerd.md">레이어 3</a>의 shim 설명 참고).</p>
+<h2 id="oci-runtime-spec-runcga-gyoce-ganeunghan-iyu">OCI Runtime Spec — runc가 교체 가능한 이유</h2>
+<p><code>runc</code>는 그저 <strong>Open Container Initiative(OCI) Runtime Specification</strong>의 <em>레퍼런스</em>
+구현일 뿐이다. 이 spec은 표준
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/bundle.md">"bundle"</a>(rootfs + <code>config.json</code>)과
+런타임이 지원해야 하는
+<a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/runtime.md">명령들</a>(<code>create</code>, <code>start</code>, <code>kill</code>, <code>delete</code>)을
+정의한다.
+<a href="https://emptyfridge.dev/ko/docker/layer4-runc/./layer3_containerd.md">containerd</a>가 이 spec으로 말하므로, OCI를 따르는 어떤
+런타임이든 갈아끼울 수 있다:</p>
+<table><thead><tr><th>저수준 런타임</th><th>바뀌는 점</th></tr></thead><tbody>
+<tr><td><a rel="external" href="https://github.com/opencontainers/runc"><strong>runc</strong></a></td><td>기본값. 표준 Linux namespace + cgroup. Go로 작성.</td></tr>
+<tr><td><a rel="external" href="https://github.com/containers/crun"><strong>crun</strong></a></td><td>같은 모델, C로 작성 — 시작 빠르고 메모리 적음.</td></tr>
+<tr><td><a rel="external" href="https://gvisor.dev/docs/architecture_guide/security/"><strong>gVisor (<code>runsc</code>)</strong></a></td><td>실제 커널 앞에 <strong>유저 공간 커널</strong>을 둔다 — 격리 강함, 약간의 오버헤드.</td></tr>
+<tr><td><a rel="external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md"><strong>Kata Containers</strong></a></td><td>각 컨테이너를 <strong>경량 마이크로 VM</strong>에서 실행 — VM급 격리 + 컨테이너 사용성.</td></tr>
+<tr><td><a rel="external" href="https://github.com/youki-dev/youki"><strong>youki</strong></a></td><td>Rust로 작성한 runc 호환 런타임.</td></tr>
+</tbody></table>
+<p>모두 같은 OCI 인터페이스를 구현하므로, (예: 더 강한 격리를 위해) 런타임을 바꿔도
+CLI·dockerd·containerd는 <strong>건드릴 필요가 없다</strong> — runtime-class 설정만 바꾸면 된다.</p>
+<h2 id="runcga-sobihaneun-spec-bogi">runc가 소비하는 spec 보기</h2>
+<p>VM 안에서 runc를 직접 들여다볼 수 있다:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">$</span><span style="color: #AAD94C;"> colima ssh</span><span style="color: #95E6CB;"> --</span><span style="color: #AAD94C;"> sh</span><span style="color: #95E6CB;"> -c</span><span style="color: #AAD94C;"> &#39;command -v runc; runc --version&#39;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">/usr/bin/runc</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">runc</span><span style="color: #AAD94C;"> version 1.x.x</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">spec:</span><span style="color: #AAD94C;"> 1.x.x</span><span style="color: #5A6673;font-style: italic;">          # &lt;- 구현하는 OCI Runtime Spec 버전</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># runc는 &quot;bundle&quot;을 다룬다: rootfs 디렉터리 + config.json</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># config.json이 namespace, cgroup, 마운트, capabilities, 프로세스를 기술한다</span></span></code></pre>
+<p>그 <code>config.json</code>이 바로 containerd가 생성해서 <code>runc</code>에 건네는 것이고, <code>runc</code>는
+그걸 읽어 거기 적힌 그대로의 컨테이너를 만든다.</p>
+<h2 id="jeonce-haendeuopeu-heureum">전체 핸드오프 흐름</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>docker run nginx</span></span>
+<span class="giallo-l"><span>  └─ dockerd                    [레이어 2] 이미지 해석, 네트워크/볼륨 세팅</span></span>
+<span class="giallo-l"><span>       └─ containerd            [레이어 3] 이미지 → rootfs 풀기, &quot;task&quot; 생성</span></span>
+<span class="giallo-l"><span>            └─ containerd-shim-runc-v2    (상주 프로세스)</span></span>
+<span class="giallo-l"><span>                 └─ runc        [레이어 4] namespace/cgroup, pivot_root, exec → 종료</span></span>
+<span class="giallo-l"><span>                      └─ nginx  [       ] 컨테이너 안 PID 1</span></span>
+<span class="giallo-l"><span>                           └─   [레이어 5] Linux 커널</span></span></code></pre><h2 id="jeongri">정리</h2>
+<ul>
+<li><code>runc</code>는 컨테이너가 <strong>진짜 격리된 Linux 프로세스</strong>가 되는 곳이다 —
+namespace(보는 것), cgroup(쓰는 것), rootfs(파일시스템).</li>
+<li><strong>수명이 짧다</strong>: 컨테이너를 만들고 shim에 넘긴 뒤 종료한다 — 그래서 <code>ps</code>에 보통
+안 보인다.</li>
+<li><strong>OCI Runtime Spec</strong>을 구현하므로 위 레이어를 건드리지 않고 <strong>교체 가능</strong>하다
+(crun, gVisor, Kata, youki).</li>
+<li><code>runc</code>를 쓸 때 그 아래의 <strong>Linux 커널</strong>(레이어 5)은 갈아끼울 수 없는 토대다.
+그 namespace와 cgroup이 이 모든 걸 가능하게 한다. 단, gVisor는 유저 공간 커널로,
+Kata는 게스트 커널로 이 토대를 추상화할 수 있다.</li>
+</ul>
+<h2 id="camgo">참고</h2>
+<ul>
+<li>runc — OCI Runtime Spec 레퍼런스 구현 (seccomp, AppArmor, SELinux 포함): <a rel="external" href="https://github.com/opencontainers/runc">https://github.com/opencontainers/runc</a></li>
+<li>OCI Runtime Spec 구현체 목록 — runc가 레퍼런스: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/implementations.md">https://github.com/opencontainers/runtime-spec/blob/main/implementations.md</a></li>
+<li>OCI Runtime Spec — namespace 8종 정의 (PID, mount, network, user, UTS, IPC, cgroup, time): <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#namespaces</a></li>
+<li>OCI Runtime Spec — cgroup 리소스 제한 (CPU, memory, PIDs, Block IO): <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#control-groups</a></li>
+<li>OCI Runtime Spec — capabilities 정의: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config.md">https://github.com/opencontainers/runtime-spec/blob/main/config.md</a></li>
+<li>OCI Runtime Spec — seccomp 필터 설정: <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp">https://github.com/opencontainers/runtime-spec/blob/main/config-linux.md#seccomp</a></li>
+<li>OCI Runtime Spec — bundle 포맷 (rootfs + config.json): <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/bundle.md">https://github.com/opencontainers/runtime-spec/blob/main/bundle.md</a></li>
+<li>OCI Runtime Spec — 라이프사이클 (create, start, kill, delete): <a rel="external" href="https://github.com/opencontainers/runtime-spec/blob/main/runtime.md">https://github.com/opencontainers/runtime-spec/blob/main/runtime.md</a></li>
+<li>Linux namespaces(7) man page: <a rel="external" href="https://man7.org/linux/man-pages/man7/namespaces.7.html">https://man7.org/linux/man-pages/man7/namespaces.7.html</a></li>
+<li>cgroups(7) man page: <a rel="external" href="https://man7.org/linux/man-pages/man7/cgroups.7.html">https://man7.org/linux/man-pages/man7/cgroups.7.html</a></li>
+<li>crun — C로 작성, runc 대비 49.4% 빠른 시작: <a rel="external" href="https://github.com/containers/crun">https://github.com/containers/crun</a></li>
+<li>gVisor 보안 아키텍처 — 유저 공간 커널(Sentry)로 syscall 가로채기: <a rel="external" href="https://gvisor.dev/docs/architecture_guide/security/">https://gvisor.dev/docs/architecture_guide/security/</a></li>
+<li>Kata Containers 아키텍처 — 경량 VM 기반 컨테이너 격리: <a rel="external" href="https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md">https://github.com/kata-containers/kata-containers/blob/main/docs/design/architecture/README.md</a></li>
+<li>youki — Rust로 작성한 OCI 런타임: <a rel="external" href="https://github.com/youki-dev/youki">https://github.com/youki-dev/youki</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;docker&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Docker? dockerd? containerd?
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker&#x2F;layer3-containerd&#x2F;">
+              Layer 3 — containerd (컨테이너 런타임)<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

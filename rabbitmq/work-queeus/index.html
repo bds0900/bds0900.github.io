@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Work Queues
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Work Queues
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-08-12">August 12, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>3 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>425 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rabbitmq/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>RabbitMQ</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/event-bus/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Event bus</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p><a rel="external" href="https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html">https://www.rabbitmq.com/tutorials/tutorial-two-dotnet.html</a></p>
+<h3 id="1-preparation">1. Preparation</h3>
+<p>shell</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>dotnet new console </span><span style="color: #F29668;">--</span><span>name NewTask</span></span>
+<span class="giallo-l"><span>mv NewTask</span><span style="color: #F29668;">/</span><span>Program.cs NewTask</span><span style="color: #F29668;">/</span><span>NewTask.cs</span></span>
+<span class="giallo-l"><span>cd NewTask</span></span>
+<span class="giallo-l"><span>dotnet add package RabbitMQ.Client</span></span></code></pre>
+<p>NewTask.cs</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> GetMessage</span><span>(args)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetBytes</span><span>(message)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicPublish</span><span>(</span><span style="color: #59C2FF;">exchange</span><span style="color: #BFBDB6B3;">:</span><span style="color: #FF8F40;"> string</span><span style="color: #F29668;">.</span><span>Empty</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     routingKey</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     basicProperties</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     body</span><span style="color: #BFBDB6B3;">:</span><span> body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Sent </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #FF8F40;">static string</span><span style="color: #FFB454;"> GetMessage</span><span>(</span><span style="color: #FF8F40;">string</span><span>[]</span><span style="color: #59C2FF;"> args</span><span>)</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>{</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #FF8F40;">    return</span><span> ((args</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> &gt;</span><span style="color: #D2A6FF;"> 0</span><span>)</span><span style="color: #F29668;"> ?</span><span style="color: #FF8F40;"> string</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Join</span><span>(</span><span style="color: #AAD94C;">&quot; &quot;</span><span style="color: #BFBDB6B3;">,</span><span> args)</span><span style="color: #F29668;"> :</span><span style="color: #AAD94C;"> &quot;Hello World!&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>}</span></span></code></pre>
+<p>shell</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>dotnet new console </span><span style="color: #F29668;">--</span><span>name Worker</span></span>
+<span class="giallo-l"><span>mv Worker</span><span style="color: #F29668;">/</span><span>Program.cs Worker</span><span style="color: #F29668;">/</span><span>Worker.cs</span></span>
+<span class="giallo-l"><span>cd Worker</span></span>
+<span class="giallo-l"><span>dotnet add package RabbitMQ.Client</span></span></code></pre>
+<p>Worker.cs</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Events</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [*] Waiting for messages.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> consumer</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> EventingBasicConsumer</span><span>(channel)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>consumer</span><span style="color: #F29668;">.</span><span>Received</span><span style="color: #F29668;"> +=</span><span> (</span><span style="color: #59C2FF;">model</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> ea</span><span>)</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> ea</span><span style="color: #F29668;">.</span><span>Body</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ToArray</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetString</span><span>(body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Received </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #FF8F40;">    int</span><span style="color: #59C2FF;"> dots</span><span style="color: #F29668;"> =</span><span> message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Split</span><span>(</span><span style="color: #AAD94C;">&#39;.&#39;</span><span>)</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> -</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>    Thread</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Sleep</span><span>(dots</span><span style="color: #F29668;"> *</span><span style="color: #D2A6FF;"> 1000</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l" style="background-color: #161A24;"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [x] Done&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicConsume</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoAck</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     consumer</span><span style="color: #BFBDB6B3;">:</span><span> consumer)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><h3 id="2-round-robin-dispatching">2. Round-robin dispatching</h3>
+<p>One of the advantages of using a Task Queue is the ability to easily parallelise work. If we are building up a backlog of work, we can just add more workers and that way, scale easily.</p>
+<p>One advantage of a Task Queue is that it allows parallel work. If we need to build a system that handles a growing backlog of jobs, we can scale easily by adding more workers.</p>
+<p>Create one <code>NewTask</code> object and run two <code>Worker</code> objects. Both receive messages from the queue.</p>
+<p>NewTask</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>dotnet run </span><span style="color: #AAD94C;">&quot;First message.&quot;</span></span>
+<span class="giallo-l"><span>dotnet run </span><span style="color: #AAD94C;">&quot;Second message..&quot;</span></span>
+<span class="giallo-l"><span>dotnet run </span><span style="color: #AAD94C;">&quot;Third message...&quot;</span></span>
+<span class="giallo-l"><span>dotnet run </span><span style="color: #AAD94C;">&quot;Fourth message....&quot;</span></span>
+<span class="giallo-l"><span>dotnet run </span><span style="color: #AAD94C;">&quot;Fifth message.....&quot;</span></span></code></pre>
+<p>Worker</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>dotnet run</span></span></code></pre>
+<p>Worker</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>dotnet run</span></span></code></pre>
+<p>Result</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>Press [</span><span style="color: #FF8F40;">enter</span><span>] to </span><span style="color: #FF8F40;">exit</span><span>.</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Received First message.</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Done</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Received Third message...</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Done</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Received Fifth message.....</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Done</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="powershell"><span class="giallo-l"><span>Press [</span><span style="color: #FF8F40;">enter</span><span>] to </span><span style="color: #FF8F40;">exit</span><span>.</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Received Second message..</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Done</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Received Fourth message....</span></span>
+<span class="giallo-l"><span>[</span><span style="color: #FF8F40;">x</span><span>] Done</span></span></code></pre>
+<p>RabbitMQ delivers messages to the next consumer in order. Each consumer receives an equal number of messages.</p>
+<p>This method is called round-robin.</p>
+<h3 id="3-message-acknowledgment">3. Message acknowledgment</h3>
+<p>What happens if a consumer dies while processing a task and cannot finish it? By default, RabbitMQ deletes a message after sending it to a consumer.</p>
+<p>In that case, if the consumer dies during processing, we lose the message.</p>
+<p>To avoid losing messages, RabbitMQ supports message acknowledgment. A message acknowledgment is a signal from the consumer to RabbitMQ saying that the message was received and processed.</p>
+<p>When RabbitMQ receives the acknowledgment, it deletes the message.</p>
+<p>If a consumer dies without sending an ack, RabbitMQ treats the message as unprocessed and puts it back into the queue. If another consumer exists, that consumer can take the message from the queue.</p>
+<p>The default acknowledgement timeout is 30 minutes.</p>
+<p>Manual message acknowledgments are enabled by default. In the previous example, we explicitly enabled auto acknowledgment by setting <code>autoAck</code> to <code>true</code>.</p>
+<p>This time, turn it off and send the ack manually.</p>
+<p>Worker.cs</p>
+<p>Add <code>BasicAck</code> and set <code>autoAck: false</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Events</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [*] Waiting for messages.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> consumer</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> EventingBasicConsumer</span><span>(channel)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>consumer</span><span style="color: #F29668;">.</span><span>Received</span><span style="color: #F29668;"> +=</span><span> (</span><span style="color: #59C2FF;">model</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> ea</span><span>)</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> ea</span><span style="color: #F29668;">.</span><span>Body</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ToArray</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetString</span><span>(body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Received </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    int</span><span style="color: #59C2FF;"> dots</span><span style="color: #F29668;"> =</span><span> message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Split</span><span>(</span><span style="color: #AAD94C;">&#39;.&#39;</span><span>)</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> -</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Thread</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Sleep</span><span>(dots</span><span style="color: #F29668;"> *</span><span style="color: #D2A6FF;"> 1000</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [x] Done&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #5A6673;font-style: italic;">    // here channel could also be accessed as ((EventingBasicConsumer)sender).Model</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>    channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicAck</span><span>(</span><span style="color: #59C2FF;">deliveryTag</span><span style="color: #BFBDB6B3;">:</span><span> ea</span><span style="color: #F29668;">.</span><span>DeliveryTag</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> multiple</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicConsume</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;hello&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">                     autoAck</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     consumer</span><span style="color: #BFBDB6B3;">:</span><span> consumer)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>The acknowledgement must be sent on the same channel.</p>
+<h3 id="4-message-durability">4. Message durability</h3>
+<p>We learned that if a consumer stops, another worker can receive the message. But if RabbitMQ itself stops, the queued work disappears.</p>
+<p>If we mark both the message and the queue as durable, RabbitMQ can remember the work even after it stops.</p>
+<p>NewTask.cs</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> GetMessage</span><span>(args)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetBytes</span><span>(message)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> properties</span><span style="color: #F29668;"> =</span><span> channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateBasicProperties</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>properties</span><span style="color: #F29668;">.</span><span>Persistent</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicPublish</span><span>(</span><span style="color: #59C2FF;">exchange</span><span style="color: #BFBDB6B3;">:</span><span style="color: #FF8F40;"> string</span><span style="color: #F29668;">.</span><span>Empty</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">                     routingKey</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">                     basicProperties</span><span style="color: #BFBDB6B3;">:</span><span> properties</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     body</span><span style="color: #BFBDB6B3;">:</span><span> body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Sent </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">static string</span><span style="color: #FFB454;"> GetMessage</span><span>(</span><span style="color: #FF8F40;">string</span><span>[]</span><span style="color: #59C2FF;"> args</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    return</span><span> ((args</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> &gt;</span><span style="color: #D2A6FF;"> 0</span><span>)</span><span style="color: #F29668;"> ?</span><span style="color: #FF8F40;"> string</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Join</span><span>(</span><span style="color: #AAD94C;">&quot; &quot;</span><span style="color: #BFBDB6B3;">,</span><span> args)</span><span style="color: #F29668;"> :</span><span style="color: #AAD94C;"> &quot;Hello World!&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Worker.cs</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Events</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [*] Waiting for messages.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> consumer</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> EventingBasicConsumer</span><span>(channel)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>consumer</span><span style="color: #F29668;">.</span><span>Received</span><span style="color: #F29668;"> +=</span><span> (</span><span style="color: #59C2FF;">model</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> ea</span><span>)</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> ea</span><span style="color: #F29668;">.</span><span>Body</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ToArray</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetString</span><span>(body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Received </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    int</span><span style="color: #59C2FF;"> dots</span><span style="color: #F29668;"> =</span><span> message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Split</span><span>(</span><span style="color: #AAD94C;">&#39;.&#39;</span><span>)</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> -</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Thread</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Sleep</span><span>(dots</span><span style="color: #F29668;"> *</span><span style="color: #D2A6FF;"> 1000</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [x] Done&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // here channel could also be accessed as ((EventingBasicConsumer)sender).Model</span></span>
+<span class="giallo-l"><span>    channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicAck</span><span>(</span><span style="color: #59C2FF;">deliveryTag</span><span style="color: #BFBDB6B3;">:</span><span> ea</span><span style="color: #F29668;">.</span><span>DeliveryTag</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> multiple</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicConsume</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoAck</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     consumer</span><span style="color: #BFBDB6B3;">:</span><span> consumer)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Because a queue named <code>hello</code> already exists, create a new one named <code>task_queue</code>. You cannot redefine the parameters of an existing queue.</p>
+<h3 id="5-fair-dispatch">5. Fair Dispatch</h3>
+<p>Sometimes heavy tasks are distributed to one worker while light tasks go to another. RabbitMQ does not know that difference by default; it just gives each worker the same number of messages.</p>
+<p>To change this behavior, set <code>prefetchCount=1</code> on the <code>BasicQos</code> method. This tells RabbitMQ not to give a worker more than one message at a time.</p>
+<p>Worker.cs</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> System</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Text</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span style="color: #59C2FF;"> RabbitMQ</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Client</span><span style="color: #F29668;">.</span><span style="color: #59C2FF;">Events</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> factory</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ConnectionFactory</span><span> { HostName</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;localhost&quot;</span><span style="color: #BFBDB6B3;">,</span><span> UserName</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&quot;test&quot;</span><span style="color: #BFBDB6B3;">,</span><span> Password</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;">&quot;test123&quot;</span><span style="color: #BFBDB6B3;">,</span><span>Port</span><span style="color: #F29668;">=</span><span style="color: #D2A6FF;">7777</span><span>  }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> connection</span><span style="color: #F29668;"> =</span><span> factory</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateConnection</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using var</span><span style="color: #59C2FF;"> channel</span><span style="color: #F29668;"> =</span><span> connection</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateModel</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">QueueDeclare</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     durable</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     exclusive</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoDelete</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     arguments</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> null</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l" style="background-color: #161A24;"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicQos</span><span>(</span><span style="color: #59C2FF;">prefetchSize</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 0</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> prefetchCount</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> global</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [*] Waiting for messages.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> consumer</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> EventingBasicConsumer</span><span>(channel)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>consumer</span><span style="color: #F29668;">.</span><span>Received</span><span style="color: #F29668;"> +=</span><span> (</span><span style="color: #59C2FF;">model</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> ea</span><span>)</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> body</span><span style="color: #F29668;"> =</span><span> ea</span><span style="color: #F29668;">.</span><span>Body</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ToArray</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> message</span><span style="color: #F29668;"> =</span><span> Encoding</span><span style="color: #F29668;">.</span><span>UTF8</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">GetString</span><span>(body)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">$&quot; [x] Received </span><span>{message}</span><span style="color: #AAD94C;">&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    int</span><span style="color: #59C2FF;"> dots</span><span style="color: #F29668;"> =</span><span> message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Split</span><span>(</span><span style="color: #AAD94C;">&#39;.&#39;</span><span>)</span><span style="color: #F29668;">.</span><span>Length</span><span style="color: #F29668;"> -</span><span style="color: #D2A6FF;"> 1</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Thread</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Sleep</span><span>(dots</span><span style="color: #F29668;"> *</span><span style="color: #D2A6FF;"> 1000</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; [x] Done&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // here channel could also be accessed as ((EventingBasicConsumer)sender).Model</span></span>
+<span class="giallo-l"><span>    channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicAck</span><span>(</span><span style="color: #59C2FF;">deliveryTag</span><span style="color: #BFBDB6B3;">:</span><span> ea</span><span style="color: #F29668;">.</span><span>DeliveryTag</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> multiple</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>channel</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">BasicConsume</span><span>(</span><span style="color: #59C2FF;">queue</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;task_queue&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     autoAck</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                     consumer</span><span style="color: #BFBDB6B3;">:</span><span> consumer)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(</span><span style="color: #AAD94C;">&quot; Press [enter] to exit.&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ReadLine</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;hello-world&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Hello World
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq&#x2F;exchange-durability-drift&#x2F;">
+              First Declarer Wins — Debugging RabbitMQ Exchange State Drift<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Tree
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Tree
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-05-05">May 05, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>6 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>1156 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/data-structure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Data Structure</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/tree/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>tree</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/binary-tree/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>binary-tree</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>DFS</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/bfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>BFS</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>A tree is a hierarchical data structure made of nodes and edges. From a graph perspective, it is a <strong>connected acyclic graph</strong>: every node is connected, and there are no cycles.</p>
+<p><img src="/images/DS/Tree/Treedatastructure.png" alt="tree" />
+source: <a rel="external" href="https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/">https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/</a></p>
+<h2 id="core-properties">Core properties</h2>
+<p>The three most important properties of a tree are:</p>
+<ol>
+<li>A tree with <code>n</code> nodes has <code>n - 1</code> edges.</li>
+<li>Between any two nodes, exactly one path exists.</li>
+<li>Adding one edge creates a cycle, and removing one edge disconnects the tree.</li>
+</ol>
+<p>In programming, the word tree usually means a <strong>rooted tree</strong>, which has a root. The root defines parent-child relationships, and depth increases as nodes get farther from the root.</p>
+<h2 id="terminology">Terminology</h2>
+<table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody>
+<tr><td>Root</td><td>The starting node with no parent</td></tr>
+<tr><td>Parent</td><td>The node directly above another node</td></tr>
+<tr><td>Child</td><td>The node directly below another node</td></tr>
+<tr><td>Sibling</td><td>A node with the same parent</td></tr>
+<tr><td>Leaf</td><td>A node with no children</td></tr>
+<tr><td>Internal node</td><td>A node that is not a leaf</td></tr>
+<tr><td>Degree</td><td>Number of children</td></tr>
+<tr><td>Depth</td><td>Number of edges from the root to the node</td></tr>
+<tr><td>Height</td><td>Number of edges from the node to the farthest leaf</td></tr>
+<tr><td>Subtree</td><td>A partial tree rooted at a specific node</td></tr>
+</tbody></table>
+<p>For example, the root's depth is <code>0</code>, and a leaf's height is <code>0</code>. Some problems define height by the number of nodes instead of the number of edges, so in interviews or algorithm problems, it is best to confirm the definition first.</p>
+<h2 id="types-of-trees">Types of trees</h2>
+<h3 id="binary-tree">Binary Tree</h3>
+<p>A binary tree is a tree where each node has at most two children. The children are usually called <code>left</code> and <code>right</code>.</p>
+<h3 id="binary-search-tree">Binary Search Tree</h3>
+<p>A binary search tree is a binary tree with an ordering rule.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>all values in left subtree &lt; root value &lt; all values in right subtree</span></span></code></pre>
+<p>Because of this rule, search, insert, and delete can be <code>O(log n)</code> on average. But if the tree becomes skewed to one side, its height becomes <code>n</code>, and those operations can degrade to <code>O(n)</code>.</p>
+<h3 id="self-balancing-search-tree">Self-balancing Search Tree</h3>
+<p>A self-balancing search tree adjusts itself after insert/delete operations so its height does not grow too large.</p>
+<ul>
+<li>AVL tree</li>
+<li>Red-black tree</li>
+<li>B-tree</li>
+</ul>
+<p>Important note: <strong>a B-tree is not a binary tree.</strong> It is a multi-way balanced search tree where one node can have multiple keys and multiple children. It commonly appears in database indexes and filesystems.</p>
+<h3 id="full-complete-perfect-binary-tree">Full / Complete / Perfect Binary Tree</h3>
+<p>These three terms look similar, so they are easy to confuse.</p>
+<table><thead><tr><th>Type</th><th>Condition</th></tr></thead><tbody>
+<tr><td>Full binary tree</td><td>Every node has either 0 or 2 children</td></tr>
+<tr><td>Complete binary tree</td><td>Every level except the last is full, and the last level is filled from the left</td></tr>
+<tr><td>Perfect binary tree</td><td>Every internal node has 2 children, and all leaves are at the same depth</td></tr>
+</tbody></table>
+<p>A perfect binary tree is always both full and complete. But a full tree is not necessarily complete, and a complete tree is not necessarily full.</p>
+<h2 id="traversal">Traversal</h2>
+<p>Traversal is a method for visiting every node in a tree exactly once. If a tree has <code>n</code> nodes, every traversal is basically <code>O(n)</code>.</p>
+<p><img src="/images/DS/Tree/full_binary_tree.png" alt="Tree" /></p>
+<h3 id="dfs-depth-first-search">DFS: Depth-First Search</h3>
+<p>DFS goes all the way down in one direction, then comes back. It can be implemented with the recursive call stack or with an explicit stack.</p>
+<p>In a binary tree, DFS traversals are named by when the root is visited.</p>
+<table><thead><tr><th>Traversal</th><th>Order</th><th>Example</th></tr></thead><tbody>
+<tr><td>Preorder</td><td>Root -&gt; Left -&gt; Right</td><td>A-B-D-E-H-I-C-F-G</td></tr>
+<tr><td>Inorder</td><td>Left -&gt; Root -&gt; Right</td><td>D-B-H-E-I-A-F-C-G</td></tr>
+<tr><td>Postorder</td><td>Left -&gt; Right -&gt; Root</td><td>D-H-I-E-B-F-G-C-A</td></tr>
+</tbody></table>
+<p>The way to remember this is simple. Left always comes before Right. If Root comes first, it is preorder. If Root is in the middle, it is inorder. If Root comes last, it is postorder.</p>
+<p>Inorder traversal is especially important for binary search trees. Traversing a BST inorder produces values in sorted order.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> inorder</span><span>(node</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;, output</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;) {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if let</span><span style="color: #59C2FF;"> Some</span><span>(node)</span><span style="color: #F29668;"> =</span><span> node {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        inorder</span><span>(node</span><span style="color: #F29668;">.</span><span>left</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>(), output);</span></span>
+<span class="giallo-l"><span>        output</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(node</span><span style="color: #F29668;">.</span><span>val);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        inorder</span><span>(node</span><span style="color: #F29668;">.</span><span>right</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>(), output);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The extra space for DFS is <code>O(h)</code> from the recursive call stack, where <code>h</code> is the tree height. For a balanced tree it is <code>O(log n)</code>, and for a tree skewed to one side it is <code>O(n)</code>.</p>
+<h3 id="bfs-breadth-first-search">BFS: Breadth-First Search</h3>
+<p>BFS is also called level-order traversal. It starts from the root, visits nodes at the same depth first, then moves down to the next level.</p>
+<p><img src="/images/DS/Tree/binary_tree_level_order.png" alt="Tree" /></p>
+<p>BFS is implemented with a queue. It appears often in problems involving level-by-level tree processing, shortest edge counts, and serialization.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">collections</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">VecDeque</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> level_order</span><span>(root</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Vec</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> queue</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> VecDeque</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if let</span><span style="color: #59C2FF;"> Some</span><span>(root)</span><span style="color: #F29668;"> =</span><span> root {</span></span>
+<span class="giallo-l"><span>        queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(root);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    while let</span><span style="color: #59C2FF;"> Some</span><span>(node)</span><span style="color: #F29668;"> =</span><span> queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">pop_front</span><span>() {</span></span>
+<span class="giallo-l"><span>        result</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(node</span><span style="color: #F29668;">.</span><span>val);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if let</span><span style="color: #59C2FF;"> Some</span><span>(left)</span><span style="color: #F29668;"> =</span><span> node</span><span style="color: #F29668;">.</span><span>left</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>() {</span></span>
+<span class="giallo-l"><span>            queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(left);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if let</span><span style="color: #59C2FF;"> Some</span><span>(right)</span><span style="color: #F29668;"> =</span><span> node</span><span style="color: #F29668;">.</span><span>right</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>() {</span></span>
+<span class="giallo-l"><span>            queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(right);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    result</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The extra space for BFS is proportional to the maximum number of nodes stored in the queue. If the tree's maximum width is <code>w</code>, the space is <code>O(w)</code>. In a complete binary tree, the last level contains many nodes, so the worst case can be <code>O(n)</code>.</p>
+<h2 id="representation">Representation</h2>
+<h3 id="linked-node">Linked node</h3>
+<p>This is the most common representation. Each node points to its children.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span>#[derive(</span><span style="color: #59C2FF;">Debug</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub struct</span><span style="color: #59C2FF;"> TreeNode</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> val</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> left</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> right</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> TreeNode</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub fn</span><span style="color: #FFB454;"> new</span><span>(val</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">        Self</span><span> {</span></span>
+<span class="giallo-l"><span>            val,</span></span>
+<span class="giallo-l"><span>            left</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> None</span><span>,</span></span>
+<span class="giallo-l"><span>            right</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> None</span><span>,</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>In Rust tree problems on LeetCode, you often see <code>Option&lt;Rc&lt;RefCell&lt;TreeNode&gt;&gt;&gt;</code> because of shared ownership and interior mutability. But when explaining the tree concept itself, <code>Box&lt;TreeNode&gt;</code> is simpler.</p>
+<h3 id="array">Array</h3>
+<p>Trees with almost no empty spaces, such as complete binary trees, are easy to represent with an array.</p>
+<p>If the root index is <code>0</code>:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>left child  = 2 * i + 1</span></span>
+<span class="giallo-l"><span>right child = 2 * i + 2</span></span>
+<span class="giallo-l"><span>parent      = (i - 1) / 2</span></span></code></pre>
+<p>Heaps use this representation.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">struct</span><span style="color: #59C2FF;"> ArrayTree</span><span> {</span></span>
+<span class="giallo-l"><span>    nodes</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Option</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> ArrayTree</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> left_index</span><span>(parent</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> usize</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">        2</span><span style="color: #F29668;"> *</span><span> parent</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 1</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> right_index</span><span>(parent</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> usize</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">        2</span><span style="color: #F29668;"> *</span><span> parent</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 2</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The array representation has fast index calculation and good cache locality. But for sparse trees, many empty slots are needed, so memory is wasted.</p>
+<h2 id="complexity">Complexity</h2>
+<table><thead><tr><th>Operation</th><th style="text-align: right">General binary tree</th><th style="text-align: right">Balanced BST</th><th style="text-align: right">Skewed BST</th></tr></thead><tbody>
+<tr><td>Search</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Insert</td><td style="text-align: right">O(n), or O(1) if the position is known</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Delete</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Traversal</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(n)</td></tr>
+</tbody></table>
+<p>The important thing in tree problems is to first distinguish whether it is a binary tree, a BST, or a balanced tree. If you mix those up, it is easy to get the time complexity wrong.</p>
+<h2 id="where-trees-are-used">Where trees are used</h2>
+<ul>
+<li>Filesystem directory structures</li>
+<li>HTML/XML DOM</li>
+<li>Compiler AST, or Abstract Syntax Tree</li>
+<li>Database indexes such as B-tree and B+tree</li>
+<li>Priority queue, or heap</li>
+<li>Prefix search, or trie</li>
+<li>Range query structures such as segment tree and Fenwick tree</li>
+</ul>
+<h2 id="things-to-remember">Things to remember</h2>
+<ul>
+<li>A tree is a connected graph with no cycles.</li>
+<li>In a rooted tree, parent-child relationships exist.</li>
+<li>A binary tree and a binary search tree are different.</li>
+<li>A balanced BST keeps height low so search/insert/delete stay close to <code>O(log n)</code>.</li>
+<li>BFS uses a queue, while DFS uses a stack or recursion.</li>
+<li>Array tree representation fits complete binary trees and heaps, but is inefficient for sparse trees.</li>
+</ul>
+<h2 id="ref">Ref</h2>
+<ul>
+<li>Tree data structure: <a rel="external" href="https://en.wikipedia.org/wiki/Tree_(data_structure)">https://en.wikipedia.org/wiki/Tree_(data_structure)</a></li>
+<li>Binary tree: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_tree">https://en.wikipedia.org/wiki/Binary_tree</a></li>
+<li>Binary search tree: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_search_tree">https://en.wikipedia.org/wiki/Binary_search_tree</a></li>
+<li>Self-balancing binary search tree: <a rel="external" href="https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree">https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree</a></li>
+<li>B-tree: <a rel="external" href="https://en.wikipedia.org/wiki/B-tree">https://en.wikipedia.org/wiki/B-tree</a></li>
+<li>Binary heap: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_heap">https://en.wikipedia.org/wiki/Binary_heap</a></li>
+<li>CP-Algorithms - Segment Tree: <a rel="external" href="https://cp-algorithms.com/data_structures/segment_tree.html">https://cp-algorithms.com/data_structures/segment_tree.html</a></li>
+<li>GeeksforGeeks - Binary tree array implementation: <a rel="external" href="https://www.geeksforgeeks.org/binary-tree-array-implementation/">https://www.geeksforgeeks.org/binary-tree-array-implementation/</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure&#x2F;graph&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Graph
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

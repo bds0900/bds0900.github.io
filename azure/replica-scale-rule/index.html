@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Why the API Kept Scaling Up and Down
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Why the API Kept Scaling Up and Down
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-10-29">October 29, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>13 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2406 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/azure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>azure</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/container-apps/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>container-apps</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/scaling/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>scaling</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/performance/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>performance</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>This is part 2 of two. <a href="/azure/replica-warmup/">Part 1</a> made the app pay a new replica's one-time cost instead of the user. The p50 of the first user request fell from 7.5 seconds to 1.3 seconds. The number of replicas being born did not fall. On a weekday, 60 to 90 still started, and the median replica lived 7.5 minutes. The actual fix is to stop that cycle.</p>
+<p>Load was not what created the cycle. The app declared no scale rule, so the platform's default HTTP rule was in force, and that rule's threshold is not in the documentation. Production numbers also disagree with the formula the docs do give. The rule is now declared in the AppHost, at 50 concurrent requests and a maximum of 3 replicas. Every deploy regenerates the container app, so a value set in the portal is gone on the next deploy.</p>
+<h2 id="1-what-part-1-left-in-place">1. What part 1 left in place</h2>
+<p>The warmup has been running since 2026-10-02. Over the following week, 26.7% of requests on a replica younger than two minutes took more than a second. After two minutes, 3.2% did. Shortening the first request to 1.3 seconds leaves the window before a replica has settled.</p>
+<p>The more visible path is not HTTP. A new replica joins as a RabbitMQ consumer about 4 seconds after its container starts. An inbound message it picked up then reached the screen 6 to 8 seconds later. At the same time, a message handled by a replica that was already up arrived in under a second.</p>
+<p>Part 1's result stands. The question changed. Not who pays the one-time cost, but <strong>why ordinary weekday traffic creates and destroys replicas dozens of times.</strong></p>
+<h2 id="2-there-was-no-rule">2. There was no rule</h2>
+<p>The container app Aspire generated had <code>minReplicas: 1</code> and no scale rule. With no rule, Container Apps applies its default. The default-rule table in <a rel="external" href="https://learn.microsoft.com/en-us/azure/container-apps/scale-app">Scaling in Azure Container Apps</a> says the trigger is HTTP, the minimum is 0, and the maximum is 10. Ours sets the minimum to 1, so the range is 1 to 10.</p>
+<p>The system log still records <code>scaled to N by the scaler: http-scaler</code> while the rule is <code>null</code>. The default HTTP rule is what is running.</p>
+<p>What the docs do say:</p>
+<ul>
+<li>The scale-up stabilization window is 0 seconds. The scale-down window is 300 seconds. Growth is immediate. Shrink waits five minutes.</li>
+<li>If you <strong>define</strong> an HTTP rule and omit <code>concurrentRequests</code>, the default is 10. Every 15 seconds the platform divides the requests from the past 15 seconds by 15. Above the threshold, it adds a replica.</li>
+<li>The 30-second polling interval carries a note that it does not apply to HTTP and TCP rules.</li>
+</ul>
+<p>The default rule's own concurrency threshold appears nowhere in that document. The 10 in the default-rule table is the <strong>maximum replica count</strong>. The 10 on <code>concurrentRequests</code> is the default for a rule you defined and then left blank. On 2026-10-28, the official docs, the China mirror, and the scaling tutorial had no sentence stating the default rule's threshold.</p>
+<h2 id="3-the-documented-formula-says-it-should-not-have-scaled">3. The documented formula says it should not have scaled</h2>
+<p>The 24 hours from about 2026-10-28 01:30Z to 2026-10-29 01:50Z were counted again. <code>Request starting HTTP</code> in the console log is unsampled, so it can be used as a request count. There were 18,887 requests, 77 scale-ups, and 101 new replicas.</p>
+<p>The p50 and p99 below include only buckets that had at least one request.</p>
+<table><thead><tr><th>Bucket</th><th style="text-align: right">p50</th><th style="text-align: right">p99</th><th style="text-align: right">Max</th></tr></thead><tbody>
+<tr><td>1 second</td><td style="text-align: right">2</td><td style="text-align: right">18</td><td style="text-align: right">37</td></tr>
+<tr><td>15 seconds</td><td style="text-align: right">6</td><td style="text-align: right">50</td><td style="text-align: right">82</td></tr>
+<tr><td>1 minute</td><td style="text-align: right">14</td><td style="text-align: right">108</td><td style="text-align: right">201</td></tr>
+</tbody></table>
+<p>The busiest 15 seconds held 82 requests. The documented formula (requests in the past 15 seconds ÷ 15) gives 5.5. A threshold of 10 means this day should not have scaled once. It scaled 77 times.</p>
+<p>Concurrency was rebuilt from the duration on each <code>Request finished HTTP</code> line, by counting how many of those intervals overlap. The app measured that duration, so it is shorter than what the ingress proxy sees.</p>
+<table><thead><tr><th>Scope</th><th style="text-align: right">p50</th><th style="text-align: right">p99</th><th style="text-align: right">Max</th></tr></thead><tbody>
+<tr><td>All replicas</td><td style="text-align: right">2</td><td style="text-align: right">13</td><td style="text-align: right">27</td></tr>
+<tr><td>One replica</td><td style="text-align: right">1</td><td style="text-align: right">9</td><td style="text-align: right">27</td></tr>
+</tbody></table>
+<p>The peak concurrency in the 30 seconds before a scale-up was computed for 76 events. One of the 77 had no request starting in that window, so it dropped out.</p>
+<table><thead><tr><th>Window</th><th style="text-align: right">Count</th><th style="text-align: right">p50</th><th style="text-align: right">p90</th><th style="text-align: right">Max</th><th style="text-align: right">Above 10</th></tr></thead><tbody>
+<tr><td>30 seconds before a scale-up</td><td style="text-align: right">76</td><td style="text-align: right">12</td><td style="text-align: right">16</td><td style="text-align: right">27</td><td style="text-align: right">50 (66%)</td></tr>
+<tr><td>30-second windows with no scale-up</td><td style="text-align: right">1,176</td><td style="text-align: right">3</td><td style="text-align: right">11</td><td style="text-align: right">17</td><td style="text-align: right">127 (10.8%)</td></tr>
+</tbody></table>
+<p>Just before a scale-up the distribution sits just above 10: p25 10, p50 12, p75 14. Even so, 19 of the 76 (25%) happened below 10, and two of those had a peak of 1. A "no scale-up" window had no scale-up in that 30 seconds and none in the next 30 seconds either.</p>
+<p>The <strong>count</strong> it scaled to disagrees with total concurrency even more. Under <code>desiredReplicas = ceil(current / target)</code>, five replicas require the total to pass 40.</p>
+<table><thead><tr><th>Scaled to</th><th style="text-align: right">Events</th><th style="text-align: right">Median concurrency</th><th>What a target of 10 requires</th></tr></thead><tbody>
+<tr><td>2</td><td style="text-align: right">13</td><td style="text-align: right">12</td><td>above 10</td></tr>
+<tr><td>3</td><td style="text-align: right">31</td><td style="text-align: right">11</td><td>above 20</td></tr>
+<tr><td>4</td><td style="text-align: right">16</td><td style="text-align: right">13</td><td>above 30</td></tr>
+<tr><td>5</td><td style="text-align: right">8</td><td style="text-align: right">13</td><td>above 40</td></tr>
+<tr><td>6</td><td style="text-align: right">5</td><td style="text-align: right">14</td><td>above 50</td></tr>
+<tr><td>7–8</td><td style="text-align: right">3</td><td style="text-align: right">16</td><td>above 60–70</td></tr>
+</tbody></table>
+<p>Around 13 in flight, the app reached 5, 6, and 8 replicas. The value the scaler reads is not "total concurrent requests ÷ 10."</p>
+<h2 id="4-documented-observed-inferred">4. Documented, observed, inferred</h2>
+<p>Mixing the three makes it sound as if the threshold is known to be 10. It is not. Kept separate:</p>
+<p><strong>Documented</strong></p>
+<ul>
+<li>With no rule, the default rule applies, and its trigger is HTTP.</li>
+<li>The default rule's concurrency threshold is not written down.</li>
+<li>An HTTP rule you define, with <code>concurrentRequests</code> omitted, defaults to 10.</li>
+</ul>
+<p><strong>Observed</strong></p>
+<ul>
+<li><code>http-scaler</code> adds replicas while the rule is empty.</li>
+<li>A day whose documented formula peaked at 5.5 still scaled 77 times.</li>
+<li>At about 13 in flight, it reached 5 replicas.</li>
+</ul>
+<p><strong>Inferred</strong></p>
+<ul>
+<li>"The default rule also uses 10" has only indirect support: the trigger is HTTP, the omitted-value default is 10, and the median just before a scale-up is 12. There is no sentence that says it.</li>
+<li>The value the scaler reads is not in Azure Monitor. A per-replica value, or active connections, is the guess closest to <a rel="external" href="https://github.com/microsoft/azure-container-apps/issues/536">azure-container-apps#536</a>. It was not confirmed.</li>
+<li>Durations rebuilt from application logs can undercount the proxy's concurrency. The direction holds. Stretching them does not produce 40.</li>
+</ul>
+<p>The exact identity of the threshold is not required for the decision. <strong>An undeclared rule is creating replicas on ordinary traffic, and its input is not the request count we measure.</strong></p>
+<h2 id="5-a-new-replica-is-not-only-a-slow-http-server">5. A new replica is not only a slow HTTP server</h2>
+<p>Around 20:56 KST on 2026-10-28, a report that messages were arriving late was traced. A replica was already up. With a minimum of 1, this was not a scale-from-zero cold start.</p>
+<table><thead><tr><th>Time (UTC)</th><th>Event</th></tr></thead><tbody>
+<tr><td>11:31:21</td><td>Scaled down to 1</td></tr>
+<tr><td>11:56:36</td><td><code>http-scaler</code> scaled to 2 and assigned a new replica</td></tr>
+<tr><td>11:56:48</td><td>That replica's container started. Startup-probe failures continued for about 10 seconds</td></tr>
+<tr><td>11:56:51</td><td>Scaled to 3 and assigned another replica</td></tr>
+<tr><td>11:56:52</td><td>The first new replica registered its MassTransit endpoints and started consuming, about 4 seconds after the container start</td></tr>
+<tr><td>11:57:09</td><td>The second new replica's container started</td></tr>
+</tbody></table>
+<p>Ingress just before that was 0, 8, 0, and 22 requests a minute from 11:54 to 11:57. The rest of the system was idle the same day. SQL CPU peaked at 1–5% (once 18%) and workers stayed under 3%. RabbitMQ used about 0.02 cores and 210MB. SignalR server load was about 12%, with at most 53 connections. Redis memory was 2%. The replica working set did pin at 1.01–1.13GB against the 1Gi limit, every day. Whether that is related to this delay was not established.</p>
+<p>Four inbound messages. The span is from receiving the webhook to broadcasting the inbound message. Console-log timestamps are bucketed to about a second, so the end-to-end figures have ±1–2 seconds of error. The time the messenger sent the webhook is not in the logs.</p>
+<table><thead><tr><th>Webhook (UTC)</th><th>Replica that handled the webhook</th><th>Replica that consumed the message</th><th>End to end</th></tr></thead><tbody>
+<tr><td>11:56:39</td><td>The existing replica, 60ms</td><td>The existing replica</td><td>under about 1 second</td></tr>
+<tr><td>11:57:25</td><td>A replica 16 seconds old, 1,057ms</td><td>The existing replica</td><td>about 1–2 seconds</td></tr>
+<tr><td>11:57:49</td><td>The existing replica, 55ms</td><td>A replica 1 minute old</td><td><strong>about 6–7 seconds</strong></td></tr>
+<tr><td>12:00:53</td><td>Another new replica, 2,082ms</td><td>A replica a few minutes old</td><td><strong>about 8 seconds</strong></td></tr>
+</tbody></table>
+<p>Split the 6–7 second case on the consuming replica: about a second to process the envelope, about four more to create the message row, and another one to two seconds to broadcast. On the existing replica the same path finished in under a second.</p>
+<p>Over the surrounding 24 hours (10-27 12:20Z to 10-28 12:20Z) there were 87 scale-ups, 97 scale-downs, and 105 new replicas. Part 1's baseline week had 52–78 scale-ups and 60–90 container starts. Scale-ups were zero from 01:00 to 07:00 KST and 3–8 an hour the rest of the day. New tenants had not arrived yet.</p>
+<p>The cost of the cycle is not only HTTP latency. <strong>The moment a new replica joins as a competing consumer, the delay shows up in the inbox.</strong></p>
+<h2 id="6-the-candidates">6. The candidates</h2>
+<table><thead><tr><th>Candidate</th><th>Decision</th></tr></thead><tbody>
+<tr><td>An explicit HTTP rule, with <code>concurrentRequests</code> and the maximum replica count as deploy parameters</td><td><strong>Chosen.</strong> Defining any rule removes the default rule. The values are environment variables, so they change without a code change</td></tr>
+<tr><td>Keep the default rule and look again when tenants arrive</td><td>This was the decision on 2026-10-09. Reversed on 2026-10-29, after 10-28 showed the cycle as message latency</td></tr>
+<tr><td>Raise the minimum to 2 and change nothing else</td><td>Rejected. The default rule stays. Scale-ups above two replicas happened 241 times in five days</td></tr>
+<tr><td>Minimum 2, plus a CPU rule</td><td>Rejected. In their first minute, replicas crossed 80% CPU in 2.6% of minutes while serving 0–25 requests. A deploy that starts two replicas together can push the average over the threshold. Whether the platform ignores startup CPU is not documented</td></tr>
+<tr><td>Minimum 2, maximum 2</td><td>Rejected. The cycle stops, and the app cannot grow when tenants arrive</td></tr>
+<tr><td>Set the rule in the portal or with the CLI</td><td>Rejected. The next deploy regenerates the container app and overwrites the scale block</td></tr>
+</tbody></table>
+<p>Raising the minimum is the option that comes to mind first, because the flip between one and two replicas goes away. It also leaves the undocumented threshold in place, and it leaves the cycle above two replicas in place. Observed scale-ups did not stop at two. They reached eight.</p>
+<h2 id="7-the-choice-write-the-rule-into-the-deploy-code">7. The choice: write the rule into the deploy code</h2>
+<p>The deploy code writes the container app's scale block. The maximum replica count and the concurrency target are parameters.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>app</span><span style="color: #F29668;">.</span><span>Template</span><span style="color: #F29668;">.</span><span>Scale</span><span style="color: #F29668;">.</span><span>MaxReplicas</span><span style="color: #F29668;"> =</span><span> maxReplicas</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>app</span><span style="color: #F29668;">.</span><span>Template</span><span style="color: #F29668;">.</span><span>Scale</span><span style="color: #F29668;">.</span><span>Rules</span><span style="color: #F29668;"> =</span></span>
+<span class="giallo-l"><span>[</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    new</span><span style="color: #59C2FF;"> ContainerAppScaleRule</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>        Name</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;http-scaler&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>        Http</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ContainerAppHttpScaleRule</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            Metadata</span><span style="color: #F29668;"> =</span><span> { [</span><span style="color: #AAD94C;">&quot;concurrentRequests&quot;</span><span>]</span><span style="color: #F29668;"> =</span><span> concurrentRequests }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>        }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>]</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>The block <code>aspire publish</code> generates looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="bicep"><span class="giallo-l"><span>scale: {</span></span>
+<span class="giallo-l"><span>  minReplicas: </span><span style="color: #D2A6FF;">1</span></span>
+<span class="giallo-l"><span>  maxReplicas: </span><span style="color: #FFB454;">int</span><span>(chatapi_MaxReplicas)</span></span>
+<span class="giallo-l"><span>  rules: [</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>      name: </span><span style="color: #AAD94C;">&#39;http-scaler&#39;</span></span>
+<span class="giallo-l"><span>      http: {</span></span>
+<span class="giallo-l"><span>        metadata: {</span></span>
+<span class="giallo-l"><span>          concurrentRequests: chatapi_ConcurrentRequests</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>      }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>  ]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>The minimum stays at the 1 Aspire generates. Defining one rule removes the platform default.</p>
+<p>Integration, Staging, and Production use the same values: <code>concurrentRequests</code> <strong>50</strong>, <code>maxReplicas</code> <strong>3</strong>.</p>
+<ul>
+<li><strong>50</strong> is above this day's in-flight peak of 27. A second replica should appear only under load clearly heavier than what we measured.</li>
+<li><strong>3</strong> is a lid. If the rule still misfires, the cycle cannot run far. At 50 per replica, three replicas hold about twice the measured peak.</li>
+</ul>
+<p>Neither number is the result of a capacity test. They are starting points to be moved by measurement. The same HTTP scaler has been reported to scale out early with an explicit threshold of 2000 (<a rel="external" href="https://learn.microsoft.com/en-us/answers/questions/2288688/our-container-app-http-scaler-kicks-of-scaling-way">Microsoft Q&amp;A 2288688</a>). Whether 50 stays quiet is something only production measurement can say.</p>
+<p>The values are passed in as deploy parameters for each environment. Changing the number does not require another code change. A local deploy needs the same two values in that environment's settings file.</p>
+<h2 id="8-what-this-decision-does-not-do">8. What this decision does not do</h2>
+<ul>
+<li><strong>It does not replace the warmup from part 1.</strong> A deploy still births a new replica, and real load past the threshold births a second and a third. The first pass through the pipeline on a replica that does start is still paid by the app, before the socket opens. The warmup is a stopgap because it cannot prevent the births that repeat all day, not because it failed.</li>
+<li><strong>It does not change when a new replica starts consuming.</strong> MassTransit endpoints still register about 4 seconds after the container starts. This decision makes that happen less often.</li>
+<li><strong>Capacity stops at three replicas of 0.5 vCPU.</strong> Under the default rule, production reached eight. If new tenants outgrow three, the parameters go up and the app is deployed again.</li>
+<li><strong>This rule can misfire too.</strong> It is the same scaler. Watch for minutes stuck at three replicas.</li>
+<li><strong>Nothing tests the generated scale block.</strong> Nothing in code checks that the environment variables are actually 50 and 3.</li>
+</ul>
+<p>Older notes sized cost against ten replicas. Those notes were left as they are. Read them now with three as the upper bound.</p>
+<h2 id="9-what-counts-as-a-pass">9. What counts as a pass</h2>
+<p>The bar goes in writing before the deploy. The comparison window is the weekdays of 2026-10-01 to 10-08. The rule went in on 2026-10-29. At the time of writing, the weekday remeasurement is not in yet. No improved number is claimed ahead of it.</p>
+<table><thead><tr><th>Measure</th><th>Before (10-01 to 10-08)</th><th>Target</th></tr></thead><tbody>
+<tr><td>Container starts a day</td><td>60–90</td><td>Lower</td></tr>
+<tr><td>Minutes with two or more replicas</td><td>609–919</td><td>Lower</td></tr>
+<tr><td>Response p50</td><td>24–42ms</td><td>Not worse</td></tr>
+<tr><td>Response p90</td><td>169–912ms</td><td>Not worse</td></tr>
+</tbody></table>
+<p>The baseline is from before new tenants. Once they arrive, compare per request. Also watch minutes pinned at three replicas, and CPU per replica.</p>
+<p>In part 1, setting the bar and the sample size before the deploy is what made the judgement believable. The same standard applies here. A pass is not "the rule is in the code." A pass is fewer containers born on a weekday, with the response times no worse.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure&#x2F;replica-warmup&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Why a New Replica&#x27;s First Request Took Seven Seconds
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

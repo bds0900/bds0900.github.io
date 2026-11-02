@@ -1,0 +1,846 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | ASP.NET Core Identity와 OpenIddict, Claims 인증 구조 이해하기
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            ASP.NET Core Identity와 OpenIddict, Claims 인증 구조 이해하기
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-04">July 04, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>12 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>2378 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/asp-net-core/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ASP.NET Core</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/identity/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Identity</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openiddict/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenIddict</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oauth-2-0/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OAuth 2.0</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openid-connect/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenID Connect</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>ASP.NET Core 인증을 공부하다 보면 Identity, OpenIddict, JWT, Claim, Role, Policy가 한꺼번에 등장한다. 모두 인증과 인가에 관련된 개념이지만 같은 문제를 해결하지는 않는다. 특히 ASP.NET Core Identity와 OpenIddict를 경쟁 관계로 생각하거나, JWT 자체가 사용자를 인증한다고 생각하면 전체 구조를 이해하기 어렵다.</p>
+<p>이 글에서는 각 구성 요소의 책임과 요청을 처리할 때 이들이 어떻게 연결되는지 정리한다.</p>
+<h2 id="injeunggwa-ingabuteo-gubunhagi">인증과 인가부터 구분하기</h2>
+<p>먼저 인증(authentication)과 인가(authorization)를 구분해야 한다.</p>
+<ul>
+<li>인증: 요청을 보낸 주체가 누구인지 확인한다.</li>
+<li>인가: 인증된 주체가 특정 작업을 수행할 수 있는지 판단한다.</li>
+</ul>
+<p>로그인 과정에서 비밀번호를 확인하는 것은 인증이다. 로그인한 사용자가 관리자 페이지에 접근할 수 있는지 확인하는 것은 인가다.</p>
+<h2 id="asp-net-core-identitywa-openiddictyi-yeoghal">ASP.NET Core Identity와 OpenIddict의 역할</h2>
+<h3 id="asp-net-core-identity">ASP.NET Core Identity</h3>
+<p>ASP.NET Core Identity는 애플리케이션의 사용자 계정과 로그인 기능을 관리한다.</p>
+<ul>
+<li>사용자와 비밀번호 해시 저장</li>
+<li>회원 가입과 로그인</li>
+<li>역할과 사용자 Claim 관리</li>
+<li>이메일 확인과 비밀번호 초기화</li>
+<li>2단계 인증</li>
+<li>인증 Cookie 생성</li>
+<li>Google이나 Microsoft 같은 외부 공급자를 통한 로그인</li>
+</ul>
+<p>즉, Identity의 핵심 질문은 다음과 같다.</p>
+<blockquote>
+<p>이 사용자는 누구이며, 자신의 신원을 어떻게 증명하는가?</p>
+</blockquote>
+<p>Identity가 외부 OAuth/OIDC 공급자를 이용할 수 있다고 해서 Identity 자체가 OAuth 2.0 또는 OpenID Connect 서버가 되는 것은 아니다. 이 경우 애플리케이션은 Google 같은 외부 공급자의 <strong>클라이언트</strong>로 동작한다.</p>
+<h3 id="openiddict">OpenIddict</h3>
+<p>OpenIddict는 OAuth 2.0/OpenID Connect 프로토콜을 구현하기 위한 프레임워크다. 서버 스택을 사용하면 애플리케이션을 authorization server 또는 OpenID Provider로 만들 수 있다.</p>
+<ul>
+<li>authorization, token, logout 같은 프로토콜 endpoint 처리</li>
+<li>OAuth client application 관리</li>
+<li>scope와 authorization 관리</li>
+<li>access token, refresh token, ID token 발급</li>
+<li>token validation, introspection, revocation</li>
+<li>authorization code, client credentials, device flow 등의 처리</li>
+</ul>
+<p>OpenIddict의 핵심 질문은 다음과 같다.</p>
+<blockquote>
+<p>클라이언트가 어떤 절차로 token을 받고, 그 token으로 어떤 API에 접근할 수 있는가?</p>
+</blockquote>
+<p>OpenIddict는 완성된 사용자 관리 제품이 아니다. 로그인 화면, 회원 가입, 비밀번호 복구, 사용자 관리 UI는 Identity 같은 별도 시스템으로 구현해야 한다.</p>
+<h2 id="duleun-hamgge-sseul-su-issjiman-seoro-yijonhaji-anhneunda">둘은 함께 쓸 수 있지만 서로 의존하지 않는다</h2>
+<p>Identity와 OpenIddict는 보통 다음과 같이 함께 사용한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>사용자 자격 증명</span></span>
+<span class="giallo-l"><span>    ↓</span></span>
+<span class="giallo-l"><span>ASP.NET Core Identity</span></span>
+<span class="giallo-l"><span>    ↓ 인증된 사용자 정보를 ClaimsPrincipal로 생성</span></span>
+<span class="giallo-l"><span>OpenIddict</span></span>
+<span class="giallo-l"><span>    ↓ OAuth/OIDC token 발급</span></span>
+<span class="giallo-l"><span>클라이언트 애플리케이션</span></span>
+<span class="giallo-l"><span>    ↓ access token으로 요청</span></span>
+<span class="giallo-l"><span>보호된 API</span></span></code></pre>
+<p>하지만 OpenIddict가 내부적으로 Identity를 사용하는 것은 아니다. OpenIddict에 전달할 <code>ClaimsPrincipal</code>은 여러 곳에서 만들 수 있다.</p>
+<ul>
+<li>ASP.NET Core Identity</li>
+<li>별도의 사용자 테이블</li>
+<li>LDAP 또는 Active Directory</li>
+<li>외부 인증 공급자</li>
+<li>사용자 없이 동작하는 client credentials flow</li>
+</ul>
+<p>Identity는 사용자를 인증하고 <code>ClaimsPrincipal</code>을 만드는 편리한 방법 중 하나일 뿐이다.</p>
+<h2 id="jwt-claim-claimsidentity-claimsprincipal-useryi-gwangye">JWT, Claim, ClaimsIdentity, ClaimsPrincipal, User의 관계</h2>
+<p>JWT 인증을 사용하는 일반적인 API 요청은 다음 순서로 처리된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>JWT</span></span>
+<span class="giallo-l"><span>  → token handler가 서명, issuer, audience, 만료 시간 등을 검증</span></span>
+<span class="giallo-l"><span>  → payload의 값들을 Claim으로 변환</span></span>
+<span class="giallo-l"><span>  → Claim들을 가진 ClaimsIdentity 생성</span></span>
+<span class="giallo-l"><span>  → 하나 이상의 ClaimsIdentity를 ClaimsPrincipal로 감쌈</span></span>
+<span class="giallo-l"><span>  → HttpContext.User에 할당</span></span></code></pre><h3 id="jwt">JWT</h3>
+<p>JWT는 정보를 전달하는 token <strong>형식</strong>이다. payload에는 다음과 같은 claim이 들어갈 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;name&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Alice&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;orders-api&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783123200</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>JWT는 <code>ClaimsPrincipal</code>과 같은 객체가 아니며, 모든 <code>ClaimsPrincipal</code>이 JWT에서 만들어지는 것도 아니다. Cookie, client certificate, 외부 로그인 또는 custom authentication handler도 <code>ClaimsPrincipal</code>을 만들 수 있다.</p>
+<h3 id="claim">Claim</h3>
+<p><code>Claim</code>은 인증된 주체에 관한 하나의 type/value 정보다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Claim은 데이터일 뿐이다. Claim이 있다고 해서 자동으로 접근 권한이 부여되는 것은 아니다. 인가 규칙이 해당 Claim을 어떻게 해석할지 결정한다.</p>
+<h3 id="claimsidentity">ClaimsIdentity</h3>
+<p><code>ClaimsIdentity</code>는 Claim 묶음과 인증 방식에 관한 정보를 가진다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> identity</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ClaimsIdentity</span><span>(</span></span>
+<span class="giallo-l"><span>    claims</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    authenticationType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Bearer&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    nameType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    roleType</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>여기서 <code>nameType</code>과 <code>roleType</code>은 어떤 Claim을 이름과 역할로 해석할지 지정한다.</p>
+<h3 id="claimsprincipal">ClaimsPrincipal</h3>
+<p><code>ClaimsPrincipal</code>은 하나 이상의 <code>ClaimsIdentity</code>를 포함한다. 한 주체가 여러 인증 수단에서 얻은 identity를 함께 가질 수 있기 때문이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> principal</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ClaimsPrincipal</span><span>(identity)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><h3 id="httpcontext-user">HttpContext.User</h3>
+<p>ASP.NET Core에서 <code>HttpContext.User</code> 또는 Controller의 <code>User</code>는 별도의 사용자 entity가 아니다. 현재 요청의 <code>ClaimsPrincipal</code>을 가리키는 property다.</p>
+<p>따라서 다음 코드는 token이나 Cookie를 직접 읽는 것이 아니라 인증 handler가 만든 <code>ClaimsPrincipal</code>을 조회한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> subject</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> authenticated</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span>Identity</span><span style="color: #F29668;">?.</span><span>IsAuthenticated</span><span style="color: #F29668;"> ==</span><span style="color: #D2A6FF;"> true</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> isAdmin</span><span style="color: #F29668;"> =</span><span> User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Identity의 <code>ApplicationUser</code>와 <code>HttpContext.User</code>도 구분해야 한다. <code>ApplicationUser</code>는 데이터베이스에 저장된 사용자 entity이고, <code>HttpContext.User</code>는 현재 요청에 포함된 보안 context다.</p>
+<h2 id="role-giban-inganeun-wae-claim-gibaninga">Role 기반 인가는 왜 Claim 기반인가?</h2>
+<p>ASP.NET Core runtime에서 역할은 지정된 role claim type을 가진 Claim으로 표현된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>[</span><span style="color: #59C2FF;">Authorize</span><span>(</span><span style="color: #59C2FF;">Roles</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public</span><span style="color: #59C2FF;"> IActionResult</span><span style="color: #FFB454;"> AdminOnly</span><span>()</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> Ok</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>위 검사는 개념적으로 다음과 같은 질문을 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>현재 ClaimsPrincipal의 인증된 ClaimsIdentity 중</span></span>
+<span class="giallo-l"><span>RoleClaimType에 해당하며 값이 &quot;Admin&quot;인 Claim이 있는가?</span></span></code></pre>
+<p>기본 <code>RoleClaimType</code>은 <code>ClaimTypes.Role</code>이지만 항상 그 값만 사용하는 것은 아니다. JWT의 원래 이름인 <code>role</code>을 사용하도록 설정할 수도 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> TokenValidationParameters</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>    NameClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;name&quot;</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>따라서 “role은 무조건 <code>ClaimTypes.Role</code> Claim이다”보다는 다음 표현이 더 정확하다.</p>
+<blockquote>
+<p>ASP.NET Core는 <code>ClaimsIdentity.RoleClaimType</code>으로 지정된 Claim들을 role로 해석한다.</p>
+</blockquote>
+<h2 id="claim-giban-ingawa-policy-giban-inga">Claim 기반 인가와 Policy 기반 인가</h2>
+<p>Policy는 ASP.NET Core 인가 기능의 일반적인 실행 모델이다. Policy는 하나 이상의 requirement로 구성되고, authorization handler가 각 requirement를 평가한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>builder</span><span style="color: #F29668;">.</span><span>Services</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddAuthorization</span><span>(</span><span style="color: #59C2FF;">options</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    options</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddPolicy</span><span>(</span><span style="color: #AAD94C;">&quot;EngineeringOnly&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> policy</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>        policy</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">RequireClaim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>})</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>[</span><span style="color: #59C2FF;">Authorize</span><span>(</span><span style="color: #59C2FF;">Policy</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;EngineeringOnly&quot;</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public</span><span style="color: #59C2FF;"> IActionResult</span><span style="color: #FFB454;"> EngineeringDashboard</span><span>()</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> Ok</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Role 검사와 Claim 검사 모두 policy engine에서 requirement로 실행된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Policy 기반 인가</span></span>
+<span class="giallo-l"><span>  ├── Role requirement</span></span>
+<span class="giallo-l"><span>  ├── Claim requirement</span></span>
+<span class="giallo-l"><span>  ├── 인증 여부 requirement</span></span>
+<span class="giallo-l"><span>  └── custom requirement + handler</span></span></code></pre>
+<p>그래서 “Claim 기반 인가는 Policy 기반 인가다”라고 동일시하기보다는 다음과 같이 이해하는 것이 정확하다.</p>
+<blockquote>
+<p>Policy는 인가 규칙을 실행하는 일반적인 framework이고, role과 claim 검사는 그 framework가 제공하는 대표적인 requirement다.</p>
+</blockquote>
+<p>복잡한 규칙은 단일 Claim 확인만으로 표현하기 어렵다. 예를 들어 “현재 사용자가 이 tenant에 속하며, 이 주문의 소유자이거나 지원 담당자인가?” 같은 규칙은 resource-based authorization이나 custom requirement가 적합하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public sealed class</span><span style="color: #59C2FF;"> OrderAccessRequirement</span></span>
+<span class="giallo-l"><span style="color: #BFBDB6B3;">    :</span><span style="color: #59C2FF;"> IAuthorizationRequirement</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public sealed class</span><span style="color: #59C2FF;"> OrderAccessHandler</span></span>
+<span class="giallo-l"><span style="color: #BFBDB6B3;">    :</span><span style="color: #59C2FF;"> AuthorizationHandler</span><span>&lt;</span><span style="color: #59C2FF;">OrderAccessRequirement</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> Order</span><span>&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    protected override</span><span style="color: #59C2FF;"> Task</span><span style="color: #FFB454;"> HandleRequirementAsync</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        AuthorizationHandlerContext context</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        OrderAccessRequirement requirement</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Order order</span><span>)</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        var</span><span style="color: #59C2FF;"> userId</span><span style="color: #F29668;"> =</span><span> context</span><span style="color: #F29668;">.</span><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;sub&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        var</span><span style="color: #59C2FF;"> tenantId</span><span style="color: #F29668;"> =</span><span> context</span><span style="color: #F29668;">.</span><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">FindFirst</span><span>(</span><span style="color: #AAD94C;">&quot;tenant_id&quot;</span><span>)</span><span style="color: #F29668;">?.</span><span>Value</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if</span><span> (order</span><span style="color: #F29668;">.</span><span>UserId</span><span style="color: #F29668;"> ==</span><span> userId</span><span style="color: #F29668;"> &amp;&amp;</span><span> order</span><span style="color: #F29668;">.</span><span>TenantId</span><span style="color: #F29668;"> ==</span><span> tenantId)</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            context</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Succeed</span><span>(requirement)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span> Task</span><span style="color: #F29668;">.</span><span>CompletedTask</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="claimtypeswa-jwt-oidc-claim-ireumi-dareun-iyu">ClaimTypes와 JWT/OIDC claim 이름이 다른 이유</h2>
+<p>.NET의 <code>System.Security.Claims.ClaimTypes</code>는 well-known claim type을 문자열 상수로 제공한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>Name</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>NameIdentifier</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>ClaimTypes</span><span style="color: #F29668;">.</span><span>Role</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// http://schemas.microsoft.com/ws/2008/06/identity/claims/role</span></span></code></pre><h3 id="claimtypesyi-gin-munjayeoleun-xml-namespace-uriinga">ClaimTypes의 긴 문자열은 XML namespace URI인가?</h3>
+<p>그렇다. <code>ClaimTypes</code>의 긴 문자열은 XML/SOAP 시대의 <strong>XML namespace-style schema URI</strong>를 claim type identifier로 사용한 것이다. WIF(Windows Identity Foundation)와 WS-Federation 같은 WS-* 기술은 서로 다른 표준과 공급자가 정의한 이름이 충돌하지 않도록 URI namespace를 사용했다. <code>ClaimTypes</code>는 이 naming convention을 물려받았다.</p>
+<p>다만 이것이 XML 문서의 <code>xmlns</code> 선언 그 자체라는 뜻은 아니다. <code>ClaimTypes.Name</code> 같은 값은 .NET <code>Claim</code>의 <code>Type</code>을 식별하는 문자열이며, XML namespace와 동일한 URI namespacing 방식을 사용하는 <strong>schema URI identifier</strong>라고 이해하는 것이 정확하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="xml"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">&lt;!-- XML namespace도 URI를 namespace identifier로 사용한다. --&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">&lt;</span><span style="color: #39BAE6;">claims</span><span style="color: #FFB454;"> xmlns</span><span>=</span><span style="color: #AAD94C;">&quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims&quot;</span><span style="color: #39BAE680;">&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">    &lt;</span><span style="color: #39BAE6;">name</span><span style="color: #39BAE680;">&gt;</span><span>Alice</span><span style="color: #39BAE680;">&lt;/</span><span style="color: #39BAE6;">name</span><span style="color: #39BAE680;">&gt;</span></span>
+<span class="giallo-l"><span style="color: #39BAE680;">&lt;/</span><span style="color: #39BAE6;">claims</span><span style="color: #39BAE680;">&gt;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// .NET에서는 전체 URI가 Claim.Type 문자열이다.</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> claim</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> Claim</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;Alice&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Debug</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Assert</span><span>(claim</span><span style="color: #F29668;">.</span><span>Type</span><span style="color: #F29668;"> ==</span><span> ClaimTypes</span><span style="color: #F29668;">.</span><span>Name)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p><code>http://</code>로 시작해 URL처럼 보이지만 실제 network resource를 가리키거나 browser로 접속할 수 있어야 하는 것은 아니다. 여기서 URI의 목적은 위치를 알려주는 것이 아니라 전역적으로 구분 가능한 이름을 제공하는 것이다. Microsoft 문서도 이 값들을 well-known claim type의 URI라고 설명하며 schema URI가 hyperlink로 동작할 것으로 기대하면 안 된다고 명시한다.</p>
+<p>이 값들은 JWT보다 먼저 만들어졌기 때문에 OIDC/JWT의 짧은 JSON claim name과 직접 일치하지 않는다.</p>
+<table><thead><tr><th>의미</th><th>.NET <code>ClaimTypes</code> URI</th><th>JWT/OIDC 이름</th></tr></thead><tbody>
+<tr><td>사용자 식별자</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier</code></td><td><code>sub</code></td></tr>
+<tr><td>표시 이름</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name</code></td><td><code>name</code></td></tr>
+<tr><td>이메일</td><td><code>http://schemas.xmlsoap.org/ws/2005/05/identity/claims/emailaddress</code></td><td><code>email</code></td></tr>
+<tr><td>역할</td><td><code>http://schemas.microsoft.com/ws/2008/06/identity/claims/role</code></td><td>구현에 따라 <code>role</code> 또는 <code>roles</code></td></tr>
+</tbody></table>
+<p>반면 JWT와 OpenID Connect는 JSON에 적합한 짧은 이름을 사용한다.</p>
+<h3 id="reserved-claim-boda-registered-claim-name-i-jeonghwaghada">“Reserved claim”보다 “Registered Claim Name”이 정확하다</h3>
+<p>JWT claim을 설명할 때 흔히 “reserved claim”이라고 부르지만 RFC 7519의 공식 용어는 <strong>Registered Claim Name</strong>이다. “reserved”라고 하면 해당 이름을 반드시 사용해야 하거나 JWT마다 반드시 포함해야 한다고 오해하기 쉽다.</p>
+<p>RFC 7519는 claim name을 세 종류로 구분한다.</p>
+<table><thead><tr><th>분류</th><th>의미</th><th>예시</th></tr></thead><tbody>
+<tr><td>Registered</td><td>여러 시스템이 같은 의미로 사용할 수 있도록 IANA registry에 등록된 이름</td><td><code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code></td></tr>
+<tr><td>Public</td><td>충돌 방지를 위해 공개적으로 등록하거나 collision-resistant name을 사용한 이름</td><td><code>https://example.com/claims/tenant_id</code></td></tr>
+<tr><td>Private</td><td>발급자와 소비자가 합의해서 사용하는 이름. 전역적인 의미나 충돌 방지 보장이 없음</td><td><code>tenant_id</code>, <code>permission</code></td></tr>
+</tbody></table>
+<p>중요한 점은 <strong>RFC 7519 자체는 registered claim을 모든 JWT에 의무화하지 않는다</strong>는 것이다. 어떤 claim이 필수인지는 JWT를 사용하는 상위 protocol이나 애플리케이션 profile이 결정한다.</p>
+<p>예를 들어 일반 JWT에서는 <code>exp</code>가 선택 사항이지만, OpenID Connect ID token에서는 <code>exp</code>가 필수다. “JWT 표준 claim이므로 필수”가 아니라 “OIDC ID token 규칙이 그 JWT에 <code>exp</code>를 요구한다”가 정확한 설명이다.</p>
+<h3 id="rfc-7519yi-gibon-registered-claim-names">RFC 7519의 기본 Registered Claim Names</h3>
+<p>RFC 7519가 처음 등록한 일곱 claim은 다음과 같다.</p>
+<table><thead><tr><th>Claim</th><th>이름</th><th>값의 형태</th><th>의미와 검증 포인트</th></tr></thead><tbody>
+<tr><td><code>iss</code></td><td>Issuer</td><td>case-sensitive string 또는 URI</td><td>token 발급자를 식별한다. 신뢰하는 issuer와 정확히 일치하는지 확인해야 한다.</td></tr>
+<tr><td><code>sub</code></td><td>Subject</td><td>case-sensitive string 또는 URI</td><td>token이 설명하는 주체다. issuer 범위 안에서 고유해야 한다. 사용자 ID일 수도 있고 client credentials flow에서는 client를 나타낼 수도 있다.</td></tr>
+<tr><td><code>aud</code></td><td>Audience</td><td>string 또는 string 배열</td><td>token을 받을 대상을 식별한다. 현재 API가 audience에 없다면 token을 거부해야 한다.</td></tr>
+<tr><td><code>exp</code></td><td>Expiration Time</td><td>NumericDate</td><td>이 시각 이후에는 token을 받아들이면 안 된다. 검증 시 제한된 clock skew를 둘 수 있다.</td></tr>
+<tr><td><code>nbf</code></td><td>Not Before</td><td>NumericDate</td><td>이 시각 전에는 token을 받아들이면 안 된다.</td></tr>
+<tr><td><code>iat</code></td><td>Issued At</td><td>NumericDate</td><td>token이 발급된 시각이다. token 나이 계산 등에 사용할 수 있지만 이것만으로 만료를 판단하지 않는다.</td></tr>
+<tr><td><code>jti</code></td><td>JWT ID</td><td>case-sensitive string</td><td>token의 고유 식별자다. replay 방지나 revocation record에 사용할 수 있지만 저장하고 검사하는 구현이 없으면 자동으로 replay를 막아주지는 않는다.</td></tr>
+</tbody></table>
+<p><code>NumericDate</code>는 UTC 기준 1970-01-01부터 흐른 초를 나타내는 JSON number다. ISO 8601 문자열이 아니다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;user-123&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;orders-api&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;billing-api&quot;</span><span>]</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783123200</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;nbf&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783119300</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iat&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783119600</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;jti&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;01JXYZ8M6Y4V7Q9R2K3P&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이 값들은 단순한 사용자 profile 정보가 아니라 token의 보안 context를 구성한다. 특히 signature만 검증하고 <code>iss</code>, <code>aud</code>, <code>exp</code>를 검증하지 않으면 “정상적으로 서명되었지만 다른 API를 위해 발급된 token”을 잘못 받을 수 있다.</p>
+<h3 id="iana-registryneun-rfc-7519yi-ilgob-gaero-ggeutnaji-anhneunda">IANA registry는 RFC 7519의 일곱 개로 끝나지 않는다</h3>
+<p>IANA JSON Web Token Claims registry에는 다른 표준이 이후 등록한 이름도 포함된다. 예를 들면 다음과 같다.</p>
+<ul>
+<li>OIDC 사용자 정보: <code>name</code>, <code>email</code>, <code>email_verified</code>, <code>picture</code></li>
+<li>인증 정보: <code>auth_time</code>, <code>nonce</code>, <code>acr</code>, <code>amr</code>, <code>azp</code></li>
+<li>OAuth 정보: <code>client_id</code>, <code>scope</code></li>
+<li>인가 정보: <code>groups</code>, <code>roles</code>, <code>entitlements</code></li>
+</ul>
+<p>따라서 “registered claim”은 RFC 7519의 일곱 claim만을 의미하지 않는다. 현재 registry에 등록된 전체 이름 집합을 가리키며, 각 claim의 의미와 요구 조건은 해당 claim을 등록한 specification에서 확인해야 한다.</p>
+<p>여기서 단수 <code>role</code>과 복수 <code>roles</code>도 구분해야 한다. RFC 9068의 JWT access token profile은 권한 정보를 표현할 때 <code>groups</code>, <code>roles</code>, <code>entitlements</code>를 권장한다. 반면 여러 .NET 또는 identity provider 구현은 관례적으로 <code>role</code>이나 Microsoft URI 형식의 <code>ClaimTypes.Role</code>을 사용한다. 실제 token의 claim name과 ASP.NET Core의 <code>RoleClaimType</code>을 일치시켜야 한다.</p>
+<h3 id="openid-connect-id-tokenyi-claim">OpenID Connect ID token의 claim</h3>
+<p>ID token은 “OAuth access token에 사용자 정보를 조금 더 넣은 것”이 아니다. 클라이언트가 authorization server에서 발생한 사용자 인증 결과를 확인하기 위한 별도의 token이며 항상 JWT 형식이다.</p>
+<p>OIDC Core가 ID token에 요구하는 핵심 claim은 다음과 같다.</p>
+<table><thead><tr><th>Claim</th><th>요구 조건</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>iss</code></td><td>필수</td><td>ID token을 발급한 OpenID Provider</td></tr>
+<tr><td><code>sub</code></td><td>필수</td><td>issuer 안에서 고유하고 재할당되지 않는 사용자 식별자</td></tr>
+<tr><td><code>aud</code></td><td>필수</td><td>이 ID token을 받을 client. 보통 <code>client_id</code>를 포함한다.</td></tr>
+<tr><td><code>exp</code></td><td>필수</td><td>ID token 만료 시각</td></tr>
+<tr><td><code>iat</code></td><td>필수</td><td>ID token 발급 시각</td></tr>
+<tr><td><code>auth_time</code></td><td>요청 조건에 따라 필수</td><td>사용자가 실제로 인증된 시각</td></tr>
+<tr><td><code>nonce</code></td><td>authorization request에 보냈다면 필수</td><td>요청과 응답을 연결하고 replay 공격을 방지한다. client가 원래 값과 비교해야 한다.</td></tr>
+<tr><td><code>acr</code></td><td>선택</td><td>인증 context class. 인증 강도나 정책을 나타낼 수 있다.</td></tr>
+<tr><td><code>amr</code></td><td>선택</td><td>실제 사용한 인증 방법 목록. 예: password, OTP</td></tr>
+<tr><td><code>azp</code></td><td>특정 조건에서 사용</td><td>ID token이 발급된 authorized party. audience가 여러 개일 때 특히 중요하다.</td></tr>
+</tbody></table>
+<p><code>sub</code>는 로그인 이름이나 이메일 주소로 사용하기보다 안정적인 내부 식별자로 취급해야 한다. 이메일은 변경되거나 재사용될 수 있지만 OIDC <code>sub</code>는 issuer 범위에서 사용자를 안정적으로 식별하도록 설계되었다. 데이터베이스에서 외부 사용자를 연결할 때는 보통 <code>(iss, sub)</code> 조합을 key로 사용한다. 서로 다른 issuer가 같은 <code>sub</code> 값을 발급할 수 있기 때문이다.</p>
+<p>OIDC의 Standard Claims는 사용자 profile을 표현한다.</p>
+<table><thead><tr><th>영역</th><th>Claim</th></tr></thead><tbody>
+<tr><td>이름</td><td><code>name</code>, <code>given_name</code>, <code>family_name</code>, <code>middle_name</code>, <code>nickname</code>, <code>preferred_username</code></td></tr>
+<tr><td>profile</td><td><code>profile</code>, <code>picture</code>, <code>website</code></td></tr>
+<tr><td>연락처</td><td><code>email</code>, <code>email_verified</code>, <code>phone_number</code>, <code>phone_number_verified</code></td></tr>
+<tr><td>기타</td><td><code>gender</code>, <code>birthdate</code>, <code>zoneinfo</code>, <code>locale</code>, <code>address</code>, <code>updated_at</code></td></tr>
+</tbody></table>
+<p>이 claim들은 정의되어 있다고 해서 항상 ID token에 들어가는 것이 아니다. 요청한 scope, <code>claims</code> parameter, 사용자 동의, provider 정책에 따라 ID token이나 UserInfo response에서 제공될 수 있다.</p>
+<p>대표적인 scope와 claim의 관계는 다음과 같다.</p>
+<ul>
+<li><code>openid</code>: 요청을 OIDC 요청으로 만든다. 사용자 profile 전체를 의미하지 않는다.</li>
+<li><code>profile</code>: 이름, 사진, locale, <code>updated_at</code> 등의 profile claim을 요청한다.</li>
+<li><code>email</code>: <code>email</code>, <code>email_verified</code>를 요청한다.</li>
+<li><code>phone</code>: <code>phone_number</code>, <code>phone_number_verified</code>를 요청한다.</li>
+<li><code>address</code>: <code>address</code>를 요청한다.</li>
+</ul>
+<p>scope는 “반드시 이 claim을 token에 넣으라”는 단순 명령이 아니다. client가 요청하는 접근 범위를 나타내며, 실제 결과는 consent와 provider 정책의 영향을 받는다.</p>
+<h3 id="id-tokengwa-access-tokenyi-claimeul-hondonghaji-anhgi">ID token과 access token의 claim을 혼동하지 않기</h3>
+<p>ID token의 audience는 <strong>client application</strong>이고, access token의 audience는 일반적으로 <strong>resource server/API</strong>다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>ID token</span></span>
+<span class="giallo-l"><span>  issuer ──인증 결과──&gt; client application</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Access token</span></span>
+<span class="giallo-l"><span>  issuer ──API 접근 권한──&gt; resource server</span></span></code></pre>
+<p>따라서 API는 ID token을 access token 대신 받아서는 안 된다. 두 token이 모두 JWT이고 비슷한 claim을 포함해도 목적과 audience가 다르다.</p>
+<p>또한 OAuth access token은 반드시 JWT일 필요가 없다. OpenIddict도 opaque access token을 사용할 수 있다. JWT 형식의 access token이 RFC 9068 profile을 따른다면 다음 claim들이 필수다.</p>
+<ul>
+<li><code>iss</code></li>
+<li><code>sub</code></li>
+<li><code>aud</code></li>
+<li><code>exp</code></li>
+<li><code>iat</code></li>
+<li><code>jti</code></li>
+<li><code>client_id</code></li>
+</ul>
+<p>authorization request에 scope가 있었다면 RFC 9068은 access token에 <code>scope</code> claim을 포함할 것을 권고한다. 그러나 client는 access token 내부 구조에 의존하지 말고 opaque 값으로 취급해야 한다. access token의 소비자는 API이며, client가 token payload를 읽어서 UI 권한이나 로그인 상태를 결정하면 token format 변경에 취약해진다.</p>
+<h3 id="custom-claim-ireumeul-jeonghaneun-bangbeob">Custom claim 이름을 정하는 방법</h3>
+<p>내부 시스템에서만 사용하는 claim은 짧은 private name을 쓸 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;permission&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;orders.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;orders.write&quot;</span><span>]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>하지만 여러 조직이나 제품 사이에서 token을 교환한다면 짧은 이름은 미래의 표준 또는 다른 공급자의 claim과 충돌할 수 있다. 이런 경우 자신이 통제하는 namespace를 사용한 collision-resistant name이 안전하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;https://auth.example.com/claims/tenant_id&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;tenant-7&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>URI 형식 claim name도 실제로 접속 가능한 URL일 필요는 없다. 자신이 통제하는 namespace에 속한 고유한 식별자라는 점이 핵심이다. 참고로 RFC 7519의 <code>StringOrURI</code> 규칙은 <code>iss</code>나 <code>sub</code> 같은 일부 <strong>claim value</strong>의 자료형에 관한 규칙이며 모든 claim name에 적용되는 규칙은 아니다.</p>
+<p>Custom claim을 설계할 때는 다음을 확인하는 것이 좋다.</p>
+<ol>
+<li>같은 의미의 registered claim이 IANA registry에 이미 있는가?</li>
+<li>이 claim의 소비자는 client인가, API인가?</li>
+<li>값의 형식이 string, array, boolean 중 무엇인지 계약으로 정했는가?</li>
+<li>이름 충돌 가능성이 있다면 collision-resistant name을 사용했는가?</li>
+<li>token에 넣지 않아도 API가 서버에서 조회할 수 있는 민감 정보인가?</li>
+<li>값이 변경되었을 때 이미 발급된 token이 오래된 권한을 유지해도 되는가?</li>
+</ol>
+<p>JWT payload는 암호화되지 않은 JWS인 경우 누구나 base64url decode해서 읽을 수 있다. 서명은 위변조를 막지만 기밀성을 제공하지 않는다. 비밀번호, secret, 불필요한 개인정보를 claim에 넣으면 안 된다. 권한 정보를 넣을 때도 token 만료 전까지 값이 stale할 수 있다는 점을 고려해야 한다.</p>
+<h2 id="inbound-claim-mapping">Inbound claim mapping</h2>
+<p>JWT bearer handler는 token의 짧은 claim 이름을 .NET의 URI 형식 claim type으로 mapping할 수 있다. 예를 들어 <code>sub</code>가 <code>ClaimTypes.NameIdentifier</code>로 변환될 수 있다.</p>
+<p>이 동작은 scheme별로 끌 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>builder</span><span style="color: #F29668;">.</span><span>Services</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">AddAuthentication</span><span>(JwtBearerDefaults</span><span style="color: #F29668;">.</span><span>AuthenticationScheme)</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">AddJwtBearer</span><span>(</span><span style="color: #59C2FF;">options</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>        options</span><span style="color: #F29668;">.</span><span>MapInboundClaims</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> false</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> TokenValidationParameters</span></span>
+<span class="giallo-l"><span>        {</span></span>
+<span class="giallo-l"><span>            NameClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>            RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span></span>
+<span class="giallo-l"><span>        }</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>mapping을 끄면 <code>User.FindFirst("sub")</code>처럼 token에 들어 있는 이름을 그대로 사용할 수 있다. 중요한 것은 mapping을 켜거나 끄는 선택 자체보다 애플리케이션 전체에서 claim 이름과 <code>NameClaimType</code>, <code>RoleClaimType</code>을 일관되게 사용하는 것이다.</p>
+<h2 id="identityyi-bearer-tokengwa-oauth-tokeneun-dareuda">Identity의 bearer token과 OAuth token은 다르다</h2>
+<p>최근 ASP.NET Core Identity API endpoint는 first-party client를 위해 bearer token을 발급할 수 있다. 그러나 이 token은 Identity 전용 proprietary token이며 OAuth 2.0/OIDC token server를 구현한 것이 아니다.</p>
+<p>다음 기능이 필요하다면 OpenIddict 같은 OAuth/OIDC server framework가 필요하다.</p>
+<ul>
+<li>여러 client application 등록</li>
+<li>authorization code + PKCE</li>
+<li>표준 scope와 consent</li>
+<li>ID token과 OIDC discovery</li>
+<li>refresh token 정책</li>
+<li>token introspection과 revocation</li>
+<li>외부 애플리케이션과의 표준 기반 상호 운용</li>
+</ul>
+<p>사용자가 있는 신규 애플리케이션에서는 password grant보다 authorization code flow with PKCE를 우선해야 한다. password grant는 client가 사용자의 비밀번호를 직접 받기 때문에 권장되지 않는다. 서버 간 통신에는 client credentials flow가 적합하다.</p>
+<h2 id="jeonce-gujo-jeongri">전체 구조 정리</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>                        Authentication</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Credential / Cookie / JWT / Certificate</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>          Authentication Handler</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>              ClaimsIdentity</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>             ClaimsPrincipal</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>           HttpContext.User</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>                         Authorization</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>           HttpContext.User + Resource</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>          Authorization Policy</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>    Role / Claim / Custom Requirements</span></span>
+<span class="giallo-l"><span>                    ↓</span></span>
+<span class="giallo-l"><span>              Allow or Deny</span></span></code></pre>
+<p>마지막으로 각 용어를 한 문장으로 정리하면 다음과 같다.</p>
+<ul>
+<li>Identity: 사용자 계정과 로그인 lifecycle을 관리한다.</li>
+<li>OpenIddict: OAuth 2.0/OIDC protocol을 처리하고 표준 token을 발급하거나 검증한다.</li>
+<li>JWT: claim을 전달할 수 있는 signed token format이다.</li>
+<li>Claim: 주체에 관한 type/value 정보다.</li>
+<li>ClaimsIdentity: 하나의 인증 출처에서 얻은 Claim 묶음이다.</li>
+<li>ClaimsPrincipal: 하나 이상의 ClaimsIdentity를 포함하는 현재 보안 주체다.</li>
+<li><code>HttpContext.User</code>: 현재 요청의 ClaimsPrincipal이다.</li>
+<li>Role: RoleClaimType으로 지정된 Claim을 ASP.NET Core가 role로 해석한 것이다.</li>
+<li>Policy: role, claim, custom requirement를 평가하는 인가 규칙이다.</li>
+</ul>
+<h2 id="ref">Ref</h2>
+<ul>
+<li>ASP.NET Core Identity overview: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity">https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity</a></li>
+<li>Identity API authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization">https://learn.microsoft.com/en-us/aspnet/core/security/authentication/identity-api-authorization</a></li>
+<li>Claims-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/claims</a></li>
+<li>Policy-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/policies</a></li>
+<li>Role-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles</a></li>
+<li><code>ClaimTypes</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimtypes">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimtypes</a></li>
+<li><code>JwtBearerOptions.MapInboundClaims</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbeareroptions.mapinboundclaims">https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.authentication.jwtbearer.jwtbeareroptions.mapinboundclaims</a></li>
+<li>OpenIddict introduction: <a rel="external" href="https://documentation.openiddict.com/introduction">https://documentation.openiddict.com/introduction</a></li>
+<li>OpenIddict getting started: <a rel="external" href="https://documentation.openiddict.com/guides/getting-started/">https://documentation.openiddict.com/guides/getting-started/</a></li>
+<li>Choosing an OAuth/OIDC flow with OpenIddict: <a rel="external" href="https://documentation.openiddict.com/guides/choosing-the-right-flow.html">https://documentation.openiddict.com/guides/choosing-the-right-flow.html</a></li>
+<li>JSON Web Token, RFC 7519: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a></li>
+<li>IANA JSON Web Token Claims registry: <a rel="external" href="https://www.iana.org/assignments/jwt/jwt.xhtml">https://www.iana.org/assignments/jwt/jwt.xhtml</a></li>
+<li>JWT Profile for OAuth 2.0 Access Tokens, RFC 9068: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc9068">https://www.rfc-editor.org/rfc/rfc9068</a></li>
+<li>OpenID Connect Core 1.0: <a rel="external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp&#x2F;dotnet-framework&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              CLI? CIL? CLR?
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp&#x2F;identityserver-userclaims&#x2F;">
+              IdentityServer UserClaims 이해하기: User, Identity Resource, API Resource의 차이<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

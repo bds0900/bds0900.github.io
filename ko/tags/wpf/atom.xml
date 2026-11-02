@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - WPF</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/wpf/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-05-21T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/wpf/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>WPF</title>
+        <published>2025-05-21T00:00:00+00:00</published>
+        <updated>2025-05-21T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/csharp/wpf/"/>
+        <id>https://emptyfridge.dev/ko/csharp/wpf/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/csharp/wpf/">&lt;h3 id=&quot;namespace&quot;&gt;namespace&lt;&#x2F;h3&gt;
+&lt;p&gt;WPF 예제를 보면 &lt;code&gt;x:Type&lt;&#x2F;code&gt; 같은 표현이 보이는데, 여기서 &lt;code&gt;x&lt;&#x2F;code&gt;는 도대체 무엇일까?
+파일 제일 위쪽을 보면 보통 이런 선언이 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;xmlns:x=&amp;quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;C# 코드에서 &lt;code&gt;using&lt;&#x2F;code&gt; namespace를 적는 것과 비슷하게, XAML에서는 &lt;code&gt;xmlns&lt;&#x2F;code&gt;로 XML namespace prefix를 선언한다. 다만 완전히 같은 개념은 아니다. &lt;code&gt;xmlns:x&lt;&#x2F;code&gt;는 &lt;code&gt;x:Class&lt;&#x2F;code&gt;, &lt;code&gt;x:Key&lt;&#x2F;code&gt;, &lt;code&gt;x:Name&lt;&#x2F;code&gt;, &lt;code&gt;x:Type&lt;&#x2F;code&gt; 같은 XAML language feature를 쓰기 위한 prefix다. WPF XAML은 case-sensitive라서 element와 property 이름의 대소문자도 정확히 맞아야 한다.&lt;&#x2F;p&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;contentcontrol&quot;&gt;ContentControl&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;code&gt;ContentControl&lt;&#x2F;code&gt;은 WPF에서 매우 기본이 되는 control이다.
+&lt;code&gt;App.xaml.cs&lt;&#x2F;code&gt;는 프로그램의 시작점이고, 여기서 보통 &lt;code&gt;MainWindow&lt;&#x2F;code&gt;를 띄운다.
+&lt;code&gt;MainWindow&lt;&#x2F;code&gt;는 &lt;code&gt;Window&lt;&#x2F;code&gt;를 상속하고, &lt;code&gt;Window&lt;&#x2F;code&gt;는 다시 &lt;code&gt;ContentControl&lt;&#x2F;code&gt;을 상속한다.
+즉 우리는 WPF에서 &lt;code&gt;ContentControl&lt;&#x2F;code&gt;을 알게 모르게 계속 사용하고 있는 셈이다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ContentControl Content&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;{Binding CurrentViewModel}&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &#x2F;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ContentControl Content&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;{StaticResource person}&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; &#x2F;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;UIViewModel&lt;&#x2F;code&gt;을 표시할 view를 &lt;code&gt;&amp;lt;views:UIView&amp;gt;&lt;&#x2F;code&gt;로 매핑하려면 &lt;code&gt;DataTemplate&lt;&#x2F;code&gt; 안에 넣어 줄 수 있다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;ContentControl Content&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;{Binding CurrentViewModel}&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    &amp;lt;&lt;&#x2F;span&gt;&lt;span&gt;ContentControl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Resources&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;        &amp;lt;&lt;&#x2F;span&gt;&lt;span&gt;DataTemplate DataType&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;=&lt;&#x2F;span&gt;&lt;span style=&quot;color: #AAD94C;&quot;&gt;&amp;quot;{x:Type viewModels:UIViewModel}&amp;quot;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;        &amp;lt;&lt;&#x2F;span&gt;&lt;span&gt;views&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt;UIView&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;        &amp;lt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;views&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span&gt;UIView&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;        &amp;lt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;DataTemplate&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;    &amp;lt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;ContentControl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;Resources&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;lt;&#x2F;&lt;&#x2F;span&gt;&lt;span&gt;ContentControl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Binding=&quot;{Binding Name}&quot;
+Binding=&quot;{Binding ElementName=Name}&quot;&lt;&#x2F;p&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;deiteo-pyosi&quot;&gt;데이터 표시&lt;&#x2F;h3&gt;
+&lt;p&gt;WPF를 공부하다 보면 데이터를 table이나 list 형태로 표현해야 할 때가 있다. 예제에서 자주 보이는 control들은 다음과 같다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.datagrid&quot;&gt;DataGrid&lt;&#x2F;a&gt;
+vs &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;desktop&#x2F;wpf&#x2F;controls&#x2F;gridview-overview&quot;&gt;GridView&lt;&#x2F;a&gt;
+vs &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.itemscontrol&quot;&gt;ItemsControl&lt;&#x2F;a&gt;
+vs &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listbox&quot;&gt;ListBox&lt;&#x2F;a&gt;
+vs &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listview&quot;&gt;ListView&lt;&#x2F;a&gt;
+&lt;br&gt;
+상속 순서는 다음과 같다.
+&lt;br&gt;
+ItemsControl -&amp;gt; Selector -&amp;gt; ListBox -&amp;gt; ListView
+그리고 &lt;code&gt;GridView&lt;&#x2F;code&gt;는 &lt;code&gt;ListView.View&lt;&#x2F;code&gt;에 넣는 view mode이다. &lt;code&gt;DataGrid&lt;&#x2F;code&gt;처럼 standalone item control이 아니라 &lt;code&gt;ViewBase&lt;&#x2F;code&gt;를 상속해서 &lt;code&gt;ListView&lt;&#x2F;code&gt;의 데이터를 column 형태로 보여준다.
+더 자세한 내용은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;desktop&#x2F;wpf&#x2F;controls&#x2F;control-library&quot;&gt;여기서&lt;&#x2F;a&gt; 보자&lt;&#x2F;p&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;binding-propertyname-and&quot;&gt;{Binding PropertyName} and&lt;&#x2F;h3&gt;
+&lt;p&gt;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;4306657&#x2F;difference-between-binding-propertyname-and-binding-path-propertyname&lt;&#x2F;p&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;selectedvalue-vs-selecteditem&quot;&gt;SelectedValue vs SelectedItem&lt;&#x2F;h3&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;textboxeseo-user-input-badgi&quot;&gt;TextBox에서 user input 받기&lt;&#x2F;h3&gt;
+&lt;p&gt;&lt;TextBox Width=&quot;200&quot; Height=&quot;25&quot; FontSize=&quot;14&quot;
+                 Text=&quot;{Binding Name, UpdateSourceTrigger=PropertyChanged}&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;br&gt;
+&lt;h3 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;XAML overview: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;desktop&#x2F;wpf&#x2F;xaml&#x2F;&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;desktop&#x2F;wpf&#x2F;xaml&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;ContentControl: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.contentcontrol&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.contentcontrol&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;ItemsControl: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.itemscontrol&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.itemscontrol&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;ListBox: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listbox&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listbox&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;ListView: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listview&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.listview&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;GridView: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.gridview&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.controls.gridview&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+    <entry xml:lang="ko">
+        <title>WPF 창이 두 개 뜨는 문제</title>
+        <published>2025-05-13T00:00:00+00:00</published>
+        <updated>2025-05-13T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/csharp/wpf-two-windows/"/>
+        <id>https://emptyfridge.dev/ko/csharp/wpf-two-windows/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/csharp/wpf-two-windows/">&lt;p&gt;Visual Studio에서 WPF 프로그램을 실행할 때 window가 두 개 뜨는 경우가 있다.
+App.xaml&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot; data-xml-hl-lines=&quot;5&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&amp;lt;Application x:Class=&amp;quot;Trading.WPFClient.App&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;             xmlns=&amp;quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&#x2F;presentation&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;             xmlns:x=&amp;quot;http:&#x2F;&#x2F;schemas.microsoft.com&#x2F;winfx&#x2F;2006&#x2F;xaml&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;             xmlns:local=&amp;quot;clr-namespace:Trading.WPFClient&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;             StartupUri=&amp;quot;MainWindow.xaml&amp;quot;&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    &amp;lt;Application.Resources&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    &amp;lt;&#x2F;Application.Resources&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;&amp;lt;&#x2F;Application&amp;gt;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;App.xaml.cs&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot; data-cs-hl-lines=&quot;5 8&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; public partial class App : Application&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;     protected override void OnStartup(StartupEventArgs e)&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;     {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         MainWindow = new MainWindow()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;             DataContext = new MainViewModel()&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         };&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         MainWindow.Show();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;         base.OnStartup(e);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;     }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt; }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;&lt;code&gt;StartupUri=&quot;MainWindow.xaml&quot;&lt;&#x2F;code&gt;은 application 시작 시 해당 UI를 자동으로 보여준다. 그런데 &lt;code&gt;OnStartup&lt;&#x2F;code&gt;에서도 &lt;code&gt;new MainWindow()&lt;&#x2F;code&gt;를 만들고 &lt;code&gt;Show()&lt;&#x2F;code&gt;를 호출하고 있으니 window가 두 개 생긴다.
+둘 중 하나를 없애주면 된다. 보통은 &lt;code&gt;StartupUri&lt;&#x2F;code&gt;를 쓰거나, &lt;code&gt;StartupUri&lt;&#x2F;code&gt;를 지우고 &lt;code&gt;OnStartup&lt;&#x2F;code&gt;에서 직접 window를 만들거나 둘 중 하나만 선택한다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;stackoverflow.com&#x2F;questions&#x2F;2923431&#x2F;problem-with-wpf-c-sharp-app-spawning-two-main-windows&quot;&gt;Problem With WPF C# App Spawning Two Main Windows&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;ref&quot;&gt;Ref&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;Application.StartupUri: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.startupuri&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.startupuri&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Application.MainWindow: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.mainwindow&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.mainwindow&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Application.OnStartup: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.onstartup&quot;&gt;https:&#x2F;&#x2F;learn.microsoft.com&#x2F;en-us&#x2F;dotnet&#x2F;api&#x2F;system.windows.application.onstartup&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

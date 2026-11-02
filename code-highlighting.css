@@ -1,0 +1,64 @@
+/* Zola marks hl_lines with an inline background but no dedicated class. */
+.giallo > code > .giallo-l {
+  display: inline-block;
+  min-height: 1lh;
+  width: 100%;
+}
+
+.giallo > code > .giallo-l[style*="background-color"] {
+  background-color: #263143 !important;
+  box-shadow: inset 3px 0 #59c2ff;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span:nth-child(2)[style*="color: #70BF56"]) {
+  background-color: rgb(112 191 86 / 14%);
+  box-shadow: inset 3px 0 #70bf56;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span:nth-child(2)[style*="color: #F26D78"]) {
+  background-color: rgb(242 109 120 / 14%);
+  box-shadow: inset 3px 0 #f26d78;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l > span:first-child[style*="font-weight: bold"]:not([style*="font-style: italic"]),
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l > span[style*="font-weight: bold"][style*="font-style: italic"] {
+  display: none;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span[style*="font-weight: bold"][style*="font-style: italic"])
+  > span[style*="color: #70BF56"] {
+  padding-inline: 0.12em;
+  background-color: rgb(112 191 86 / 28%);
+  border-radius: 2px;
+}
+
+.giallo > code:is(
+  [data-lang="rs diff"],
+  [data-lang="rust diff"],
+  [data-lang="rust-diff"]
+) > .giallo-l:has(> span[style*="font-weight: bold"][style*="font-style: italic"])
+  > span[style*="color: #F26D78"] {
+  padding-inline: 0.12em;
+  background-color: rgb(242 109 120 / 28%);
+  border-radius: 2px;
+}

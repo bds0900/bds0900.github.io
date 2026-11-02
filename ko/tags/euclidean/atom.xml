@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - Euclidean</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/euclidean/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2025-01-09T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/euclidean/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>유클리드 호제법</title>
+        <published>2025-01-09T00:00:00+00:00</published>
+        <updated>2025-01-09T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/algorithm/euclidean/"/>
+        <id>https://emptyfridge.dev/ko/algorithm/euclidean/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/algorithm/euclidean/">&lt;p&gt;LeetCode 문제를 풀다가 &lt;code&gt;Greatest Common Divisor of Strings&lt;&#x2F;code&gt;라는 문제를 만났다. 처음에는 별생각 없이 두 문자열을 포인터로 하나씩 비교하는 방식으로 풀었는데, 곧 그 접근이 틀렸다는 것을 알았다. 역시 문제를 풀기 전에는 요구사항을 제대로 읽고 구조를 먼저 분석해야 한다.&lt;&#x2F;p&gt;
+&lt;p&gt;핵심은 두 문자열이 공통으로 가질 수 있는 가장 긴 반복 단위를 찾는 것이다. 이 문제를 문자열 자체가 아니라 문자열의 길이 관점으로 바꾸어 보면, 결국 두 길이의 최대공약수를 찾는 문제로 볼 수 있다.&lt;&#x2F;p&gt;
+&lt;p&gt;최대공약수를 직접 구현해 본 적이 없어서 혼자 여러 방법을 생각해 보다가, 결국 다른 풀이를 참고했다. 그리고 정말 간결한 코드를 발견했다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;csharp&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;public int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; gcd&lt;&#x2F;span&gt;&lt;span&gt;(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt; int&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; b&lt;&#x2F;span&gt;&lt;span&gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    return&lt;&#x2F;span&gt;&lt;span&gt; (b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; ==&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 0&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;?&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; :&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; gcd&lt;&#x2F;span&gt;&lt;span&gt;(b&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;,&lt;&#x2F;span&gt;&lt;span&gt; a&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; %&lt;&#x2F;span&gt;&lt;span&gt; b)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #BFBDB6B3;&quot;&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;그리고 이 방식이 그 유명한 유클리드 호제법이라는 것을 알게 되었다.&lt;&#x2F;p&gt;
+&lt;p&gt;내가 원래 알고 있던 최대공약수 구하는 방법은 두 수를 공통 약수로 계속 나누어 가는 방식이었다. 예를 들어 252와 105의 최대공약수를 구한다면 먼저 둘 다 3으로 나누어 &lt;code&gt;252 &#x2F; 3 = 84&lt;&#x2F;code&gt;, &lt;code&gt;105 &#x2F; 3 = 35&lt;&#x2F;code&gt;를 얻고, 다시 둘 다 7로 나누어 &lt;code&gt;84 &#x2F; 7 = 12&lt;&#x2F;code&gt;, &lt;code&gt;35 &#x2F; 7 = 5&lt;&#x2F;code&gt;를 얻는다. 12와 5는 더 이상 공통 약수가 없으므로 공통으로 나누었던 &lt;code&gt;3 * 7 = 21&lt;&#x2F;code&gt;이 최대공약수다.&lt;&#x2F;p&gt;
+&lt;p&gt;유클리드 호제법은 같은 결과를 훨씬 간단하게 구한다. 두 수 &lt;code&gt;a&lt;&#x2F;code&gt;, &lt;code&gt;b&lt;&#x2F;code&gt;에 대해 &lt;code&gt;gcd(a, b) = gcd(b, a % b)&lt;&#x2F;code&gt;라는 관계를 반복하고, 나머지가 0이 되는 순간의 값이 최대공약수가 된다. 위 코드가 바로 이 규칙을 재귀로 표현한 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;참고:
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;www.khanacademy.org&#x2F;computing&#x2F;computer-science&#x2F;cryptography&#x2F;modarithmetic&#x2F;a&#x2F;the-euclidean-algorithm&lt;&#x2F;a&gt;
+&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&quot;&gt;https:&#x2F;&#x2F;seunghyum.github.io&#x2F;algorithm&#x2F;Euclidean-algorithm&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

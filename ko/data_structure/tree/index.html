@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Tree 자료구조
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Tree 자료구조
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-05-05">May 05, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>872 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/data-structure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Data Structure</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/tree/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>tree</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/binary-tree/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>binary-tree</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/dfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>DFS</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/bfs/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>BFS</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Tree는 node와 edge로 이루어진 계층형 자료구조다. Graph 관점에서 보면 <strong>connected
+acyclic graph</strong>, 즉 모든 node가 연결되어 있고 cycle이 없는 graph다.</p>
+<p><img src="/images/DS/Tree/Treedatastructure.png" alt="tree" />
+source: <a rel="external" href="https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/">https://www.geeksforgeeks.org/introduction-to-tree-data-structure-and-algorithm-tutorials/</a></p>
+<h2 id="haegsim-seongjil">핵심 성질</h2>
+<p>Tree를 이해할 때 가장 중요한 성질은 아래 세 가지다.</p>
+<ol>
+<li>node가 <code>n</code>개인 tree는 edge가 <code>n - 1</code>개다.</li>
+<li>임의의 두 node 사이에는 path가 정확히 하나만 존재한다.</li>
+<li>edge를 하나 추가하면 cycle이 생기고, edge를 하나 제거하면 연결이 끊어진다.</li>
+</ol>
+<p>보통 프로그래밍에서 말하는 tree는 root가 있는 <strong>rooted tree</strong>다. Root를 기준으로
+parent-child 관계가 생기고, root에서 멀어질수록 depth가 깊어진다.</p>
+<h2 id="yongeo">용어</h2>
+<table><thead><tr><th>용어</th><th>의미</th></tr></thead><tbody>
+<tr><td>Root</td><td>부모가 없는 시작 node</td></tr>
+<tr><td>Parent</td><td>어떤 node 바로 위의 node</td></tr>
+<tr><td>Child</td><td>어떤 node 바로 아래의 node</td></tr>
+<tr><td>Sibling</td><td>같은 parent를 공유하는 node</td></tr>
+<tr><td>Leaf</td><td>child가 없는 node</td></tr>
+<tr><td>Internal node</td><td>leaf가 아닌 node</td></tr>
+<tr><td>Degree</td><td>child 개수</td></tr>
+<tr><td>Depth</td><td>root에서 해당 node까지 edge 개수</td></tr>
+<tr><td>Height</td><td>해당 node에서 가장 먼 leaf까지 edge 개수</td></tr>
+<tr><td>Subtree</td><td>어떤 node를 root로 하는 부분 tree</td></tr>
+</tbody></table>
+<p>예를 들어 root의 depth는 <code>0</code>이고, leaf의 height는 <code>0</code>이다. 문제마다 height를 edge 개수
+대신 node 개수로 정의하는 경우도 있으니 면접이나 알고리즘 문제에서는 정의를 먼저 확인하는
+게 좋다.</p>
+<h2 id="tree-jongryu">Tree 종류</h2>
+<h3 id="binary-tree">Binary Tree</h3>
+<p>각 node가 최대 2개의 child를 가지는 tree다. 보통 child를 <code>left</code>, <code>right</code>로 부른다.</p>
+<h3 id="binary-search-tree">Binary Search Tree</h3>
+<p>Binary tree에 ordering rule을 추가한 tree다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>left subtree의 모든 값 &lt; root 값 &lt; right subtree의 모든 값</span></span></code></pre>
+<p>이 규칙 덕분에 search, insert, delete가 평균적으로 <code>O(log n)</code>이 될 수 있다. 하지만 tree가
+한쪽으로 기울면 height가 <code>n</code>이 되어 <code>O(n)</code>까지 나빠진다.</p>
+<h3 id="self-balancing-search-tree">Self-balancing Search Tree</h3>
+<p>Insert/delete 이후 height가 너무 커지지 않도록 스스로 균형을 맞추는 search tree다.</p>
+<ul>
+<li>AVL tree</li>
+<li>Red-black tree</li>
+<li>B-tree</li>
+</ul>
+<p>여기서 주의할 점이 있다. <strong>B-tree는 binary tree가 아니다.</strong> 하나의 node가 여러 key와 여러 child를
+가질 수 있는 multi-way balanced search tree다. Database index나 filesystem에서 자주
+등장한다.</p>
+<h3 id="full-complete-perfect-binary-tree">Full / Complete / Perfect Binary Tree</h3>
+<p>이 세 용어는 이름이 비슷해서 자주 헷갈린다.</p>
+<table><thead><tr><th>종류</th><th>조건</th></tr></thead><tbody>
+<tr><td>Full binary tree</td><td>모든 node의 child 개수가 0개 또는 2개다</td></tr>
+<tr><td>Complete binary tree</td><td>마지막 level을 제외한 모든 level이 꽉 차 있고, 마지막 level은 왼쪽부터 채워져 있다</td></tr>
+<tr><td>Perfect binary tree</td><td>모든 internal node가 child 2개를 가지고, 모든 leaf가 같은 depth에 있다</td></tr>
+</tbody></table>
+<p>Perfect binary tree는 항상 full이면서 complete다. 하지만 full이라고 해서 complete인 것은
+아니고, complete라고 해서 full인 것도 아니다.</p>
+<h2 id="traversal">Traversal</h2>
+<p>Traversal은 tree의 모든 node를 한 번씩 방문하는 방법이다. Tree node가 <code>n</code>개라면 모든
+traversal은 기본적으로 <code>O(n)</code>이다.</p>
+<p><img src="/images/DS/Tree/full_binary_tree.png" alt="Tree" /></p>
+<h3 id="dfs-depth-first-search">DFS: Depth-First Search</h3>
+<p>DFS는 한 방향으로 끝까지 내려갔다가 다시 돌아오는 방식이다. Recursive call stack을 쓰거나
+직접 stack을 만들어 구현한다.</p>
+<p>Binary tree에서 DFS 순회는 root를 언제 방문하느냐에 따라 이름이 달라진다.</p>
+<table><thead><tr><th>순회</th><th>순서</th><th>예시</th></tr></thead><tbody>
+<tr><td>Preorder</td><td>Root -&gt; Left -&gt; Right</td><td>A-B-D-E-H-I-C-F-G</td></tr>
+<tr><td>Inorder</td><td>Left -&gt; Root -&gt; Right</td><td>D-B-H-E-I-A-F-C-G</td></tr>
+<tr><td>Postorder</td><td>Left -&gt; Right -&gt; Root</td><td>D-H-I-E-B-F-G-C-A</td></tr>
+</tbody></table>
+<p>외우는 법은 간단하다. Left는 항상 Right보다 먼저 간다. Root가 앞이면 preorder, 중간이면
+inorder, 뒤면 postorder다.</p>
+<p>Inorder traversal은 binary search tree에서 특히 중요하다. BST를 inorder로 순회하면 값이
+정렬된 순서로 나온다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> inorder</span><span>(node</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;, output</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;) {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if let</span><span style="color: #59C2FF;"> Some</span><span>(node)</span><span style="color: #F29668;"> =</span><span> node {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        inorder</span><span>(node</span><span style="color: #F29668;">.</span><span>left</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>(), output);</span></span>
+<span class="giallo-l"><span>        output</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(node</span><span style="color: #F29668;">.</span><span>val);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        inorder</span><span>(node</span><span style="color: #F29668;">.</span><span>right</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>(), output);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>DFS의 extra space는 tree height를 <code>h</code>라고 할 때 recursive call stack 기준 <code>O(h)</code>다.
+Balanced tree라면 <code>O(log n)</code>, 한쪽으로 기운 tree라면 <code>O(n)</code>이다.</p>
+<h3 id="bfs-breadth-first-search">BFS: Breadth-First Search</h3>
+<p>BFS는 level-order traversal이라고도 부른다. Root에서 시작해 같은 depth의 node를 먼저
+방문한 뒤 다음 level로 내려간다.</p>
+<p><img src="/images/DS/Tree/binary_tree_level_order.png" alt="Tree" /></p>
+<p>BFS는 queue로 구현한다. Tree의 level별 처리, 최단 edge 수 계산, serialization 문제에서
+자주 등장한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">collections</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">VecDeque</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> level_order</span><span>(root</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Vec</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> queue</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> VecDeque</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if let</span><span style="color: #59C2FF;"> Some</span><span>(root)</span><span style="color: #F29668;"> =</span><span> root {</span></span>
+<span class="giallo-l"><span>        queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(root);</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    while let</span><span style="color: #59C2FF;"> Some</span><span>(node)</span><span style="color: #F29668;"> =</span><span> queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">pop_front</span><span>() {</span></span>
+<span class="giallo-l"><span>        result</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(node</span><span style="color: #F29668;">.</span><span>val);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if let</span><span style="color: #59C2FF;"> Some</span><span>(left)</span><span style="color: #F29668;"> =</span><span> node</span><span style="color: #F29668;">.</span><span>left</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>() {</span></span>
+<span class="giallo-l"><span>            queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(left);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if let</span><span style="color: #59C2FF;"> Some</span><span>(right)</span><span style="color: #F29668;"> =</span><span> node</span><span style="color: #F29668;">.</span><span>right</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>() {</span></span>
+<span class="giallo-l"><span>            queue</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_back</span><span>(right);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    result</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>BFS의 extra space는 queue에 들어가는 최대 node 수에 비례한다. Tree의 최대 width를 <code>w</code>라고
+하면 <code>O(w)</code>다. Complete binary tree의 마지막 level은 node가 많기 때문에 최악의 경우
+<code>O(n)</code>이 될 수 있다.</p>
+<h2 id="pyohyeon-bangbeob">표현 방법</h2>
+<h3 id="linked-node">Linked node</h3>
+<p>가장 일반적인 표현 방식이다. 각 node가 자기 child를 가리킨다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span>#[derive(</span><span style="color: #59C2FF;">Debug</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub struct</span><span style="color: #59C2FF;"> TreeNode</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> val</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> left</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub</span><span> right</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Option</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">TreeNode</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> TreeNode</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    pub fn</span><span style="color: #FFB454;"> new</span><span>(val</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">        Self</span><span> {</span></span>
+<span class="giallo-l"><span>            val,</span></span>
+<span class="giallo-l"><span>            left</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> None</span><span>,</span></span>
+<span class="giallo-l"><span>            right</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> None</span><span>,</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>LeetCode의 Rust tree 문제에서는 공유 ownership과 interior mutability 때문에
+<code>Option&lt;Rc&lt;RefCell&lt;TreeNode&gt;&gt;&gt;</code> 형태를 자주 본다. 하지만 tree 개념 자체를 설명할 때는
+<code>Box&lt;TreeNode&gt;</code>가 더 단순하다.</p>
+<h3 id="array">Array</h3>
+<p>Complete binary tree처럼 빈 공간이 거의 없는 tree는 array로 표현하기 좋다.</p>
+<p>Root index를 <code>0</code>이라고 하면:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>left child  = 2 * i + 1</span></span>
+<span class="giallo-l"><span>right child = 2 * i + 2</span></span>
+<span class="giallo-l"><span>parent      = (i - 1) / 2</span></span></code></pre>
+<p>Heap이 이 표현을 사용한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">struct</span><span style="color: #59C2FF;"> ArrayTree</span><span> {</span></span>
+<span class="giallo-l"><span>    nodes</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Option</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> ArrayTree</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> left_index</span><span>(parent</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> usize</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">        2</span><span style="color: #F29668;"> *</span><span> parent</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 1</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> right_index</span><span>(parent</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> usize</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> usize</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">        2</span><span style="color: #F29668;"> *</span><span> parent</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 2</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>Array 표현은 index 계산이 빠르고 cache locality가 좋다. 하지만 sparse tree에는 빈 칸이
+많아져 memory가 낭비된다.</p>
+<h2 id="sigan-bogjabdo">시간 복잡도</h2>
+<table><thead><tr><th>작업</th><th style="text-align: right">일반 binary tree</th><th style="text-align: right">balanced BST</th><th style="text-align: right">한쪽으로 기운 BST</th></tr></thead><tbody>
+<tr><td>Search</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Insert</td><td style="text-align: right">O(n) 또는 위치를 알면 O(1)</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Delete</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(log n)</td><td style="text-align: right">O(n)</td></tr>
+<tr><td>Traversal</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(n)</td><td style="text-align: right">O(n)</td></tr>
+</tbody></table>
+<p>Tree 문제에서 중요한 것은 "binary tree인가, BST인가, balanced인가"를 먼저 구분하는 것이다.
+셋을 섞어서 생각하면 time complexity를 쉽게 틀린다.</p>
+<h2 id="eodie-sseuna">어디에 쓰나</h2>
+<ul>
+<li>File system directory 구조</li>
+<li>HTML/XML DOM</li>
+<li>Compiler AST(Abstract Syntax Tree)</li>
+<li>Database index(B-tree, B+tree)</li>
+<li>Priority queue(heap)</li>
+<li>Prefix search(trie)</li>
+<li>Range query(segment tree, Fenwick tree)</li>
+</ul>
+<h2 id="gieoghal-jeom">기억할 점</h2>
+<ul>
+<li>Tree는 cycle이 없는 connected graph다.</li>
+<li>Rooted tree에서는 parent-child 관계가 생긴다.</li>
+<li>Binary tree와 binary search tree는 다르다.</li>
+<li>Balanced BST는 height를 낮게 유지해서 search/insert/delete를 <code>O(log n)</code>에 가깝게 만든다.</li>
+<li>BFS는 queue, DFS는 stack 또는 recursion으로 구현한다.</li>
+<li>Array tree 표현은 complete binary tree나 heap에 잘 맞고, sparse tree에는 비효율적이다.</li>
+</ul>
+<h2 id="camgo">참고</h2>
+<ul>
+<li>Tree data structure: <a rel="external" href="https://en.wikipedia.org/wiki/Tree_(data_structure)">https://en.wikipedia.org/wiki/Tree_(data_structure)</a></li>
+<li>Binary tree: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_tree">https://en.wikipedia.org/wiki/Binary_tree</a></li>
+<li>Binary search tree: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_search_tree">https://en.wikipedia.org/wiki/Binary_search_tree</a></li>
+<li>Self-balancing binary search tree: <a rel="external" href="https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree">https://en.wikipedia.org/wiki/Self-balancing_binary_search_tree</a></li>
+<li>B-tree: <a rel="external" href="https://en.wikipedia.org/wiki/B-tree">https://en.wikipedia.org/wiki/B-tree</a></li>
+<li>Binary heap: <a rel="external" href="https://en.wikipedia.org/wiki/Binary_heap">https://en.wikipedia.org/wiki/Binary_heap</a></li>
+<li>CP-Algorithms - Segment Tree: <a rel="external" href="https://cp-algorithms.com/data_structures/segment_tree.html">https://cp-algorithms.com/data_structures/segment_tree.html</a></li>
+<li>GeeksforGeeks - Binary tree array implementation: <a rel="external" href="https://www.geeksforgeeks.org/binary-tree-array-implementation/">https://www.geeksforgeeks.org/binary-tree-array-implementation/</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure&#x2F;graph&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Graph 자료구조
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

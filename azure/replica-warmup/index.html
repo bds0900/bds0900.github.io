@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Why a New Replica&#x27;s First Request Took Seven Seconds
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Why a New Replica&#x27;s First Request Took Seven Seconds
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-10-01">October 01, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>18 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>3598 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/azure/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>azure</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/container-apps/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>container-apps</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/asp-net/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>asp.net</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/performance/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>performance</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/cold-start/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>cold-start</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>This is part 1 of two. The change here makes the app pay a new replica's one-time startup cost before it opens its socket, instead of making the user pay it. The cost is still there. Replicas still appear and disappear all through the workday. Stopping that cycle is the actual fix, and <a href="/azure/replica-scale-rule/">part 2</a> is about that.</p>
+<p>Omni API usually answers in about 20ms. The first request to a freshly started instance took 7 seconds. The cause was not a code path. It was work the process does once. In production, the p50 of that first user request fell from 7.5 seconds to 1.3 seconds.</p>
+<h2 id="1-the-symptom-only-the-first-request-is-300-times-slower">1. The symptom: only the first request is 300 times slower</h2>
+<p>The first report was "opening a chat is slow." Server latency looked fine. The p50 was 16–21ms, the same as usual. The slow requests were <strong>the first request a new instance received.</strong></p>
+<p>Fourteen days of production HTTP requests (2026-09-08 to 09-22, before the warmup, 847 instances, about 250,000 requests after undoing sampling) split cleanly by arrival order on the instance.</p>
+<table><thead><tr><th>Order on the instance</th><th style="text-align: right">p50</th><th style="text-align: right">Share over 2 seconds</th></tr></thead><tbody>
+<tr><td>1st</td><td style="text-align: right">7,316ms</td><td style="text-align: right">94.2%</td></tr>
+<tr><td>2nd</td><td style="text-align: right">4,560ms</td><td style="text-align: right">64.9%</td></tr>
+<tr><td>3rd</td><td style="text-align: right">1,601ms</td><td style="text-align: right">43.7%</td></tr>
+<tr><td>6th–10th</td><td style="text-align: right">202ms</td><td style="text-align: right">6.8%</td></tr>
+<tr><td>11th–20th</td><td style="text-align: right">95ms</td><td style="text-align: right">1.6%</td></tr>
+<tr><td>After the 100th</td><td style="text-align: right">23ms</td><td style="text-align: right">1.3%</td></tr>
+</tbody></table>
+<p>The average was not slow. This is the <strong>cold-start curve</strong> of one instance warming up. The message-list target is 2 seconds. Counting only first requests, production missed it 798 times in those 14 days.</p>
+<p>Across every complete week still inside the 90-day retention window (07-12 to 09-27), the first-request p50 sat between 7.2 and 7.7 seconds, and 94–100% exceeded 2 seconds. It was flat. This was not a regression from one deploy. <strong>It had always been like this.</strong> The usual 20ms p50 hid it.</p>
+<h2 id="2-why-it-happens-all-day-autoscaling-not-deploys">2. Why it happens all day: autoscaling, not deploys</h2>
+<p>"The first request on a new instance" sounds like something you suffer once per deploy. In those 14 days production started 851 instances, about 60 a day. Deploys happen once or twice a day.</p>
+<table><thead><tr><th></th><th>If it were deploys</th><th>What actually happened (autoscaling)</th></tr></thead><tbody>
+<tr><td>How often a new instance starts</td><td>Once or twice a day</td><td>4–7 an hour during the workday, none overnight</td></tr>
+<tr><td>How long an instance lives</td><td>Until the next deploy</td><td>p50 7.6 minutes, 59% gone within 10 minutes</td></tr>
+<tr><td>What sets how often users hit it</td><td>The deploy cadence</td><td>The traffic cadence</td></tr>
+</tbody></table>
+<p>Azure Container Apps adds and removes replicas from the number of concurrent requests. Production was set to a minimum of 1, a maximum of 10, a scale-in cooldown of 300 seconds, and 0.5 vCPU with 1GiB per replica. When traffic rises, a new replica starts. Five quiet minutes later it is gone. In three days the system log recorded <code>scaled to N by the scaler: http-scaler</code> 249 times.</p>
+<p>So this is not "an annoyance on deploy day." <strong>Several times an hour, all through the workday, someone waits 7 seconds.</strong></p>
+<h2 id="3-narrowing-it-down-hypotheses-removed-by-measurement">3. Narrowing it down: hypotheses removed by measurement</h2>
+<p>One 5.4-second first request in the integration environment, split into spans, made no outbound call (database, cache, or identity provider) for the first 3.3 seconds. Production matched. Of a 7.2-second first request, the first outbound call started at 5.7 seconds, and every outbound call together was 0.18 seconds. <strong>The time was inside the process.</strong></p>
+<p>Plenty of things inside a process can take time. Measurement removed them one by one.</p>
+<table><thead><tr><th>Hypothesis</th><th>How it was checked</th><th>Result</th></tr></thead><tbody>
+<tr><td>Entity Framework model build</td><td>A static-file request, which never touches the database, still took about 6 seconds when cold</td><td>Rejected</td></tr>
+<tr><td>JIT compilation</td><td>An A/B with ReadyToRun: no change in the first request, image +39%</td><td>Rejected</td></tr>
+<tr><td>Authentication (token validation)</td><td>A token signed by a local fake issuer: about 55ms on top of the rest</td><td>Rejected</td></tr>
+<tr><td>Azure Monitor telemetry export</td><td>An on/off A/B: +5–9ms</td><td>Rejected</td></tr>
+<tr><td>0.5 vCPU by itself</td><td>A container with the same CPU allocation still took 2–3 seconds on the first request</td><td>Explains only part of it</td></tr>
+<tr><td>CPU contention with background work right after start</td><td>A first request that arrived 2 minutes after start still had p50 6,985ms</td><td>Rejected</td></tr>
+</tbody></table>
+<p>One lesson: <strong>read the telemetry that was already there before writing a new probe.</strong> The three most expensive hypotheses were rejected without changing a line of code.</p>
+<h2 id="4-the-useful-finding-the-cost-is-once-per-process">4. The useful finding: the cost is once per process</h2>
+<p>We never named a single culprit, and we could still pick a fix, because of this split. Second requests on the same instance, divided by whether they overlapped the first (one production revision, 2026-09-24 to 10-02, HTTP only):</p>
+<table><thead><tr><th>Request on a new instance</th><th style="text-align: right">Count</th><th style="text-align: right">p50</th></tr></thead><tbody>
+<tr><td>First request</td><td style="text-align: right">705</td><td style="text-align: right">7,457ms</td></tr>
+<tr><td>Second, started <strong>after</strong> the first finished</td><td style="text-align: right">258</td><td style="text-align: right">760ms</td></tr>
+<tr><td>Second, <strong>overlapping</strong> the first</td><td style="text-align: right">434</td><td style="text-align: right">7,856ms</td></tr>
+</tbody></table>
+<p>A second request that starts after the first one finishes is usually a different endpoint, and it takes about 0.8 seconds. An overlapping request <strong>waits for the same preparation</strong> as the first. The cost is once per process, not once per endpoint.</p>
+<p>Locally the shape was the same. Whatever the first request was, it paid about 700ms, including a path like <code>/nope-404</code> that matches no endpoint. The next request was 5ms even on a different endpoint. One-time work such as routing initialization and the first run of middleware lands on the first request.</p>
+<p>That is the useful part. <strong>Any one request through the pipeline pays most of the cost.</strong> Have the app make that request, and the user does not.</p>
+<p>Overlap is not a burst. During the first 10 seconds, arrivals were 0.266 per second, about twice the usual 0.135. The first request takes 7 seconds, so ordinary arrivals overlap it.</p>
+<h2 id="5-why-the-health-probes-did-not-warm-it">5. Why the health probes did not warm it</h2>
+<p>The app has <code>/health</code> and <code>/alive</code>. The first request was still cold because the platform's health probes <strong>do not send an HTTP request.</strong></p>
+<p>Container Apps runs three probes on each replica.</p>
+<table><thead><tr><th>Probe</th><th>When</th><th>On failure</th></tr></thead><tbody>
+<tr><td>Startup</td><td>Right after start, until it succeeds</td><td>The replica is still starting, and receives no traffic</td></tr>
+<tr><td>Readiness</td><td>Continuously after that</td><td>That replica receives no traffic</td></tr>
+<tr><td>Liveness</td><td>Continuously after that</td><td>The container is restarted</td></tr>
+</tbody></table>
+<p>A <strong>TCP</strong> probe checks that a connection to the port succeeds, then disconnects. An <strong>HTTP</strong> probe sends a real request to a path and looks at the status code. The production spec listed no probes (<code>probes: null</code>), so the platform runs the default TCP probes. It checks that the door is unlocked, and leaves.</p>
+<p>Two pieces of evidence:</p>
+<ul>
+<li><strong>System logs, 3 days:</strong> 1,745 startup-probe connection refusals, 295 container starts. Each start is refused about six times before the port opens.</li>
+<li><strong>Request telemetry, 14 days:</strong> an HTTP probe would have left tens of thousands of requests a day. The logs show <code>GET /</code> at 8.9 a day, <code>/health</code> at 5, and <code>/alive</code> at 3.</li>
+</ul>
+<p>The design depends on the fact those numbers imply. <strong>The moment the port opens is the moment traffic starts.</strong> While the port is closed, traffic stays on the replicas that are already up.</p>
+<p>The default is TCP because <code>/health</code> and <code>/alive</code> are names from the .NET Aspire template, not an industry standard. Kubernetes convention is <code>/healthz</code>, <code>/livez</code>, and <code>/readyz</code>. Spring Boot uses <code>/actuator/health</code>. The platform does not discover which paths an app has. An HTTP probe has to be told a path and a port. A platform that does not know the path can only default to TCP, which needs no path. Our deploy spec names no such path. The app exposes both routes, and nothing was configured to call them.</p>
+<p>An HTTP probe would change the story. If the startup or readiness probe calls <code>/alive</code>, the replica receives no traffic until that probe succeeds, so <strong>the probe's first request is the warmup.</strong> Even if the probe times out because the first request is slow, the request still runs to completion inside the app and pays the cost. Section 6 explains why that option was not chosen. The reason is the surrounding conditions, not the effect. Switching only the liveness probe to HTTP does not warm anything. Liveness does not gate traffic, so that request arrives alongside user traffic.</p>
+<h3 id="the-probes-we-need">The probes we need</h3>
+<p>All three probes are needed. The platform's default TCP probes already do the job, and we do not configure them ourselves.</p>
+<table><thead><tr><th>Probe</th><th>What TCP does today</th><th>If it became HTTP</th><th>Decision</th></tr></thead><tbody>
+<tr><td>Startup</td><td>Holds traffic until the port opens, and restarts a container that never starts</td><td>The probe's first request would be the warmup. The in-process warmup makes that unnecessary</td><td>Keep TCP. The warmup depends on it</td></tr>
+<tr><td>Readiness</td><td>Removes a replica whose port does not answer</td><td>Pointing it at <code>/health</code> would drop every replica at once when Blob storage blips. The app has no separate "up, but do not send traffic" state to report</td><td>Keep TCP</td></tr>
+<tr><td>Liveness</td><td>Restarts a container whose process is alive but is not accepting connections</td><td>If <code>/alive</code> slows down under load, a healthy container gets restarted and the load gets worse</td><td>Keep TCP</td></tr>
+</tbody></table>
+<p>The startup probe is still required with the in-process warmup. The warmup depends on it. Warmup runs while the port is closed, and traffic stays away because the TCP startup probe says "not ready yet." The documented default is a 1-second period and a failure threshold of 240, which covers a start of about 7 seconds and a warmup cap of 30 seconds. What we do not need is an <strong>HTTP</strong> startup probe.</p>
+<p>One trap: the docs do not say whether the platform fills in a startup or readiness probe that someone later removes while configuring probes by hand. Traffic could then reach a replica whose port is still closed. If probes are configured explicitly, leave a startup or readiness probe on the ingress port.</p>
+<h2 id="6-the-candidates">6. The candidates</h2>
+<p>Restated, the question is who pays the process's one-time cost, and when. The candidates fall into three groups: make the cost smaller, pay it early, or start fewer instances.</p>
+<table><thead><tr><th>Candidate</th><th>What it does</th><th>Decision</th></tr></thead><tbody>
+<tr><td>ReadyToRun</td><td>Precompiles code to cut JIT</td><td>Rejected. The first request was unchanged and the image grew 39%</td></tr>
+<tr><td>EF compiled model</td><td>Builds the data model at build time</td><td>Deferred. Only about 0.3 seconds of the request could be that</td></tr>
+<tr><td>Open login metadata and cache connections early</td><td>Moves the first request's outbound calls into startup</td><td>Rejected. The target is 0.18 seconds</td></tr>
+<tr><td>Send requests on a timer to keep instances warm</td><td>Keeps a living process warm</td><td>Rejected. A warm process does not go cold. The problem is a newly born instance</td></tr>
+<tr><td>A background service sends a request after startup</td><td>The app calls itself after the port is open</td><td>Rejected. It races the first user request, and on overlap they wait together</td></tr>
+<tr><td>Initialize routing directly</td><td>Builds the route matcher ahead of time</td><td>Rejected. It depends on framework internals and warms only routing</td></tr>
+<tr><td>HTTP startup probe</td><td>The platform calls <code>/alive</code> at startup, and that request is the warmup</td><td>Rejected. No application code, but it changes the deploy spec, cannot be verified locally, and the probe request lands in telemetry</td></tr>
+<tr><td>A readiness-only endpoint plus a probe</td><td>An endpoint that answers "warmup finished," checked by a probe</td><td>Rejected. The warmup code is still required, and so is the probe configuration</td></tr>
+<tr><td>Raise the minimum replica count or the CPU</td><td>Start fewer instances, and run them faster</td><td>Out of scope for this post. It is an infrastructure setting, and it costs more</td></tr>
+<tr><td><strong>One in-process request before the socket opens</strong></td><td>Handle one fake request inside the app just before the port opens</td><td><strong>Chosen. It does not remove the cost. It changes who pays it</strong></td></tr>
+</tbody></table>
+<p>Two facts picked the warmup. <strong>Changing who pays is much easier than removing the cost.</strong> And <strong>while a new replica is starting, an existing replica is already serving.</strong> A few extra seconds on the new replica do not reach the user.</p>
+<p>That table only covers the one-time cost. Starting fewer replicas was left out at the time because it is an infrastructure setting. That call was half right. Buying more replicas is not the answer. The default scale rule was creating a cycle that was not load, and stopping that cycle is part 2. The warmup in this post is the stopgap that takes the user's 7 seconds away while the cycle continues.</p>
+<h3 id="how-the-cost-moves">How the cost moves</h3>
+<p>Cost does not separate the options cleanly. Production runs on the Container Apps Consumption plan. The bill is vCPU-seconds and GiB-seconds while a replica is up, plus HTTP requests <strong>that enter from outside the environment</strong> (2 million a month free per subscription). The <a rel="external" href="https://learn.microsoft.com/en-us/azure/container-apps/billing">billing documentation</a> says health probe requests are not billable. What can grow is Application Insights ingestion. A probe request is an ordinary request as far as the app is concerned, so it is recorded.</p>
+<table><thead><tr><th>Approach</th><th>Container Apps bill</th><th>Requests stored in Application Insights</th></tr></thead><tbody>
+<tr><td>In-process warmup (chosen)</td><td>About 2 extra seconds of CPU per start (local measurement). It is not an external request, so there is no request charge</td><td>None</td></tr>
+<tr><td>HTTP startup probe</td><td>No increase. Probe requests are not billed</td><td>1–3 per start, 60–180 a day in production</td></tr>
+<tr><td>HTTP for readiness and liveness too, every 5 seconds</td><td>The request charge stays the same. The idle discount for a minimum replica might shrink (not stated in the docs)</td><td>About 34,560 a day per replica. Production's real traffic is about 15,000 requests a day</td></tr>
+</tbody></table>
+<p>The idle discount applies when a replica meets every listed condition, including that it is not handling HTTP requests. The docs do not say whether an HTTP probe every 5 seconds breaks that condition.</p>
+<h2 id="7-the-choice-one-request-before-the-socket-opens">7. The choice: one request before the socket opens</h2>
+<p>ASP.NET Core starts in a fixed order. It builds the request pipeline, then calls <code>StartAsync</code> on the server (Kestrel), which opens the port. <strong>The only moment with a pipeline and a still-closed port is between those two steps.</strong> The warmup sits there.</p>
+<ol>
+<li>Wrap the <code>IServer</code> registration. When the wrapper's <code>StartAsync</code> is called, it does not open the port yet.</li>
+<li>Build a fake <code>GET /alive</code> inside the process and hand it to the pipeline. It never touches the network.</li>
+<li>That request runs routing initialization and the first pass of the middleware.</li>
+<li>Then call the real server's <code>StartAsync</code> and open the port. The TCP probe succeeds, and traffic starts.</li>
+</ol>
+<p>The core of it:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public async</span><span style="color: #59C2FF;"> Task</span><span style="color: #FFB454;"> StartAsync</span><span>&lt;</span><span style="color: #59C2FF;">TContext</span><span>&gt;(</span><span style="color: #59C2FF;">IHttpApplication</span><span>&lt;</span><span style="color: #59C2FF;">TContext</span><span>&gt;</span><span style="color: #59C2FF;"> application</span><span style="color: #BFBDB6B3;">,</span><span style="color: #59C2FF;"> CancellationToken cancellationToken</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    try</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // Run on the thread pool so a synchronous stall (a constructor, JIT) still hits the cap.</span></span>
+<span class="giallo-l"><span style="color: #F29668;">        await</span><span> Task</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Run</span><span>(()</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> WarmAsync</span><span>(application</span><span style="color: #BFBDB6B3;">,</span><span> results)</span><span style="color: #BFBDB6B3;">,</span><span> CancellationToken</span><span style="color: #F29668;">.</span><span>None)</span></span>
+<span class="giallo-l"><span style="color: #F29668;">                  .</span><span style="color: #FFB454;">WaitAsync</span><span>(timeout</span><span style="color: #BFBDB6B3;">,</span><span> cancellationToken)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    catch</span><span> (</span><span style="color: #59C2FF;">TimeoutException exception</span><span>)</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span>        logger</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">LogWarning</span><span>(exception</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;... starting the server anyway&quot;</span><span style="color: #BFBDB6B3;">,</span><span> timeout)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">    mark</span><span>(</span><span style="color: #AAD94C;">&quot;warmed&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    await</span><span> inner</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">StartAsync</span><span>(application</span><span style="color: #BFBDB6B3;">,</span><span> cancellationToken)</span><span style="color: #BFBDB6B3;">;</span><span style="color: #5A6673;font-style: italic;">   // the port opens after the warmup</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// Inside WarmAsync: build one request and put it through the pipeline.</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">DefaultHttpContext httpContext</span><span style="color: #F29668;"> = new</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>httpContext</span><span style="color: #F29668;">.</span><span>Request</span><span style="color: #F29668;">.</span><span>Method</span><span style="color: #F29668;"> =</span><span> HttpMethods</span><span style="color: #F29668;">.</span><span>Get</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>httpContext</span><span style="color: #F29668;">.</span><span>Request</span><span style="color: #F29668;">.</span><span>Scheme</span><span style="color: #F29668;"> =</span><span> Uri</span><span style="color: #F29668;">.</span><span>UriSchemeHttps</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>httpContext</span><span style="color: #F29668;">.</span><span>Request</span><span style="color: #F29668;">.</span><span>Path</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;/alive&quot;</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">using</span><span> (SuppressInstrumentationScope</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Begin</span><span>())</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    context</span><span style="color: #F29668;"> =</span><span> application</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">CreateContext</span><span>(httpContext</span><span style="color: #F29668;">.</span><span>Features)</span><span style="color: #BFBDB6B3;">;</span><span style="color: #5A6673;font-style: italic;">   // suppress telemetry on this line only</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #F29668;">await</span><span> application</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ProcessRequestAsync</span><span>(context)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Four rules:</p>
+<ul>
+<li><strong>A failure must not block startup.</strong> If the request throws, log a warning. If 30 seconds pass, open the port anyway. Warmup is an optimization, not an availability requirement.</li>
+<li><strong>Leave no telemetry.</strong> If the fake request is recorded, it occupies the "first request" slot on every new instance, and the metric that judges the change starts lying.</li>
+<li><strong>One request.</strong> A second request that walked the authentication path was tried. The measured difference was inside the noise, so it came out.</li>
+<li><strong>Leave the probes on TCP.</strong> The deploy spec does not change.</li>
+</ul>
+<h2 id="8-before-and-after-one-inserted-step">8. Before and after: one inserted step</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Before</span></span>
+<span class="giallo-l"><span>  container start</span></span>
+<span class="giallo-l"><span>  pipeline built</span></span>
+<span class="giallo-l"><span>  socket opens          ← traffic starts here</span></span>
+<span class="giallo-l"><span>  user request          ← about 7 seconds</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>After</span></span>
+<span class="giallo-l"><span>  container start</span></span>
+<span class="giallo-l"><span>  pipeline built</span></span>
+<span class="giallo-l"><span>  in-process GET /alive ← the app spends about 2 seconds, socket still closed</span></span>
+<span class="giallo-l"><span>  socket opens          ← traffic starts here</span></span>
+<span class="giallo-l"><span>  user request          ← production p50 1.3 seconds</span></span></code></pre>
+<p>The only new step is the one before the port opens. The app pays the preparation cost, and the replicas already running take traffic while it does.</p>
+<h2 id="9-five-traps-during-the-implementation">9. Five traps during the implementation</h2>
+<p>The code that sends one fake request is short. Making it behave like a real request, and leave no trace, was not. The first three traps came out of code review. The last two came out of running it.</p>
+<ol>
+<li><strong>The telemetry suppression was too wide.</strong> OpenTelemetry's <code>SuppressInstrumentationScope</code> is an AsyncLocal. Wrapping the whole request means a singleton created during that request inherits the suppressed state forever, including its timers and background work. Whether a request is recorded is decided in <code>CreateContext</code>, so the suppression covers that one line.</li>
+<li><strong><code>http</code> does not warm every environment.</strong> Where an https address is configured (every local launch profile), <code>UseHttpsRedirection</code> returns 307 and the request never reaches authentication or the endpoint. Real production requests become <code>https</code> through forwarded headers, so the warmup uses <code>https</code> too.</li>
+<li><strong>The time limit covered only the asynchronous part.</strong> <code>WaitAsync</code> attaches after the method hits its first <code>await</code>. A synchronous stall in a constructor or in JIT means the port never opens. Wrapping the work in <code>Task.Run</code> fixed it.</li>
+<li><strong>Metrics are not suppressed.</strong> Against a local collector, the request trace was suppressed, and <code>http.server.request.duration</code> still received one sample of about 2 seconds per replica. A test suite that only checked traces would have called that "suppressed."</li>
+<li><strong>The measurement setup lied.</strong> The first local run had a process that was supposed to be dead and was not, so every request came back under 1ms. An amd64 image emulated on Apple Silicon inflates JIT. The measurement database schema was behind, so requests returned 500. In all three cases, <strong>a strange result was a reason to suspect the measurement before the system.</strong></li>
+</ol>
+<p>There are seven tests. To see that they guard something, the production code was broken on purpose in eight ways (mark order, suppression removed, suppression widened, the catch, the time limit, <code>Task.Run</code>, the scheme, disposing the scope). Each break failed a test.</p>
+<h2 id="10-the-result-local-measurement-then-production">10. The result: local measurement, then production</h2>
+<p>A local container with the production allocation (0.5 vCPU, 1GiB), a real SQL Server, Redis, and RabbitMQ, and a fake token issuer. The first request is a session-list query with a real token.</p>
+<table><thead><tr><th></th><th>First request (3 runs)</th><th>Ready</th></tr></thead><tbody>
+<tr><td>No warmup</td><td>2,703 / 2,177 / 2,633ms</td><td>9.0–9.9s</td></tr>
+<tr><td>With warmup</td><td>479 / 373 / 397ms</td><td>11.7–11.8s</td></tr>
+</tbody></table>
+<p>The first request was about six times faster. The extra 2 seconds are spent before the port opens, so the user does not wait for them. The cost did not disappear. <strong>The app pays it instead of the user.</strong></p>
+<p>Locally we reproduced about a third of the 7.2-second production first request. The effect would be judged in production, and the bar was set before the deploy: pass if, over at least 100 new weekday instances, the first user request has a p50 under 2 seconds.</p>
+<h3 id="production-pass">Production: pass</h3>
+<p>The warmup ran in production from 2026-10-02 08:30Z. Over six days it ran on 397 starts, every one of them <code>/alive=200</code>, and the warmup itself took a p50 of about 2.3 seconds, close to the local 2.2 seconds.</p>
+<table><thead><tr><th>Production, HTTP requests only</th><th style="text-align: right">Before</th><th style="text-align: right">After</th></tr></thead><tbody>
+<tr><td>Instances (weekdays)</td><td style="text-align: right">705 (591)</td><td style="text-align: right">363 (256)</td></tr>
+<tr><td>First user request, p50</td><td style="text-align: right">7,468ms</td><td style="text-align: right"><strong>1,285ms</strong></td></tr>
+<tr><td>First user request, p90</td><td style="text-align: right">10,109ms</td><td style="text-align: right">3,712ms</td></tr>
+<tr><td>First requests over 2 seconds</td><td style="text-align: right">95.5%</td><td style="text-align: right">34.7%</td></tr>
+<tr><td>Requests overlapping the first, p50</td><td style="text-align: right">7,539ms</td><td style="text-align: right">2,490ms</td></tr>
+<tr><td>Requests after the first finished, p50</td><td style="text-align: right">304ms</td><td style="text-align: right">277ms</td></tr>
+<tr><td>Requests over 2 seconds among the first 10, per instance</td><td style="text-align: right">3.05</td><td style="text-align: right">1.55</td></tr>
+</tbody></table>
+<ul>
+<li><strong>The pass is not a fake one.</strong> After the warmup, 369 instances recorded zero <code>GET /alive</code>. If the warmup request had leaked into telemetry, it would have occupied the first-request slot on every instance and the metric would have improved by itself. That is trap 1 from section 9, avoided.</li>
+<li><strong>Overlap shrank.</strong> A shorter first request is a narrower window. Overlapping requests fell from 1.50 per instance to 0.90.</li>
+<li><strong>The per-endpoint remainder is unchanged.</strong> Requests after the first finished went from 304ms to 277ms. That is the region the warmup was never going to cover.</li>
+</ul>
+<p>One trap in the judgement itself: the first pass assumed there was no sampling and checked only <code>itemCount</code>, which is always 1. Azure Monitor was sampling requests, and the keep rate was on a custom dimension of the request. The requests table also contains message-consumer spans, so the first published numbers had not filtered them out. The table above is HTTP requests only. The judgement looks at an instance's first request, and that first record sat in a 100% keep-rate band for both periods (low-80%s either way), so the comparison holds. <strong>When a judgement comes from telemetry, reconcile the total with another aggregate (the ingress metrics), and find out what else is in the table.</strong></p>
+<h3 id="what-is-left">What is left</h3>
+<ul>
+<li><strong>The remainder of the first request.</strong> A p50 of 1.3 seconds is longer than the 0.4 seconds measured locally under the same allocation, and 34.7% of first requests are still over 2 seconds. The likely share is paths that exist only in production: App Configuration, Key Vault, Azure SignalR, TLS Redis, Azure SQL. That is an estimate from before measuring them.</li>
+<li><strong>The scale cycle.</strong> After the warmup, container starts per 1,000 weekday ingress requests went from 3.26 to 3.72. They did not fall. The hypothesis that a slow cold request inflates concurrency and triggers scale-out on its own is not supported. Later measurement showed the default HTTP scale rule adding replicas on little traffic, unlike the formula in the docs. Moving the preparation cost does not stop replicas from being born and dying all through the workday. Stopping that cycle is <a href="/azure/replica-scale-rule/">part 2</a>.</li>
+<li><strong>The startup budget.</strong> Building the request pipeline takes 2.8 seconds, and Azure App Configuration takes 1.1 seconds. Users do not wait for either. Both delay the moment a replica becomes useful.</li>
+</ul>
+<p>Two things made the judgement trustworthy. The bar and the sample size were set before the deploy. And when the numbers came out well, the path that would have faked a pass was checked and found closed. The pass stops at "the first request got faster." How often a replica is created was not part of this post's bar.</p>
+<p>The figures are from Application Insights requests and traces, and from Container Apps system logs, 2026-09-11 to 2026-10-08. Probe types and defaults are in <a rel="external" href="https://learn.microsoft.com/en-us/azure/container-apps/health-probes">Health probes in Azure Container Apps</a>.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure&#x2F;tls-cert-altname-webhook&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              The Webhook Died During the Handshake: Debugging ERR_TLS_CERT_ALTNAME_INVALID
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure&#x2F;replica-scale-rule&#x2F;">
+              Why the API Kept Scaling Up and Down<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | SSH로 GitHub 계정 두 개 동시에 쓰기 (회사 + 개인)
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            SSH로 GitHub 계정 두 개 동시에 쓰기 (회사 + 개인)
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-06-17">June 17, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>820 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/git/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>git</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/ssh/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ssh</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/github/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>github</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/command/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>command</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>GitHub 계정이 두 개(회사용, 개인용)인데 같은 맥에서 쓰려면 HTTPS 방식으로는 한계가 있다.
+macOS Keychain이 <code>github.com</code> 당 토큰을 하나만 저장하기 때문에, 나중에 로그인한 계정의 토큰으로 항상 덮어씌워진다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>remote: Permission to emptyfridge0900/repo.git denied to bds0900.</span></span>
+<span class="giallo-l"><span>fatal: unable to access &#39;...&#39;: The requested URL returned error: 403</span></span></code></pre>
+<p>SSH 키를 계정별로 따로 만들고 <code>~/.ssh/config</code>로 라우팅하면 이 문제를 깔끔하게 해결할 수 있다.</p>
+<hr />
+<h2 id="jeonce-heureum">전체 흐름</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>1. 기존 SSH 키 확인</span></span>
+<span class="giallo-l"><span>2. 파일 이름 규칙 이해</span></span>
+<span class="giallo-l"><span>3. 회사 계정용 SSH 키 새로 생성 (ssh-keygen)</span></span>
+<span class="giallo-l"><span>4. ~/.ssh/config 에 Host 별칭 등록</span></span>
+<span class="giallo-l"><span>5. SSH 에이전트에 키 추가 (ssh-add)</span></span>
+<span class="giallo-l"><span>6. 회사 GitHub 에 공개키 등록</span></span>
+<span class="giallo-l"><span>7. 연결 테스트 (ssh -T)</span></span>
+<span class="giallo-l"><span>8. 기존 repo의 remote URL 을 SSH 방식으로 변경</span></span>
+<span class="giallo-l"><span>9. 재부팅 후에도 유지되게 만들기 (AddKeysToAgent)</span></span>
+<span class="giallo-l"><span>10. GitHub CLI(`gh`) 계정도 분리하기 (`GH_CONFIG_DIR`)</span></span></code></pre>
+<hr />
+<h2 id="1-gijon-ssh-ki-hwagin">1. 기존 SSH 키 확인</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ls</span><span style="color: #95E6CB;"> -la</span><span style="color: #AAD94C;"> ~/.ssh/</span></span></code></pre>
+<p><code>id_ed25519</code> 와 <code>id_ed25519.pub</code> 가 있으면 이미 SSH 키가 하나 있는 것이다.
+어느 계정에 연결되어 있는지는 공개키 파일 마지막 줄을 보면 알 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">cat</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519.pub</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># ssh-ed25519 AAAA... personal@gmail.com</span></span></code></pre>
+<p>GitHub 에 실제로 연결되는지도 확인한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github.com</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi emptyfridge0900! You&#39;ve successfully authenticated...</span></span></code></pre>
+<p><code>ssh -T</code>는 <strong>터미널(shell) 세션 없이 인증만 테스트</strong>하는 옵션이다 (<code>-T</code> = no pseudo-terminal).</p>
+<hr />
+<h2 id="2-pail-ireum-gyucig-ihae">2. 파일 이름 규칙 이해</h2>
+<p>SSH 키 파일 이름은 두 부분으로 구성된다.</p>
+<table><thead><tr><th>부분</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>id_</code></td><td>"identity"의 약자. SSH가 인증에 쓰는 파일임을 나타내는 표준 접두사</td></tr>
+<tr><td><code>ed25519</code></td><td>암호화 알고리즘 이름 (Edwards-curve Digital Signature Algorithm 25519). 현재 가장 권장되는 방식</td></tr>
+</tbody></table>
+<p>키를 생성하면 항상 두 파일이 만들어진다.</p>
+<ul>
+<li><code>id_ed25519</code> — <strong>개인키(private key)</strong>. 절대 외부에 공유하지 않는다.</li>
+<li><code>id_ed25519.pub</code> — <strong>공개키(public key)</strong>. GitHub 에 등록하는 파일.</li>
+</ul>
+<hr />
+<h2 id="3-hoesa-gyejeongyong-ssh-ki-saengseong">3. 회사 계정용 SSH 키 생성</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-keygen</span><span style="color: #95E6CB;"> -t</span><span style="color: #AAD94C;"> ed25519</span><span style="color: #95E6CB;"> -C</span><span style="color: #AAD94C;"> &quot;work@company.com&quot;</span><span style="color: #95E6CB;"> -f</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company</span><span style="color: #95E6CB;"> -N</span><span style="color: #AAD94C;"> &quot;&quot;</span></span></code></pre>
+<p>각 옵션 설명:</p>
+<table><thead><tr><th>옵션</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>-t ed25519</code></td><td>알고리즘 타입 지정. <code>ed25519</code>가 현재 표준 (기존의 <code>rsa</code> 보다 짧고 빠르고 안전)</td></tr>
+<tr><td><code>-C "work@company.com"</code></td><td>Comment. 공개키 파일 맨 끝에 붙는 <strong>라벨</strong>. 어떤 계정 키인지 구분하는 용도. 이메일일 필요는 없지만 관례적으로 사용</td></tr>
+<tr><td><code>-f ~/.ssh/id_ed25519_company</code></td><td>저장할 파일 경로 지정. 기본값은 <code>~/.ssh/id_ed25519</code> 인데, 이미 개인용 키가 거기 있으니 이름을 다르게 준다</td></tr>
+<tr><td><code>-N ""</code></td><td>패스프레이즈(암호)를 빈 값으로 설정. 입력창이 뜨지 않고 바로 생성된다</td></tr>
+</tbody></table>
+<p>실행 후 두 파일이 생긴다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>~/.ssh/id_ed25519_company      # 개인키</span></span>
+<span class="giallo-l"><span>~/.ssh/id_ed25519_company.pub  # 공개키</span></span></code></pre>
+<hr />
+<h2 id="4-ssh-config-seoljeong">4. <code>~/.ssh/config</code> 설정</h2>
+<p>SSH 클라이언트는 연결 시 <code>~/.ssh/config</code> 를 읽어서 어떤 키를 쓸지 결정한다.
+계정별로 <code>Host</code> 별칭을 만들어주면 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span># 개인 GitHub (emptyfridge0900)</span></span>
+<span class="giallo-l"><span>Host github-personal</span></span>
+<span class="giallo-l"><span>  HostName github.com</span></span>
+<span class="giallo-l"><span>  User git</span></span>
+<span class="giallo-l"><span>  IdentityFile ~/.ssh/id_ed25519</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span># 회사 GitHub (bds0900)</span></span>
+<span class="giallo-l"><span>Host github-company</span></span>
+<span class="giallo-l"><span>  HostName github.com</span></span>
+<span class="giallo-l"><span>  User git</span></span>
+<span class="giallo-l"><span>  IdentityFile ~/.ssh/id_ed25519_company</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes</span></span></code></pre>
+<p>각 지시어 설명:</p>
+<table><thead><tr><th>지시어</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>Host github-personal</code></td><td>이 블록에 붙이는 <strong>별칭</strong>. <code>git@github-personal:...</code> 처럼 쓰면 이 설정이 적용됨</td></tr>
+<tr><td><code>HostName github.com</code></td><td>실제 접속할 서버 주소. 별칭이 달라도 실제로는 <code>github.com</code> 에 연결</td></tr>
+<tr><td><code>User git</code></td><td>SSH 로그인할 유저명. GitHub 은 항상 <code>git</code> 유저를 사용 (계정 구분은 키로 함)</td></tr>
+<tr><td><code>IdentityFile</code></td><td>이 별칭으로 접속할 때 사용할 개인키 경로</td></tr>
+<tr><td><code>AddKeysToAgent yes</code></td><td>처음 사용 시 자동으로 SSH 에이전트에 키를 등록. 재부팅 후에도 <code>ssh-add</code> 를 수동으로 안 해도 됨</td></tr>
+</tbody></table>
+<hr />
+<h2 id="5-ssh-eijeonteue-ki-cuga">5. SSH 에이전트에 키 추가</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company</span></span></code></pre>
+<p><strong>SSH 에이전트(<code>ssh-agent</code>)</strong> 란 개인키를 메모리에 올려두고 필요할 때 꺼내주는 백그라운드 프로세스다.
+키를 에이전트에 등록하면 매번 키 파일 경로를 지정하지 않아도 된다.</p>
+<p><code>ssh-add</code> 주요 옵션:</p>
+<table><thead><tr><th>옵션</th><th>의미</th></tr></thead><tbody>
+<tr><td><code>~/.ssh/id_ed25519</code></td><td>등록할 개인키 파일 경로</td></tr>
+<tr><td><code>-l</code></td><td>현재 에이전트에 등록된 키 목록 확인 (list)</td></tr>
+<tr><td><code>-d ~/.ssh/id_ed25519</code></td><td>에이전트에서 특정 키 제거 (delete)</td></tr>
+<tr><td><code>-D</code></td><td>에이전트의 모든 키 제거</td></tr>
+</tbody></table>
+<p>등록 확인:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh-add</span><span style="color: #95E6CB;"> -l</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 256 SHA256:xxx personal@gmail.com (ED25519)</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 256 SHA256:yyy work@company.com (ED25519)</span></span></code></pre>
+<blockquote>
+<p><code>ssh-add</code> 로 추가한 키는 재부팅하면 사라진다. <code>AddKeysToAgent yes</code> 를 config 에 넣으면 첫 사용 시 자동 재등록된다.</p>
+</blockquote>
+<hr />
+<h2 id="6-hoesa-github-e-gonggaeki-deungrog">6. 회사 GitHub 에 공개키 등록</h2>
+<p>공개키를 클립보드에 복사한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">cat</span><span style="color: #AAD94C;"> ~/.ssh/id_ed25519_company.pub</span><span style="color: #F29668;"> |</span><span style="color: #59C2FF;"> pbcopy</span></span></code></pre>
+<p>GitHub → <strong>Settings</strong> → <strong>SSH and GPG keys</strong> → <strong>New SSH key</strong> 에서 붙여넣기 후 저장.</p>
+<hr />
+<h2 id="7-yeongyeol-teseuteu">7. 연결 테스트</h2>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github-personal</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi emptyfridge0900! You&#39;ve successfully authenticated...</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ssh</span><span style="color: #95E6CB;"> -T</span><span style="color: #AAD94C;"> git@github-company</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># Hi bds0900! You&#39;ve successfully authenticated...</span></span></code></pre>
+<p><code>github-personal</code> / <code>github-company</code> 는 <code>~/.ssh/config</code> 에서 만든 별칭이다.
+실제로는 둘 다 <code>github.com</code> 에 접속하지만, 서로 다른 키를 쓴다.</p>
+<hr />
+<h2 id="8-remote-url-byeongyeonghagi">8. Remote URL 변경하기</h2>
+<h3 id="gijon-reporeul-httpseseo-sshro-baggugi">기존 repo를 HTTPS에서 SSH로 바꾸기</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> remote set-url origin git@github-personal:emptyfridge0900/repo-name.git</span></span></code></pre>
+<p><code>git remote -v</code> 로 확인:</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>origin  git@github-personal:emptyfridge0900/repo-name.git (fetch)</span></span>
+<span class="giallo-l"><span>origin  git@github-personal:emptyfridge0900/repo-name.git (push)</span></span></code></pre><h3 id="hoesa-repo-seoljeong">회사 repo 설정</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> remote set-url origin git@github-company:bds0900/repo-name.git</span></span></code></pre><h3 id="sae-reporeul-clonehal-ddae">새 repo를 clone할 때</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 개인 계정 repo</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> clone git@github-personal:emptyfridge0900/repo-name.git</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 회사 계정 repo</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">git</span><span style="color: #AAD94C;"> clone git@github-company:bds0900/repo-name.git</span></span></code></pre>
+<p>URL 구조는 <code>git@&lt;Host별칭&gt;:&lt;GitHub유저명&gt;/&lt;저장소이름&gt;.git</code>이다.</p>
+<hr />
+<h2 id="9-jaebuting-huedo-yujidoege-mandeulgi">9. 재부팅 후에도 유지되게 만들기</h2>
+<p><code>ssh-add</code> 로 에이전트에 등록한 키는 <strong>재부팅하면 사라진다</strong>. 터미널 세션이 닫히면 메모리에서 내려가기 때문이다.</p>
+<p><code>~/.ssh/config</code> 에 <code>AddKeysToAgent yes</code> 를 넣으면 해결된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Host github-personal</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes   # ← 이 줄</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Host github-company</span></span>
+<span class="giallo-l"><span>  ...</span></span>
+<span class="giallo-l"><span>  AddKeysToAgent yes   # ← 이 줄</span></span></code></pre>
+<p><code>AddKeysToAgent yes</code> 가 하는 일:</p>
+<ul>
+<li>재부팅 후 처음으로 <code>git push</code> 나 <code>git pull</code> 을 실행하면 SSH가 <code>~/.ssh/config</code> 를 읽는다.</li>
+<li>해당 Host 에 <code>AddKeysToAgent yes</code> 가 있으면, SSH가 <strong>자동으로 <code>ssh-add</code> 를 대신 실행</strong>해서 에이전트에 키를 올린다.</li>
+<li>그 이후부터는 같은 세션에서 다시 물어보지 않는다.</li>
+</ul>
+<p>즉, 재부팅 후 수동으로 <code>ssh-add</code> 를 칠 필요가 없다. 첫 git 명령 한 번이면 자동으로 로드된다.</p>
+<blockquote>
+<p>macOS 에서 <code>~/.ssh/config</code> 파일 자체는 영구적이다. 재부팅해도 설정은 그대로 남는다.
+휘발되는 건 <strong>에이전트 메모리(ssh-add 결과)</strong> 뿐이고, <code>AddKeysToAgent yes</code> 가 그걸 자동으로 채워준다.</p>
+</blockquote>
+<hr />
+<h2 id="coejong-guseong-yoyag">최종 구성 요약</h2>
+<table><thead><tr><th>계정</th><th>Host 별칭</th><th>키 파일</th></tr></thead><tbody>
+<tr><td><code>emptyfridge0900</code> (개인)</td><td><code>git@github-personal</code></td><td><code>~/.ssh/id_ed25519</code></td></tr>
+<tr><td><code>bds0900</code> (회사)</td><td><code>git@github-company</code></td><td><code>~/.ssh/id_ed25519_company</code></td></tr>
+</tbody></table>
+<p>이제 <code>git push</code> / <code>git pull</code> 할 때 GitHub 계정을 의식하지 않아도 된다.
+repo의 remote URL에 붙인 Host 별칭이 알아서 맞는 키를 골라 쓴다.</p>
+<hr />
+<h2 id="cuga-gineung">추가 기능</h2>
+<h2 id="10-github-cli-gh-gyejeongdo-bunrihagi">10. GitHub CLI(<code>gh</code>) 계정도 분리하기</h2>
+<p>여기까지 설정하면 <code>git push</code> / <code>git pull</code> 은 계정별 SSH 키로 잘 분리된다.
+하지만 <code>gh issue create</code>, <code>gh pr create</code> 같은 GitHub CLI 명령은 SSH 키가 아니라 GitHub API 토큰을 쓴다.
+즉, remote URL 이 <code>git@github-personal:...</code> 이어도 <code>gh</code> 가 회사 계정 토큰으로 로그인되어 있으면 개인 repo 이슈 생성이 실패할 수 있다.</p>
+<p>처음 떠오르는 해결책은 <code>gh auth switch</code> 이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> auth switch</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> emptyfridge0900</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> emptyfridge0900/repo-name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> auth switch</span><span style="color: #95E6CB;"> -u</span><span style="color: #AAD94C;"> bds0900</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">gh</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> bds0900/repo-name</span></span></code></pre>
+<p>하지만 매번 계정을 바꾸는 방식은 귀찮고 실수하기 쉽다.
+더 나은 방법은 <code>gh</code> 설정 디렉터리를 계정별로 나누는 것이다.
+<code>gh</code> 는 <code>GH_CONFIG_DIR</code> 환경변수로 설정 저장 위치를 바꿀 수 있다.</p>
+<p>쉘 설정 파일(<code>~/.zshrc</code> 등)에 alias 를 추가한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #FF8F40;">alias</span><span> ghp</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&#39;GH_CONFIG_DIR=$HOME/.config/gh-personal gh&#39;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">alias</span><span> ghc</span><span style="color: #F29668;">=</span><span style="color: #AAD94C;">&#39;GH_CONFIG_DIR=$HOME/.config/gh-company gh&#39;</span></span></code></pre>
+<p>그 다음 각 alias 로 한 번씩만 로그인한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span>GH_CONFIG_DIR</span><span style="color: #F29668;">=</span><span>$HOME</span><span style="color: #AAD94C;">/.config/gh-personal</span><span style="color: #59C2FF;"> gh</span><span style="color: #AAD94C;"> auth login</span><span style="color: #95E6CB;"> -h</span><span style="color: #AAD94C;"> github.com</span><span style="color: #95E6CB;"> --git-protocol</span><span style="color: #AAD94C;"> ssh</span></span>
+<span class="giallo-l"><span>GH_CONFIG_DIR</span><span style="color: #F29668;">=</span><span>$HOME</span><span style="color: #AAD94C;">/.config/gh-company</span><span style="color: #59C2FF;"> gh</span><span style="color: #AAD94C;"> auth login</span><span style="color: #95E6CB;"> -h</span><span style="color: #AAD94C;"> github.com</span><span style="color: #95E6CB;"> --git-protocol</span><span style="color: #AAD94C;"> ssh</span></span></code></pre>
+<p>이후부터는 계정을 전환하지 않고 명령어만 구분해서 쓰면 된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="shellscript"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 개인 계정으로 개인 repo 이슈 생성</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ghp</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> emptyfridge0900/repo-name</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;"># 회사 계정으로 회사 repo 이슈 생성</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">ghc</span><span style="color: #AAD94C;"> issue create</span><span style="color: #95E6CB;"> -R</span><span style="color: #AAD94C;"> bds0900/repo-name</span></span></code></pre>
+<p>정리하면 역할이 이렇게 나뉜다.</p>
+<table><thead><tr><th>도구</th><th>계정 분리 방법</th><th>예시</th></tr></thead><tbody>
+<tr><td><code>git</code></td><td>SSH Host 별칭</td><td><code>git@github-personal:emptyfridge0900/repo-name.git</code></td></tr>
+<tr><td><code>gh</code></td><td><code>GH_CONFIG_DIR</code> 별도 설정</td><td><code>ghp issue create -R emptyfridge0900/repo-name</code></td></tr>
+</tbody></table>
+<p>이렇게 하면 <code>git</code> 도 <code>gh</code> 도 계정 전환 없이 사용할 수 있다.
+개인 작업은 <code>github-personal</code> + <code>ghp</code>, 회사 작업은 <code>github-company</code> + <code>ghc</code> 로 고정하면 된다.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands&#x2F;git-connect-unrelated-release-branches&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Git unrelated histories: dev, stg, main 브랜치 연결하기
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

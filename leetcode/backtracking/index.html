@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Backtracking
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Backtracking
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-07-23">July 23, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>4 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>740 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/leet-code/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Leet code</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>rust</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/leetcode/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>leetcode</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/backtracking/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Backtracking</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Recently I have been solving some backtracking problems. They look easy, but they are not actually easy. Implementation skill matters, but the more important skill is the ability to solve the problem itself.</p>
+<p>I still need a lot of practice. If I solve around 20 similar problems, I think I will start to feel more confident.</p>
+<h2 id="78-subsets">78. Subsets</h2>
+<h3 id="problem">Problem</h3>
+<p>Given an integer array nums of unique elements, return all possible subsets (the power set).</p>
+<p>The solution set must not contain duplicate subsets. Return the solution in any order.</p>
+<h3 id="example-1">Example 1</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Input:</span></span>
+<span class="giallo-l"><span>    [1,2,3]</span></span>
+<span class="giallo-l"><span>Output:</span></span>
+<span class="giallo-l"><span>[</span></span>
+<span class="giallo-l"><span>    [],</span></span>
+<span class="giallo-l"><span>    [1],</span></span>
+<span class="giallo-l"><span>    [2],[1,2],</span></span>
+<span class="giallo-l"><span>    [3],[1,3],[2,3],[1,2,3]</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre>
+<p>I can see a pattern here.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[</span></span>
+<span class="giallo-l"><span>    0:[],</span></span>
+<span class="giallo-l"><span>    1:[1], // add 1 to each element from the previous result</span></span>
+<span class="giallo-l"><span>    2:[2],[1,2], // add 2 to each element from the previous result</span></span>
+<span class="giallo-l"><span>    3:[3],[1,3],[2,3],[1,2,3] // add 3 to each element from the previous result</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[] = []</span></span>
+<span class="giallo-l"><span>[][1] = copy [] from the previous line, then insert 1 into []</span></span>
+<span class="giallo-l"><span>[][1] [2][1,2] = copy [][1] from the previous line, then insert 2 into [][1] to make [2][1,2]</span></span>
+<span class="giallo-l"><span>[][1][2][1,2] [3][1,3][2,3][1,2,3] = copy [][1][2][1,2] from the previous line, then insert 3 into [][1][2][1,2] to make [3][1,3][2,3][1,2,3]</span></span></code></pre>
+<p>It took some time, but I was still able to think through and solve this one on my own.</p>
+<h3 id="solution">Solution</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> subsets</span><span>(nums</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> ret</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[</span><span style="color: #FFB454;">vec!</span><span>[]];</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    for</span><span> n</span><span style="color: #FF8F40;"> in</span><span> nums</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">iter</span><span>(){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        for</span><span> r</span><span style="color: #FF8F40;"> in</span><span style="color: #D2A6FF;"> 0</span><span style="color: #F29668;">..</span><span>ret</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>(){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> x</span><span style="color: #F29668;"> =</span><span> ret[r]</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>();</span></span>
+<span class="giallo-l"><span>            x</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(</span><span style="color: #F29668;">*</span><span>n);</span></span>
+<span class="giallo-l"><span>            ret</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(x);</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>    ret</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="39-combination-sum">39. Combination Sum</h2>
+<h3 id="problem-1">Problem</h3>
+<p>Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.</p>
+<p>The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the frequency of at least one of the chosen numbers is different.</p>
+<p>The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.</p>
+<h3 id="example-1-1">Example 1</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Input: candidates = [2,3,6,7], target = 7</span></span>
+<span class="giallo-l"><span>Output: [[2,2,3],[7]]</span></span>
+<span class="giallo-l"><span>Explanation:</span></span>
+<span class="giallo-l"><span>2 and 3 are candidates, and 2 + 2 + 3 = 7. Note that 2 can be used multiple times.</span></span>
+<span class="giallo-l"><span>7 is a candidate, and 7 = 7.</span></span>
+<span class="giallo-l"><span>These are the only two combinations.</span></span></code></pre><h3 id="example-2">Example 2</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Input: candidates = [2,3,5], target = 8</span></span>
+<span class="giallo-l"><span>Output: [[2,2,2,2],[2,3,3],[3,5]]</span></span></code></pre>
+<p>The given numbers can be used <strong>repeatedly</strong>, and <strong>the order of arrangement does not matter</strong>. In other words, <code>[2,3,5]</code> and <code>[2,5,3]</code> are treated as the same combination.</p>
+<p>If the input is <code>[2,3,6,7]</code>, the first approach to try is DFS, plugging in each number one by one.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>[2]</span></span>
+<span class="giallo-l"><span>[2,2]</span></span>
+<span class="giallo-l"><span>[2,2,2]</span></span>
+<span class="giallo-l"><span>[2,2,2,2]</span></span>
+<span class="giallo-l"><span>[2,2,2,3]</span></span>
+<span class="giallo-l"><span>[2,2,2,6]</span></span>
+<span class="giallo-l"><span>[2,2,2,7]</span></span>
+<span class="giallo-l"><span>[2,2,3] 2+2+3 is 7, we don&#39;t need go down to [2,2,3,2]</span></span>
+<span class="giallo-l"><span>[2,2,6]</span></span>
+<span class="giallo-l"><span>[2,2,7]</span></span>
+<span class="giallo-l"><span>[2,3]</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span></code></pre>
+<p>If I list them one by one, it forms a tree where each node has four children.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>                                2</span></span>
+<span class="giallo-l"><span>        22      |       23        |      26         |       27</span></span>
+<span class="giallo-l"><span>222 223 226 227 | 232 233 236 237 | 262 263 266 267 | 272 273 276 277</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>                                3</span></span>
+<span class="giallo-l"><span>        32      |       33        |      36         |       37</span></span>
+<span class="giallo-l"><span>322 333 326 327 | 323 333 336 337 | 326 336 366 267 | 327 337 367 377</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span></code></pre>
+<p>But if we do it this way, duplicates such as <code>[2,2,3]</code>, <code>[2,3,2]</code>, and <code>[3,2,2]</code> appear.</p>
+<p>I got stuck here and struggled for almost an hour. After trying several things and then checking the solution, I found that the fix was surprisingly simple: increase the starting point by one each time the loop or recursion advances.</p>
+<p>For example, start from <code>0..input.len</code>, then <code>1..input.len</code>, then <code>2..input.len</code>. The execution order becomes something like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>                                2</span></span>
+<span class="giallo-l"><span>        22      |       23        |      26         |       27</span></span>
+<span class="giallo-l"><span>222 223 226 227 |     233 236 237 |         266 267 |            277</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>                                3</span></span>
+<span class="giallo-l"><span>                |       33        |      36         |       37</span></span>
+<span class="giallo-l"><span>                |     333 336 337 |         366 267 |            377</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span></code></pre>
+<p>Once you understand the ordering, the idea is simple. When starting from <code>2</code>, all combinations that include <code>2</code> have already been listed. So when the next loop starts, it must not create combinations that include <code>2</code> again. At that point, all combinations containing <code>2</code> are done, so only combinations without <code>2</code> need to be listed. That is why the next start is <code>3</code>. Similarly, once all combinations containing <code>3</code> are complete, we exclude <code>3</code> and list combinations starting from <code>6</code>.</p>
+<h3 id="solution-1">Solution</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> combination_sum</span><span>(candidates</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;, target</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> output</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[];</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> path</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[];</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Solution</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">dfs</span><span>(</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> path,</span><span style="color: #F29668;"> &amp;</span><span>candidates, target,</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> output);</span></span>
+<span class="giallo-l"><span>    output</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> dfs</span><span>(i</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">usize</span><span>, path</span><span style="color: #F29668;">:&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;, can</span><span style="color: #F29668;">:&amp;</span><span>[</span><span style="color: #59C2FF;">i32</span><span>], target</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>, output</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> sum</span><span style="color: #F29668;"> =</span><span> path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">iter</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">fold</span><span>(</span><span style="color: #D2A6FF;">0</span><span>,</span><span style="color: #F29668;">|</span><span>p,n</span><span style="color: #F29668;">|</span><span>p</span><span style="color: #F29668;">+</span><span>n);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> sum</span><span style="color: #F29668;"> ==</span><span> target{</span></span>
+<span class="giallo-l"><span>        output</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>());</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> sum&gt;target</span><span style="color: #F29668;"> ||</span><span> i</span><span style="color: #F29668;"> &gt;=</span><span> can</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>(){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    for</span><span> j</span><span style="color: #FF8F40;"> in</span><span> i</span><span style="color: #F29668;">..</span><span>can</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>(){</span></span>
+<span class="giallo-l"><span>        path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(can[j]);</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Solution</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">dfs</span><span>(j,</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>(),can,target,output);</span></span>
+<span class="giallo-l"><span>        path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">pop</span><span>();</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="40-combination-sum-ii">40. Combination Sum II</h2>
+<h3 id="problem-2">Problem</h3>
+<p>Given a collection of candidate numbers (candidates) and a target number (target), find all unique combinations in candidates where the candidate numbers sum to target.</p>
+<p>Each number in candidates may only be used once in the combination.</p>
+<p>Note: The solution set must not contain duplicate combinations.</p>
+<h3 id="example-1-2">Example 1</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Input: candidates = [10,1,2,7,6,1,5], target = 8</span></span>
+<span class="giallo-l"><span>Output:</span></span>
+<span class="giallo-l"><span>[</span></span>
+<span class="giallo-l"><span>    [1,1,6],</span></span>
+<span class="giallo-l"><span>    [1,2,5],</span></span>
+<span class="giallo-l"><span>    [1,7],</span></span>
+<span class="giallo-l"><span>    [2,6]</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre><h3 id="example-2-1">Example 2</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Input: candidates = [2,5,2,1,2], target = 5</span></span>
+<span class="giallo-l"><span>Output:</span></span>
+<span class="giallo-l"><span>[</span></span>
+<span class="giallo-l"><span>    [1,2,2],</span></span>
+<span class="giallo-l"><span>    [5]</span></span>
+<span class="giallo-l"><span>]</span></span></code></pre>
+<p>This is the same as Combination Sum I except that each number cannot be reused. In the example, <code>[1,1,6]</code> is possible not because we reused the same number, but because the given numbers contain two <code>1</code>s.</p>
+<p>If we visit every node with DFS, we run into the same duplicate problem as before.</p>
+<p>Can we solve it like Combination Sum I by excluding one number every time the loop advances? That worked in Combination Sum I because every number in the array was unique. Here, duplicate values exist, so we need one more step.</p>
+<p>Take <code>[10,1,2,7,6,1,5]</code> as an example. Suppose we create every combination containing <code>10</code>, then try to create combinations containing <code>1</code>. Since <code>1</code> appears twice in <code>[10,1,2,7,6,1,5]</code>, combinations containing <code>1</code> will eventually appear again.</p>
+<p>To avoid duplicates, sort first, turning <code>[10,1,2,7,6,1,5]</code> into <code>[1,1,2,5,6,7,10]</code>, and skip to the next number when a combination has already been created.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>                                1</span></span>
+<span class="giallo-l"><span>        11      |       12        |      15         |       16</span></span>
+<span class="giallo-l"><span>112 115 116 117 |      125 126 127|         156 157 |               167</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span>
+<span class="giallo-l"><span>.</span></span></code></pre>
+<p>Look at this. It shows part of the combinations that can be created from the first <code>1</code>. If we start combinations from the second <code>1</code>, combinations containing two <code>1</code>s such as <code>112</code>, <code>115</code>, <code>116</code>, and <code>117</code> will not appear, but combinations containing only one <code>1</code>, such as <code>12</code>, <code>15</code>, <code>16</code>, <code>125</code>, <code>126</code>, <code>127</code>, <code>156</code>, and <code>157</code>, can appear again. That is why numbers that have already appeared must be skipped.</p>
+<h3 id="solution-2">Solution</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> combination_sum2</span><span>(</span><span style="color: #FF8F40;">mut</span><span> candidates</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;, target</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> i32</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> path</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[];</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> output</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> vec!</span><span>[];</span></span>
+<span class="giallo-l"><span>    candidates</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">sort</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">    Self</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">dfs</span><span>(</span><span style="color: #D2A6FF;">0</span><span>, path,</span><span style="color: #F29668;"> &amp;</span><span>candidates, target,</span><span style="color: #F29668;"> &amp;</span><span style="color: #FF8F40;">mut</span><span> output);</span></span>
+<span class="giallo-l"><span>    output</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub fn</span><span style="color: #FFB454;"> dfs</span><span>(i</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">usize</span><span>,</span><span style="color: #FF8F40;"> mut</span><span> path</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;, can</span><span style="color: #F29668;">:&amp;</span><span>[</span><span style="color: #59C2FF;">i32</span><span>],target</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;">i32</span><span>, output</span><span style="color: #F29668;">:&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;&gt;){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> target</span><span style="color: #F29668;"> ==</span><span style="color: #D2A6FF;">0</span><span> {</span></span>
+<span class="giallo-l"><span>        output</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>());</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else if</span><span> target</span><span style="color: #F29668;"> &lt;</span><span style="color: #D2A6FF;"> 0</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span>;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    for</span><span> j</span><span style="color: #FF8F40;"> in</span><span> i</span><span style="color: #F29668;">..</span><span>can</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>(){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if</span><span> j</span><span style="color: #F29668;"> &gt;</span><span> i</span><span style="color: #F29668;"> &amp;&amp;</span><span> can[j]</span><span style="color: #F29668;"> ==</span><span> can[j</span><span style="color: #F29668;"> -</span><span style="color: #D2A6FF;"> 1</span><span>] {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            continue</span><span>;</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>        path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(can[j]);</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">        Self</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">dfs</span><span>(j</span><span style="color: #F29668;">+</span><span style="color: #D2A6FF;">1</span><span>,path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>(),can,target</span><span style="color: #F29668;">-</span><span>can[j],output);</span></span>
+<span class="giallo-l"><span>        path</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">pop</span><span>();</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>What changed from Combination Sum I:</p>
+<ol>
+<li>Sort the array.</li>
+<li>Skip numbers already checked in the array.</li>
+<li>When calling recursively, pass <code>index + 1</code> to avoid reusing the same element.</li>
+</ol>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;leetcode&#x2F;1539&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              1539. Kth Missing Positive Number
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

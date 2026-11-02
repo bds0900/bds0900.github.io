@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan&#x27;s Blog | Understanding IdentityServer UserClaims: The Difference Between User, Identity Resource, and API Resource
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan&#x27;s Blog</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev">
+            Home
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;data_structure">
+            DS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;algorithm">
+            Algo
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;projects">
+            Toy Projects
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;commands">
+            Commands
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;tags">
+            Tags
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;categories">
+            Categories
+          </a>
+          
+          
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Understanding IdentityServer UserClaims: The Difference Between User, Identity Resource, and API Resource
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2026-07-06">July 06, 2026</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>17 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>3313 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/c/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>C#</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/asp-net-core/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>ASP.NET Core</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/identityserver/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>IdentityServer</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/oauth-2-0/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OAuth 2.0</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/openid-connect/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>OpenID Connect</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/claims/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Claims</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>When you first look at the IdentityServer management UI, the name <code>UserClaims</code> appears in several places.</p>
+<ul>
+<li>UserClaims on Users/Roles users</li>
+<li>UserClaims on Identity Resources</li>
+<li>UserClaims on API Resources</li>
+<li>UserClaims on API Scopes, depending on the version</li>
+</ul>
+<p>They share the same name, but they are not fields that store the same kind of data. If you miss this distinction, it is easy to think that an Identity Resource owns a user's claims, or that the User itself is also a Resource.</p>
+<p>The core idea can be summarized in one sentence.</p>
+<blockquote>
+<p>User UserClaims are real type/value data, while Resource UserClaims are selection lists for claim types needed in tokens.</p>
+</blockquote>
+<h2 id="claims-consist-of-a-type-and-a-value">Claims consist of a type and a value</h2>
+<p>A claim is one fact about a subject.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>type = department</span></span>
+<span class="giallo-l"><span>value = Engineering</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>type = app_role</span></span>
+<span class="giallo-l"><span>value = platform_admin</span></span></code></pre>
+<p><code>department</code> and <code>app_role</code> are claim types. <code>Engineering</code> and <code>platform_admin</code> are claim values for a particular user.</p>
+<p>In .NET, they are represented like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;department&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Engineering&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;app_role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>A claim type is a string. Inside a token, <code>role</code> is also just a string type like any other claim. Whether a claim is interpreted as a name or role is decided not by the claim itself, but by IdentityServer's issuance process and ASP.NET Core's consuming configuration.</p>
+<h2 id="claim-scope-and-resource-answer-different-questions">Claim, Scope, and Resource answer different questions</h2>
+<p>Claim, Scope, and Resource all appear during token issuance, but they are not concepts at the same layer.</p>
+<table><thead><tr><th>Concept</th><th>Question it answers</th><th>Examples</th></tr></thead><tbody>
+<tr><td>Claim</td><td>What facts are known about this user, client, or token?</td><td><code>sub = alice-id</code>, <code>email = alice@example.com</code>, <code>app_role = platform_admin</code></td></tr>
+<tr><td>Scope</td><td>What access range did the client request and receive permission for?</td><td><code>openid</code>, <code>profile</code>, <code>omniapi.read</code></td></tr>
+<tr><td>Resource</td><td>What is being protected?</td><td>User identity data, the <code>omniapi</code> API</td></tr>
+</tbody></table>
+<p>In one request, the three concepts connect in this order.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Client</span></span>
+<span class="giallo-l"><span>  │</span></span>
+<span class="giallo-l"><span>  │ scope=openid profile omniapi.read</span></span>
+<span class="giallo-l"><span>  ▼</span></span>
+<span class="giallo-l"><span>IdentityServer</span></span>
+<span class="giallo-l"><span>  ├── Which Identity Resource was requested?</span></span>
+<span class="giallo-l"><span>  ├── Which API Scope was requested?</span></span>
+<span class="giallo-l"><span>  ├── Which API Resource does that API Scope belong to?</span></span>
+<span class="giallo-l"><span>  └── Which claim types does each Resource/Scope require?</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        ▼</span></span>
+<span class="giallo-l"><span>Profile Service loads claim values for the current User</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        ├── identity token / userinfo</span></span>
+<span class="giallo-l"><span>        └── access token</span></span></code></pre><h3 id="claims-are-data-used-for-decisions">Claims are data used for decisions</h3>
+<p>A claim is an assertion about a subject or client.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>sub      = alice-id</span></span>
+<span class="giallo-l"><span>email    = alice@example.com</span></span>
+<span class="giallo-l"><span>app_role = platform_admin</span></span></code></pre>
+<p>A claim is not an access request by itself. Even if the token contains <code>app_role = platform_admin</code>, it is not used for authorization unless the API defines an authorization rule that checks that claim.</p>
+<p>Conversely, claims are not limited to permissions. Simple identity information such as <code>name</code>, <code>locale</code>, and <code>birthdate</code> are also claims. Claims such as <code>iss</code>, <code>aud</code>, and <code>exp</code> describe and validate the token itself.</p>
+<h3 id="scope-is-the-access-range-requested-by-the-client">Scope is the access range requested by the client</h3>
+<p>In OAuth, a scope is a space-delimited, case-sensitive string.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=omniapi.read omniapi.write</span></span></code></pre>
+<p>The authorization server and API define the concrete meaning of each scope name.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>omniapi.read  = read access to Omni API</span></span>
+<span class="giallo-l"><span>omniapi.write = write access to Omni API</span></span></code></pre>
+<p>Just because a client requests a scope does not mean it is always granted. Only the scopes actually approved through the client's AllowedScopes, user consent, and server policy are reflected in the access token.</p>
+<p>The word <code>scope</code> can appear in two places.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Parameter in the authorization request</span></span>
+<span class="giallo-l"><span>  scope=omniapi.read</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Claim in the issued access token</span></span>
+<span class="giallo-l"><span>  scope=omniapi.read</span></span></code></pre>
+<p>The first one is the client's request. The second one is the result that the authorization server sends to the API, meaning the range that was actually granted. Scope is therefore a protocol concept, and its result can be serialized inside the token as a <code>scope</code> claim.</p>
+<h3 id="resource-is-the-thing-being-protected">Resource is the thing being protected</h3>
+<p>A Resource is the protected target the client wants to access.</p>
+<p>IdentityServer models Resources in two categories.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Resource</span></span>
+<span class="giallo-l"><span>  ├── Identity Resource: identity information about the user</span></span>
+<span class="giallo-l"><span>  └── API Resource: an API or feature to call</span></span></code></pre>
+<p>An example of an Identity Resource is <code>profile</code>. The protected target here is user information such as <code>name</code>, <code>email</code>, and <code>locale</code>.</p>
+<p>An example of an API Resource is <code>omniapi</code>. The protected target here is the Omni API's endpoints and features. The API Resource name may be used to build the <code>aud</code> audience in an access token.</p>
+<p>You can think about the difference between Resource and Scope like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Resource = Where are you accessing?</span></span>
+<span class="giallo-l"><span>Scope    = How much are you allowed to do there?</span></span>
+<span class="giallo-l"><span>Claim    = What facts are used for decisions and delivery?</span></span></code></pre>
+<p>For example, <code>omniapi</code> is a Resource, while <code>omniapi.read</code> and <code>omniapi.write</code> are different Scopes that can be allowed within that Resource. <code>app_role = platform_admin</code> is a Claim that the API can use for additional authorization decisions.</p>
+<h2 id="how-identity-resources-and-api-resources-process-a-request">How Identity Resources and API Resources process a request</h2>
+<p>Consider this configuration.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resources</span></span>
+<span class="giallo-l"><span>  openid  → [sub]</span></span>
+<span class="giallo-l"><span>  profile → [name, email, locale]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Resource</span></span>
+<span class="giallo-l"><span>  omniapi</span></span>
+<span class="giallo-l"><span>    Scopes → [omniapi.read, omniapi.write]</span></span>
+<span class="giallo-l"><span>    UserClaims → [app_role]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Scope</span></span>
+<span class="giallo-l"><span>  omniapi.read  → []</span></span>
+<span class="giallo-l"><span>  omniapi.write → [approval_level]</span></span></code></pre>
+<p>The client requests this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile omniapi.read</span></span></code></pre>
+<p>IdentityServer interprets the requested names like this.</p>
+<table><thead><tr><th>Requested scope</th><th>Configuration found</th><th>Result</th></tr></thead><tbody>
+<tr><td><code>openid</code></td><td>Identity Resource <code>openid</code></td><td>Requests the <code>sub</code> type</td></tr>
+<tr><td><code>profile</code></td><td>Identity Resource <code>profile</code></td><td>Requests the <code>name</code>, <code>email</code>, and <code>locale</code> types</td></tr>
+<tr><td><code>omniapi.read</code></td><td>API Scope <code>omniapi.read</code></td><td>Determines the granted scope range</td></tr>
+<tr><td>Resource connected to <code>omniapi.read</code></td><td>API Resource <code>omniapi</code></td><td>Determines the access token audience and common <code>app_role</code> type</td></tr>
+</tbody></table>
+<p>Simplified, the result looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>identity information side</span></span>
+<span class="giallo-l"><span>  openid + profile</span></span>
+<span class="giallo-l"><span>    → sub, name, email, locale</span></span>
+<span class="giallo-l"><span>    → identity token / userinfo processing</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API access side</span></span>
+<span class="giallo-l"><span>  omniapi.read</span></span>
+<span class="giallo-l"><span>    → aud = omniapi</span></span>
+<span class="giallo-l"><span>    → scope = omniapi.read</span></span>
+<span class="giallo-l"><span>    → request app_role Claim</span></span>
+<span class="giallo-l"><span>    → access token processing</span></span></code></pre>
+<p>Identity scopes and API scopes can appear together in the same <code>scope</code> parameter, but their roles are different. Identity scopes select the set of user information to disclose. API scopes select delegated access ranges for an API.</p>
+<h2 id="why-api-resources-have-scopes-but-identity-resources-do-not">Why API Resources have Scopes but Identity Resources do not</h2>
+<p>It is not that Identity Resources have no scope. More precisely, <strong>an Identity Resource itself is requested like one named scope.</strong></p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> IdentityResource</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;profile&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;email&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;locale&quot;</span><span> })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>In this configuration, the <code>Name</code>, <code>profile</code>, is the scope value requested by the client.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=profile</span></span></code></pre>
+<p>The Identity Resource relationship is basically a one-to-one mapping.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource name</span></span>
+<span class="giallo-l"><span>        │</span></span>
+<span class="giallo-l"><span>        │ requested as a scope with the same name</span></span>
+<span class="giallo-l"><span>        ▼</span></span>
+<span class="giallo-l"><span>Claim type bundle</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>profile → [name, email, locale]</span></span>
+<span class="giallo-l"><span>email   → [email, email_verified]</span></span>
+<span class="giallo-l"><span>openid  → [sub]</span></span></code></pre>
+<p>Therefore, there is no need for another child scope collection under an Identity Resource. The Identity Resource named <code>profile</code> already acts as the configuration object for the <code>profile</code> scope.</p>
+<p>In contrast, an API Resource represents the API itself or the audience. A single API can expose several access ranges.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource: omniapi</span></span>
+<span class="giallo-l"><span>  ├── omniapi.read</span></span>
+<span class="giallo-l"><span>  ├── omniapi.write</span></span>
+<span class="giallo-l"><span>  ├── omniapi.export</span></span>
+<span class="giallo-l"><span>  └── omniapi.admin</span></span></code></pre>
+<p>That is why API Resources have a <code>Scopes</code> collection that connects several API Scope names.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiResource</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Omni API&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    Scopes</span><span style="color: #F29668;"> =</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">        &quot;omniapi.export&quot;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Each API Scope is defined separately and can be requested independently by a client.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Read Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Write Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi.export&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Export Omni data&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>The structure is different because the target is modeled differently.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource</span></span>
+<span class="giallo-l"><span>  one scope name = one identity Claim bundle</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Resource</span></span>
+<span class="giallo-l"><span>  one API/audience = multiple independent API Scopes</span></span></code></pre><h3 id="difference-between-api-resource-userclaims-and-api-scope-userclaims">Difference between API Resource UserClaims and API Scope UserClaims</h3>
+<p>Both API Resources and API Scopes can have UserClaims. The difference is the range where they apply.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource omniapi</span></span>
+<span class="giallo-l"><span>  UserClaims = [app_role]</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>API Scope omniapi.write</span></span>
+<span class="giallo-l"><span>  UserClaims = [approval_level]</span></span></code></pre>
+<ul>
+<li><code>app_role</code>: common user information for the <code>omniapi</code> Resource</li>
+<li><code>approval_level</code>: information required when the <code>omniapi.write</code> Scope is requested</li>
+</ul>
+<p>If the client requests only <code>omniapi.read</code>, <code>app_role</code> is requested but <code>approval_level</code> is not. If the client requests <code>omniapi.write</code>, both the common Resource claim and the write Scope-specific claim may be requested.</p>
+<p>So the place to put a UserClaim is decided by these questions.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Is this Claim needed across the whole API?</span></span>
+<span class="giallo-l"><span>  → API Resource.UserClaims</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Is it needed only for a specific access range?</span></span>
+<span class="giallo-l"><span>  → API Scope.UserClaims</span></span></code></pre><h2 id="the-three-userclaims-locations-have-different-roles">The three UserClaims locations have different roles</h2>
+<p>You need to distinguish the same name, <code>UserClaims</code>, by location.</p>
+<table><thead><tr><th>Location</th><th>What it stores</th><th>Role</th></tr></thead><tbody>
+<tr><td>User → UserClaims</td><td>Type and value</td><td>Real data belonging to a specific user</td></tr>
+<tr><td>Identity Resource → UserClaims</td><td>Type names</td><td>List of user information requested by an identity scope</td></tr>
+<tr><td>API Resource / API Scope → UserClaims</td><td>Type names</td><td>List of user information requested for an access token</td></tr>
+</tbody></table>
+<p>The first one is <strong>data</strong>. The other two are <strong>selectors</strong> or a <strong>packing list</strong>.</p>
+<h2 id="user-userclaims-are-real-per-user-data">User UserClaims are real per-user data</h2>
+<p>Suppose Alice has these claims stored.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User: Alice</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>department = Engineering</span></span>
+<span class="giallo-l"><span>app_role   = platform_admin</span></span>
+<span class="giallo-l"><span>locale     = ko-KR</span></span></code></pre>
+<p>Bob can have different values.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User: Bob</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>department = Support</span></span>
+<span class="giallo-l"><span>app_role   = platform_member</span></span>
+<span class="giallo-l"><span>locale     = en-US</span></span></code></pre>
+<p>These values are per-user data. If ASP.NET Core Identity is used as the store, raw user claims are usually stored in a separate table such as <code>AspNetUserClaims</code>. You can understand this as "claims attached to the User entity," but it does not necessarily mean they are columns on the User table.</p>
+<p>It is also possible to have multiple values for the same type.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>role = Admin</span></span>
+<span class="giallo-l"><span>role = Auditor</span></span></code></pre>
+<p>The Resource configuration lists <code>role</code> only once because it selects the type <code>role</code>, not one specific value. If the Profile Service issues both values, the token may represent them as an array or as multiple claims.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Auditor&quot;</span><span>]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>You should avoid storing the exact same type/value pair more than once because it has no practical meaning.</p>
+<h2 id="identity-resource-userclaims-are-identity-claim-type-lists">Identity Resource UserClaims are identity claim type lists</h2>
+<p>An Identity Resource does not represent one user. It is a <strong>named bundle of identity information</strong> that a client can request through the OIDC <code>scope</code> parameter.</p>
+<p>For example, this Identity Resource groups the <code>name</code>, <code>email</code>, and <code>locale</code> types.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> IdentityResource</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;profile&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;name&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;email&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;locale&quot;</span><span> }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    displayName</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;User profile&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>The client requests the <code>profile</code> scope like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile</span></span></code></pre>
+<p>Here, the Identity Resource UserClaims do not contain values.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>name</span></span>
+<span class="giallo-l"><span>email</span></span>
+<span class="giallo-l"><span>locale</span></span></code></pre>
+<p>The list means this.</p>
+<blockquote>
+<p>Ask the Profile Service for the current logged-in user's <code>name</code>, <code>email</code>, and <code>locale</code> values.</p>
+</blockquote>
+<p>If Alice has <code>locale = ko-KR</code>, Alice's value is issued. If Bob has <code>locale = en-US</code>, Bob's value is issued even though the same Identity Resource was requested. The Resource does not store <code>ko-KR</code> or <code>en-US</code>.</p>
+<p>Claims selected by an Identity Resource are used for identity token or userinfo processing. Exactly which response includes them depends on the flow and IdentityServer configuration, but their purpose is different from API Scopes that represent API-call permissions.</p>
+<h2 id="api-resource-userclaims-are-claim-type-lists-for-access-tokens">API Resource UserClaims are claim type lists for access tokens</h2>
+<p>An API Resource represents a logical API to protect. It is usually related to the access token audience and can group several API Scopes.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">var</span><span style="color: #59C2FF;"> omniApi</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> ApiResource</span><span>(</span><span style="color: #AAD94C;">&quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Omni API&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>    Scopes</span><span style="color: #F29668;"> =</span><span> {</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;omniapi.write&quot;</span><span> }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span>    UserClaims</span><span style="color: #F29668;"> =</span><span> {</span><span style="color: #AAD94C;"> &quot;app_role&quot;</span><span> }</span></span>
+<span class="giallo-l"><span>}</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>This configuration does not mean the <code>app_role</code> value is stored inside the API Resource.</p>
+<blockquote>
+<p>When creating an access token for <code>omniapi</code>, request the current user's <code>app_role</code> Claim.</p>
+</blockquote>
+<p>If Alice's user data contains this value,</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>app_role = platform_admin</span></span></code></pre>
+<p>the Profile Service can read that value and put it into the access token.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;scope&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>UserClaims can also be configured on API Scopes. The difference is the unit of application.</p>
+<ul>
+<li>API Resource UserClaims: claims commonly needed across scopes belonging to the Resource</li>
+<li>API Scope UserClaims: claims needed only when a specific scope is requested</li>
+</ul>
+<p>For example, if <code>approval_level</code> is required only for <code>omniapi.write</code>, it can live on the API Scope.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> ApiScope</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    name</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.write&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    displayName</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Write access&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    userClaims</span><span style="color: #BFBDB6B3;">:</span><span style="color: #F29668;"> new</span><span>[] {</span><span style="color: #AAD94C;"> &quot;approval_level&quot;</span><span> })</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><h2 id="profile-service-connects-data-with-the-selection-lists">Profile Service connects data with the selection lists</h2>
+<p>Resource configuration does not directly read claim values and copy them into a token. IdentityServer calls the Profile Service when claims are needed.</p>
+<p>The important inputs received by the Profile Service include:</p>
+<ul>
+<li>which client made the request</li>
+<li>who the current user is</li>
+<li>whether the request is for an identity token, access token, or userinfo</li>
+<li>which claim types were requested</li>
+</ul>
+<p>Simplified, the flow looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Client requests scopes/resources</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdentityServer collects claim types from Resource configuration</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>Passes RequestedClaimTypes to the Profile Service</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>Profile Service loads or computes actual values for the current User</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>Issues allowed Claims into the token/userinfo response</span></span></code></pre>
+<p>Conceptually, the code looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public async</span><span style="color: #59C2FF;"> Task</span><span style="color: #FFB454;"> GetProfileDataAsync</span><span>(</span><span style="color: #59C2FF;">ProfileDataRequestContext context</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> userClaims</span><span style="color: #F29668;"> = await</span><span style="color: #FFB454;"> LoadClaimsForCurrentUser</span><span>(context</span><span style="color: #F29668;">.</span><span>Subject)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    context</span><span style="color: #F29668;">.</span><span>IssuedClaims</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">AddRange</span><span>(</span></span>
+<span class="giallo-l"><span>        userClaims</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Where</span><span>(</span><span style="color: #59C2FF;">claim</span><span style="color: #F29668;"> =&gt;</span></span>
+<span class="giallo-l"><span>            context</span><span style="color: #F29668;">.</span><span>RequestedClaimTypes</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Contains</span><span>(claim</span><span style="color: #F29668;">.</span><span>Type)))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>A real implementation also needs to handle whether the user is active, client-specific disclosure rules, consent, sensitive data, duplicate claims, and similar concerns. The important point is that the Profile Service is the connection point.</p>
+<p>Claim values do not have to come from UserClaims in the Users/Roles screen. The Profile Service can use many sources.</p>
+<ul>
+<li>raw user claims</li>
+<li>managed role assignment</li>
+<li>a separate application database</li>
+<li>LDAP or an external identity provider</li>
+<li>values computed at request time</li>
+</ul>
+<p>Resource UserClaims do not specify the source. They specify only the required <strong>types</strong>.</p>
+<h2 id="user-is-not-a-resource">User is not a Resource</h2>
+<p>In IdentityServer terminology, User and Resource play different roles.</p>
+<ul>
+<li>User: the person who logs in through a client and accesses a Resource, meaning the token subject</li>
+<li>Client: the application that requests tokens</li>
+<li>Identity Resource: a requestable bundle of user identity information</li>
+<li>API Resource: an API or feature to protect</li>
+</ul>
+<p>In OAuth terminology, the User is sometimes called the resource owner. But resource owner and the IdentityServer configuration object named Resource do not mean the same thing.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User ──uses──▶ Client ──requests token──▶ IdentityServer</span></span>
+<span class="giallo-l"><span>  │                                           │</span></span>
+<span class="giallo-l"><span>  └────────── accesses Resource ◀─────────────┘</span></span></code></pre>
+<p>Because Identity Resources bundle user claims, the User itself can look like a Resource. But an Identity Resource does not represent the User object. It represents <strong>part of the user's information</strong> defined so clients can request it.</p>
+<p>For example, <code>profile</code> is not the user Alice.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>profile = a requestable schema: [name, email, locale]</span></span>
+<span class="giallo-l"><span>Alice   = the subject that provides actual values for that schema</span></span></code></pre><h2 id="which-parts-are-standards-and-which-parts-are-identityserver-implementation">Which parts are standards, and which parts are IdentityServer implementation?</h2>
+<p>IdentityServer did not invent the entire concept of claims. It provides its own configuration and extension model on top of protocols defined by OAuth 2.0, OpenID Connect, and JWT.</p>
+<table><thead><tr><th>Structure</th><th>Standard?</th><th>Defined by</th></tr></thead><tbody>
+<tr><td>JWT claim set and <code>iss</code>, <code>sub</code>, <code>aud</code>, <code>exp</code></td><td>Standard</td><td>RFC 7519</td></tr>
+<tr><td>ID token, UserInfo, <code>openid</code>, <code>profile</code>, <code>email</code> scope</td><td>Standard</td><td>OpenID Connect</td></tr>
+<tr><td><code>IdentityResource</code>, <code>ApiResource</code>, <code>UserClaims</code> collection</td><td>Product implementation</td><td>Duende IdentityServer</td></tr>
+<tr><td><code>ProfileService</code> and store interfaces</td><td>Product implementation</td><td>Duende IdentityServer</td></tr>
+<tr><td><code>Claim</code>, <code>ClaimsIdentity</code>, <code>ClaimsPrincipal</code></td><td>Framework implementation</td><td>.NET</td></tr>
+<tr><td><code>AspNetUserClaims</code>, <code>AspNetUserRoles</code> table</td><td>Framework implementation</td><td>ASP.NET Core Identity</td></tr>
+</tbody></table>
+<p>Standards mainly define the messages exchanged between systems and their meanings.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Provider</span></span>
+<span class="giallo-l"><span>    │</span></span>
+<span class="giallo-l"><span>    │ standardized protocol/message</span></span>
+<span class="giallo-l"><span>    │ ID token, UserInfo, JWT claim set</span></span>
+<span class="giallo-l"><span>    ▼</span></span>
+<span class="giallo-l"><span>Client / API</span></span></code></pre>
+<p>For example, JWT defines how to represent a JSON claim set and the registered claim names.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;iss&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;https://identity.example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;exp&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #D2A6FF;"> 1783378800</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>iss</code>, <code>sub</code>, <code>aud</code>, and <code>exp</code> are JWT registered claims. <code>app_role</code> is a private claim defined by the application. JWT allows registered, public, and private claim names.</p>
+<p>OpenID Connect defines standard claims such as <code>sub</code>, <code>name</code>, <code>email</code>, and <code>picture</code>, and scopes such as <code>openid</code>, <code>profile</code>, and <code>email</code> that request them. But it does not define a C# class named <code>IdentityResource</code> or a UserClaims field in a management UI.</p>
+<p>IdentityServer's <code>IdentityResource</code> is a configuration abstraction for implementing this standard behavior.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>OIDC standard concept</span></span>
+<span class="giallo-l"><span>  profile scope → request Claims such as name, family_name, picture</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>IdentityServer implementation</span></span>
+<span class="giallo-l"><span>  IdentityResource(&quot;profile&quot;)</span></span>
+<span class="giallo-l"><span>      UserClaims = [name, family_name, picture]</span></span></code></pre>
+<p>API Resources and Profile Service are similar. Protocol requirements such as protected APIs, audiences, scopes, and user claim issuance come from standards, but configuring them through an <code>ApiResource</code> class and an <code>IProfileService</code> interface is IdentityServer's design.</p>
+<p>Also, OAuth access tokens are not always JWTs. An authorization server can issue opaque access tokens. Only when JWT is used can the API directly see the JSON claim set.</p>
+<h2 id="is-the-claim-storage-structure-standardized">Is the claim storage structure standardized?</h2>
+<p>OAuth, OpenID Connect, and JWT do not prescribe the internal database schema of an IdP. Any of the following can be used as long as the token follows the protocol rules and remains interoperable.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Inside the Identity Provider</span></span>
+<span class="giallo-l"><span>  ├── relational database</span></span>
+<span class="giallo-l"><span>  ├── ASP.NET Core Identity tables</span></span>
+<span class="giallo-l"><span>  ├── LDAP / Active Directory</span></span>
+<span class="giallo-l"><span>  ├── external identity provider</span></span>
+<span class="giallo-l"><span>  ├── separate user-management API</span></span>
+<span class="giallo-l"><span>  └── claims computed at request time</span></span></code></pre>
+<p>Therefore, this table structure is not a standard.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>AspNetUsers</span></span>
+<span class="giallo-l"><span>AspNetUserClaims</span></span>
+<span class="giallo-l"><span>AspNetRoles</span></span>
+<span class="giallo-l"><span>AspNetUserRoles</span></span></code></pre>
+<p>Another IdP may use a completely different schema. IdentityServer also provides store interfaces for configuration, resources, persisted grants, and similar data, and you can choose an in-memory store or a custom database implementation. The user store is not fixed to ASP.NET Core Identity either.</p>
+<p>Standards do not force an internal store because claim sources vary. <code>department</code> can come from an HR database, <code>role</code> from directory groups, <code>email</code> from an external IdP, and a request-time <code>risk_level</code> from a separate service. The Profile Service is IdentityServer's connection point that projects these sources into token claims.</p>
+<h2 id="what-does-scim-standardize">What does SCIM standardize?</h2>
+<p>SCIM, or System for Cross-domain Identity Management, is a separate standard for provisioning users and groups between systems.</p>
+<p>SCIM defines:</p>
+<ul>
+<li>JSON resource schemas for Users and Groups</li>
+<li>attributes such as <code>userName</code>, <code>name</code>, <code>emails</code>, <code>groups</code>, <code>roles</code>, and <code>entitlements</code></li>
+<li>schema extensions and namespaces</li>
+<li>an HTTP protocol for create, read, update, and delete operations</li>
+</ul>
+<p>A SCIM User looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;schemas&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span></span>
+<span class="giallo-l"><span style="color: #AAD94C;">    &quot;urn:ietf:params:scim:schemas:core:2.0:User&quot;</span></span>
+<span class="giallo-l"><span>  ]</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;userName&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice@example.com&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;name&quot;</span><span style="color: #BFBDB6B3;">:</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">    &quot;givenName&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Alice&quot;</span></span>
+<span class="giallo-l"><span>  }</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;roles&quot;</span><span style="color: #BFBDB6B3;">:</span><span> [</span></span>
+<span class="giallo-l"><span>    {</span><span style="color: #39BAE6;"> &quot;value&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span> }</span></span>
+<span class="giallo-l"><span>  ]</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>SCIM allows several systems to provision User and Group data in the same format. But it still does not decide:</p>
+<ul>
+<li>how the physical database tables should be designed</li>
+<li>which token claim a SCIM attribute should become</li>
+<li>what actual permission the <code>Admin</code> role grants</li>
+<li>which IdentityServer Resource should request that Claim</li>
+</ul>
+<p>In other words, SCIM standardizes the <strong>user-management API and exchange schema</strong>, but not the IdP's physical storage structure or token issuance policy.</p>
+<p>The overall boundary looks like this.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>SCIM</span></span>
+<span class="giallo-l"><span>  standardizes User/Group provisioning and exchange schema</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdP internal store</span></span>
+<span class="giallo-l"><span>  designed freely by the product or organization</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>IdentityServer configuration + Profile Service</span></span>
+<span class="giallo-l"><span>  projects stored information into token Claims</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>OAuth / OpenID Connect / JWT</span></span>
+<span class="giallo-l"><span>  standardizes externally delivered protocols and messages</span></span>
+<span class="giallo-l"><span>        ↓</span></span>
+<span class="giallo-l"><span>.NET Claim / ClaimsIdentity / ClaimsPrincipal</span></span>
+<span class="giallo-l"><span>  converted into runtime objects inside the API process</span></span></code></pre><h2 id="is-role-a-reserved-claim-type">Is <code>role</code> a reserved Claim type?</h2>
+<p><code>role</code> is not a special reserved data type at the token-format level. It is a string claim type.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">new</span><span style="color: #FFB454;"> Claim</span><span>(</span><span style="color: #AAD94C;">&quot;role&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>In real systems, however, it can be treated specially by convention.</p>
+<ol>
+<li>The identity provider's role-management feature may project role assignments into <code>role</code> Claims.</li>
+<li>If a Resource requests the <code>role</code> type, those values may be included in the token.</li>
+<li>If ASP.NET Core configures <code>role</code> as the <code>RoleClaimType</code>, <code>IsInRole()</code> interprets that Claim as a role.</li>
+</ol>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;">.</span><span>RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;role&quot;</span><span style="color: #BFBDB6B3;">;</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;Admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Conceptually, the code above checks whether the current <code>ClaimsIdentity</code> has a Claim with <code>type = role</code> and <code>value = Admin</code>.</p>
+<p>So <code>role</code> is technically an arbitrary string, but if your system adopts it as the role namespace, it should be treated operationally as a name with ownership.</p>
+<h2 id="raw-user-claim-and-managed-role-assignment">Raw user claim and managed role assignment</h2>
+<p>There can be two ways to give role information to a user.</p>
+<h3 id="raw-user-claim">Raw user claim</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>UserClaims</span></span>
+<span class="giallo-l"><span>  type  = role</span></span>
+<span class="giallo-l"><span>  value = Admin</span></span></code></pre><h3 id="managed-role-assignment">Managed role assignment</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Roles</span></span>
+<span class="giallo-l"><span>  Admin</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>UserRoles</span></span>
+<span class="giallo-l"><span>  Alice → Admin</span></span></code></pre>
+<p>The storage structures are different, but if the Profile Service projects both the same way, the token result can be the same.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;Admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>A managed role gives structure such as role definitions, user assignment, group inheritance, and management UI. A raw user claim is simple and flexible, but typos and invalid values are harder to control.</p>
+<p>If both methods are used together, duplicate and conflict rules must be clear.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Role assignment → role = Admin</span></span>
+<span class="giallo-l"><span>Raw user claim  → role = Support</span></span></code></pre>
+<p>If both are issued, the API sees the user as having both the <code>Admin</code> and <code>Support</code> roles. From the token alone, the API cannot tell which storage source each value came from.</p>
+<h2 id="in-a-shared-idp-separate-claim-types-with-namespaces">In a shared IdP, separate claim types with namespaces</h2>
+<p>If several products share one IdP, a generic <code>role</code> is easy to collide.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>role = Admin</span></span></code></pre>
+<p>From that value alone, you cannot know which product's Admin role it is. If several products use the same type and value, another product's role can be interpreted as the wrong permission.</p>
+<p>Product-specific types create clearer boundaries.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>app_role     = platform_admin</span></span>
+<span class="giallo-l"><span>billing_role = auditor</span></span>
+<span class="giallo-l"><span>support_role = agent</span></span></code></pre>
+<p>Omni API can configure only its own type as the role type.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>options</span><span style="color: #F29668;">.</span><span>TokenValidationParameters</span><span style="color: #F29668;">.</span><span>RoleClaimType</span><span style="color: #F29668;"> =</span><span style="color: #AAD94C;"> &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Then this check looks only at <code>app_role</code>.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span>User</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">IsInRole</span><span>(</span><span style="color: #AAD94C;">&quot;platform_admin&quot;</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span></code></pre>
+<p>Values such as <code>platform_admin</code> and <code>platform_member</code> are safer than context-poor names like <code>Admin</code> or <code>Manager</code>. Claim value comparison usually uses exact string matching, so casing and spelling also need to be managed as part of the contract.</p>
+<h2 id="revisit-the-full-example">Revisit the full example</h2>
+<h3 id="1-store-actual-values-on-the-user">1. Store actual values on the User</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Alice</span></span>
+<span class="giallo-l"><span>  sub      = alice-id</span></span>
+<span class="giallo-l"><span>  name     = Alice</span></span>
+<span class="giallo-l"><span>  email    = alice@example.com</span></span>
+<span class="giallo-l"><span>  app_role = platform_admin</span></span></code></pre><h3 id="2-identity-resource-selects-identity-claim-types">2. Identity Resource selects identity claim types</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Identity Resource: profile</span></span>
+<span class="giallo-l"><span>UserClaims: name, email</span></span></code></pre><h3 id="3-api-resource-selects-access-token-claim-types">3. API Resource selects access token claim types</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>API Resource: omniapi</span></span>
+<span class="giallo-l"><span>Scopes: omniapi.read, omniapi.write</span></span>
+<span class="giallo-l"><span>UserClaims: app_role</span></span></code></pre><h3 id="4-client-requests-scopes">4. Client requests scopes</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>scope=openid profile omniapi.read</span></span></code></pre><h3 id="5-profile-service-finds-alice-s-values">5. Profile Service finds Alice's values</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>Requested identity types: name, email</span></span>
+<span class="giallo-l"><span>Requested API type: app_role</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Alice&#39;s values:</span></span>
+<span class="giallo-l"><span>  name = Alice</span></span>
+<span class="giallo-l"><span>  email = alice@example.com</span></span>
+<span class="giallo-l"><span>  app_role = platform_admin</span></span></code></pre><h3 id="6-the-api-sees-only-the-access-token">6. The API sees only the access token</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="json"><span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;sub&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;alice-id&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;aud&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;scope&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;omniapi.read&quot;</span><span style="color: #BFBDB6B3;">,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;">  &quot;app_role&quot;</span><span style="color: #BFBDB6B3;">:</span><span style="color: #AAD94C;"> &quot;platform_admin&quot;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>By the time the request reaches the API, the Identity Resource, API Resource, and Users/Roles screen structure are gone. The JWT bearer handler validates the token and creates a <code>ClaimsIdentity</code> and <code>ClaimsPrincipal</code> from the claim list. The API consumes only the final claims.</p>
+<h2 id="common-misunderstandings">Common misunderstandings</h2>
+<h3 id="thinking-resource-userclaims-store-values">Thinking Resource UserClaims store values</h3>
+<p>Resources store only type names. The actual value is provided by the current User and the Profile Service.</p>
+<h3 id="thinking-claims-stored-in-userclaims-automatically-appear-in-every-token">Thinking claims stored in UserClaims automatically appear in every token</h3>
+<p>Storage and issuance are separate. The Profile Service and filtering policy for the requested scopes/resources must issue that Claim.</p>
+<h3 id="thinking-identity-resources-and-api-resources-shape-the-same-token">Thinking Identity Resources and API Resources shape the same token</h3>
+<p>Both select user claim types, but they have different purposes. Identity Resources model disclosure of identity information. API Resources and API Scopes model information needed in API access tokens.</p>
+<h3 id="thinking-the-name-role-grants-permission-by-itself">Thinking the name <code>role</code> grants permission by itself</h3>
+<p>A Claim is data. It affects authorization only when the API configures that type as the <code>RoleClaimType</code> or checks it in an authorization policy.</p>
+<h3 id="thinking-user-is-an-identity-resource">Thinking User is an Identity Resource</h3>
+<p>User is the subject/resource owner. An Identity Resource is a requestable bundle of information about that User.</p>
+<h2 id="design-checklist">Design checklist</h2>
+<ul>
+<li>Have you clearly separated claim type and value?</li>
+<li>Have you separated actual User data from Resource type-selection lists?</li>
+<li>Have you decided whether each Claim is needed in identity token/userinfo or in access token?</li>
+<li>Are the claim value sources and Profile Service projection rules clear?</li>
+<li>If the same type has multiple values, does the API handle them correctly?</li>
+<li>Are raw user claims and managed role assignments avoiding duplication?</li>
+<li>In a shared IdP, are product-specific claim type namespaces being used?</li>
+<li>Does the API's <code>RoleClaimType</code> exactly match the issued claim type?</li>
+<li>Have you decoded the token and verified <code>aud</code>, <code>scope</code>, and claim type/value in practice?</li>
+</ul>
+<h2 id="summary">Summary</h2>
+<p>IdentityServer repeats the name <code>UserClaims</code> in several screens, but the meaning splits into two categories.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="plain"><span class="giallo-l"><span>User UserClaims</span></span>
+<span class="giallo-l"><span>  = actual type/value data belonging to the current user</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>Resource UserClaims</span></span>
+<span class="giallo-l"><span>  = list of claim type names to request from the Profile Service</span></span></code></pre>
+<p>An Identity Resource is not the user itself; it is a requestable bundle of identity information. An API Resource is the protected API. The Profile Service connects the types selected by Resources with the current User's actual values and issues them into tokens.</p>
+<p>Once this structure is clear, <code>role</code> also becomes easier to understand. <code>role</code> is a string Claim type, but role projection by the IdP and ASP.NET Core's <code>RoleClaimType</code> configuration make that Claim participate in role authorization. In a shared IdP, using a namespaced type such as <code>app_role</code> is safer.</p>
+<h2 id="ref">Ref</h2>
+<ul>
+<li>Duende IdentityServer terminology: <a rel="external" href="https://docs.duendesoftware.com/identityserver/overview/terminology/">https://docs.duendesoftware.com/identityserver/overview/terminology/</a></li>
+<li>Duende IdentityServer claims: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/claims/">https://docs.duendesoftware.com/identityserver/fundamentals/claims/</a></li>
+<li>Duende IdentityServer resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/</a></li>
+<li>Duende IdentityServer identity resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/identity/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/identity/</a></li>
+<li>Duende IdentityServer Identity Resource model: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v8/models/identity-resource/">https://docs.duendesoftware.com/identityserver/reference/v8/models/identity-resource/</a></li>
+<li>Duende IdentityServer API resources: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-resources/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-resources/</a></li>
+<li>Duende IdentityServer API scopes: <a rel="external" href="https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-scopes/">https://docs.duendesoftware.com/identityserver/fundamentals/resources/api-scopes/</a></li>
+<li>Duende IdentityServer Profile Service: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v8/services/profile-service/">https://docs.duendesoftware.com/identityserver/reference/v8/services/profile-service/</a></li>
+<li>Duende IdentityServer stores: <a rel="external" href="https://docs.duendesoftware.com/identityserver/reference/v7/stores/">https://docs.duendesoftware.com/identityserver/reference/v7/stores/</a></li>
+<li>ASP.NET Core role-based authorization: <a rel="external" href="https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles">https://learn.microsoft.com/en-us/aspnet/core/security/authorization/roles</a></li>
+<li><code>ClaimsIdentity.RoleClaimType</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsidentity.roleclaimtype">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsidentity.roleclaimtype</a></li>
+<li><code>TokenValidationParameters.RoleClaimType</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationparameters.roleclaimtype">https://learn.microsoft.com/en-us/dotnet/api/microsoft.identitymodel.tokens.tokenvalidationparameters.roleclaimtype</a></li>
+<li><code>ClaimsPrincipal.IsInRole</code>: <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsprincipal.isinrole">https://learn.microsoft.com/en-us/dotnet/api/system.security.claims.claimsprincipal.isinrole</a></li>
+<li>OAuth 2.0 Authorization Framework, RFC 6749: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc6749">https://www.rfc-editor.org/rfc/rfc6749</a></li>
+<li>JSON Web Token, RFC 7519: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7519">https://www.rfc-editor.org/rfc/rfc7519</a></li>
+<li>OpenID Connect Core 1.0: <a rel="external" href="https://openid.net/specs/openid-connect-core-1_0.html">https://openid.net/specs/openid-connect-core-1_0.html</a></li>
+<li>SCIM Core Schema, RFC 7643: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7643">https://www.rfc-editor.org/rfc/rfc7643</a></li>
+<li>SCIM Protocol, RFC 7644: <a rel="external" href="https://www.rfc-editor.org/rfc/rfc7644">https://www.rfc-editor.org/rfc/rfc7644</a></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;csharp&#x2F;identity-openiddict-claims-authorization&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Understanding ASP.NET Core Identity, OpenIddict, and Claims Authentication
+            </a>
+          </div>
+           
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.en.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

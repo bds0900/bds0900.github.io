@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Ownership
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Ownership
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-05-24">May 24, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>2 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>361 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <h3 id="ownership-rules"><a rel="external" href="https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules">Ownership Rules</a></h3>
+<ol>
+<li>Rust의 모든 값에는 owner가 있다.</li>
+<li>한 번에 owner는 하나만 존재할 수 있다.</li>
+<li>owner가 scope 밖으로 나가면 값은 drop된다.</li>
+</ol>
+<p>ownership rule을 따르려면 몇 가지 개념을 구분해야 한다. C# 개발자 입장에서 가장 헷갈렸던 것은 아래 세 가지였다.</p>
+<h4 id="copy">Copy</h4>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> x</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> 5</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> y</span><span style="color: #F29668;"> =</span><span> x;</span></span></code></pre><h4 id="move">Move</h4>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> s1</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> s2</span><span style="color: #F29668;"> =</span><span> s1;</span></span></code></pre><h4 id="borrow">Borrow</h4>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let mut</span><span> s</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;hello&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> r1</span><span style="color: #F29668;"> = &amp;</span><span>s;</span><span style="color: #5A6673;font-style: italic;"> // no problem</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> r2</span><span style="color: #F29668;"> = &amp;</span><span>s;</span><span style="color: #5A6673;font-style: italic;"> // no problem</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">println!</span><span>(</span><span style="color: #AAD94C;">&quot;{r1} and {r2}&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// Variables r1 and r2 will not be used after this point.</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> r3</span><span style="color: #F29668;"> = &amp;</span><span style="color: #FF8F40;">mut</span><span> s;</span><span style="color: #5A6673;font-style: italic;"> // no problem</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">println!</span><span>(</span><span style="color: #AAD94C;">&quot;{r3}&quot;</span><span>);</span></span></code></pre><h3 id="copy-1">Copy</h3>
+<p><a rel="external" href="https://doc.rust-lang.org/book/ch04-02-references-and-borrowing.html">The Book</a>의 예제를 읽을 때는 이해한 것 같았다. 하지만 실제로 코딩을 시작하니 copy, borrow, move가 계속 헷갈렸다. 최근 C# 코드를 작성하다가 내가 왜 이 셋을 헷갈렸는지 깨달았다.</p>
+<p>아래 예제는 며칠 전 실제로 코딩하다가 만난 문제와 비슷하다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="csharp"><span class="giallo-l"><span style="color: #FF8F40;">public class</span><span style="color: #59C2FF;"> Apple</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public string</span><span style="color: #59C2FF;"> Name</span><span>{</span><span style="color: #FF8F40;">get</span><span style="color: #BFBDB6B3;">;</span><span style="color: #FF8F40;">set</span><span style="color: #BFBDB6B3;">;</span><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public int</span><span style="color: #59C2FF;"> Total</span><span>{</span><span style="color: #FF8F40;">get</span><span style="color: #BFBDB6B3;">;</span><span style="color: #FF8F40;">set</span><span style="color: #BFBDB6B3;">;</span><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #FFB454;"> Apple</span><span>(</span><span style="color: #FF8F40;">string</span><span style="color: #59C2FF;"> name</span><span style="color: #BFBDB6B3;">,</span><span style="color: #FF8F40;"> int</span><span style="color: #59C2FF;"> qty</span><span>){</span></span>
+<span class="giallo-l"><span>        Name</span><span style="color: #F29668;">=</span><span>name</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>        Total</span><span style="color: #F29668;">=</span><span>qty</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public class</span><span style="color: #59C2FF;"> Store</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #59C2FF;"> Queue</span><span>&lt;</span><span style="color: #59C2FF;">Apple</span><span>&gt;</span><span style="color: #59C2FF;"> AppleBasckets</span><span> {</span><span style="color: #FF8F40;">get</span><span style="color: #BFBDB6B3;">;</span><span style="color: #FF8F40;">set</span><span style="color: #BFBDB6B3;">;</span><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #FFB454;"> Store</span><span>(){</span></span>
+<span class="giallo-l"><span>        AppleBasckets</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> Queue</span><span>&lt;</span><span style="color: #59C2FF;">Apple</span><span>&gt;()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    public</span><span style="color: #59C2FF;"> Apple</span><span style="color: #FFB454;"> Take</span><span>(</span><span style="color: #FF8F40;">int</span><span style="color: #59C2FF;"> quantity</span><span>){</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Apple result</span><span style="color: #F29668;"> =</span><span style="color: #D2A6FF;"> null</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        if</span><span>(AppleBasckets</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">TryPeek</span><span>(</span><span style="color: #FF8F40;">out var</span><span style="color: #59C2FF;"> apple</span><span>)){</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span>(apple</span><span style="color: #F29668;">.</span><span>Name</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;Fuji&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>            {</span></span>
+<span class="giallo-l"><span>                result</span><span style="color: #F29668;"> =</span><span> apple</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>                apple</span><span style="color: #F29668;">.</span><span>Total</span><span style="color: #F29668;"> -=</span><span> quantity</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        return</span><span> result</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">public static void</span><span style="color: #FFB454;"> Main</span><span>(</span><span style="color: #FF8F40;">string</span><span>[]</span><span style="color: #59C2FF;"> args</span><span>)</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> store</span><span style="color: #F29668;"> = new</span><span style="color: #59C2FF;"> Store</span><span>()</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    store</span><span style="color: #F29668;">.</span><span>AppleBasckets</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Enqueue</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> Apple</span><span>(</span><span style="color: #AAD94C;">&quot;Fuji&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #D2A6FF;">40</span><span>))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    store</span><span style="color: #F29668;">.</span><span>AppleBasckets</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Enqueue</span><span>(</span><span style="color: #F29668;">new</span><span style="color: #59C2FF;"> Apple</span><span>(</span><span style="color: #AAD94C;">&quot;Ambrosia&quot;</span><span style="color: #BFBDB6B3;">,</span><span style="color: #D2A6FF;">20</span><span>))</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    var</span><span style="color: #59C2FF;"> result</span><span style="color: #F29668;"> =</span><span> store</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">Take</span><span>(</span><span style="color: #D2A6FF;">5</span><span>)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>    Console</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">WriteLine</span><span>(result</span><span style="color: #F29668;">.</span><span>Total)</span><span style="color: #BFBDB6B3;">;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>콘솔에는 <code>35</code>가 출력된다. 나는 무의식적으로 assignment operator(<code>=</code>)가 copy를 의미한다고 생각하고 있었다. <code>result = apple;</code>을 할 때 <code>apple</code>의 값을 <code>result</code>로 복사하고 싶었지만, 실제로는 object data가 아니라 reference만 복사됐다. 그래서 의도치 않게 원본 객체가 수정됐다.</p>
+<p>Rust 식으로 생각하면 이 상황은 "같은 데이터를 여러 변수가 가리키고 있고, 그중 하나를 통해 값을 변경했다"에 가깝다. C#에서 객체 자체를 복사하고 싶다면 <a rel="external" href="https://learn.microsoft.com/en-us/dotnet/api/system.icloneable?view=net-9.0">ICloneable</a>을 구현하거나 별도의 copy 로직을 작성해야 한다.</p>
+<h3 id="move-1">Move</h3>
+<p>위 C# 코드에서는 하나의 데이터를 두 변수가 참조했다. 아래 그림으로 보면 Figure 1-1에 해당한다. Rust는 ownership model을 따르기 때문에 Figure 1-3처럼 데이터를 다룬다.</p>
+<div style="display: flex; justify-content: space-around; align-items: center;">
+  <div style="text-align: center;">
+    <img src="https://doc.rust-lang.org/book/img/trpl04-02.svg" alt="Description" width="200" height="200">
+    <p>[Figure 1-1]: 데이터 1개, owner 2개처럼 보이는 상태</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="https://doc.rust-lang.org/book/img/trpl04-03.svg" alt="Description" width="200" height="200">
+    <p>[Figure 1-2]: 데이터 2개, owner 2개</p>
+  </div>
+  <div style="text-align: center;">
+    <img src="https://doc.rust-lang.org/book/img/trpl04-04.svg" alt="Description" width="200" height="200">
+    <p>[Figure 1-3]: 데이터 1개, owner 1개</p>
+  </div>
+</div>
+<p>*위 이미지는 모두 <a rel="external" href="https://doc.rust-lang.org/book/ch04-01-what-is-ownership.html#ownership-rules">The Rust Programming Language</a>에서 가져왔다.</p>
+<h3 id="baeun-jeom">배운 점</h3>
+<p>assignment operator(<code>=</code>)를 볼 때마다 이 연산이 실제 데이터를 복사하는지, reference만 복사하는지, 아니면 ownership을 move하는지 먼저 생각해야 한다. C#, JavaScript, Rust 모두 이 차이를 의식해야 한다.</p>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;smart-pointer&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Smart Pointer
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;package&#x2F;">
+              Package manager<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

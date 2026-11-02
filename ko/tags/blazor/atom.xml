@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - Blazor</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/blazor/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2020-12-05T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/blazor/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Pizza Shop</title>
+        <published>2020-12-05T00:00:00+00:00</published>
+        <updated>2020-12-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/projects/pizza/"/>
+        <id>https://emptyfridge.dev/ko/projects/pizza/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/projects/pizza/">&lt;h1 id=&quot;github-repository&quot;&gt;GitHub Repository&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;github.com&#x2F;emptyfridge0900&#x2F;pizza&quot;&gt;여기서 보기&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;peurojegteu&quot;&gt;프로젝트&lt;&#x2F;h1&gt;
+&lt;p&gt;가상의 피자 가게에서 피자와 사이드 메뉴를 주문하는 프로젝트다. 요즘 OAuth2가 여기저기 많이 쓰이기 때문에, 이 프로젝트에서는 IdentityServer4를 사용해 보았다. 물론 실제 피자를 사는 데 로그인까지 필요하지는 않겠지만, 인증&#x2F;인가 흐름을 연습하기 위한 선택이었다.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;donggi&quot;&gt;동기&lt;&#x2F;h1&gt;
+&lt;p&gt;지금까지 backend, frontend, SQL을 각각 공부해 왔지만, 이들을 통합해서 하나의 제품처럼 배포해 본 경험은 없었다. 완성도는 부족하더라도, 이 프로젝트를 통해 실제 제품을 만들어 보는 경험을 얻고 싶었다.&lt;&#x2F;p&gt;
+&lt;p&gt;또 이 프로젝트에서는 이전에 사용해 보지 않았던 기술들을 일부러 사용했다. Docker, Blazor, Bootstrap, PostgreSQL에 대해 많이 배울 수 있었다.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;gif&quot;&gt;GIF&lt;&#x2F;h1&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;login.gif&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;history.gif&quot; alt=&quot;&quot; &#x2F;&gt;
+&lt;img src=&quot;&#x2F;images&#x2F;add.gif&quot; alt=&quot;&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;sayonghan-gisul-framework&quot;&gt;사용한 기술&#x2F;framework&lt;&#x2F;h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;aspnet&#x2F;core&#x2F;web-api&#x2F;?view=aspnetcore-5.0&quot;&gt;ASP .NET Core 5.0 Api&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;aspnet&#x2F;core&#x2F;blazor&#x2F;?view=aspnetcore-5.0&quot;&gt;ASP .NET Core 5.0 Blazor(server)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;identityserver4.readthedocs.io&#x2F;en&#x2F;latest&#x2F;&quot;&gt;Identity Server 4&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.microsoft.com&#x2F;en-us&#x2F;ef&#x2F;core&#x2F;&quot;&gt;Entity Framework Core&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.postgresql.org&#x2F;docs&#x2F;12&#x2F;index.html&quot;&gt;Postgres 12.5&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;getbootstrap.com&#x2F;&quot;&gt;Bootstrap 4&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;docs.docker.com&#x2F;get-started&#x2F;overview&#x2F;&quot;&gt;Docker&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;hoseuting-seobiseu&quot;&gt;호스팅 서비스&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.heroku.com&#x2F;&quot;&gt;Heroku&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;gineung&quot;&gt;기능&lt;&#x2F;h1&gt;
+&lt;p&gt;API&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;피자 목록 조회&lt;&#x2F;li&gt;
+&lt;li&gt;사이드 메뉴 목록 조회&lt;&#x2F;li&gt;
+&lt;li&gt;주문 생성&lt;&#x2F;li&gt;
+&lt;li&gt;주문 내역 조회&lt;&#x2F;li&gt;
+&lt;li&gt;주문 상태 추적&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;CLIENT&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;피자 정보 표시&lt;&#x2F;li&gt;
+&lt;li&gt;사이드 메뉴 정보 표시&lt;&#x2F;li&gt;
+&lt;li&gt;장바구니에 항목 추가&lt;&#x2F;li&gt;
+&lt;li&gt;세금과 결제 금액 계산&lt;&#x2F;li&gt;
+&lt;li&gt;Checkout&lt;&#x2F;li&gt;
+&lt;li&gt;Login&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h1 id=&quot;api-reference&quot;&gt;API Reference&lt;&#x2F;h1&gt;
+&lt;h2 id=&quot;get-methods&quot;&gt;GET methods&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;api-pizza-type&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;type&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;피자 종류 조회&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-size&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;size&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;피자 크기 조회&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizaz-topping&quot;&gt;&lt;strong&gt;api&#x2F;pizaz&#x2F;topping&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;피자 토핑 조회&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-sides&quot;&gt;&lt;strong&gt;api&#x2F;pizza&#x2F;sides&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;사이드 메뉴 조회&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-customers-id-orders&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&#x2F;Customers&#x2F;{id}&#x2F;Orders&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;customer id로 주문 내역 조회
+&lt;code&gt;parameter: Guid&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h3 id=&quot;api-pizza-orders-orderid&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&#x2F;Orders&#x2F;{orderId}&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;orderId로 주문 상세 조회
+&lt;code&gt;parameter: Guid&lt;&#x2F;code&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;post-method&quot;&gt;POST method&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;api-pizza&quot;&gt;&lt;strong&gt;api&#x2F;Pizza&lt;&#x2F;strong&gt;&lt;&#x2F;h3&gt;
+&lt;ul&gt;
+&lt;li&gt;주문 생성&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;blockquote&gt;
+&lt;p&gt;body&lt;&#x2F;p&gt;
+&lt;&#x2F;blockquote&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    &amp;quot;Customer&amp;quot;:{&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        &amp;quot;CustomerId&amp;quot;:&amp;quot;7d9ecead-eca1-48b2-8366-784fb1c17c16&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        &amp;quot;FirstName&amp;quot;:&amp;quot;Bob&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        &amp;quot;LastName&amp;quot;:&amp;quot;Smith&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        &amp;quot;Email&amp;quot;:&amp;quot;BobSmith@email.com&amp;quot;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        &amp;quot;PhoneNumber&amp;quot;:&amp;quot;519-666-7777&amp;quot;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    },&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    &amp;quot;Pizzas&amp;quot;:[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;Qty&amp;quot;:2,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;TypeId&amp;quot;:1,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;SizeId&amp;quot;:1,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;Toppings&amp;quot;:[1,2,3]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    ],&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    &amp;quot;Sides&amp;quot;:[&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;Qty&amp;quot;:2,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            &amp;quot;SideId&amp;quot;:1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    ]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;</content>
+        
+    </entry>
+</feed>

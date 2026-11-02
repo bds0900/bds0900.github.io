@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - binary-tree</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/binary-tree/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-05T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/binary-tree/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>Tree 자료구조</title>
+        <published>2023-05-05T00:00:00+00:00</published>
+        <updated>2023-05-05T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/data_structure/tree/"/>
+        <id>https://emptyfridge.dev/ko/data_structure/tree/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/data_structure/tree/">&lt;p&gt;Tree는 node와 edge로 이루어진 계층형 자료구조다. Graph 관점에서 보면 &lt;strong&gt;connected
+acyclic graph&lt;&#x2F;strong&gt;, 즉 모든 node가 연결되어 있고 cycle이 없는 graph다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;Treedatastructure.png&quot; alt=&quot;tree&quot; &#x2F;&gt;
+source: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;introduction-to-tree-data-structure-and-algorithm-tutorials&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;haegsim-seongjil&quot;&gt;핵심 성질&lt;&#x2F;h2&gt;
+&lt;p&gt;Tree를 이해할 때 가장 중요한 성질은 아래 세 가지다.&lt;&#x2F;p&gt;
+&lt;ol&gt;
+&lt;li&gt;node가 &lt;code&gt;n&lt;&#x2F;code&gt;개인 tree는 edge가 &lt;code&gt;n - 1&lt;&#x2F;code&gt;개다.&lt;&#x2F;li&gt;
+&lt;li&gt;임의의 두 node 사이에는 path가 정확히 하나만 존재한다.&lt;&#x2F;li&gt;
+&lt;li&gt;edge를 하나 추가하면 cycle이 생기고, edge를 하나 제거하면 연결이 끊어진다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ol&gt;
+&lt;p&gt;보통 프로그래밍에서 말하는 tree는 root가 있는 &lt;strong&gt;rooted tree&lt;&#x2F;strong&gt;다. Root를 기준으로
+parent-child 관계가 생기고, root에서 멀어질수록 depth가 깊어진다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;yongeo&quot;&gt;용어&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;용어&lt;&#x2F;th&gt;&lt;th&gt;의미&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Root&lt;&#x2F;td&gt;&lt;td&gt;부모가 없는 시작 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Parent&lt;&#x2F;td&gt;&lt;td&gt;어떤 node 바로 위의 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Child&lt;&#x2F;td&gt;&lt;td&gt;어떤 node 바로 아래의 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Sibling&lt;&#x2F;td&gt;&lt;td&gt;같은 parent를 공유하는 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Leaf&lt;&#x2F;td&gt;&lt;td&gt;child가 없는 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Internal node&lt;&#x2F;td&gt;&lt;td&gt;leaf가 아닌 node&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Degree&lt;&#x2F;td&gt;&lt;td&gt;child 개수&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Depth&lt;&#x2F;td&gt;&lt;td&gt;root에서 해당 node까지 edge 개수&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Height&lt;&#x2F;td&gt;&lt;td&gt;해당 node에서 가장 먼 leaf까지 edge 개수&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Subtree&lt;&#x2F;td&gt;&lt;td&gt;어떤 node를 root로 하는 부분 tree&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;예를 들어 root의 depth는 &lt;code&gt;0&lt;&#x2F;code&gt;이고, leaf의 height는 &lt;code&gt;0&lt;&#x2F;code&gt;이다. 문제마다 height를 edge 개수
+대신 node 개수로 정의하는 경우도 있으니 면접이나 알고리즘 문제에서는 정의를 먼저 확인하는
+게 좋다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;tree-jongryu&quot;&gt;Tree 종류&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;binary-tree&quot;&gt;Binary Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;각 node가 최대 2개의 child를 가지는 tree다. 보통 child를 &lt;code&gt;left&lt;&#x2F;code&gt;, &lt;code&gt;right&lt;&#x2F;code&gt;로 부른다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;binary-search-tree&quot;&gt;Binary Search Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;Binary tree에 ordering rule을 추가한 tree다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;left subtree의 모든 값 &amp;lt; root 값 &amp;lt; right subtree의 모든 값&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;이 규칙 덕분에 search, insert, delete가 평균적으로 &lt;code&gt;O(log n)&lt;&#x2F;code&gt;이 될 수 있다. 하지만 tree가
+한쪽으로 기울면 height가 &lt;code&gt;n&lt;&#x2F;code&gt;이 되어 &lt;code&gt;O(n)&lt;&#x2F;code&gt;까지 나빠진다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;self-balancing-search-tree&quot;&gt;Self-balancing Search Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;Insert&#x2F;delete 이후 height가 너무 커지지 않도록 스스로 균형을 맞추는 search tree다.&lt;&#x2F;p&gt;
+&lt;ul&gt;
+&lt;li&gt;AVL tree&lt;&#x2F;li&gt;
+&lt;li&gt;Red-black tree&lt;&#x2F;li&gt;
+&lt;li&gt;B-tree&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;p&gt;여기서 주의할 점이 있다. &lt;strong&gt;B-tree는 binary tree가 아니다.&lt;&#x2F;strong&gt; 하나의 node가 여러 key와 여러 child를
+가질 수 있는 multi-way balanced search tree다. Database index나 filesystem에서 자주
+등장한다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;full-complete-perfect-binary-tree&quot;&gt;Full &#x2F; Complete &#x2F; Perfect Binary Tree&lt;&#x2F;h3&gt;
+&lt;p&gt;이 세 용어는 이름이 비슷해서 자주 헷갈린다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;종류&lt;&#x2F;th&gt;&lt;th&gt;조건&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Full binary tree&lt;&#x2F;td&gt;&lt;td&gt;모든 node의 child 개수가 0개 또는 2개다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Complete binary tree&lt;&#x2F;td&gt;&lt;td&gt;마지막 level을 제외한 모든 level이 꽉 차 있고, 마지막 level은 왼쪽부터 채워져 있다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Perfect binary tree&lt;&#x2F;td&gt;&lt;td&gt;모든 internal node가 child 2개를 가지고, 모든 leaf가 같은 depth에 있다&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Perfect binary tree는 항상 full이면서 complete다. 하지만 full이라고 해서 complete인 것은
+아니고, complete라고 해서 full인 것도 아니다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;traversal&quot;&gt;Traversal&lt;&#x2F;h2&gt;
+&lt;p&gt;Traversal은 tree의 모든 node를 한 번씩 방문하는 방법이다. Tree node가 &lt;code&gt;n&lt;&#x2F;code&gt;개라면 모든
+traversal은 기본적으로 &lt;code&gt;O(n)&lt;&#x2F;code&gt;이다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;full_binary_tree.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;dfs-depth-first-search&quot;&gt;DFS: Depth-First Search&lt;&#x2F;h3&gt;
+&lt;p&gt;DFS는 한 방향으로 끝까지 내려갔다가 다시 돌아오는 방식이다. Recursive call stack을 쓰거나
+직접 stack을 만들어 구현한다.&lt;&#x2F;p&gt;
+&lt;p&gt;Binary tree에서 DFS 순회는 root를 언제 방문하느냐에 따라 이름이 달라진다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;순회&lt;&#x2F;th&gt;&lt;th&gt;순서&lt;&#x2F;th&gt;&lt;th&gt;예시&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Preorder&lt;&#x2F;td&gt;&lt;td&gt;Root -&amp;gt; Left -&amp;gt; Right&lt;&#x2F;td&gt;&lt;td&gt;A-B-D-E-H-I-C-F-G&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Inorder&lt;&#x2F;td&gt;&lt;td&gt;Left -&amp;gt; Root -&amp;gt; Right&lt;&#x2F;td&gt;&lt;td&gt;D-B-H-E-I-A-F-C-G&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Postorder&lt;&#x2F;td&gt;&lt;td&gt;Left -&amp;gt; Right -&amp;gt; Root&lt;&#x2F;td&gt;&lt;td&gt;D-H-I-E-B-F-G-C-A&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;외우는 법은 간단하다. Left는 항상 Right보다 먼저 간다. Root가 앞이면 preorder, 중간이면
+inorder, 뒤면 postorder다.&lt;&#x2F;p&gt;
+&lt;p&gt;Inorder traversal은 binary search tree에서 특히 중요하다. BST를 inorder로 순회하면 값이
+정렬된 순서로 나온다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;, output&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;: &amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;mut&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;) {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(node)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;        inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;(), output);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        output&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;val);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;        inorder&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;(), output);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;DFS의 extra space는 tree height를 &lt;code&gt;h&lt;&#x2F;code&gt;라고 할 때 recursive call stack 기준 &lt;code&gt;O(h)&lt;&#x2F;code&gt;다.
+Balanced tree라면 &lt;code&gt;O(log n)&lt;&#x2F;code&gt;, 한쪽으로 기운 tree라면 &lt;code&gt;O(n)&lt;&#x2F;code&gt;이다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;bfs-breadth-first-search&quot;&gt;BFS: Breadth-First Search&lt;&#x2F;h3&gt;
+&lt;p&gt;BFS는 level-order traversal이라고도 부른다. Root에서 시작해 같은 depth의 node를 먼저
+방문한 뒤 다음 level로 내려간다.&lt;&#x2F;p&gt;
+&lt;p&gt;&lt;img src=&quot;&#x2F;images&#x2F;DS&#x2F;Tree&#x2F;binary_tree_level_order.png&quot; alt=&quot;Tree&quot; &#x2F;&gt;&lt;&#x2F;p&gt;
+&lt;p&gt;BFS는 queue로 구현한다. Tree의 level별 처리, 최단 edge 수 계산, serialization 문제에서
+자주 등장한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;use&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; std&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;collections&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;VecDeque&lt;&#x2F;span&gt;&lt;span&gt;;&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; level_order&lt;&#x2F;span&gt;&lt;span&gt;(root&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;&amp;amp;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; result&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    let mut&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; VecDeque&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;::&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;new&lt;&#x2F;span&gt;&lt;span&gt;();&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(root)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; root {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(root);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    while let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(node)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;pop_front&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        result&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push&lt;&#x2F;span&gt;&lt;span&gt;(node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;val);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(left)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(left);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;        if let&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Some&lt;&#x2F;span&gt;&lt;span&gt;(right)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; =&lt;&#x2F;span&gt;&lt;span&gt; node&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span&gt;right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;as_ref&lt;&#x2F;span&gt;&lt;span&gt;() {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            queue&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;.&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt;push_back&lt;&#x2F;span&gt;&lt;span&gt;(right);&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    result&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;BFS의 extra space는 queue에 들어가는 최대 node 수에 비례한다. Tree의 최대 width를 &lt;code&gt;w&lt;&#x2F;code&gt;라고
+하면 &lt;code&gt;O(w)&lt;&#x2F;code&gt;다. Complete binary tree의 마지막 level은 node가 많기 때문에 최악의 경우
+&lt;code&gt;O(n)&lt;&#x2F;code&gt;이 될 수 있다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;pyohyeon-bangbeob&quot;&gt;표현 방법&lt;&#x2F;h2&gt;
+&lt;h3 id=&quot;linked-node&quot;&gt;Linked node&lt;&#x2F;h3&gt;
+&lt;p&gt;가장 일반적인 표현 방식이다. 각 node가 자기 child를 가리킨다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;#[derive(&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Debug&lt;&#x2F;span&gt;&lt;span&gt;)]&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;pub struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TreeNode&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; val&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub&lt;&#x2F;span&gt;&lt;span&gt; right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Box&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;TreeNode&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;impl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; TreeNode&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    pub fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; new&lt;&#x2F;span&gt;&lt;span&gt;(val&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; i32&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt; Self&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #39BAE6;font-style: italic;&quot;&gt;        Self&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            val,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            left&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; None&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;            right&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; None&lt;&#x2F;span&gt;&lt;span&gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;        }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;LeetCode의 Rust tree 문제에서는 공유 ownership과 interior mutability 때문에
+&lt;code&gt;Option&amp;lt;Rc&amp;lt;RefCell&amp;lt;TreeNode&amp;gt;&amp;gt;&amp;gt;&lt;&#x2F;code&gt; 형태를 자주 본다. 하지만 tree 개념 자체를 설명할 때는
+&lt;code&gt;Box&amp;lt;TreeNode&amp;gt;&lt;&#x2F;code&gt;가 더 단순하다.&lt;&#x2F;p&gt;
+&lt;h3 id=&quot;array&quot;&gt;Array&lt;&#x2F;h3&gt;
+&lt;p&gt;Complete binary tree처럼 빈 공간이 거의 없는 tree는 array로 표현하기 좋다.&lt;&#x2F;p&gt;
+&lt;p&gt;Root index를 &lt;code&gt;0&lt;&#x2F;code&gt;이라고 하면:&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;plain&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;left child  = 2 * i + 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;right child = 2 * i + 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;parent      = (i - 1) &#x2F; 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Heap이 이 표현을 사용한다.&lt;&#x2F;p&gt;
+&lt;pre class=&quot;giallo&quot; style=&quot;color: #BFBDB6; background-color: #0D1017;&quot;&gt;&lt;code data-lang=&quot;rust&quot;&gt;&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;struct&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ArrayTree&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    nodes&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; Vec&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;Option&lt;&#x2F;span&gt;&lt;span&gt;&amp;lt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt;i32&lt;&#x2F;span&gt;&lt;span&gt;&amp;gt;&amp;gt;,&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;impl&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; ArrayTree&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; left_index&lt;&#x2F;span&gt;&lt;span&gt;(parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;        2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; *&lt;&#x2F;span&gt;&lt;span&gt; parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 1&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #FF8F40;&quot;&gt;    fn&lt;&#x2F;span&gt;&lt;span style=&quot;color: #FFB454;&quot;&gt; right_index&lt;&#x2F;span&gt;&lt;span&gt;(parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt;:&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt;)&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; -&amp;gt;&lt;&#x2F;span&gt;&lt;span style=&quot;color: #59C2FF;&quot;&gt; usize&lt;&#x2F;span&gt;&lt;span&gt; {&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt;        2&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; *&lt;&#x2F;span&gt;&lt;span&gt; parent&lt;&#x2F;span&gt;&lt;span style=&quot;color: #F29668;&quot;&gt; +&lt;&#x2F;span&gt;&lt;span style=&quot;color: #D2A6FF;&quot;&gt; 2&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;    }&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;
+&lt;span class=&quot;giallo-l&quot;&gt;&lt;span&gt;}&lt;&#x2F;span&gt;&lt;&#x2F;span&gt;&lt;&#x2F;code&gt;&lt;&#x2F;pre&gt;
+&lt;p&gt;Array 표현은 index 계산이 빠르고 cache locality가 좋다. 하지만 sparse tree에는 빈 칸이
+많아져 memory가 낭비된다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;sigan-bogjabdo&quot;&gt;시간 복잡도&lt;&#x2F;h2&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;작업&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;일반 binary tree&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;balanced BST&lt;&#x2F;th&gt;&lt;th style=&quot;text-align: right&quot;&gt;한쪽으로 기운 BST&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;Search&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Insert&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n) 또는 위치를 알면 O(1)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Delete&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(log n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;Traversal&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;td style=&quot;text-align: right&quot;&gt;O(n)&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;Tree 문제에서 중요한 것은 &quot;binary tree인가, BST인가, balanced인가&quot;를 먼저 구분하는 것이다.
+셋을 섞어서 생각하면 time complexity를 쉽게 틀린다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;eodie-sseuna&quot;&gt;어디에 쓰나&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;File system directory 구조&lt;&#x2F;li&gt;
+&lt;li&gt;HTML&#x2F;XML DOM&lt;&#x2F;li&gt;
+&lt;li&gt;Compiler AST(Abstract Syntax Tree)&lt;&#x2F;li&gt;
+&lt;li&gt;Database index(B-tree, B+tree)&lt;&#x2F;li&gt;
+&lt;li&gt;Priority queue(heap)&lt;&#x2F;li&gt;
+&lt;li&gt;Prefix search(trie)&lt;&#x2F;li&gt;
+&lt;li&gt;Range query(segment tree, Fenwick tree)&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;gieoghal-jeom&quot;&gt;기억할 점&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tree는 cycle이 없는 connected graph다.&lt;&#x2F;li&gt;
+&lt;li&gt;Rooted tree에서는 parent-child 관계가 생긴다.&lt;&#x2F;li&gt;
+&lt;li&gt;Binary tree와 binary search tree는 다르다.&lt;&#x2F;li&gt;
+&lt;li&gt;Balanced BST는 height를 낮게 유지해서 search&#x2F;insert&#x2F;delete를 &lt;code&gt;O(log n)&lt;&#x2F;code&gt;에 가깝게 만든다.&lt;&#x2F;li&gt;
+&lt;li&gt;BFS는 queue, DFS는 stack 또는 recursion으로 구현한다.&lt;&#x2F;li&gt;
+&lt;li&gt;Array tree 표현은 complete binary tree나 heap에 잘 맞고, sparse tree에는 비효율적이다.&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+&lt;h2 id=&quot;camgo&quot;&gt;참고&lt;&#x2F;h2&gt;
+&lt;ul&gt;
+&lt;li&gt;Tree data structure: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Tree_(data_structure)&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Tree_(data_structure)&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary search tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_search_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_search_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Self-balancing binary search tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Self-balancing_binary_search_tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Self-balancing_binary_search_tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;B-tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;B-tree&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;B-tree&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;Binary heap: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_heap&quot;&gt;https:&#x2F;&#x2F;en.wikipedia.org&#x2F;wiki&#x2F;Binary_heap&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;CP-Algorithms - Segment Tree: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;data_structures&#x2F;segment_tree.html&quot;&gt;https:&#x2F;&#x2F;cp-algorithms.com&#x2F;data_structures&#x2F;segment_tree.html&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;li&gt;GeeksforGeeks - Binary tree array implementation: &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&quot;&gt;https:&#x2F;&#x2F;www.geeksforgeeks.org&#x2F;binary-tree-array-implementation&#x2F;&lt;&#x2F;a&gt;&lt;&#x2F;li&gt;
+&lt;&#x2F;ul&gt;
+</content>
+        
+    </entry>
+</feed>

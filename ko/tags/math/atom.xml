@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xml:lang="ko">
+    <title>Doosan의 블로그 - math</title>
+    <subtitle>배움은 끝이 없는 과정</subtitle>
+    <link rel="self" type="application/atom+xml" href="https://emptyfridge.dev/ko/tags/math/atom.xml"/>
+    <link rel="alternate" type="text/html" href="https://emptyfridge.dev"/>
+    <generator uri="https://www.getzola.org/">Zola</generator>
+    <updated>2023-05-29T00:00:00+00:00</updated>
+    <id>https://emptyfridge.dev/ko/tags/math/atom.xml</id>
+    <entry xml:lang="ko">
+        <title>순열과 조합</title>
+        <published>2023-05-29T00:00:00+00:00</published>
+        <updated>2023-05-29T00:00:00+00:00</updated>
+        
+        <author>
+          <name>
+            
+              Unknown
+            
+          </name>
+        </author>
+        
+        <link rel="alternate" type="text/html" href="https://emptyfridge.dev/ko/algorithm/permutation/"/>
+        <id>https://emptyfridge.dev/ko/algorithm/permutation/</id>
+        
+        <content type="html" xml:base="https://emptyfridge.dev/ko/algorithm/permutation/">&lt;p&gt;며칠 전에 LeetCode 연습문제 &lt;code&gt;441. Arranging Coins&lt;&#x2F;code&gt;를 풀면서 1부터 n까지의 합을 구하는 공식을 다시 보았다. 학교에서 1부터 100까지 더하는 문제로 한 번쯤 배웠던, 가우스가 어릴 때 떠올렸다고 알려진 그 공식이다.&lt;&#x2F;p&gt;
+&lt;p&gt;1부터 n까지의 합은 &lt;code&gt;n(n+1)&#x2F;2&lt;&#x2F;code&gt;로 구할 수 있다. 이 공식의 유도 과정은 인터넷에 많이 있으니 여기서는 따로 정리하지 않겠다. 그런데 이 식을 보고 어디선가 비슷한 형태를 본 것 같다는 생각이 들었다. 그러다 문득 &lt;code&gt;n(n-1)&#x2F;2&lt;&#x2F;code&gt;라는 공식을 배운 기억이 떠올라 찾아보았다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-1-2-ngae-jungeseo-ganeunghan-johab&quot;&gt;$\frac{n(n-1)}{2}$ n개 중에서 가능한 조합&lt;&#x2F;h2&gt;
+&lt;p&gt;검색해 보니 배열의 가능한 부분 구간 개수나, &lt;em&gt;n&lt;&#x2F;em&gt;개의 원소로 만들 수 있는 서로 다른 pair의 개수를 설명할 때 등장하는 공식이었다. 관련 설명은 &lt;a rel=&quot;external&quot; href=&quot;https:&#x2F;&#x2F;math.stackexchange.com&#x2F;questions&#x2F;2214839&#x2F;exactly-how-does-the-equation-nn-1-2-determine-the-number-of-pairs-of-a-given&quot;&gt;이 링크&lt;&#x2F;a&gt;에서도 볼 수 있다.&lt;&#x2F;p&gt;
+&lt;table&gt;&lt;thead&gt;&lt;tr&gt;&lt;th&gt;&lt;&#x2F;th&gt;&lt;th&gt;A&lt;&#x2F;th&gt;&lt;th&gt;B&lt;&#x2F;th&gt;&lt;th&gt;C&lt;&#x2F;th&gt;&lt;th&gt;D&lt;&#x2F;th&gt;&lt;th&gt;E&lt;&#x2F;th&gt;&lt;&#x2F;tr&gt;&lt;&#x2F;thead&gt;&lt;tbody&gt;
+&lt;tr&gt;&lt;td&gt;A&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;AB&lt;&#x2F;td&gt;&lt;td&gt;AC&lt;&#x2F;td&gt;&lt;td&gt;AD&lt;&#x2F;td&gt;&lt;td&gt;AE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;B&lt;&#x2F;td&gt;&lt;td&gt;BA&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;BC&lt;&#x2F;td&gt;&lt;td&gt;BD&lt;&#x2F;td&gt;&lt;td&gt;BE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;C&lt;&#x2F;td&gt;&lt;td&gt;CA&lt;&#x2F;td&gt;&lt;td&gt;CB&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;CD&lt;&#x2F;td&gt;&lt;td&gt;CE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;D&lt;&#x2F;td&gt;&lt;td&gt;DA&lt;&#x2F;td&gt;&lt;td&gt;DB&lt;&#x2F;td&gt;&lt;td&gt;DC&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;td&gt;DE&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;tr&gt;&lt;td&gt;E&lt;&#x2F;td&gt;&lt;td&gt;EA&lt;&#x2F;td&gt;&lt;td&gt;EB&lt;&#x2F;td&gt;&lt;td&gt;EC&lt;&#x2F;td&gt;&lt;td&gt;ED&lt;&#x2F;td&gt;&lt;td&gt;&lt;&#x2F;td&gt;&lt;&#x2F;tr&gt;
+&lt;&#x2F;tbody&gt;&lt;&#x2F;table&gt;
+&lt;p&gt;대표적인 예가 악수 문제다. n명이 서로 한 번씩만 악수한다고 생각해 보자.&lt;&#x2F;p&gt;
+&lt;p&gt;한 사람이 악수할 수 있는 상대는 자기 자신을 제외한 &lt;code&gt;n - 1&lt;&#x2F;code&gt;명이다. 그렇다면 전체 악수 횟수는 &lt;code&gt;n(n-1)&lt;&#x2F;code&gt;일까? 아니다. 이 값에는 중복이 들어 있다. 예를 들어 &lt;code&gt;AB&lt;&#x2F;code&gt;와 &lt;code&gt;BA&lt;&#x2F;code&gt;, &lt;code&gt;AC&lt;&#x2F;code&gt;와 &lt;code&gt;CA&lt;&#x2F;code&gt;는 같은 악수를 두 번 센 것이다.&lt;&#x2F;p&gt;
+&lt;p&gt;그래서 중복을 제거하려면 2로 나누어야 한다. 따라서 서로 다른 두 사람을 고르는 경우의 수는 &lt;code&gt;n(n-1)&#x2F;2&lt;&#x2F;code&gt;가 된다.&lt;&#x2F;p&gt;
+&lt;h1 id=&quot;permutation&quot;&gt;Permutation&lt;&#x2F;h1&gt;
+&lt;p&gt;조합 문제를 공부하다 보니 순열도 다시 정리할 필요가 있었다. 예전에 문제를 풀면서 순열을 배운 적은 있지만, 지금은 많이 잊어버렸다. 순열과 조합은 비슷해 보여서 가끔 헷갈리기 때문에 다시 정리해 본다.&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;n-r-ngaejungeseo-rgaereul-jungbogganeung-sunseoreul-goryeohaeseo-goreunda&quot;&gt;$n^r$ n개중에서 r개를 중복가능, 순서를 고려해서 고른다.&lt;&#x2F;h2&gt;
+&lt;p&gt;&lt;code&gt;A&lt;&#x2F;code&gt;, &lt;code&gt;B&lt;&#x2F;code&gt;, &lt;code&gt;C&lt;&#x2F;code&gt; 세 개가 있고, 이 중에서 중복을 허용하면서 순서를 고려해 3개를 고른다고 하자. 그러면 다음과 같은 경우가 가능하다.&lt;&#x2F;p&gt;
+&lt;p&gt;AAA, AAB, AAC
+ABA, ABB, ABC
+ACA, ACB, ACC
+BAA, BAB, BAC
+BBA, BBB, BBC
+BCA, BCB, BCC
+CAA, CAB, CAC
+CBA, CBB, CBC
+CCA, CCB, CCC&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;frac-n-n-r-ngae-jungeseo-rgaereul-jungbogbulga-sunseoreul-goryeohaeseo-goreunda&quot;&gt;$\frac{n!}{(n-r)!}$ n개 중에서 r개를 중복불가, 순서를 고려해서 고른다.&lt;&#x2F;h2&gt;
+&lt;p&gt;이번에는 중복을 허용하지 않고 순서를 고려해 고르는 경우다. 중복이 불가능하므로 하나를 고를 때마다 다음 선택지의 개수가 1씩 줄어든다.&lt;&#x2F;p&gt;
+&lt;p&gt;예를 들어 16개의 당구공 중에서 순서를 고려해 3개를 고른다면, 첫 번째는 16개 중에서 고르고, 두 번째는 남은 15개 중에서 고르고, 세 번째는 남은 14개 중에서 고른다. 따라서 가능한 순열의 수는 &lt;code&gt;16 x 15 x 14 = 3360&lt;&#x2F;code&gt;이다.&lt;&#x2F;p&gt;
+&lt;p&gt;이 &lt;code&gt;16 x 15 x 14&lt;&#x2F;code&gt;를 일반화하기 위해 팩토리얼을 사용한다.&lt;&#x2F;p&gt;
+&lt;p&gt;$\frac{16 * 15 * 14 * 13 * 12 * 11..3 * 2 * 1}{13 * 12 * 11 ... 3 * 2 * 1}$ =&amp;gt; $\frac{n!}{(n-r)!}$&lt;&#x2F;p&gt;
+&lt;h2 id=&quot;combination&quot;&gt;Combination&lt;&#x2F;h2&gt;
+&lt;h2 id=&quot;frac-n-r-n-r-johab-sunyeoleseo-sunseoreul-jeoehanda&quot;&gt;$\frac{n!}{r!(n-r)!}$ 조합, 순열에서 순서를 제외한다&lt;&#x2F;h2&gt;
+&lt;p&gt;조합은 순서를 고려하지 않는다. &lt;code&gt;ABC&lt;&#x2F;code&gt;, &lt;code&gt;CBA&lt;&#x2F;code&gt;, &lt;code&gt;BCA&lt;&#x2F;code&gt;는 모두 &lt;code&gt;A&lt;&#x2F;code&gt;, &lt;code&gt;B&lt;&#x2F;code&gt;, &lt;code&gt;C&lt;&#x2F;code&gt; 세 원소로 이루어진 같은 선택이다. 그래서 이 경우들을 하나의 &lt;code&gt;ABC&lt;&#x2F;code&gt; 조합으로 본다.&lt;&#x2F;p&gt;
+&lt;p&gt;앞에서 $\frac{n!}{(n-r)!}$로 중복 없이 순서를 고려하는 순열의 수를 구했다. 여기에서 순서만 제거하면 조합이 된다.&lt;&#x2F;p&gt;
+&lt;p&gt;다시 당구공 예제로 돌아가 보자. 16개의 공 중에서 순서를 고려해 3개를 고르는 경우는 &lt;code&gt;16 x 15 x 14 = 3360&lt;&#x2F;code&gt;가지였다. 그런데 공 3개를 고른 뒤의 배치 순서는 &lt;code&gt;3!&lt;&#x2F;code&gt;가지다. 조합에서는 이 배치 순서를 모두 같은 선택으로 보기 때문에 &lt;code&gt;3!&lt;&#x2F;code&gt;로 나누어야 한다.&lt;&#x2F;p&gt;
+&lt;p&gt;따라서 &lt;code&gt;3360 &#x2F; 3! = 560&lt;&#x2F;code&gt;이 되고, 이것이 16개 중에서 3개를 고르는 조합의 수다.&lt;&#x2F;p&gt;
+</content>
+        
+    </entry>
+</feed>

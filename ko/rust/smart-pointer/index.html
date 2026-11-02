@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Smart Pointer
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Smart Pointer
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2025-05-24">May 24, 2025</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>933 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>Rust에는 단일한 <code>SmartPointer</code> trait가 없다. 대신 smart pointer라는 말은 값을 소유하거나 감싸면서 pointer처럼 동작하는 타입들을 가리키는 느슨한 표현이다. 보통 <a rel="external" href="https://doc.rust-lang.org/std/ops/trait.Deref.html"><code>Deref</code></a>와 <a rel="external" href="https://doc.rust-lang.org/std/ops/trait.Drop.html"><code>Drop</code></a>을 통해 그런 동작을 제공한다.</p>
+<p>아래에 있는 <code>RefCell&lt;T&gt;</code>, <code>Mutex&lt;T&gt;</code>, <code>Pin&lt;P&gt;</code> 같은 타입은 엄밀히 말하면 interior mutability type이나 pointer wrapper에 더 가깝다. 그래도 실제 Rust 코드에서 owning smart pointer와 자주 조합되기 때문에 함께 정리한다.</p>
+<h2 id="box-t"><a rel="external" href="https://doc.rust-lang.org/std/boxed/struct.Box.html"><code>Box&lt;T&gt;</code></a></h2>
+<p><code>Box&lt;T&gt;</code>는 heap에 저장된 값 하나를 소유한다. 다음과 같은 경우에 사용한다.</p>
+<ul>
+<li>recursive type이나 trait object처럼 compile time에 크기를 알 수 없는 타입을 다룰 때</li>
+<li>큰 값을 이동하되 heap allocation 자체는 복사하고 싶지 않을 때</li>
+<li>어떤 component가 heap value를 exclusive하게 소유해야 할 때</li>
+</ul>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">enum</span><span style="color: #59C2FF;"> List</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    Cons</span><span>(</span><span style="color: #59C2FF;">i32</span><span>,</span><span style="color: #59C2FF;"> Box</span><span>&lt;</span><span style="color: #59C2FF;">List</span><span>&gt;),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Nil</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> List</span><span style="color: #F29668;">::</span><span>{</span><span style="color: #59C2FF;">Cons</span><span>,</span><span style="color: #59C2FF;"> Nil</span><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> list</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> Cons</span><span>(</span><span style="color: #D2A6FF;">1</span><span>,</span><span style="color: #59C2FF;"> Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #FFB454;">Cons</span><span>(</span><span style="color: #D2A6FF;">2</span><span>,</span><span style="color: #59C2FF;"> Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">Nil</span><span>))));</span></span></code></pre>
+<p><code>Box</code>는 recursive field에 알려진 크기를 부여한다. 다른 <code>List</code>를 직접 embedding하는 대신 fixed-size pointer를 저장하기 때문이다.</p>
+<h2 id="rc-t"><a rel="external" href="https://doc.rust-lang.org/std/rc/struct.Rc.html"><code>Rc&lt;T&gt;</code></a></h2>
+<p><code>Rc&lt;T&gt;</code>는 single thread 안에서 reference counting으로 shared ownership을 제공한다. <code>Rc</code>를 clone하면 내부 값이 복사되는 것이 아니라 reference count만 증가한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">rc</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Rc</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> name</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;Ferris&quot;</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> first_owner</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">clone</span><span>(</span><span style="color: #F29668;">&amp;</span><span>name);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> second_owner</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">clone</span><span>(</span><span style="color: #F29668;">&amp;</span><span>name);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(first_owner</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_str</span><span>(),</span><span style="color: #AAD94C;"> &quot;Ferris&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(second_owner</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_str</span><span>(),</span><span style="color: #AAD94C;"> &quot;Ferris&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(</span><span style="color: #59C2FF;">Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">strong_count</span><span>(</span><span style="color: #F29668;">&amp;</span><span>name),</span><span style="color: #D2A6FF;"> 3</span><span>);</span></span></code></pre>
+<p>syntax tree, GUI tree, graph node처럼 single-threaded structure에서 read-only data를 공유할 때 <code>Rc&lt;T&gt;</code>를 쓴다. <code>Rc&lt;T&gt;</code>는 <code>Send</code>도 <code>Sync</code>도 아니다. thread boundary를 넘어 ownership을 공유해야 한다면 <code>Arc&lt;T&gt;</code>를 사용한다.</p>
+<h2 id="arc-t"><a rel="external" href="https://doc.rust-lang.org/std/sync/struct.Arc.html"><code>Arc&lt;T&gt;</code></a></h2>
+<p><code>Arc&lt;T&gt;</code>는 <code>Rc&lt;T&gt;</code>의 atomic, thread-safe counterpart다. atomic reference counting에는 작은 synchronization cost가 있으므로 thread가 필요 없다면 <code>Rc&lt;T&gt;</code>를 선호한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">sync</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Arc</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> values</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #FFB454;">vec!</span><span>[</span><span style="color: #D2A6FF;">10</span><span>,</span><span style="color: #D2A6FF;"> 20</span><span>,</span><span style="color: #D2A6FF;"> 30</span><span>]);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let mut</span><span> handles</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Vec</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">for</span><span> index</span><span style="color: #FF8F40;"> in</span><span style="color: #D2A6FF;"> 0</span><span style="color: #F29668;">..</span><span>values</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">len</span><span>() {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> values</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">clone</span><span>(</span><span style="color: #F29668;">&amp;</span><span>values);</span></span>
+<span class="giallo-l"><span>    handles</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(</span><span style="color: #59C2FF;">thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> values[index]));</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> results</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Vec</span><span>&lt;</span><span style="color: #59C2FF;">i32</span><span>&gt;</span><span style="color: #F29668;"> =</span><span> handles</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">into_iter</span><span>()</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">map</span><span>(</span><span style="color: #F29668;">|</span><span>handle</span><span style="color: #F29668;">|</span><span> handle</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">join</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>())</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">collect</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(results,</span><span style="color: #FFB454;"> vec!</span><span>[</span><span style="color: #D2A6FF;">10</span><span>,</span><span style="color: #D2A6FF;"> 20</span><span>,</span><span style="color: #D2A6FF;"> 30</span><span>]);</span></span></code></pre>
+<p><code>Arc&lt;T&gt;</code>가 공유하는 것은 ownership이지 mutability가 아니다. shared state를 변경해야 한다면 보통 <code>Mutex&lt;T&gt;</code>나 <code>RwLock&lt;T&gt;</code>와 함께 사용한다.</p>
+<h2 id="refcell-t"><a rel="external" href="https://doc.rust-lang.org/std/cell/struct.RefCell.html"><code>RefCell&lt;T&gt;</code></a></h2>
+<p><code>RefCell&lt;T&gt;</code>는 single thread 안에서 interior mutability를 제공한다. Rust의 borrowing rule을 compile time이 아니라 runtime에 검사한다. 하나의 mutable borrow 또는 여러 immutable borrow는 가능하지만 둘을 동시에 가질 수 없다. 이 규칙을 어기면 panic이 발생한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">cell</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">RefCell</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> message</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> RefCell</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;Hello&quot;</span><span>));</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">borrow_mut</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push_str</span><span>(</span><span style="color: #AAD94C;">&quot;, Rust&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(message</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">borrow</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_str</span><span>(),</span><span style="color: #AAD94C;"> &quot;Hello, Rust&quot;</span><span>);</span></span></code></pre>
+<p>자주 쓰는 <code>Rc&lt;RefCell&lt;T&gt;&gt;</code> 조합은 single thread 안에서 여러 owner가 같은 값에 mutable access할 수 있게 해 준다. runtime borrow conflict를 피하려면 <code>borrow()</code>나 <code>borrow_mut()</code> scope를 짧게 유지하는 것이 좋다.</p>
+<h2 id="weak-t"><a rel="external" href="https://doc.rust-lang.org/std/rc/struct.Weak.html"><code>Weak&lt;T&gt;</code></a></h2>
+<p><code>Weak&lt;T&gt;</code>는 <code>Rc&lt;T&gt;</code>가 관리하는 allocation에 대한 non-owning reference다. <a rel="external" href="https://doc.rust-lang.org/std/sync/struct.Weak.html"><code>std::sync::Weak&lt;T&gt;</code></a>는 <code>Arc&lt;T&gt;</code>와 함께 쓰는 버전이다.</p>
+<p>weak reference는 값을 살아 있게 유지하지 않는다. <code>upgrade()</code>를 호출하면 strong owner가 아직 있을 때는 <code>Some(Rc&lt;T&gt;)</code>를 반환하고, 값이 drop된 뒤에는 <code>None</code>을 반환한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">rc</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Rc</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> owner</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;cached value&quot;</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> observer</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Rc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">downgrade</span><span>(</span><span style="color: #F29668;">&amp;</span><span>owner);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(observer</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">upgrade</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_str</span><span>(),</span><span style="color: #AAD94C;"> &quot;cached value&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">drop</span><span>(owner);</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert!</span><span>(observer</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">upgrade</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">is_none</span><span>());</span></span></code></pre>
+<p><code>Weak&lt;T&gt;</code>는 back-reference, cache, observer, parent pointer에 사용한다. 또한 <code>Rc</code>나 <code>Arc</code> reference cycle을 끊어 memory leak을 막는 표준적인 방법이다.</p>
+<h2 id="cell-t"><a rel="external" href="https://doc.rust-lang.org/std/cell/struct.Cell.html"><code>Cell&lt;T&gt;</code></a></h2>
+<p><code>Cell&lt;T&gt;</code>는 가벼운 single-threaded interior mutability 타입이다. <code>RefCell&lt;T&gt;</code>와 달리 내부 값에 대한 reference를 반환하지 않는다. <code>T: Copy</code>이면 <code>get()</code>으로 값을 복사해 꺼내고, 아니면 값을 통째로 교체하는 방식으로 사용한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">cell</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Cell</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> request_count</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Cell</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #D2A6FF;">0_</span><span style="color: #59C2FF;">u32</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>request_count</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set</span><span>(request_count</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">get</span><span>()</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 1</span><span>);</span></span>
+<span class="giallo-l"><span>request_count</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set</span><span>(request_count</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">get</span><span>()</span><span style="color: #F29668;"> +</span><span style="color: #D2A6FF;"> 1</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(request_count</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">get</span><span>(),</span><span style="color: #D2A6FF;"> 2</span><span>);</span></span></code></pre>
+<p>counter, flag, enum state처럼 작은 <code>Copy</code> 값에 적합하다. 더 크거나 <code>Copy</code>가 아닌 값에 borrowed access가 필요하면 <code>RefCell&lt;T&gt;</code>를 사용한다.</p>
+<h2 id="mutex-t"><a rel="external" href="https://doc.rust-lang.org/std/sync/struct.Mutex.html"><code>Mutex&lt;T&gt;</code></a></h2>
+<p><code>Mutex&lt;T&gt;</code>는 한 번에 하나의 thread만 mutable access할 수 있게 한다. lock을 잡으면 guard가 반환되고, guard가 drop될 때 자동으로 unlock된다. shared ownership은 보통 <code>Arc</code>로 감싸서 만든다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">sync</span><span style="color: #F29668;">::</span><span>{</span><span style="color: #59C2FF;">Arc</span><span>,</span><span style="color: #59C2FF;"> Mutex</span><span>};</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span>thread;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> counter</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">Mutex</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #D2A6FF;">0_</span><span style="color: #59C2FF;">u32</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let mut</span><span> handles</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Vec</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">for</span><span> _</span><span style="color: #FF8F40;"> in</span><span style="color: #D2A6FF;"> 0</span><span style="color: #F29668;">..</span><span style="color: #D2A6FF;">4</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> counter</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Arc</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">clone</span><span>(</span><span style="color: #F29668;">&amp;</span><span>counter);</span></span>
+<span class="giallo-l"><span>    handles</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">push</span><span>(</span><span style="color: #59C2FF;">thread</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">move</span><span style="color: #F29668;"> ||</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F29668;">        *</span><span>counter</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">lock</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>()</span><span style="color: #F29668;"> +=</span><span style="color: #D2A6FF;"> 1</span><span>;</span></span>
+<span class="giallo-l"><span>    }));</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">for</span><span> handle</span><span style="color: #FF8F40;"> in</span><span> handles {</span></span>
+<span class="giallo-l"><span>    handle</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">join</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(</span><span style="color: #F29668;">*</span><span>counter</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">lock</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>(),</span><span style="color: #D2A6FF;"> 4</span><span>);</span></span></code></pre>
+<p>느린 작업이나 <code>.await</code> 지점까지 mutex guard를 들고 가지 않는 것이 좋다. async code에서 guard가 <code>.await</code>를 넘어 살아야 한다면 async runtime이 제공하는 synchronization primitive를 사용한다.</p>
+<h2 id="rwlock-t"><a rel="external" href="https://doc.rust-lang.org/std/sync/struct.RwLock.html"><code>RwLock&lt;T&gt;</code></a></h2>
+<p><code>RwLock&lt;T&gt;</code>는 여러 reader 또는 하나의 writer를 허용한다. read-heavy workload에서는 concurrency를 높일 수 있지만, <code>Mutex&lt;T&gt;</code>보다 overhead가 크고 scheduling policy는 operating system에 따라 달라진다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">sync</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">RwLock</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> configuration</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> RwLock</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;development&quot;</span><span>));</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> first_reader</span><span style="color: #F29668;"> =</span><span> configuration</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">read</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> second_reader</span><span style="color: #F29668;"> =</span><span> configuration</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">read</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>();</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    assert_eq!</span><span>(</span><span style="color: #F29668;">*</span><span>first_reader,</span><span style="color: #F29668;"> *</span><span>second_reader);</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F29668;">*</span><span>configuration</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">write</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>()</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;production&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert_eq!</span><span>(configuration</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">read</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">unwrap</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_str</span><span>(),</span><span style="color: #AAD94C;"> &quot;production&quot;</span><span>);</span></span></code></pre>
+<p>lock 자체를 여러 thread가 shared ownership으로 들고 있어야 한다면 <code>Arc&lt;RwLock&lt;T&gt;&gt;</code>를 사용한다.</p>
+<h2 id="cow-a-t"><a rel="external" href="https://doc.rust-lang.org/std/borrow/enum.Cow.html"><code>Cow&lt;'a, T&gt;</code></a></h2>
+<p><code>Cow</code>는 "clone on write"를 뜻한다. 수정이 필요 없을 때는 data를 borrow하고, 변경이 필요할 때만 owned value를 allocate한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">borrow</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Cow</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> ensure_question_mark</span><span>(input</span><span style="color: #F29668;">: &amp;</span><span style="color: #59C2FF;">str</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Cow</span><span>&lt;&#39;</span><span style="color: #59C2FF;">_</span><span>,</span><span style="color: #59C2FF;"> str</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> input</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">ends_with</span><span>(</span><span style="color: #AAD94C;">&#39;?&#39;</span><span>) {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Cow</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">Borrowed</span><span>(input)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Cow</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">Owned</span><span>(</span><span style="color: #FFB454;">format!</span><span>(</span><span style="color: #AAD94C;">&quot;{input}?&quot;</span><span>))</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> unchanged</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> ensure_question_mark</span><span>(</span><span style="color: #AAD94C;">&quot;Ready?&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> changed</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> ensure_question_mark</span><span>(</span><span style="color: #AAD94C;">&quot;Ready&quot;</span><span>);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert!</span><span>(</span><span style="color: #FFB454;">matches!</span><span>(unchanged,</span><span style="color: #59C2FF;"> Cow</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">Borrowed</span><span>(_)));</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">assert!</span><span>(</span><span style="color: #FFB454;">matches!</span><span>(changed,</span><span style="color: #59C2FF;"> Cow</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">Owned</span><span>(_)));</span></span></code></pre>
+<p><code>Cow</code>는 parser, validation, normalization, 그리고 대부분 입력을 그대로 반환하지만 가끔 owned modification이 필요한 API에서 유용하다.</p>
+<h2 id="pin-p"><a rel="external" href="https://doc.rust-lang.org/std/pin/struct.Pin.html"><code>Pin&lt;P&gt;</code></a></h2>
+<p><code>Pin&lt;P&gt;</code>는 pointer <code>P</code>를 감싸고, 그 pointer가 가리키는 값을 move할 수 있는 access를 제한한다. address-sensitive value에 중요하다. 예를 들면 많은 async future를 위해 생성되는 state machine이나, 조심스럽게 설계된 self-referential type이 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">pin</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Pin</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> inspect</span><span>(value</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #F29668;">&amp;</span><span style="color: #59C2FF;">String</span><span>&gt;) {</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">    println!</span><span>(</span><span style="color: #AAD94C;">&quot;{}&quot;</span><span>, value</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">get_ref</span><span>());</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> value</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #59C2FF;">String</span><span>&gt;&gt;</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #59C2FF;">String</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(</span><span style="color: #AAD94C;">&quot;stable address&quot;</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">inspect</span><span>(value</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">as_ref</span><span>());</span></span></code></pre>
+<p><code>Pin</code>이 모든 값을 자동으로 immovable하게 만드는 것은 아니다. 대부분의 일반 Rust 타입처럼 <code>Unpin</code>을 구현하는 타입은 여전히 안전하게 move될 수 있다. pinning이 중요해지는 것은 API가 <code>!Unpin</code> 타입과 함께 동작하고, 그 값의 address가 안정적으로 유지된다는 사실에 의존할 때다.</p>
+<h2 id="jaju-sseuneun-johab">자주 쓰는 조합</h2>
+<table><thead><tr><th style="text-align: left">Type or combination</th><th style="text-align: left">주 목적</th><th style="text-align: left">Borrow checking</th><th style="text-align: left">Thread 사용</th></tr></thead><tbody>
+<tr><td style="text-align: left"><code>Box&lt;T&gt;</code></td><td style="text-align: left">heap value의 exclusive ownership</td><td style="text-align: left">Compile time</td><td style="text-align: left"><code>T</code>가 허용하면 thread 경계를 넘을 수 있음</td></tr>
+<tr><td style="text-align: left"><code>Rc&lt;T&gt;</code></td><td style="text-align: left">shared ownership</td><td style="text-align: left">Compile time</td><td style="text-align: left">single-threaded only</td></tr>
+<tr><td style="text-align: left"><code>Arc&lt;T&gt;</code></td><td style="text-align: left">shared ownership</td><td style="text-align: left">Compile time</td><td style="text-align: left"><code>T: Send + Sync</code>이면 thread-safe</td></tr>
+<tr><td style="text-align: left"><code>Weak&lt;T&gt;</code></td><td style="text-align: left">non-owning observation; cycle 끊기</td><td style="text-align: left">Compile time</td><td style="text-align: left"><code>rc::Weak</code>는 single-threaded, <code>sync::Weak</code>는 <code>T</code>가 허용하면 thread-safe</td></tr>
+<tr><td style="text-align: left"><code>Cell&lt;T&gt;</code></td><td style="text-align: left">shared access로 작은 값 copy/replace</td><td style="text-align: left">By-value API</td><td style="text-align: left">single-threaded only</td></tr>
+<tr><td style="text-align: left"><code>RefCell&lt;T&gt;</code></td><td style="text-align: left">shared access로 mutable borrow</td><td style="text-align: left">Runtime</td><td style="text-align: left">single-threaded only</td></tr>
+<tr><td style="text-align: left"><code>Rc&lt;RefCell&lt;T&gt;&gt;</code></td><td style="text-align: left">shared mutable state</td><td style="text-align: left">Runtime</td><td style="text-align: left">single-threaded only</td></tr>
+<tr><td style="text-align: left"><code>Arc&lt;Mutex&lt;T&gt;&gt;</code></td><td style="text-align: left">한 accessor만 접근하는 shared mutable state</td><td style="text-align: left">Runtime locking</td><td style="text-align: left">multi-threaded</td></tr>
+<tr><td style="text-align: left"><code>Arc&lt;RwLock&lt;T&gt;&gt;</code></td><td style="text-align: left">많은 reader 또는 하나의 writer가 접근하는 shared state</td><td style="text-align: left">Runtime locking</td><td style="text-align: left">multi-threaded</td></tr>
+<tr><td style="text-align: left"><code>Cow&lt;'a, T&gt;</code></td><td style="text-align: left">먼저 borrow하고 필요할 때만 clone</td><td style="text-align: left">Compile time</td><td style="text-align: left"><code>T</code>에 따라 다름</td></tr>
+<tr><td style="text-align: left"><code>Pin&lt;P&gt;</code></td><td style="text-align: left">address-sensitive pointee가 <code>P</code>를 통해 move되지 않게 제한</td><td style="text-align: left">Compile time API restriction</td><td style="text-align: left"><code>P</code>와 pointee에 따라 다름</td></tr>
+</tbody></table>
+<p>가장 자주 쓰는 조합은 다음과 같다.</p>
+<ul>
+<li>dynamic dispatch가 필요한 exclusive ownership에는 <code>Box&lt;dyn Trait&gt;</code></li>
+<li>single thread 안의 shared mutable state에는 <code>Rc&lt;RefCell&lt;T&gt;&gt;</code></li>
+<li>thread 사이에서 공유하는 immutable state에는 <code>Arc&lt;T&gt;</code></li>
+<li>thread 사이에서 공유하는 mutable state에는 <code>Arc&lt;Mutex&lt;T&gt;&gt;</code></li>
+<li>read-heavy shared state에는 <code>Arc&lt;RwLock&lt;T&gt;&gt;</code></li>
+<li>non-owning link와 cycle 방지에는 <code>Weak&lt;T&gt;</code></li>
+</ul>
+
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;closure-lifetime&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              Closure lifetime
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;ownership&#x2F;">
+              Ownership<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>

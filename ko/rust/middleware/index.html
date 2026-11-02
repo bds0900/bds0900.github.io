@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <meta content="#ffffff" name="theme-color" />
+  <meta content="#da532c" name="msapplication-TileColor" />
+
+  
+  <link href='&#x2F;icons&#x2F;site.webmanifest' rel="manifest" />
+  
+  
+  <link color="#5bbad5" href='&#x2F;icons&#x2F;safari-pinned-tab.svg' rel="mask-icon" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-16x16.png' rel="icon" sizes="16x16" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;favicon-32x32.png' rel="icon" sizes="32x32" type="image/png" />
+  
+  
+  <link href='&#x2F;icons&#x2F;apple-touch-icon.png' rel="apple-touch-icon" sizes="180x180" />
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.css" integrity="sha384-+rY0QD+LRnTOquDMzGa9lXU6jIwdiQuwCJQ2cdcW0qeP/0UbjQCZlXnRsUMA+9pH" crossorigin="anonymous">
+  
+
+  
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1.9.1/css/academicons.min.css" integrity="sha384-FIue+PI4SsI9XfHCz8dBLg33b0c1fMJgNU3X//L26FYbGnlSEfWmNT7zgWc2N9b6" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css" integrity="sha256-AbA177XfpSnFEvgpYu1jMygiLabzPCJCRIBtR5jGc0k=" crossorigin="anonymous">
+  <link href="https://emptyfridge.dev/deep-thought.css" rel="stylesheet" />
+  
+<link href="https://emptyfridge.dev/code-highlighting.css" rel="stylesheet" />
+<style>
+  .language-toggle {
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .language-toggle .language-toggle__label {
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .navbar-brand .navbar-item.is-size-5.has-text-weight-bold:empty::before {
+    content: "Doosan's Blog";
+  }
+</style>
+
+
+  <title>
+    
+Doosan의 블로그 | Middleware
+
+  </title>
+
+  
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-L4HFLS5S5C"></script>
+  <script type="text/javascript">
+    window.dataLayer = window.dataLayer || [];
+    function gtag() {
+      dataLayer.push(arguments);
+    }
+    gtag("js", new Date());
+    gtag("config", "G-L4HFLS5S5C");
+  </script>
+  
+  
+
+  
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css" integrity="sha384-R4558gYOUz8mP9YWpZJjofhk+zx0AS11p36HnD2ZKj/6JR5z27gSSULCNHIRReVs" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js" integrity="sha384-z1fJDqw8ZApjGO3/unPWUPsIymfsJmyrDVWC8Tv/a1HeOtGmkwNd/7xUS0Xcnvsx" crossorigin="anonymous"></script>
+
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/mathtex-script-type.min.js" integrity="sha384-jiBVvJ8NGGj5n7kJaiWwWp9AjC+Yh8rhZY3GtAX8yU28azcLgoRo4oukO87g7zDT" crossorigin="anonymous"></script>
+  
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/contrib/auto-render.min.js" integrity="sha384-+XBljXPPiv+OzfbB3cVmLHf4hdUFHlWNZN5spNQ7rmHTXpd7WvJum6fIACpNNfIR" crossorigin="anonymous"></script>
+  
+  
+</head>
+
+<body class="has-background-white">
+  <nav aria-label="section navigation" class="navbar is-light" role="navigation">
+    <div class="container">
+      <div class="navbar-brand">
+        <a class="navbar-item is-size-5 has-text-weight-bold" href="https:&#x2F;&#x2F;emptyfridge.dev">Doosan의 블로그</a>
+        <a aria-expanded="false" aria-label="menu" class="navbar-burger burger" data-target="navMenu" role="button">
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+          <span aria-hidden="true"></span>
+        </a>
+      </div>
+      <div class="navbar-menu" id="navMenu">
+        <div class="navbar-end has-text-centered">
+          
+          
+          
+          
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko">
+            홈
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;cs">
+            CS
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;data_structure">
+            자료구조
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;algorithm">
+            알고리즘
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust">
+            Rust
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;csharp">
+            C#
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;projects">
+            토이 프로젝트
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;docker">
+            Docker
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;commands">
+            명령어
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rabbitmq">
+            RabbitMQ
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;azure">
+            Azure
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;tags">
+            태그
+          </a>
+          
+          <a class="navbar-item has-text-weight-semibold" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;categories">
+            카테고리
+          </a>
+          
+          
+          
+          <a class="navbar-item" id="nav-search" title="Search" data-target="#search-modal">
+            <span class="icon">
+              <i class="fas fa-search"></i>
+            </span>
+          </a>
+          <a class="navbar-item" id="dark-mode" title="Switch to dark theme">
+            <span class="icon">
+              <i class="fas fa-adjust"></i>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  
+  
+
+  
+<section class="section">
+  <div class="container">
+    <div class="columns">
+      <div class="column is-8 is-offset-2">
+        <article class="box">
+          <h1 class="title">
+            Middleware
+          </h1>
+          <p class="subtitle"></p>
+          <div class="columns is-multiline is-gapless">
+            <div class="column is-8">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="fas fa-user"></i>
+  </span>
+  <span>Doosan published on</span>
+  <span class="icon">
+    <i class="far fa-calendar-alt"></i>
+  </span>
+  <span><time datetime="2023-09-26">September 26, 2023</time></span>
+</span>
+
+            </div>
+            <div class="column is-4 has-text-right-desktop">
+              
+<span class="icon-text has-text-grey">
+  <span class="icon">
+    <i class="far fa-clock"></i>
+  </span>
+  <span>5 min,</span>
+  <span class="icon">
+    <i class="fas fa-pencil-alt"></i>
+  </span>
+  <span>879 words</span>
+</span>
+
+            </div>
+            <div class="column">
+              
+              
+<p>
+  Categories:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/categories/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-cube"></i>
+      </span>
+      <span>Post</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+            <div class="column has-text-right-desktop">
+              
+              
+<p>
+  Tags:
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/post/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>post</span>
+    </span>
+  </a>
+  
+  <a class="has-text-info-dark has-text-weight-semibold" href="https://emptyfridge.dev/tags/rust/">
+    <span class="icon-text">
+      <span class="icon">
+        <i class="fas fa-tag"></i>
+      </span>
+      <span>Rust</span>
+    </span>
+  </a>
+  
+</p>
+
+              
+            </div>
+          </div>
+          <div class="content mt-2">
+            <p>요즘 axum을 공부하고 있는데, 지난 이틀 동안은 <code>Service</code> trait가 어떻게 만들어졌는지 살펴봤다.</p>
+<p><a rel="external" href="https://tokio.rs/blog/2021-05-14-inventing-the-service-trait">링크</a></p>
+<p>내가 이해하기 편하도록 풀어서 적은 글이지, 위 article을 그대로 번역한 글은 아니다.</p>
+<p>아래와 같은 API가 있다고 하자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// Create a server that listens on port 3000</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> server</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Server</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(</span><span style="color: #AAD94C;">&quot;127.0.0.1:3000&quot;</span><span>)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// Somehow run the user&#39;s application</span></span>
+<span class="giallo-l"><span>server</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">run</span><span>(the_users_application)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span></code></pre>
+<p><code>the_users_application</code>은 어떻게 생겼을까?</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // ...</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>위에 <code>HttpRequest</code>와 <code>HttpResponse</code>는 Tower가 제공하는 타입이 아니라, 예시로 만든 HTTP 프레임워크가 제공한다고 가정한 구조체이다.</p>
+<p><code>run</code> 함수는 아래와 같이 생겼을 것이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">        F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span>,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">                // Call the handler provided by the user</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                let</span><span> response</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> handler</span><span>(request);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">                write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>run</code> 함수는 <code>HttpRequest</code>를 받아 <code>HttpResponse</code>를 return하는 closure를 parameter로 받는다.
+그러면 <code>handle_request</code> 함수는 아래와 같이 구현할 수 있다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // ...</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    if request.path() == &quot;/&quot; {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        HttpResponse::ok(&quot;Hello, World!&quot;)</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    } else {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        HttpResponse::not_found()</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>server</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">run</span><span>(handle_request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span></code></pre>
+<p>하지만 이 설계에서는 handler가 요청을 비동기적으로 처리할 수 없다. DB 조회나 외부 API 호출을 기다리는 동안 다른 작업을 처리할 수 있게 하려면 아래와 같이 바꿔야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span>,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                let</span><span> response</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> handler</span><span>(request);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">                write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>,</span><span style="color: #59C2FF;"> Fut</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // `handler` now returns a generic type `Fut`...</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">        F: Fn(HttpRequest) -&gt; HttpResponse,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        F: Fn(HttpRequest) -&gt; Fut,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        // ...which is a `Future` whose `Output` is an `HttpResponse`</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        Fut: Future&lt;Output = HttpResponse&gt;,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">                // Await the future returned by `handler`</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">                let response = handler(request);</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">                let response = handler(request).await;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">                write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>server parameter가 바뀌었으니 <code>handle_request</code>도 비동기 처리를 할 수 있게 되었다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">ok</span><span>(</span><span style="color: #AAD94C;">&quot;Hello, World!&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">not_found</span><span>()</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">ok</span><span>(</span><span style="color: #AAD94C;">&quot;Hello, World!&quot;</span><span>)</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    } else if request.path() == &quot;/important-data&quot; {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        // We can now do async stuff in here</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        let some_data = fetch_data_from_database().await;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        make_response(some_data)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">not_found</span><span>()</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>server의 <code>run</code> 함수가 error를 처리할 수 있도록 한 번 더 업그레이드해 보자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>,</span><span style="color: #59C2FF;"> Fut</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Fut</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Fut</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> HttpResponse</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                let</span><span> response</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> handler</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FFB454;">                write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>,</span><span style="color: #59C2FF;"> Fut</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Fut</span><span>,</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #5A6673;font-style: italic;">        // The response future is now allowed to fail</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">        Fut: Future&lt;Output = HttpResponse&gt;,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        Fut: Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #5A6673;font-style: italic;">                // Pattern match on the result of the response future</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">                let response = handler(request).await;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">                write_http_response(connection, response).await?;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">                match handler(request).await {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">                    Ok(response) =&gt; write_http_response(connection, response).await?,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">                    Err(error) =&gt; handle_error_somehow(error, connection),</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">                }</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="gineung-cuga">기능 추가</h2>
+<p><em>timeout 기능</em>과 <em><code>Content-Type: application/json</code> header를 추가하는 기능</em>을 붙여 보자.</p>
+<p>앞에서 <code>run</code>이 <code>Result&lt;HttpResponse, Error&gt;</code>를 받도록 바뀌었으므로, 여기서부터 <code>handle_request</code>도 <code>Result&lt;HttpResponse, Error&gt;</code>를 반환한다고 가정한다.</p>
+<p><code>handle_request</code>를 사용하는 새로운 handler를 만든다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handler_with_timeout</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Duration</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from_secs</span><span>(</span><span style="color: #D2A6FF;">30</span><span>),</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        handle_request</span><span>(request)</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    match</span><span> result {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Ok</span><span>(</span><span style="color: #59C2FF;">Ok</span><span>(response))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Ok</span><span>(response),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Ok</span><span>(</span><span style="color: #59C2FF;">Err</span><span>(error))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(error),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Err</span><span>(_timeout_elapsed)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(</span><span style="color: #59C2FF;">Error</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>()),</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>그리고 <code>handler_with_timeout</code>을 사용하는 handler를 하나 더 만든다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handler_with_timeout_and_content_type</span><span>(</span></span>
+<span class="giallo-l"><span>    request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>,</span></span>
+<span class="giallo-l"><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let mut</span><span> response</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> handler_with_timeout</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>    response</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set_header</span><span>(</span><span style="color: #AAD94C;">&quot;Content-Type&quot;</span><span>,</span><span style="color: #AAD94C;"> &quot;application/json&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Ok</span><span>(response)</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이 방식은 동작하긴 하지만 확장하기 쉽지 않다.
+지금은 handler를 2개만 추가했지만, 나중에 handler가 더 늘어나면 매번 중간 handler 호출 chain을 직접 하드 코딩해야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> final_handler</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> with_content_type</span><span>(</span><span style="color: #FFB454;">with_timeout</span><span>(handle_request));</span></span></code></pre>
+<p>예를 들어 <code>handler_with_timeout_and_content_type</code> 함수는 <code>handler_with_timeout</code> 함수를 필요로 하고, <code>handler_with_timeout</code> 함수는 <code>handle_request</code> 함수를 필요로 한다. 순서를 엄격하게 지켜야 하는데, 이 함수들을 더 유연하게 compose할 방법은 없을까?</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handle_request</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>&gt;(</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span></span>
+<span class="giallo-l"><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #FF8F40;"> impl</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #FF8F40;"> impl</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이런 형태의 핸들러 변환 함수를 쓸 수 있다면 좋겠지만, Rust에서는 <code>impl Trait</code>를 이런 위치에 중첩해서 쓸 수 없다. 특히 <code>impl Fn() -&gt; impl Future</code> 형태는 불가능하다.
+<code>Box&lt;dyn Future&lt;...&gt;&gt;</code>를 사용해서 우회할 수는 있지만 heap allocation과 dynamic dispatch 비용이 있으므로 여기서는 배제한다.</p>
+<h3 id="handler-trait">Handler trait</h3>
+<p><code>Server::run</code>이 <code>F: Fn(HttpRequest) -&gt; Fut</code> closure를 직접 받게 하지 말고, <code>async fn(HttpRequest) -&gt; Result&lt;HttpResponse, Error&gt;</code> 형태를 캡슐화하는 trait를 만들자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">F</span><span>,</span><span style="color: #59C2FF;"> Fut</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>, handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> F</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        F</span><span style="color: #F29668;">:</span><span style="color: #FFB454;"> Fn</span><span>(</span><span style="color: #59C2FF;">HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Fut</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Fut</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                match</span><span style="color: #FFB454;"> handler</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                    Ok</span><span>(response)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                    Err</span><span>(error)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> handle_error_somehow</span><span>(error, connection),</span></span>
+<span class="giallo-l"><span>                }</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    async fn run&lt;F, Fut&gt;(self, handler: F) -&gt; Result&lt;(), Error&gt;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    where</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">        F: Fn(HttpRequest) -&gt; Fut,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">        Fut: Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    async fn run&lt;T&gt;(self, mut handler: T) -&gt; Result&lt;(), Error&gt;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    where</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        T: Handler,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> listener</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> TcpListener</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">bind</span><span>(</span><span style="color: #39BAE6;font-style: italic;">self</span><span style="color: #F29668;">.</span><span>addr)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        loop</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> connection</span><span style="color: #F29668;"> =</span><span> listener</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">accept</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> request</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> read_http_request</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span> connection)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            task</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">spawn</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">                // have to call `Handler::call` here</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                match</span><span> handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                    Ok</span><span>(response)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> write_http_response</span><span>(connection, response)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                    Err</span><span>(error)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #FFB454;"> handle_error_somehow</span><span>(error, connection),</span></span>
+<span class="giallo-l"><span>                }</span></span>
+<span class="giallo-l"><span>            });</span></span>
+<span class="giallo-l"><span>        }</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Handler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>원문이 쓰인 2021년에는 Rust stable에서 async 메소드를 가진 trait를 지원하지 않았다. 현재 Rust 1.75+에서는 <code>async fn</code> in trait가 안정화되었지만, Tower의 <code>Service</code>처럼 future 타입을 associated type으로 노출하고 <code>poll_ready</code>까지 포함하는 설계에는 아래 방식이 더 잘 맞는다.</p>
+<ol>
+<li><code>Pin&lt;Box&lt;dyn Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;&gt;&gt;</code>을 return하는 method</li>
+<li><code>type Future</code>를 associated type으로 가지는 <code>Handler</code>
+둘 중 하나의 방식을 택할 수 있다.</li>
+</ol>
+<p>두 번째 방식으로 가자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Handler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>기존의 <code>handle_request</code> 함수를 <code>Handler</code> trait 구현으로 바꿔주자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handle_request</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> HttpResponse</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">ok</span><span>(</span><span style="color: #AAD94C;">&quot;Hello, World!&quot;</span><span>)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/important-data&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let</span><span> some_data</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> fetch_data_from_database</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        make_response</span><span>(some_data)</span></span>
+<span class="giallo-l"><span>    }</span><span style="color: #FF8F40;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">not_found</span><span>()</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">struct</span><span style="color: #59C2FF;"> RequestHandler</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> RequestHandler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // We use `Pin&lt;Box&lt;...&gt;&gt;` here for simplicity, but could also define our</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // own `Future` type to avoid the overhead</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">            // same implementation as we had before</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">ok</span><span>(</span><span style="color: #AAD94C;">&quot;Hello, World!&quot;</span><span>))</span></span>
+<span class="giallo-l"><span>            }</span><span style="color: #FF8F40;"> else if</span><span> request</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">path</span><span>()</span><span style="color: #F29668;"> ==</span><span style="color: #AAD94C;"> &quot;/important-data&quot;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">                let</span><span> some_data</span><span style="color: #F29668;"> =</span><span style="color: #FFB454;"> fetch_data_from_database</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #FFB454;">make_response</span><span>(some_data))</span></span>
+<span class="giallo-l"><span>            }</span><span style="color: #FF8F40;"> else</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">HttpResponse</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">not_found</span><span>())</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="timeout-handler">Timeout Handler</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">async fn</span><span style="color: #FFB454;"> handler_with_timeout</span><span>(request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Duration</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from_secs</span><span>(</span><span style="color: #D2A6FF;">30</span><span>),</span></span>
+<span class="giallo-l"><span style="color: #FFB454;">        handle_request</span><span>(request)</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    match</span><span> result {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Ok</span><span>(</span><span style="color: #59C2FF;">Ok</span><span>(response))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Ok</span><span>(response),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Ok</span><span>(</span><span style="color: #59C2FF;">Err</span><span>(error))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(error),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Err</span><span>(_timeout_elapsed)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(</span><span style="color: #59C2FF;">Error</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>()),</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">struct</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // T will be some type that implements `Handler`</span></span>
+<span class="giallo-l"><span>    inner_handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>,</span></span>
+<span class="giallo-l"><span>    duration</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Duration</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Handler</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">                self</span><span style="color: #F29668;">.</span><span>duration,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">                self</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request),</span></span>
+<span class="giallo-l"><span>            )</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            match</span><span> result {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Ok</span><span>(response))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Ok</span><span>(response),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Err</span><span>(error))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(error),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Err</span><span>(_timeout)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(</span><span style="color: #59C2FF;">Error</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>()),</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이렇게 하면 compile error가 뜰 것이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #D2A6FF;">144</span><span style="color: #F29668;"> |</span><span style="color: #FF8F40;">       fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    |               ---------</span><span> this data with an anonymous lifetime `&#39;</span><span style="color: #59C2FF;">_</span><span>`</span><span style="color: #F29668;">...</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">145</span><span style="color: #F29668;"> |</span><span style="color: #59C2FF;">           Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    |</span><span>  _____________________________</span><span style="color: #F29668;">^</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">146</span><span style="color: #F29668;"> | |</span><span style="color: #FF8F40;">             let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">147</span><span style="color: #F29668;"> | |</span><span style="color: #39BAE6;font-style: italic;">                 self</span><span style="color: #F29668;">.</span><span>duration,</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">148</span><span style="color: #F29668;"> | |</span><span style="color: #39BAE6;font-style: italic;">                 self</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request),</span></span>
+<span class="giallo-l"><span style="color: #F29668;">...   |</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">155</span><span style="color: #F29668;"> | |</span><span>             }</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">156</span><span style="color: #F29668;"> | |</span><span>         })</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    | |</span><span>_________</span><span style="color: #F29668;">^ ...</span><span>is captured here, requiring it to live</span><span style="color: #FF8F40;"> as</span><span> long</span><span style="color: #FF8F40;"> as</span><span> `&#39;</span><span style="color: #59C2FF;">static</span><span>`</span></span></code></pre>
+<p><code>self</code>가 async block 안으로 들어가면서, 필요한 lifetime만큼 살아남지 못해서 생기는 error다.</p>
+<p>trait bound에 <code>Clone</code>을 추가해 보자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    T: Handler</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    T: Handler + Clone,</span></span></code></pre>
+<p>그래도 error가 난다.
+compiler는 <code>'static</code> lifetime이 필요하다고 말한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #D2A6FF;">140</span><span style="color: #F29668;"> |</span><span style="color: #FF8F40;">   impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    |        -</span><span> help</span><span style="color: #F29668;">:</span><span> consider adding an explicit lifetime bound</span><span style="color: #F29668;">...:</span><span> `</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">:</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>`</span></span>
+<span class="giallo-l"><span style="color: #F29668;">...</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">149</span><span style="color: #F29668;"> | /</span><span style="color: #59C2FF;">         Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">150</span><span style="color: #F29668;"> | |</span><span style="color: #FF8F40;">             let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">151</span><span style="color: #F29668;"> | |</span><span>                 this</span><span style="color: #F29668;">.</span><span>duration,</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">152</span><span style="color: #F29668;"> | |</span><span>                 this</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request),</span></span>
+<span class="giallo-l"><span style="color: #F29668;">...   |</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">159</span><span style="color: #F29668;"> | |</span><span>             }</span></span>
+<span class="giallo-l"><span style="color: #D2A6FF;">160</span><span style="color: #F29668;"> | |</span><span>         })</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    | |</span><span>__________</span><span style="color: #F29668;">^ ...</span><span>so that the</span><span style="color: #FF8F40;"> type</span><span> `</span><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Future</span><span>` will meet its required lifetime bounds</span></span></code></pre>
+<p><code>'static</code>을 추가하자. 이제 compile된다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    T: Handler + Clone</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    T: Handler + Clone + &#39;static,</span></span></code></pre><h3 id="content-type-handler">Content-Type Handler</h3>
+<p><code>T</code> type에 <code>Clone</code>, <code>'static</code>을 추가하는 것을 잊지 말자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span>#[derive(</span><span style="color: #59C2FF;">Clone</span><span>)]</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">struct</span><span style="color: #59C2FF;"> JsonContentType</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt; {</span></span>
+<span class="giallo-l"><span>    inner_handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>,</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> JsonContentType</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l" style="background-color: #161A24;"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Clone</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let mut</span><span> this</span><span style="color: #F29668;"> =</span><span style="color: #39BAE6;font-style: italic;"> self</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> response</span><span style="color: #F29668;"> =</span><span> this</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            response</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set_header</span><span>(</span><span style="color: #AAD94C;">&quot;Content-Type&quot;</span><span>,</span><span style="color: #AAD94C;"> &quot;application/json&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            Ok</span><span>(response)</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이제 handler들을 합성하기 쉬워졌다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">let</span><span> handler</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> RequestHandler</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> handler</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Timeout</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(handler,</span><span style="color: #59C2FF;"> Duration</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from_secs</span><span>(</span><span style="color: #D2A6FF;">30</span><span>));</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> handler</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> JsonContentType</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">new</span><span>(handler);</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">// `handler` has type `JsonContentType&lt;Timeout&lt;RequestHandler&gt;&gt;`</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>server</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">run</span><span>(handler)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span></span></code></pre><h2 id="handlerreul-deo-yuyeonhage">Handler를 더 유연하게...</h2>
+<p>현재 handler는 <code>HttpRequest</code>만 다룰 수 있다. 좀 더 generic한 handler를 만들어보자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Handler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">&lt;Request&gt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Response;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Error should also be an associated type. No reason for that to be a</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // hardcoded type</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Error;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Our future type from before, but now it&#39;s output must use</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // the associated `Response` and `Error` types</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    type Future: Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Future: Future&lt;Output = Result&lt;Self::Response, Self::Error&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // `call` is unchanged, but note that `Request` here is our generic</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // `Request` type parameter and not the `HttpRequest` type we&#39;ve used</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // until now</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="request-handler">Request Handler</h3>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> RequestHandler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">&lt;HttpRequest&gt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> RequestHandler</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Response = HttpResponse;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Error = Error;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    type Future = Pin&lt;Box&lt;dyn Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Future = Pin&lt;Box&lt;dyn Future&lt;Output = Result&lt;HttpResponse, Error&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // same as before</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="timeout-handler-1">Timeout Handler</h3>
+<p>timeout handler는 조금 다르다. 다른 handler를 감싸고 있고 비동기 timeout도 추가하기 때문이다.
+감싸고 있는 handler가 같은 타입을 유지하는 한, 요청과 응답 타입에는 크게 신경 쓰지 않아도 된다.</p>
+<p>error type은 다르다. <code>tokio::time::timeout</code>은 <code>Result&lt;T, tokio::time::error::Elapsed&gt;</code>를 return한다.
+우리는 <code>tokio::time::error::Elapsed</code>를 내부 handler의 error type인 <code>T::Error</code>로 변환할 수 있어야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Handler</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">                self</span><span style="color: #F29668;">.</span><span>duration,</span></span>
+<span class="giallo-l"><span style="color: #39BAE6;font-style: italic;">                self</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request),</span></span>
+<span class="giallo-l"><span>            )</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            match</span><span> result {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Ok</span><span>(response))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Ok</span><span>(response),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Err</span><span>(error))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(error),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Err</span><span>(_timeout)</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(</span><span style="color: #59C2FF;">Error</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>()),</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">R,</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">&lt;R&gt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> Timeout</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // The actual type of request must not contain</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // references. The compiler would tell us to add</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // this if we didn&#39;t</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    R: &#39;static,</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // `T` must accept requests of type `R`</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    T: Handler,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    T: Handler&lt;R&gt; + Clone + &#39;static,</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // We must be able to convert an `Elapsed` into</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // `T`&#39;s error type</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    T::Error: From&lt;tokio::time::error::Elapsed&gt;,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Our response type is the same as `T`&#39;s, since we</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // don&#39;t have to modify it</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Response = T::Response;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Error type is also the same</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Error = T::Error;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Future must output a `Result` with the correct types</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #59C2FF;"> T</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> R</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let mut</span><span> this</span><span style="color: #F29668;"> =</span><span style="color: #39BAE6;font-style: italic;"> self</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let</span><span> result</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> tokio</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">time</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">timeout</span><span>(</span></span>
+<span class="giallo-l"><span>                this</span><span style="color: #F29668;">.</span><span>duration,</span></span>
+<span class="giallo-l"><span>                this</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request),</span></span>
+<span class="giallo-l"><span>            )</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span>;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            match</span><span> result {</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Ok</span><span>(response))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Ok</span><span>(response),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Ok</span><span>(</span><span style="color: #59C2FF;">Err</span><span>(error))</span><span style="color: #F29668;"> =&gt;</span><span style="color: #59C2FF;"> Err</span><span>(error),</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                Err</span><span>(elapsed)</span><span style="color: #F29668;"> =&gt;</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">                    // Convert the error</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">                    Err</span><span>(</span><span style="color: #59C2FF;">T</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">from</span><span>(elapsed))</span></span>
+<span class="giallo-l"><span>                }</span></span>
+<span class="giallo-l"><span>            }</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h3 id="content-type-handler-1">Content-Type Handler</h3>
+<p><code>JsonContentType</code> handler도 앞의 두 handler와는 조금 다르다. 요청과 error type은 크게 신경 쓰지 않지만, response type은 신경 써야 한다.
+response type은 반드시 <code>set_header</code>를 호출할 수 있는 타입이어야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> JsonContentType</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F29668;"> +</span><span style="color: #59C2FF;"> Clone</span><span style="color: #F29668;"> +</span><span> &#39;</span><span style="color: #59C2FF;">static</span><span>,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">HttpResponse</span><span>,</span><span style="color: #59C2FF;"> Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> HttpRequest</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let mut</span><span> this</span><span style="color: #F29668;"> =</span><span style="color: #39BAE6;font-style: italic;"> self</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> response</span><span style="color: #F29668;"> =</span><span> this</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            response</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set_header</span><span>(</span><span style="color: #AAD94C;">&quot;Content-Type&quot;</span><span>,</span><span style="color: #AAD94C;"> &quot;application/json&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            Ok</span><span>(response)</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">R,</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span style="color: #59C2FF;"> T</span><span>&gt;</span><span style="color: #59C2FF;"> Handler</span><span style="color: #F07178;font-weight: bold;font-style: italic;">{+</span><span style="color: #70BF56;">&lt;R&gt;</span><span style="color: #F07178;font-weight: bold;font-style: italic;">+}</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> JsonContentType</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">where</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    R: &#39;static,</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // `T` must accept requests of any type `R` and return</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // responses of type `HttpResponse`</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">    T: Handler + Clone + &#39;static,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    T: Handler&lt;R, Response = HttpResponse&gt; + Clone + &#39;static,</span></span>
+<span class="giallo-l"><span>{</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Response = HttpResponse;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // Our error type is whatever `T`&#39;s error type is</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">    type Error = T::Error;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Pin</span><span>&lt;</span><span style="color: #59C2FF;">Box</span><span>&lt;</span><span style="color: #FF8F40;">dyn</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #59C2FF;"> T</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> R</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">        let mut</span><span> this</span><span style="color: #F29668;"> =</span><span style="color: #39BAE6;font-style: italic;"> self</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">clone</span><span>();</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        Box</span><span style="color: #F29668;">::</span><span style="color: #FFB454;">pin</span><span>(</span><span style="color: #FF8F40;">async move</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">            let mut</span><span> response</span><span style="color: #F29668;"> =</span><span> this</span><span style="color: #F29668;">.</span><span>inner_handler</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">call</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span>
+<span class="giallo-l"><span>            response</span><span style="color: #F29668;">.</span><span style="color: #FFB454;">set_header</span><span>(</span><span style="color: #AAD94C;">&quot;Content-Type&quot;</span><span>,</span><span style="color: #AAD94C;"> &quot;application/json&quot;</span><span>);</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">            Ok</span><span>(response)</span></span>
+<span class="giallo-l"><span>        })</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>,</span><span style="color: #FF8F40;"> mut</span><span> handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">        T</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Handler</span><span>,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">impl</span><span style="color: #59C2FF;"> Server</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> run</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt;(</span><span style="color: #39BAE6;font-style: italic;">self</span><span>,</span><span style="color: #FF8F40;"> mut</span><span> handler</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> T</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Result</span><span>&lt;(),</span><span style="color: #59C2FF;"> Error</span><span>&gt;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    where</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">        T: Handler,</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">        T: Handler&lt;HttpRequest, Response = HttpResponse&gt;,</span></span>
+<span class="giallo-l"><span>    {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // ...</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre><h2 id="service-traityi-deungjang">Service trait의 등장</h2>
+<p><code>Handler</code> trait는 server에서도 client에서도 사용할 수 있다. server와 client 양쪽에서 쓰일 수 있다면 <code>Handler</code>라는 이름은 부적절하다. client는 요청을 "handle"하는 입장이 아니기 때문이다. 그러니 <code>Handler</code> 대신 <code>Service</code>라고 부르자.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rs diff"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Handler</span><span>&lt;</span><span style="color: #59C2FF;">Request</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Response</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Error</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #39BAE6;font-style: italic;">Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">-</span><span style="color: #F26D78;">trait Handler&lt;Request&gt; {</span></span>
+<span class="giallo-l"><span style="color: #F07178;font-weight: bold;">+</span><span style="color: #70BF56;">trait Service&lt;Request&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Response</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Error</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #39BAE6;font-style: italic;">Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이제 Tower가 정의하는 <code>Service</code> trait에 가까워졌다. Tower에는 이미 구현된 <code>Timeout</code>, <code>Retry</code>, <code>RateLimit</code> 같은 service들이 있다.</p>
+<p><code>Timeout</code>과 <code>JsonContentType</code> 같은 타입은 middleware라고 부른다. 다른 service를 감싸기 때문이다. <code>RequestHandler</code> 같은 타입은 leaf service라고 부른다. 중첩된 service들 중 가장 말단에 있기 때문이다. response는 leaf service에서 생성되고, middleware는 그 response를 감싸거나 변형한다.</p>
+<h2 id="baeab">배압</h2>
+<p>backpressure는 생산 속도를 소비 속도가 따라가지 못할 때 발생한다.
+동시에 처리할 수 있는 요청 수의 최댓값을 제한하는 <code>ConcurrencyLimit</code> middleware를 만든다고 생각해보자. 처리 가능한 부하의 상한선을 지켜주는 service가 있으면 좋을 것이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">impl</span><span>&lt;</span><span style="color: #59C2FF;">R</span><span>,</span><span style="color: #59C2FF;"> T</span><span>&gt;</span><span style="color: #59C2FF;"> Service</span><span>&lt;</span><span style="color: #59C2FF;">R</span><span>&gt;</span><span style="color: #FF8F40;"> for</span><span style="color: #59C2FF;"> ConcurrencyLimit</span><span>&lt;</span><span style="color: #59C2FF;">T</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> R</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span> {</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // 1. Check a counter for the number of requests currently being</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        //    processed.</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // 2. If there is capacity left send the request to `T`</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        //    and increment the counter.</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // 3. If not somehow wait until capacity becomes available.</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">        // 4. When the response has been produced, decrement the counter.</span></span>
+<span class="giallo-l"><span>    }</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>정원이 차면 자리가 빌 때까지 기다려야 한다. 하지만 요청을 메모리에 계속 대기시키면 메모리 사용량이 커진다.</p>
+<p>아래 같은 method가 있으면 요청을 무작정 줄 세워 둘 필요가 없다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Service</span><span>&lt;</span><span style="color: #59C2FF;">R</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    async fn</span><span style="color: #FFB454;"> ready</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>);</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p><code>service.call(request).await</code>를 하기 전에 <code>service.ready().await</code>로 capacity가 있는지 확인하면 메모리를 아낄 수 있다.</p>
+<p>원문이 쓰인 2021년에는 async 함수를 trait에서 사용할 수 없었다. 현재는 가능하지만, <code>ReadyFuture</code>라는 associated type을 하나 더 추가해서 Future를 리턴하면 예전과 같은 lifetime 문제를 야기할 수 있다. 우리는 Future trait에서 아이디어를 얻을 수 있다. 바로 poll_ready 함수를 사용하는 것이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> std</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">task</span><span style="color: #F29668;">::</span><span>{</span><span style="color: #59C2FF;">Context</span><span>,</span><span style="color: #59C2FF;"> Poll</span><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Service</span><span>&lt;</span><span style="color: #59C2FF;">R</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> poll_ready</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, cx</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Context</span><span>&lt;&#39;</span><span style="color: #59C2FF;">_</span><span>&gt;)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Poll</span><span>&lt;()&gt;;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>service capacity가 부족하면 <code>poll_ready</code>는 <code>Poll::Pending</code>을 return하고, capacity가 다시 생기면 <code>Context</code>의 waker를 사용해 caller에게 알려준다.
+<code>poll_ready</code>가 <code>Future</code>를 return하지 않는다는 것은 기다리지 않고 ready 상태를 빠르게 확인할 수 있다는 뜻이다. <code>poll_ready</code>를 호출했는데 <code>Poll::Pending</code>을 받으면, 기다리는 대신 다른 일을 하기로 결정할 수도 있다. 무엇보다 service가 얼마나 자주 <code>Poll::Pending</code>을 return하는지 평가해서 load balancer를 만들 수도 있다.
+이런 식으로 caller와 capacity 상태를 소통하는 것을 backpressure propagation이라고 한다. caller에게 요청이 너무 많으니 속도를 줄이라고 알려주는 것과 같다. backpressure를 다루는 다른 방법으로는 buffering과 load shedding이 있다.</p>
+<p>마지막으로 capacity를 예약하는 동안 error가 발생할 수 있으므로 <code>poll_ready</code>는 <code>Poll&lt;Result&lt;(), Self::Error&gt;&gt;</code>를 return해야 한다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">trait</span><span style="color: #59C2FF;"> Service</span><span>&lt;</span><span style="color: #59C2FF;">Request</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Response</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Error</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #39BAE6;font-style: italic;">Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, request</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span>↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">pub trait</span><span style="color: #59C2FF;"> Service</span><span>&lt;</span><span style="color: #59C2FF;">Request</span><span>&gt; {</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Response</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Error</span><span>;</span></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    type</span><span style="color: #59C2FF;"> Future</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Future</span><span>&lt;</span><span style="color: #59C2FF;">Output</span><span style="color: #F29668;"> =</span><span style="color: #59C2FF;"> Result</span><span>&lt;</span><span style="color: #39BAE6;font-style: italic;">Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Response</span><span>,</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> poll_ready</span><span>(</span></span>
+<span class="giallo-l"><span style="color: #F29668;">        &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>,</span></span>
+<span class="giallo-l"><span>        cx</span><span style="color: #F29668;">: &amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #59C2FF;"> Context</span><span>&lt;&#39;</span><span style="color: #59C2FF;">_</span><span>&gt;,</span></span>
+<span class="giallo-l"><span>    )</span><span style="color: #F29668;"> -&gt;</span><span style="color: #59C2FF;"> Poll</span><span>&lt;</span><span style="color: #59C2FF;">Result</span><span>&lt;(),</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Error</span><span>&gt;&gt;;</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">    fn</span><span style="color: #FFB454;"> call</span><span>(</span><span style="color: #F29668;">&amp;</span><span style="color: #FF8F40;">mut</span><span style="color: #39BAE6;font-style: italic;"> self</span><span>, req</span><span style="color: #F29668;">:</span><span style="color: #59C2FF;"> Request</span><span>)</span><span style="color: #F29668;"> -&gt;</span><span style="color: #39BAE6;font-style: italic;"> Self</span><span style="color: #F29668;">::</span><span style="color: #59C2FF;">Future</span><span>;</span></span>
+<span class="giallo-l"><span>}</span></span></code></pre>
+<p>이렇게 Tower의 <code>Service</code> trait가 완성되었다.</p>
+<p>많은 middleware는 자신만의 backpressure를 추가하지 않고, 감싸고 있는 service의 <code>poll_ready</code> 구현을 그대로 사용한다. 하지만 middleware 수준의 backpressure도 의미 있는 사용처가 있다. 예를 들면 rate limiting, load balancing, auto scaling 같은 경우다.</p>
+<p>마지막으로 아래는 service를 사용하는 가장 흔한 방식이다.</p>
+<pre class="giallo" style="color: #BFBDB6; background-color: #0D1017;"><code data-lang="rust"><span class="giallo-l"><span style="color: #FF8F40;">use</span><span style="color: #59C2FF;"> tower</span><span style="color: #F29668;">::</span><span>{</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    Service</span><span>,</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // for the `ready` method</span></span>
+<span class="giallo-l"><span style="color: #59C2FF;">    ServiceExt</span><span>,</span></span>
+<span class="giallo-l"><span>};</span></span>
+<span class="giallo-l"></span>
+<span class="giallo-l"><span style="color: #FF8F40;">let</span><span> response</span><span style="color: #F29668;"> =</span><span> service</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // wait for the service to have capacity</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">ready</span><span>()</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span></span>
+<span class="giallo-l"><span style="color: #5A6673;font-style: italic;">    // send the request</span></span>
+<span class="giallo-l"><span style="color: #F29668;">    .</span><span style="color: #FFB454;">call</span><span>(request)</span><span style="color: #F29668;">.</span><span style="color: #FF8F40;">await</span><span style="color: #F29668;">?</span><span>;</span></span></code></pre>
+          </div>
+        </article>
+      </div>
+      
+    </div>
+  </div>
+</section>
+
+
+  
+  <section class="modal" id="search-modal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Search</p>
+      </header>
+      <section class="modal-card-body">
+        <div class="field mb-2">
+          <div class="control">
+            <input class="input" id="search" placeholder="Search this website." type="search" />
+          </div>
+        </div>
+        <div class="search-results">
+          <div class="search-results__items"></div>
+        </div>
+      </section>
+    </div>
+    <button aria-label="close" class="modal-close is-large"></button>
+  </section>
+  
+
+
+  
+
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <nav class="level">
+              
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;dyn-impl&#x2F;">
+              <span class="icon mr-2">
+                <i class="fas fa-arrow-circle-left"></i>
+              </span>
+              dyn and impl
+            </a>
+          </div>
+           
+          <div class="level-item has-text-centered">
+            <a class="button is-black is-outlined" href="https:&#x2F;&#x2F;emptyfridge.dev&#x2F;ko&#x2F;rust&#x2F;closure-lifetime&#x2F;">
+              Closure lifetime<span class="icon ml-2">
+                <i class="fas fa-arrow-circle-right"></i>
+              </span>
+            </a>
+          </div>
+          
+        </nav>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+  
+
+
+
+  
+  <footer class="footer py-4">
+    <div class="content has-text-centered">
+      <p>
+        Built with
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-code"></i>
+          </span>
+          <span>code</span>
+        </span>
+        and
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-heart"></i>
+          </span>
+          <span>love</span>
+        </span>
+      </p>
+      <p>
+        Powered by
+        <span class="icon-text">
+          <span class="icon">
+            <i class="fas fa-power-off"></i>
+          </span>
+          <span>zola</span>
+        </span>
+      </p>
+    </div>
+  </footer>
+  
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js" integrity="sha384-vtXRMe3mGCbOeY7l30aIg8H9p3GdeSe4IFlP6G8JMa7o7lXvnz3GFKzPxzJdPfGK" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/galleria.min.js" integrity="sha384-QSfwGT8/EU536DKdtyP2D6SLlh8zBaZ0cVkwfrwhqzIU9VCfJT00CLVP5t+HAiYg" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/galleria@1.6.1/dist/themes/folio/galleria.folio.min.js" integrity="sha384-DwpKI+deZB267+hPKwiOIc5Y2GKsVL0mR6hgz7GgIu7AgAMYqJwcJKY1YBNfhWcY" crossorigin="anonymous"></script>
+  
+  
+  
+  
+  <script src="https://emptyfridge.dev/elasticlunr.min.js"></script>
+  <script src="https://emptyfridge.dev/search_index.ko.js"></script><script src="https://emptyfridge.dev/js/site.js"></script>
+
+  
+
+
+
+
+
+  
+<script>
+  (function () {
+    const currentPath = window.location.pathname || "/";
+    const currentSearch = window.location.search || "";
+    const currentHash = window.location.hash || "";
+    const isKorean = currentPath === "/ko" || currentPath.startsWith("/ko/");
+
+    const brand = document.querySelector(".navbar-brand .navbar-item.is-size-5.has-text-weight-bold");
+    if (brand && !brand.textContent.trim()) {
+      brand.textContent = "Doosan's Blog";
+    }
+    if (brand && isKorean) {
+      brand.href = "/ko/";
+    }
+
+    const navEnd = document.querySelector(".navbar-end");
+    if (!navEnd) {
+      return;
+    }
+
+    const targetPath = isKorean
+      ? (currentPath.replace(/^\/ko(?=\/|$)/, "") || "/")
+      : (currentPath === "/" ? "/ko" : "/ko" + currentPath);
+
+    const toggle = document.createElement("a");
+    toggle.className = "navbar-item language-toggle";
+    toggle.href = targetPath + currentSearch + currentHash;
+    toggle.title = isKorean ? "Switch to English" : "Switch to Korean";
+    toggle.setAttribute("aria-label", toggle.title);
+    toggle.innerHTML = [
+      '<span class="icon"><i class="fas fa-language" aria-hidden="true"></i></span>',
+      '<span class="language-toggle__label">',
+      isKorean ? "EN" : "KO",
+      "</span>"
+    ].join("");
+
+    const searchItem = document.getElementById("nav-search");
+    navEnd.insertBefore(toggle, searchItem || null);
+  })();
+</script>
+
+</body>
+
+</html>
